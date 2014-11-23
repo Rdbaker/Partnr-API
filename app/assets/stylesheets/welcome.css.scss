@@ -1,0 +1,38 @@
+#welcome-wrapper {
+  text-align: center;
+  margin-top: 15%;
+  height: 20%;
+}
+
+.button-wrapper .btn{
+  display: block;
+  width: 24%;
+  margin-left: 38%;
+}
+
+#signup-btn {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+#login-btn {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.form > input {
+  width: 24%;
+  margin-left: 38%;
+}
+
+.help {
+  border-radius: 50px;
+  width: 2%;
+  background-color: rgb(147, 147, 147);
+  position: absolute;
+  right: 0;
+  top: 0;
+  touch-action: manipulation;
+  cursor: pointer;
+  text-align: center;
+}

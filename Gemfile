@@ -34,4 +34,7 @@ gem 'pg'
 # use rspec for testing
 gem 'rspec'
 
+# use backbone for MVP client framework
+gem 'rails-backbone'
+
 ruby '2.0.0'
