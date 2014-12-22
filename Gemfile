@@ -33,8 +33,18 @@ gem 'pg'
 
 # use rspec for testing
 gem 'rspec'
+gem 'rspec-rails'
 
 # use backbone for MVP client framework
 gem 'rails-backbone'
+
+# use devise for authentication
+gem 'devise'
+
+# use foreman for the dev server logger
+gem 'foreman'
+
+# use puma as the http server
+gem 'puma'
 
 ruby '2.0.0'
