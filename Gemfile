@@ -31,9 +31,11 @@ gem 'spring',        group: :development
 # use the pgsql database
 gem 'pg'
 
-# use rspec for testing
-gem 'rspec'
-gem 'rspec-rails'
+# testing gems
+group :test, :development do
+  gem 'rspec'
+  gem 'rspec-rails'
+end
 
 # use backbone for MVP client framework
 gem 'rails-backbone'

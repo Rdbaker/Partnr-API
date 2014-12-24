@@ -1,3 +1,79 @@
-// Place all the styles related to the loggedin controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'constants.css.scss';
+
+#navbar {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin-bottom: 0;
+  position: absolute;
+  width: $nav-width;
+}
+
+.notification-wrapper {
+  margin-left: $nav-width;
+}
+
+#container {
+  margin-left: $nav-width;
+}
+
+.nav-row {
+  height: $nav-row-height;
+  line-height: $nav-row-height;
+  border-bottom: 2px solid #111;
+  overflow: hidden;
+}
+
+.nav-link,
+.nav-link:hover,
+.nav-link:focus {
+  text-decoration: none;
+  color: #ebebeb;
+}
+
+.nav-row:hover {
+  background-color: $nav-row-hover-color;
+}
+
+#user-name-link:hover,
+#user-photo-link:hover {
+  background-color: $nav-row-hover-color;
+  cursor: pointer;
+}
+
+#user-info {
+  height: 60px;
+  line-height: 60px;
+  border-bottom: 3px solid #111;
+}
+
+#user-info div {
+  height: 100%;
+}
+
+#user-name-link {
+  width: 70%;
+  float: left;
+  border-right: 1px solid #111;
+}
+
+#user-photo-link {
+  width: 30%;
+  float: right;
+}
+
+#user-logout-link {
+  bottom: 0;
+  cursor: pointer;
+}
+
+#user-settings-link {
+  bottom: $nav-row-height;
+}
+
+.nav-row-bottom {
+  position: absolute;
+  width: 100%;
+  border-bottom: 0;
+  border-top: 2px solid #111;
+}

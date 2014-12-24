@@ -9,7 +9,7 @@ class AuthFailureRedirector < Devise::FailureApp
     if http_auth?
       http_auth
     else
-      redirect
+      redirect_to root_path
     end
   end
 end

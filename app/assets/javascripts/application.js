@@ -5,3 +5,9 @@
 //= require backbone
 //= require backbone_rails_sync
 //= require backbone_datalink
+
+$(document).ready(function() {
+  $('.close').click(function() {
+    $(this.parentElement).slideUp();
+  });
+});
