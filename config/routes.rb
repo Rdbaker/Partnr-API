@@ -8,5 +8,10 @@ Rails.application.routes.draw do
     root to: 'loggedin#index', as: 'home'
   end
 
+  # A conversation is a group of message between two or more users
+  resources :conversation, only: [:show]
+  # A message sent from one user to one or more users
+  resources :messages, only: [:create]
+
   root 'welcome#index'
 end

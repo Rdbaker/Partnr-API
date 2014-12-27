@@ -1,6 +1,8 @@
 Partnr.Views.HomeView = Backbone.View.extend
+  template: JST["backbone/templates/home/home"]
+
   initialize: () ->
     @render()
 
   render: () ->
-    @$el.html("this is the home view")
+    @$el.html(@template())

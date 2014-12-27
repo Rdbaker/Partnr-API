@@ -5,8 +5,12 @@
   top: 0;
   bottom: 0;
   margin-bottom: 0;
-  position: absolute;
+  position: fixed;
   width: $nav-width;
+}
+
+#container {
+  width: 100%-$nav-width;
 }
 
 .notification-wrapper {
@@ -14,7 +18,7 @@
 }
 
 #container {
-  margin-left: $nav-width;
+  margin-left: 2%+$nav-width;
 }
 
 .nav-row {
@@ -76,4 +80,43 @@
   width: 100%;
   border-bottom: 0;
   border-top: 2px solid #111;
+}
+
+#send-message-form {
+  width: 40%;
+  margin-right: 60%;
+}
+
+#message-content-wrapper {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  width: 90%;
+  max-width: 100%;
+}
+
+#message-content {
+  width: 100%;
+}
+
+#new-message-btn {
+  margin-bottom: 2%;
+}
+
+#messages-table {
+  width: 25%;
+}
+
+#messages-table td {
+  line-height: 45px;
+  padding-left: 10%;
+}
+
+#send-message-form > .btn {
+  width: 30%;
+  margin-right: 2%;
+}
+
+#new-message-email-wrapper {
+  width: 80%;
+  margin-right: 20%;
 }
