@@ -1,122 +1,19 @@
-@import 'constants.css.scss';
+/*
+ *= require_tree ./nav
+ *= require_tree ./home
+ *= require_tree ./inbox
+ *= require_tree ./partners
+ *= require_tree ./portfolio
+ *= require_tree ./settings
+ */
 
-#navbar {
-  left: 0;
-  top: 0;
-  bottom: 0;
-  margin-bottom: 0;
-  position: fixed;
-  width: $nav-width;
-}
+@import 'constants.css.scss';
 
 #container {
   width: 100%-$nav-width;
+  margin-left: 2%+$nav-width;
 }
 
 .notification-wrapper {
   margin-left: $nav-width;
-}
-
-#container {
-  margin-left: 2%+$nav-width;
-}
-
-.nav-row {
-  height: $nav-row-height;
-  line-height: $nav-row-height;
-  border-bottom: 2px solid #111;
-  overflow: hidden;
-}
-
-.nav-link,
-.nav-link:hover,
-.nav-link:focus {
-  text-decoration: none;
-  color: #ebebeb;
-}
-
-.nav-row:hover {
-  background-color: $nav-row-hover-color;
-}
-
-#user-name-link:hover,
-#user-photo-link:hover {
-  background-color: $nav-row-hover-color;
-  cursor: pointer;
-}
-
-#user-info {
-  height: 60px;
-  line-height: 60px;
-  border-bottom: 3px solid #111;
-}
-
-#user-info div {
-  height: 100%;
-}
-
-#user-name-link {
-  width: 70%;
-  float: left;
-  border-right: 1px solid #111;
-}
-
-#user-photo-link {
-  width: 30%;
-  float: right;
-}
-
-#user-logout-link {
-  bottom: 0;
-  cursor: pointer;
-}
-
-#user-settings-link {
-  bottom: $nav-row-height;
-}
-
-.nav-row-bottom {
-  position: absolute;
-  width: 100%;
-  border-bottom: 0;
-  border-top: 2px solid #111;
-}
-
-#send-message-form {
-  width: 40%;
-  margin-right: 60%;
-}
-
-#message-content-wrapper {
-  margin-top: 10px;
-  margin-bottom: 5px;
-  width: 90%;
-  max-width: 100%;
-}
-
-#message-content {
-  width: 100%;
-}
-
-#new-message-btn {
-  margin-bottom: 2%;
-}
-
-#messages-table {
-  width: 25%;
-}
-
-#messages-table td {
-  line-height: 45px;
-  padding-left: 10%;
-}
-
-#send-message-form > .btn {
-  width: 30%;
-  margin-right: 2%;
-}
-
-#new-message-email-wrapper {
-  width: 80%;
-  margin-right: 20%;
 }
