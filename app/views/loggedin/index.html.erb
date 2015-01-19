@@ -4,3 +4,7 @@
   <div id="view-injection">
   </div>
 </div>
+
+<script>
+  window.user = Object.freeze({name: "<%= current_user.name %>"});
+</script>

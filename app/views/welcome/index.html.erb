@@ -9,6 +9,9 @@
       <div class="btn btn-lg btn-primary" id="signup-btn">
         Sign Up
       </div>
+      <div class="btn btn-lg btn-default" id="login-btn">
+        Login
+      </div>
 
       <%= form_for(:user, :url => session_path(:user), :html => { :class => 'form', :id => 'login-form' }) do |f| %>
         <%= f.text_field :email, :class => 'form-control', :placeholder => 'Email' %>
@@ -21,12 +24,9 @@
         <%= f.text_field :email, :class => 'form-control', :placeholder => 'Email' %>
         <%= f.password_field :password, :class => 'form-control', :placeholder => 'Password' %>
       <% end %>
-      <div class="btn btn-lg btn-default" id="login-btn">
-        Login
+      <div class="btn btn-lg btn-info" id="submit-btn">
+        Submit
       </div>
-    </div>
-    <div class="btn btn-lg btn-info" id="submit-btn">
-      Submit
     </div>
   </div>
 </div>

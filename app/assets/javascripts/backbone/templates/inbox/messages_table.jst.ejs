@@ -1,0 +1,10 @@
+<tbody>
+  <% messages.forEach(function(elt, i) {
+  %>
+    <tr class="active" data-id=<%= elt.id %>>
+      <td>
+        <%= elt.participants.join(', ') %>
+      </td>
+    </tr>
+  <%})%>
+</tbody>

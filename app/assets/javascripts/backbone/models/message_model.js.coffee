@@ -1,2 +1,1 @@
-Partnr.Models.MessageModel = Backbone.Model.extend
-
+Partnr.Models.MessageModel = Backbone.Model.extend()
