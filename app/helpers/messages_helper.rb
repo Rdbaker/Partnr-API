@@ -31,7 +31,7 @@ module MessagesHelper
         participants.each do |p|
           parts.push({ "name"=>p.name, "email"=>p.email })
         end
-        conv['participants'] = participants
+        conv['participants'] = parts
         conv['id'] = c.id
         json_convs.push conv
       end

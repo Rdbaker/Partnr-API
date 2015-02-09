@@ -40,7 +40,6 @@ Partnr.Views.MessageView = Backbone.View.extend
     message = new Partnr.Models.MessageModel({
       body: @messageBody(),
       sender: window.user.name})
-      #      id: @messageId()})
     @collection.push message
     message.save()
 

@@ -6,8 +6,7 @@ source /home/vagrant/.rvm/scripts/rvm
 source ~/.profile
 rvm use 2.0.0
 bundle install
-# sudo -u postgres -i
-# createuser -s vagrant
+createuser -s vagrant
 
 rake db:setup
 rake db:create

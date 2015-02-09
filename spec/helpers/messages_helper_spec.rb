@@ -45,7 +45,13 @@ RSpec.describe MessagesHelper, :type => :helper do
     it "returns an array of participants and ids for conversations" do
       @user2.send_message(@user, "body", "subject")
       conv_id = @user2.mailbox.conversations.all[0].id
-      convs = [{"participants"=>[@user2.name], "id"=>conv_id}]
+      convs = [{
+        "participants"=>[{
+          "name" => @user2.name,
+          "email" => @user2.email
+        }],
+        "id"=>conv_id
+      }]
 
       expect(helper.json_conversations @user).to eq convs
     end
