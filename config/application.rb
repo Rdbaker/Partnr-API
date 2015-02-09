@@ -9,9 +9,9 @@ Bundler.require(*Rails.groups)
 
 module Partnr
   class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    @@MAJOR_VERSION = '0'
+    @@MINOR_VERSION = '1'
+    @@PATCH_VERSION = '0'
 
     # use rspec for testing
     config.generators do |g|
@@ -21,12 +21,9 @@ module Partnr
     # load the libraries
     config.autoload_paths += %W(#{config.root}/lib)
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
+    # return the version number
+    def version
+      @@MAJOR_VERSION+'.'+@@MINOR_VERSION+'.'+@@PATCH_VERSION
+    end
   end
 end

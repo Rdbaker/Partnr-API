@@ -1,4 +1,24 @@
+require 'simplecov'
+
+SimpleCov.start do
+  add_filter do |file|
+    file.lines.count < 5
+    file.filename.include? "spec/"
+  end
+
+  add_group "Models", "app/models"
+  add_group "Controllers", "app/controllers"
+  add_group "Helpers", "app/helpers"
+  add_group "Config", "config"
+end
+
+require 'devise'
+require 'support/controller_macros'
+
 RSpec.configure do |config|
+  config.include Devise::TestHelpers, :type => :controller
+  config.extend ControllerMacros, :type => :controller
+
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end

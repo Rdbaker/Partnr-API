@@ -6,5 +6,8 @@
 </div>
 
 <script>
-  window.user = Object.freeze({name: "<%= current_user.name %>"});
+  window.user = Object.freeze({
+    name: "<%= current_user.name %>",
+    email: "<%= current_user.email %>"
+  });
 </script>

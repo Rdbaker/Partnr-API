@@ -37,7 +37,15 @@ Partnr.Views.MessageView = Backbone.View.extend
     @render()
 
   replyToMessage: () ->
-    @collection.push {body: @messageBody(), sender: window.user.name}
+    message = new Partnr.Models.MessageModel({
+      body: @messageBody(),
+      sender: window.user.name})
+      #      id: @messageId()})
+    @collection.push message
+    message.save()
+
+  messageId: () ->
+    Number($("tr.active.warning").attr('data-id'))
 
   messageBody: () ->
     $('#send-message-content', @$el).val()

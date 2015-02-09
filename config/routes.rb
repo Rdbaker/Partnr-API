@@ -5,10 +5,10 @@ Rails.application.routes.draw do
   end
 
   # send a message
-  get '/messages', to: 'messages#index'
-  get '/messages/:id', to: 'messages#show', as: 'show_message'
+  get '/messages', to: 'messages#index', as: 'messages'
+  get '/messages/:id', to: 'messages#show', as: 'show_messages'
   post '/messages', to: 'messages#create'
-  put '/messages/:id', to: 'messages#new'
+  put '/messages/:id', to: 'messages#new', as: 'new_messages'
 
   authenticated :user do
     root to: 'loggedin#index', as: 'home'

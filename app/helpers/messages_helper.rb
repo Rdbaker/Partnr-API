@@ -3,8 +3,8 @@ module MessagesHelper
   # or nil if no such conversation exists
   def conv_from_recipients(recipients)
     # make sure the list contains only users
-    unless recipients.all? { |u| u.class == User }
-      nil
+    unless !(recipients.empty?) && recipients.all? { |u| u.class == User }
+      return nil
     else
       # sort the recipients
       recipients.sort!
@@ -25,9 +25,12 @@ module MessagesHelper
       json_convs = []
       convs.each do |c|
         conv = {}
+        parts = []
         participants = c.recipients
         participants.delete user
-        participants.map! { |u| u.name }
+        participants.each do |p|
+          parts.push({ "name"=>p.name, "email"=>p.email })
+        end
         conv['participants'] = participants
         conv['id'] = c.id
         json_convs.push conv
@@ -38,12 +41,21 @@ module MessagesHelper
 
   # gets a specific conversation for a user
   def user_conversation(user, conv_id)
-    msg = user.mailbox.conversations.find(conv_id)
-    receipts = msg.receipts_for user
-    messages = []
-    receipts.each do |m|
-      messages.push Hash["message" => m.message, "sender" => m.message.sender.name]
+    if user.class != User || conv_id.class != Fixnum
+      return []
+    else
+      msg = user.mailbox.conversations.find_by_id(conv_id)
+      # if no conversation was found
+      if !msg
+        return []
+      else
+        receipts = msg.receipts_for user
+        messages = []
+        receipts.each do |m|
+          messages.push Hash["message" => m.message, "sender" => m.message.sender.name]
+        end
+        messages.reverse
+      end
     end
-    messages.reverse
   end
 end

@@ -35,6 +35,9 @@ gem 'pg'
 group :test, :development do
   gem 'rspec'
   gem 'rspec-rails'
+  gem 'factory_girl_rails', "~> 4.0"
+  gem 'simplecov'
+  gem 'capybara'
 end
 
 # use backbone for MVP client framework
@@ -52,4 +55,4 @@ gem 'puma'
 # use mailboxer as the mailing system
 gem 'mailboxer'
 
-ruby '2.0.0'
+ruby '>= 2.0.0'

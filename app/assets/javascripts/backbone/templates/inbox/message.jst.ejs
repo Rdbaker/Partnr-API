@@ -8,7 +8,7 @@
           <%= messages[i].sender %>
         <% } %>
       </div>
-      <%= messages[i].message.body %>
+      <%= messages[i].escape('body') %>
     </div>
   <% } %>
 </div>
