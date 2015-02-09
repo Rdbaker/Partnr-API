@@ -55,4 +55,4 @@ gem 'puma'
 # use mailboxer as the mailing system
 gem 'mailboxer'
 
-ruby '>= 2.0.0'
+ruby '2.0.0'
