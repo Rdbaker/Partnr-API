@@ -1,0 +1,26 @@
+<h1 class="heading text-primary">
+  Portfolio
+</h1>
+<div class="btn btn-primary btn-large" id="new-project-btn">
+  New Project
+</div>
+<h3 class="text-center" id="portfolio-title">
+  Projects
+</h3>
+<table class="table table-hover" id="portfolio-table">
+  <% if (!(projects.length)) { %>
+    <div class="h4 text-center text-primary">
+      <em>You don't have any projects yet.</em>
+    </div>
+  <% } else { %>
+    <tbody class="text-center">
+      <% projects.forEach(function(elt, i) { %>
+        <tr>
+          <td>
+            <%= elt.name %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  <% } %>
+</table>

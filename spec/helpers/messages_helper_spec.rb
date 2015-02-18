@@ -72,7 +72,7 @@ RSpec.describe MessagesHelper, :type => :helper do
       @user.send_message(@user2, "body", "subject")
       conv = @user.mailbox.conversations.all[0]
 
-      expect(helper.user_conversation(@user2, conv.id)).to eq([{"message" => conv.last_message, "sender" => @user.name}])
+      expect(helper.user_conversation(@user2, conv.id)).to eq([{"message" => conv.last_message.body, "sender" => @user.name}])
     end
   end
 end

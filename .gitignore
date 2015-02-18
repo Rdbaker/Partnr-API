@@ -16,3 +16,6 @@ rspec:install
 
 # ignore test coverage files
 coverage
+
+# ignore the documentation
+doc

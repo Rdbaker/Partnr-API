@@ -23,7 +23,7 @@ Partnr.Views.MessageView = Backbone.View.extend
     )
 
   renderMessages: () ->
-    @$el.html @template messages: @collection.toJSON()
+    @$el.html @template messages: @collection
 
     # when they press enter trigger the 'enter' event
     $('#send-message-content').keyup (event) ->
@@ -38,8 +38,10 @@ Partnr.Views.MessageView = Backbone.View.extend
 
   replyToMessage: () ->
     message = new Partnr.Models.MessageModel({
-      body: @messageBody(),
-      sender: window.user.name})
+      message: @messageBody(),
+      sender: window.user.name
+      conv_id: @id
+    })
     @collection.push message
     message.save()
 

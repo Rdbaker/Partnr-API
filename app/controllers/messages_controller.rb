@@ -29,7 +29,7 @@ class MessagesController < ApplicationController
 
   # show a specific message
   def show
-    res = user_conversation(current_user, params[:id])
+    res = user_conversation(current_user, params[:id].to_i)
     render :json => res
   end
 

@@ -38,7 +38,7 @@ group :test, :development do
   gem 'factory_girl_rails', "~> 4.0"
   gem 'simplecov'
   gem 'capybara'
-  gem 'poltergeist'
+  gem 'teaspoon'
 end
 
 # use backbone for MVP client framework

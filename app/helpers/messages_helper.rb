@@ -52,7 +52,7 @@ module MessagesHelper
         receipts = msg.receipts_for user
         messages = []
         receipts.each do |m|
-          messages.push Hash["message" => m.message, "sender" => m.message.sender.name]
+          messages.push Hash["message" => m.message.body, "sender" => m.message.sender.name]
         end
         messages.reverse
       end

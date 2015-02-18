@@ -29,4 +29,11 @@ Rails.application.configure do
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
+
+  # setup for teaspoon and mocha headless js testing
+  Rails.application.config.assets.precompile += [
+    "teaspoon.css",
+    "teaspoon-mocha.js",
+    "mocha/1.17.1.js"
+  ]
 end
