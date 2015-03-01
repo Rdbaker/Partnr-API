@@ -1,5 +1,6 @@
 #= require backbone
 #= require backbone/partnr
+#= require_tree ./errors
 
 logout = () ->
   $('#logout-form').submit()
