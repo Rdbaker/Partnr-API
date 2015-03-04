@@ -6,38 +6,27 @@ class MessagesController < ApplicationController
 
   # get the inbox of the user
   def index
-    render :json => json_conversations(current_user)
+    render :json => current_user.json_conversations
   end
 
   # send a message
   def create
-    recip = User.find_by(email: params[:email])
-    body = params[:message]
-    sender = current_user.name
-
-    # check if a conversation already exists
-    conv = conv_from_recipients([recip, current_user])
-
-    # if it doesn't, send a new message
-    if conv.nil?
-      current_user.send_message(recip, body, sender)
-    else
-      current_user.reply_to_conversation(conv, body)
-    end
+    current_user.respond_or_create_conversation(
+      params[:email],
+      params[:messge]
+    )
     redirect_to :action => :index
   end
 
   # show a specific message
   def show
-    res = user_conversation(current_user, params[:id].to_i)
+    res = current_user.get_conv params[:id].to_i
     render :json => res
   end
 
   # add a message to a conversation
   def new
-    message = params[:message]
-    conv = current_user.mailbox.conversations.find(params[:id])
-    current_user.reply_to_conversation(conv, message)
-    render :json => user_conversation(current_user, params[:id])
+    current_user.respond_or_create_conversation params[:message]
+    render :json => current_user.get_conv(params[:id])
   end
 end
