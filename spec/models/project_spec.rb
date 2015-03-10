@@ -10,17 +10,17 @@ RSpec.describe Project, :type => :model do
     @project.owner = @user.id
   end
 
-  describe "#has_update_permissions" do
+  describe "#has_admin_permissions" do
     it "fails if it isn't given a user" do
-      expect(@project.has_update_permissions(4)).to be false
+      expect(@project.has_admin_permissions(4)).to be false
     end
 
     it "fails if the user isn't the owner" do
-      expect(@project.has_update_permissions(@user2)).to be false
+      expect(@project.has_admin_permissions(@user2)).to be false
     end
 
     it "passes if the user is the owner" do
-      expect(@project.has_update_permissions(@user)).to be true
+      expect(@project.has_admin_permissions(@user)).to be true
     end
   end
 end
