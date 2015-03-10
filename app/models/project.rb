@@ -3,6 +3,8 @@ class Project < ActiveRecord::Base
 
   validates :name, :owner, :creator, presence: true
 
+  attr_readonly :creator
+
   def has_admin_permissions(user)
     user.class == User && self.owner == user.id
   end

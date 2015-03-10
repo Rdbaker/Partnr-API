@@ -79,6 +79,14 @@ RSpec.describe ProjectsController, :type => :controller do
         get :show, id: @project.id
         expect(JSON.parse(response.body)['name']).to eq("New Name")
       end
+
+      it "can't change the 'creator' attribute" do
+        @project.creator = @user.id+1
+        @project.save
+        put :update, id: @project.id, project: { 'creator' => @user.id }
+        get :show, id: @project.id
+        expect(JSON.parse(response.body)['creator']).to_not eq(@user.id)
+      end
     end
 
     context "with invalid attributes" do
