@@ -1,4 +1,4 @@
-$ ->
+$(document).ready ->
   logging_in = false
   signing_up = false
 

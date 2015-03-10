@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
   def create
     current_user.respond_or_create_conversation(
       params[:email],
-      params[:messge]
+      params[:message]
     )
     redirect_to :action => :index
   end
