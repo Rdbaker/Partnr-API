@@ -19,7 +19,10 @@ require 'support/controller_macros'
 RSpec.configure do |config|
   config.include Devise::TestHelpers
   config.include JSON::SchemaMatchers
+  config.include Warden::Test::Helpers
   config.extend ControllerMacros, :type => :controller
+
+  Warden.test_mode!
 
   Dir.new("./spec/schema/schemas").each do |f|
     config.json_schemas[File.basename(f, ".*").to_sym] =
