@@ -2,23 +2,38 @@ describe "Partnr.Models.MessageModel", () ->
   it "exists", () ->
     expect(Partnr.Models.MessageModel).to.exist
 
+  beforeEach () ->
+    @good = new Partnr.Models.MessageModel
+      conv_id: "1",
+      message: "some string"
+    @bad = new Partnr.Models.MessageModel
+      conv_id: undefined,
+      message: undefined
+
   describe "#save()", () ->
-    it "exists", () ->
-      m = new Partnr.Models.MessageModel()
-      expect(m.save).to.exist
+    after () ->
+      jQuery.ajax.restore()
 
-  describe "#validParams()", () ->
-    it "exists", () ->
-      m = new Partnr.Models.MessageModel()
-      expect(m.validParams).to.exist
+    before () ->
+      sinon.stub(jQuery, "ajax")
 
+    it "throws an error on a bad model", () ->
+      expect(@bad.save.bind(@bad))
+        .to.throw(/Message does not have required attributes/)
+
+    it "sends a PUT to the server on a good model", () ->
+      @good.save()
+      expect(jQuery.ajax.calledWithMatch
+        url: '/messages/1',
+        type: 'PUT'
+        data:
+          message: 'some string',
+          conv_id: '1'
+      )
+
+  describe "#validate()", () ->
     it "passes for a good model", () ->
-      good = new Partnr.Models.MessageModel {"conv_id": "1", "message": "some string"}
+      expect(@good.validate()).to.be.true
 
-      expect(good.validParams()).to.be true
-###
     it "fails for a bad model", () ->
-      bad = Partnr.Models.MessageModel({})
-
-      expect(bad.validParams()).to.be(false)
-###
+      expect(@bad.validate()).to.be.false

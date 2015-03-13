@@ -13,11 +13,21 @@ SimpleCov.start do
 end
 
 require 'devise'
+require 'json-schema-rspec'
 require 'support/controller_macros'
 
 RSpec.configure do |config|
-  config.include Devise::TestHelpers, :type => :controller
+  config.include Devise::TestHelpers
+  config.include JSON::SchemaMatchers
+  config.include Warden::Test::Helpers
   config.extend ControllerMacros, :type => :controller
+
+  Warden.test_mode!
+
+  Dir.new("./spec/schema/schemas").each do |f|
+    config.json_schemas[File.basename(f, ".*").to_sym] =
+      File.absolute_path("./spec/schema/schemas/#{f}")
+  end
 
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

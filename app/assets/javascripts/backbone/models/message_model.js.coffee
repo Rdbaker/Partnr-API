@@ -3,8 +3,8 @@ Partnr.Models.MessageModel = Backbone.Model.extend
   # it'll never send POST requests since it's not
   # treated like a typical rails resource
   save: () ->
-    if @validate
-      throw 'Error: Required fields not present for a message'
+    if !@validate()
+      throw ValidationError('Message does not have required attributes')
     else
       $.ajax
         type: 'PUT'
@@ -14,4 +14,4 @@ Partnr.Models.MessageModel = Backbone.Model.extend
           id: @.get 'conv_id'
 
   validate: (attrs, options) ->
-    !!attrs['conv_id'] && !!atrs['message']
+    !!@get('conv_id') && !!@get('message')

@@ -39,6 +39,7 @@ group :test, :development do
   gem 'simplecov'
   gem 'capybara'
   gem 'teaspoon'
+  gem 'json-schema-rspec'
 end
 
 # use backbone for MVP client framework
