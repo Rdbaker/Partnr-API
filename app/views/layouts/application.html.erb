@@ -8,6 +8,10 @@
   <%= javascript_include_tag params[:controller] %>
   <%= csrf_meta_tags %>
 
+  <% if ENV['NO_INDEX'] == true %>
+    <meta name="robots" content="noindex" />
+  <% end %>
+
   <!-- temporary bootstrap theme -->
   <link href="http://bootswatch.com/superhero/bootstrap.css" rel="stylesheet" type="text/css"/>
 </head>

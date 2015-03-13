@@ -38,6 +38,11 @@ $(document).ready ->
       submitForm()
   )
 
+  # click the submit button
+  $('#submit-btn').on('click', (e) ->
+    submitForm()
+  )
+
   # submit the form to the proper route
   submitForm = () ->
     if logging_in
