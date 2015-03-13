@@ -8,7 +8,7 @@
   <%= javascript_include_tag params[:controller] %>
   <%= csrf_meta_tags %>
 
-  <% if ENV['NO_INDEX'] == true %>
+  <% if ENV['RACK_ENV'] != 'production' %>
     <meta name="robots" content="noindex" />
   <% end %>
 
