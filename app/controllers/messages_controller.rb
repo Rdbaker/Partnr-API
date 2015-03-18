@@ -26,7 +26,7 @@ class MessagesController < ApplicationController
 
   # add a message to a conversation
   def new
-    current_user.respond_or_create_conversation params[:message]
+    current_user.reply_to_conversation current_user.mailbox.conversations.find_by_id(params[:id]), params[:message]
     render :json => current_user.get_conv(params[:id])
   end
 end
