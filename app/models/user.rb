@@ -47,11 +47,11 @@ class User < ActiveRecord::Base
   # gets a conversation given its id
   def get_conv(conv_id)
     if conv_id.class != Fixnum
-      return []
+      return nil
     else
       msg = mailbox.conversations.find_by_id(conv_id)
       if !msg
-        return []
+        return nil
       else
         receipts = msg.receipts_for self
         messages = []

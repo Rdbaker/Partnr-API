@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ProjectsController, :type => :controller do
+RSpec.describe Api::ProjectsController, :type => :controller do
   login_user
 
   before(:each) do
@@ -39,7 +39,7 @@ RSpec.describe ProjectsController, :type => :controller do
 
       it "redirects to the #index action" do
         post :create, project: attributes_for(:good_project)
-        expect(response).to redirect_to :projects
+        expect(response).to redirect_to :api_projects
       end
     end
   end
@@ -72,7 +72,7 @@ RSpec.describe ProjectsController, :type => :controller do
       end
 
       it "redirects to the project show page" do
-        expect(response).to redirect_to :project
+        expect(response).to redirect_to :api_project
       end
 
       it "changes the actual value of the project" do
@@ -142,7 +142,7 @@ RSpec.describe ProjectsController, :type => :controller do
 
       it "redirects to the index" do
         delete :destroy, id: @project.id
-        expect(response).to redirect_to :projects
+        expect(response).to redirect_to :api_projects
       end
     end
   end

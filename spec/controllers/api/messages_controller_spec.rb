@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe MessagesController, :type => :controller do
+RSpec.describe Api::MessagesController, :type => :controller do
   login_user
 
   before(:each) do

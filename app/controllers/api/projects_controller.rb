@@ -1,4 +1,4 @@
-class ProjectsController < ApplicationController
+class Api::ProjectsController < APIController
   # these methods should only be accessible when signed in
   before_filter :authenticate_user!
   before_action :get_project_from_id, only: [:show, :update, :destroy]

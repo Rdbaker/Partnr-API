@@ -1,4 +1,4 @@
-class MessagesController < ApplicationController
+class Api::MessagesController < APIController
   # these methods should only be accessible when signed in
   before_filter :authenticate_user!
   helper_method :mailbox, :conversation
@@ -21,7 +21,11 @@ class MessagesController < ApplicationController
   # show a specific message
   def show
     res = current_user.get_conv params[:id].to_i
-    render :json => res
+    if res.nil?
+      not_found
+    else
+      render :json => res
+    end
   end
 
   # add a message to a conversation

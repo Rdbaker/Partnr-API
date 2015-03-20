@@ -14,7 +14,7 @@ RSpec.describe "Inbox", :type => :request do
     end
 
     it "works" do
-      get '/messages'
+      get '/api/messages'
       expect(response.body).to match_json_schema(:inbox)
     end
   end

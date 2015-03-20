@@ -4,13 +4,14 @@ Rails.application.routes.draw do
     post '/signup', to: 'devise/registrations#create'
   end
 
-  resources :projects, except: [:new, :edit]
+  namespace :api do
+    resources :projects, except: [:new, :edit]
 
-  # send a message
-  get '/messages', to: 'messages#index', as: 'messages'
-  post '/messages', to: 'messages#create'
-  get '/messages/:id', to: 'messages#show', as: 'message'
-  put '/messages/:id', to: 'messages#new'
+    get '/messages', to: 'messages#index', as: 'messages'
+    post '/messages', to: 'messages#create'
+    get '/messages/:id', to: 'messages#show', as: 'message'
+    put '/messages/:id', to: 'messages#new'
+  end
 
   authenticated :user do
     root to: 'loggedin#index', as: 'home'
