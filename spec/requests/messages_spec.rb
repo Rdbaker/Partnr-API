@@ -9,9 +9,9 @@ RSpec.describe "Messages", :type => :request do
     @msg_id = @user.mailbox.conversations.first.id
   end
 
-  describe "GET /api/messages" do
+  describe "GET /api/v1/messages" do
     before(:each) do
-      get api_messages_path
+      get "/api/v1/messages"
     end
 
     it "returns a 200" do
@@ -23,9 +23,9 @@ RSpec.describe "Messages", :type => :request do
     end
   end
 
-  describe "POST /api/messages" do
+  describe "POST /api/v1/messages" do
     before(:each) do
-      post api_messages_path
+      post "/api/v1/messages"
     end
 
     it "returns a 200" do
@@ -33,32 +33,35 @@ RSpec.describe "Messages", :type => :request do
     end
   end
 
-  describe "GET /api/messages/:id" do
-    it "returns a 200" do
-      params = {
-        :id => @msg_id
-      }
-      get '/api/messages', params
+  describe "GET /api/v1/messages/:id" do
+    context "good message id" do
+      before(:each) do
+        get "/api/v1/messages/#{@msg_id}"
+      end
 
-      expect(response.ok?)
+      it "returns a 200" do
+        expect(response.ok?)
+      end
+
+      it "returns json" do
+        expect(response.content_type).to eq("application/json")
+      end
     end
 
-    it "returns json" do
-      get "/api/messages/#{@msg_id}"
+    context "bad message id" do
+      before(:each) do
+        get "/api/v1/messages/0"
+      end
 
-      expect(response.content_type).to eq("application/json")
-    end
-
-    it "returns a 404 if no conversation is found" do
-      get '/api/messages/-1'
-
-      expect(response.code).to eq("404")
+      it "returns a 404 if no conversation is found" do
+        expect(response.status).to eq(404)
+      end
     end
   end
 
-  describe "PUT /api/messages/:id" do
+  describe "PUT /api/v1/messages/:id" do
     before(:each) do
-      put "/api/messages/#{@msg_id}"
+      put "/api/v1/messages/#{@msg_id}"
     end
 
     it "returns a 200" do
