@@ -7,9 +7,23 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  validate :is_a_pre_approved_user
+
   has_and_belongs_to_many :projects
 
+
   before_save :ensure_authenticaion_token
+
+  def is_a_pre_approved_user
+    # if it's not prod, you need to be a
+    # pre-approved user
+    unless Rails.env.production?
+      if Rails.application.config.approved_users.find_index(email).nil?
+        errors.add(:email, "You must be a pre-approved user to access this website")
+      end
+    end
+  end
+
 
   # return the full name of the user
   def name
