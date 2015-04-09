@@ -11,6 +11,9 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :projects
 
+
+  before_save :ensure_authenticaion_token
+
   def is_a_pre_approved_user
     # if it's not prod, you need to be a
     # pre-approved user
@@ -21,6 +24,7 @@ class User < ActiveRecord::Base
     end
   end
 
+
   # return the full name of the user
   def name
     first_name + " " + last_name
@@ -28,6 +32,10 @@ class User < ActiveRecord::Base
 
   def mailboxer_email(obj)
     email
+  end
+
+  def ensure_authenticaion_token
+    self.authentication_token ||= generate_authentication_token
   end
 
   def json_conversations
@@ -59,11 +67,11 @@ class User < ActiveRecord::Base
   # gets a conversation given its id
   def get_conv(conv_id)
     if conv_id.class != Fixnum
-      return []
+      return nil
     else
       msg = mailbox.conversations.find_by_id(conv_id)
       if !msg
-        return []
+        return nil
       else
         receipts = msg.receipts_for self
         messages = []
@@ -76,6 +84,13 @@ class User < ActiveRecord::Base
   end
 
 private
+
+  def generate_authentication_token
+    loop do
+      token = Devise.friendly_token
+      break token unless User.where(authentication_token: token).first
+    end
+  end
 
   def get_conv_between_user(user)
     if !(user.class == User)

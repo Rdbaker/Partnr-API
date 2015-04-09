@@ -69,12 +69,12 @@ RSpec.describe User, :type => :model do
   end
 
   describe "#get_conv" do
-    it "returns an empty list if given wrong params" do
-      expect(@user.get_conv(nil)).to eq([])
+    it "returns nil if given wrong params" do
+      expect(@user.get_conv(nil)).to eq(nil)
     end
 
-    it "returns an empty list if the conversation doesn't exist" do
-      expect(@user.get_conv(-1)).to eq([])
+    it "returns nil if the conversation doesn't exist" do
+      expect(@user.get_conv(-1)).to eq(nil)
     end
 
     it "returns an array of message/sender objects" do

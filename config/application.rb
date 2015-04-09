@@ -25,5 +25,10 @@ module Partnr
     def version
       @@MAJOR_VERSION+'.'+@@MINOR_VERSION+'.'+@@PATCH_VERSION
     end
+
+    config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'api', 'v1', 'helpers')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'api', 'v1', 'entities')]
   end
 end
