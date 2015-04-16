@@ -17,7 +17,7 @@ module V1
     end
 
 
-    desc "Retrieve all the projects of the current user or the projects of the user with the ID given.", entity: Entities::ProjectData
+    desc "Retrieve all the projects or the projects of the user with the ID given.", entity: Entities::ProjectData
     params do
       optional :user_id, type: Integer, allow_blank: false, desc: "The User ID for the projects to retrieve."
       optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of projects per page."
