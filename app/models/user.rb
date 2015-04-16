@@ -8,9 +8,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   validate :is_a_pre_approved_user
+  validates :first_name, :last_name, presence: true
 
   has_and_belongs_to_many :projects
-
 
   before_save :ensure_authenticaion_token
 
