@@ -10,7 +10,7 @@ Bundler.require(*Rails.groups)
 module Partnr
   class Application < Rails::Application
     @@MAJOR_VERSION = '0'
-    @@MINOR_VERSION = '2'
+    @@MINOR_VERSION = '3'
     @@PATCH_VERSION = '0'
 
     # use rspec for testing
