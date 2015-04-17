@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
-  devise_for :user do
-    post '/login', to: 'devise/sessions#create'
-    post '/signup', to: 'devise/registrations#create'
+  scope '/api' do
+    devise_for :users, :controllers => {
+      sessions: 'sessions',
+      registrations: 'registrations'
+    }
   end
 
   mount Base => '/api'
   mount GrapeSwaggerRails::Engine => '/docs'
+
 
   authenticated :user do
     root to: 'loggedin#index', as: 'home'
