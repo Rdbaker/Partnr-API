@@ -17,7 +17,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+# gem 'turbolinks'
 
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
@@ -39,8 +39,11 @@ group :test, :development do
   gem 'json-schema-rspec'
 end
 
-# use backbone for MVP client framework
-gem 'rails-backbone'
+# to store html files in angular's templatecache
+gem 'angular-rails-templates'
+
+# formats angular js for correct minification
+gem 'ngannotate-rails'
 
 # use devise for authentication
 gem 'devise'
