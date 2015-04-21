@@ -21,7 +21,7 @@ module V1
     end
 
 
-    desc "Retrieve info for a single user or the current user if no ID is supplied.", entity: Entities::UserData::AsPublic
+    desc "Retrieve info for a single user.", entity: Entities::UserData::AsPublic
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The users's ID."
     end
