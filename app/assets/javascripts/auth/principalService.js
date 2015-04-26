@@ -1,5 +1,5 @@
-angular.module('partnr.auth').factory('auth', function($rootScope, $http, $log) {
-	var user = {};
+angular.module('partnr.auth').factory('principal', function($rootScope, $http, $log, $q) {
+	var user = undefined;
 	var authenticated = false;
 	var csrfToken = null;
 
@@ -19,25 +19,45 @@ angular.module('partnr.auth').factory('auth', function($rootScope, $http, $log) 
 	}
 
 	return {
+		identity : function() {
+			/* This function will ultimately load user data from cookies or 
+			   redirect to login function in some way
+			*/
+			var deferred = $q.defer();
+			deferred.resolve(user);
+			return deferred.promise;
+		},
+
 		login : function(email, password) {
-			$log.debug('[AUTH] Inside login function');
-			var promise = getCsrf().then($http({
+			$log.debug('[AUTH] About to log in...');
+			var promise = getCsrf().then(function() {
+				var request = {
+					'user' : {
+						'email' : email,
+						'password' : password,
+						'authenticity_token' : csrfToken
+					}
+				};
+				
+				$log.debug(request);
+
+				return $http({
 					method: 'POST',
 					url: $rootScope.apiRoute + 'api/users/sign_in',
 					headers: { 
 						'X-CSRF-Token' : csrfToken,
 						'Content-Type': 'application/json' 
 					},
-					data: {
-						'user' : {
-							'email' : email,
-							'password' : password,
-						}
-					}
+					data: request
 				})
 				.success(function(data, status, headers, config) {
 					if (data.user && data.csrfToken) {
 						user = data.user;
+
+						/** FOR NOW, ALL USERS ARE SUPERUSERS **/
+						user.roles = [ 'SUPERUSER' ];
+						/** REMOVE FOR ROLE-BASED AUTH **/
+
 						csrfToken = data.csrfToken;
 						authenticated = true;
 						$log.debug('[AUTH] User authenticated');
@@ -49,7 +69,7 @@ angular.module('partnr.auth').factory('auth', function($rootScope, $http, $log) 
 				.error(function(data, status, headers, config) {
 					$log.error('[AUTH] Log in failure');
 				})
-			);
+			});
 
 			return promise;
 		},
@@ -64,9 +84,29 @@ angular.module('partnr.auth').factory('auth', function($rootScope, $http, $log) 
 				$log.debug('[AUTH] User signed out');
 			});
 		},
+
+		hasUser : function() {
+			return angular.isDefined(user);
+		},
 		
 		getUser : function() {
 			return user;
+		},
+
+		hasRole : function(role) {
+			if (!authenticated || !user.roles) return false;
+
+			return user.roles.indexOf(role);
+		},
+
+		hasAnyRole : function(roles) {
+			if (!authenticated || !user.roles) return false;
+
+	        for (var i = 0; i < roles.length; i++) {
+	          if (this.hasRole(roles[i])) return true;
+	        }
+
+	        return false;
 		},
 
 		isAuthenticated : function() {
