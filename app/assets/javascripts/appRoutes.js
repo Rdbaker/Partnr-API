@@ -38,7 +38,7 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 			}
 		})
 
-		.state('account.create', {
+		.state('account_create', {
 			parent: 'site',
 			url: '/account/create',
 			views: {
