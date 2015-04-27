@@ -2,12 +2,12 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 	
 	$stateProvider
 		.state('site', {
-			'abstract': true,
-			resolve: {
-				authorize: ['authorization', function(authorization) {
-					return authorization.authorize();
-				}]
-			}
+			'abstract': true
+			// resolve: {
+			// 	authorize: ['authorization', function(authorization) {
+			// 		return authorization.authorize();
+			// 	}]
+			// }
 		})
 
 		.state('home', {

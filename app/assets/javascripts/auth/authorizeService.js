@@ -5,7 +5,7 @@ angular.module('partnr.auth').factory('authorization', function($rootScope, $sta
         .then(function() {
           var isAuthenticated = principal.isAuthenticated();
 
-          $log.debug("[AUTH] Authorizing...");
+          $log.debug("[AUTH] Authorizing page access...");
           $log.debug("[AUTH] Authenticated: " + isAuthenticated);
           $log.debug("[AUTH] Roles Required: ");
           if ($rootScope.toState.data.roles) {

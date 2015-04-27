@@ -28,13 +28,49 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		}
 	}
 
+	function authenticate(dataUser, dataCsrfToken) {
+		user = dataUser;
+
+		/** FOR NOW, ALL USERS ARE SUPERUSERS **/
+		user.roles = [ 'Admin' ];
+		/** REMOVE FOR ROLE-BASED AUTH **/
+
+		csrfToken = dataCsrfToken;
+		authenticated = true;
+		$log.debug('[AUTH] User authenticated');
+		$log.debug(user);
+	}
+
 	return {
 		identity : function() {
-			/* This function will ultimately load user data from cookies or 
-			   redirect to login function in some way
+			/* This function will check for an existing session and
+			   if so, a request will check the validity of that session
+			   and store the resulting user value if it's still valid
 			*/
 			var deferred = $q.defer();
-			deferred.resolve(user);
+			if (!user) {
+				$log.debug('[AUTH] Checking if user session exists');
+				$http({
+					method: 'GET',
+					url: $rootScope.apiRoute + 'api/users/sign_in'
+				}).success(function(data, status, headers, config) {
+					if (data.user && data.csrfToken) {
+						$log.debug('[AUTH] Cookie valid, storing user data');
+						authenticate(data.user, data.csrfToken);
+						deferred.resolve(user);
+					} else {
+						$log.debug('[AUTH] No preset user')
+						deferred.resolve();
+					}
+				})
+				.error(function(data, status, headers, config) {
+					$log.error('[AUTH] Request to server failed');
+					deferred.resolve();
+				})
+			} else {
+				deferred.resolve();
+			}
+
 			return deferred.promise;
 		},
 
@@ -69,16 +105,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				})
 				.success(function(data, status, headers, config) {
 					if (data.user && data.csrfToken) {
-						user = data.user;
-
-						/** FOR NOW, ALL USERS ARE SUPERUSERS **/
-						user.roles = [ 'Admin' ];
-						/** REMOVE FOR ROLE-BASED AUTH **/
-
-						csrfToken = data.csrfToken;
-						authenticated = true;
-						$log.debug('[AUTH] User authenticated');
-						$log.debug(user);
+						authenticate(data.user, data.csrfToken);
 					} else {
 						$log.error('[AUTH] Log in failure')
 					}
