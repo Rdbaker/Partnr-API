@@ -1,4 +1,6 @@
 angular.module('partnr.auth').factory('principal', function($rootScope, $http, $log, $q) {
+	var identityPrechecked = false;
+
 	var user          = undefined;
 	var authenticated = false;
 	var csrfToken     = undefined;
@@ -42,13 +44,13 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	}
 
 	return {
-		identity : function() {
+		identity : function(force) {
 			/* This function will check for an existing session and
 			   if so, a request will check the validity of that session
 			   and store the resulting user value if it's still valid
 			*/
 			var deferred = $q.defer();
-			if (!user) {
+			if (!user && !identityPrechecked || force) {
 				$log.debug('[AUTH] Checking if user session exists');
 				$http({
 					method: 'GET',
@@ -57,14 +59,17 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 					if (data.user && data.csrfToken) {
 						$log.debug('[AUTH] Cookie valid, storing user data');
 						authenticate(data.user, data.csrfToken);
+						identityPrechecked = true;
 						deferred.resolve(user);
 					} else {
-						$log.debug('[AUTH] No preset user')
+						$log.debug('[AUTH] No preset user');
+						identityPrechecked = true;
 						deferred.resolve();
 					}
 				})
 				.error(function(data, status, headers, config) {
 					$log.error('[AUTH] Request to server failed');
+					identityPrechecked = true;
 					deferred.resolve();
 				})
 			} else {
@@ -122,6 +127,10 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 			$log.debug('[AUTH] Logging out...');
 			return $http({
 				method: 'DELETE',
+				headers: {
+					'X-CSRF-Token' : getCsrf(),
+					'Content-Type' : 'application/json'
+				},
 				url: $rootScope.apiRoute + 'api/users/sign_out'
 			}).success(function(data, status, headers, config) {
 				user = {};

@@ -4,10 +4,9 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 		.state('site', {
 			'abstract': true,
 			resolve: {
-				principal: 'principal'
-				// authorize: ['authorization', function(authorization) {
-				// 	return authorization.authorize();
-				// }]
+				authorize: ['authorization', function(authorization) {
+					return authorization.authorize();
+				}]
 			}
 		})
 

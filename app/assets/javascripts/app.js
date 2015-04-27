@@ -12,7 +12,6 @@ angular.module('partnr', ['ui.router',
 
    $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
       $log.debug("[STATE] State change occurring: " + toState.name);
-      
       $rootScope.toState = toState;
       $rootScope.toStateParams = toParams;
 
