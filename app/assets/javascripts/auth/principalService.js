@@ -1,9 +1,9 @@
 angular.module('partnr.auth').factory('principal', function($rootScope, $http, $log, $q) {
-	var user = undefined;
+	var user          = undefined;
 	var authenticated = false;
-	var csrfToken = null;
+	var csrfToken     = undefined;
 
-	function getCsrf() {
+	function fetchCsrf() {
 		var promise = $http.get($rootScope.apiRoute + 'api/users/sign_in')
 		.success(function(data, status, headers, config) {
 			if (data.csrfToken) {
@@ -18,6 +18,16 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		return promise;
 	}
 
+	function getCsrf() {
+		if (csrfToken) {
+			return csrfToken;
+		} else {
+			fetchCsrf().then(function() {
+				return csrfToken;
+			});
+		}
+	}
+
 	return {
 		identity : function() {
 			/* This function will ultimately load user data from cookies or 
@@ -28,9 +38,16 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 			return deferred.promise;
 		},
 
+		getHeaders : function() {
+			return {
+				'X-CSRF-Token' : getCsrf(),
+				'Content-Type' : 'application/json'
+			};
+		},
+
 		login : function(email, password) {
 			$log.debug('[AUTH] About to log in...');
-			var promise = getCsrf().then(function() {
+			var promise = fetchCsrf().then(function() {
 				var request = {
 					'user' : {
 						'email' : email,
@@ -44,9 +61,9 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				return $http({
 					method: 'POST',
 					url: $rootScope.apiRoute + 'api/users/sign_in',
-					headers: { 
-						'X-CSRF-Token' : csrfToken,
-						'Content-Type': 'application/json' 
+					headers: {
+						'X-CSRF-Token' : getCsrf(),
+						'Content-Type' : 'application/json'
 					},
 					data: request
 				})
