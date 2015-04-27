@@ -119,6 +119,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		},
 
 		logout : function() {
+			$log.debug('[AUTH] Logging out...');
 			return $http({
 				method: 'DELETE',
 				url: $rootScope.apiRoute + 'api/users/sign_out'
@@ -126,6 +127,8 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				user = {};
 				authenticated = false;
 				$log.debug('[AUTH] User signed out');
+			}).error(function(data, status, headers, config) {
+				$log.error('[AUTH] Log out error');
 			});
 		},
 
