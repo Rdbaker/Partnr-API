@@ -4,4 +4,4 @@ angular.module('partnr.messaging').factory('messages', function($rootScope, $htt
 			return $http.get($rootScope.apiRoute + 'messages');
 		}
 	};
-})
+});

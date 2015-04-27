@@ -38,7 +38,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 						'authenticity_token' : csrfToken
 					}
 				};
-				
+
 				$log.debug(request);
 
 				return $http({
@@ -55,7 +55,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 						user = data.user;
 
 						/** FOR NOW, ALL USERS ARE SUPERUSERS **/
-						user.roles = [ 'SUPERUSER' ];
+						user.roles = [ 'Admin' ];
 						/** REMOVE FOR ROLE-BASED AUTH **/
 
 						csrfToken = data.csrfToken;
@@ -96,7 +96,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		hasRole : function(role) {
 			if (!authenticated || !user.roles) return false;
 
-			return user.roles.indexOf(role);
+			return user.roles.indexOf(role) != -1;
 		},
 
 		hasAnyRole : function(roles) {
