@@ -1,6 +1,7 @@
 angular.module('partnr.auth').factory('authorization', function($rootScope, $state, $log, principal) {
   return {
     authorize: function() {
+      // first check for existing session
       return principal.identity()
         .then(function() {
           var isAuthenticated = principal.isAuthenticated();
@@ -14,6 +15,8 @@ angular.module('partnr.auth').factory('authorization', function($rootScope, $sta
             $log.debug('None');
           }
 
+          /* If the app state has roles associated with it
+             and the user isn't a member of those roles */
           if ($rootScope.toState.data.roles && 
             $rootScope.toState.data.roles.length > 0 && 
             !principal.hasAnyRole($rootScope.toState.data.roles)) {

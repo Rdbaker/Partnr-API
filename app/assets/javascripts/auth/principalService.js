@@ -6,6 +6,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	var csrfToken     = undefined;
 
 	function fetchCsrf() {
+		/* Gets the csrf token from the user */
 		var promise = $http.get($rootScope.apiRoute + 'api/users/sign_in')
 		.success(function(data, status, headers, config) {
 			if (data.csrfToken) {
@@ -21,6 +22,8 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	}
 
 	function getCsrf() {
+		/* returns a csrfToken by returning the value or sending a
+		   request to the server */
 		if (csrfToken) {
 			return csrfToken;
 		} else {
@@ -31,6 +34,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	}
 
 	function authenticate(dataUser, dataCsrfToken) {
+		/* Set all user data */
 		user = dataUser;
 
 		/** FOR NOW, ALL USERS ARE SUPERUSERS **/
@@ -87,6 +91,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		},
 
 		login : function(email, password) {
+			/* Send login request to server */
 			$log.debug('[AUTH] About to log in...');
 			var promise = fetchCsrf().then(function() {
 				var request = {
@@ -124,6 +129,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		},
 
 		logout : function() {
+			/* Send logout request to server */
 			$log.debug('[AUTH] Logging out...');
 			return $http({
 				method: 'DELETE',
@@ -150,12 +156,14 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		},
 
 		hasRole : function(role) {
+			/* checks to see if a user has a specified role */
 			if (!authenticated || !user.roles) return false;
 
 			return user.roles.indexOf(role) != -1;
 		},
 
 		hasAnyRole : function(roles) {
+			/* checks to see if a user has any of the specified roles */
 			if (!authenticated || !user.roles) return false;
 
 	        for (var i = 0; i < roles.length; i++) {
