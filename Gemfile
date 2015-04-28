@@ -39,6 +39,9 @@ group :test, :development do
   gem 'json-schema-rspec'
 end
 
+# angular for rails
+gem 'angularjs-rails'
+
 # to store html files in angular's templatecache
 gem 'angular-rails-templates'
 

@@ -11,7 +11,7 @@ describe('MessageController', function() {
 		it('receives messages from api', function() {
 			var $scope = {};
 			var controller = $controller('MessageController', { $scope : $scope });
-			expect($scope.messages).toBeDefined();
+			expect($scope.messages).to.exist;
 		});
 	});
 });
