@@ -9,10 +9,5 @@ Rails.application.routes.draw do
   mount Base => '/api'
   mount GrapeSwaggerRails::Engine => '/docs'
 
-
-  authenticated :user do
-    root to: 'loggedin#index', as: 'home'
-  end
-
-  root 'welcome#index'
+  root to: 'application#angular'
 end
