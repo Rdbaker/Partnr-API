@@ -27,14 +27,14 @@ RSpec.describe "Projects", :type => :request do
       end
 
       it "matches the JSON schema" do
-        expect(@res[0]).to match_json_schema(:project)
-        expect(@res[1]).to match_json_schema(:project)
+        expect(@res[0]).to match_json_schema(:shallow_project)
+        expect(@res[1]).to match_json_schema(:shallow_project)
       end
     end
 
     context "with a supplied user id" do
       before(:each) do
-        get "/api/v1/projects", user_id: @user.id
+        get "/api/v1/projects", owner: @user.id
         @res = JSON.parse(response.body)
       end
 
@@ -43,7 +43,7 @@ RSpec.describe "Projects", :type => :request do
       end
 
       it "matches the JSON schema" do
-        expect(@res[0]).to match_json_schema(:project)
+        expect(@res[0]).to match_json_schema(:shallow_project)
       end
 
       it "has an owner with the supplied id" do
@@ -76,7 +76,7 @@ RSpec.describe "Projects", :type => :request do
       end
 
       it "returns JSON Schema conforming project" do
-        expect(@res).to match_json_schema(:project)
+        expect(@res).to match_json_schema(:deep_project)
       end
     end
   end
@@ -140,7 +140,7 @@ RSpec.describe "Projects", :type => :request do
       end
 
       it "returns a JSON Schema conforming project" do
-        expect(@res).to match_json_schema(:project)
+        expect(@res).to match_json_schema(:shallow_project)
       end
     end
 
@@ -162,7 +162,7 @@ RSpec.describe "Projects", :type => :request do
         before(:each) do
           @project.owner = @user.id
           @project.save
-          @name = "the new name for this project"
+          @name = "the brand new name for this project"
           put "/api/v1/projects/#{@project.id}", {
             "name" => @name
           }
@@ -178,7 +178,7 @@ RSpec.describe "Projects", :type => :request do
         end
 
         it "returns a JSON Schema conforming project" do
-          expect(@res).to match_json_schema(:project)
+          expect(@res).to match_json_schema(:shallow_project)
         end
       end
     end

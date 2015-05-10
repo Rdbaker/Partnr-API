@@ -100,6 +100,8 @@ GEM
       grape-swagger (>= 0.7.2)
       railties (>= 3.2.12)
     hashie (3.4.0)
+    hashie-forbidden_attributes (0.1.1)
+      hashie (>= 3.0)
     hike (1.2.3)
     i18n (0.6.11)
     ice_nine (0.11.1)
@@ -242,6 +244,7 @@ DEPENDENCIES
   grape-entity (~> 0.4.5)
   grape-swagger (~> 0.9.0)
   grape-swagger-rails (~> 0.1.0)
+  hashie-forbidden_attributes
   jquery-rails
   json-schema-rspec
   kaminari
