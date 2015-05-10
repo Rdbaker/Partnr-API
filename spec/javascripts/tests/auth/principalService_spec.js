@@ -7,7 +7,7 @@ describe('principal', function() {
 		principal = _principal_;
 	}));
 
-	describe('headers', function() {
+	describe('getHeaders', function() {
 		it('will have a csrf token', function() {
 			var headers = principal.getHeaders();
 			expect(headers['X-CSRF-TOKEN']).to.be.defined;
