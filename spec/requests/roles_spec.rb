@@ -290,11 +290,10 @@ RSpec.describe "Roles", :type => :request do
           @project.save
           @role.save
           delete "/api/v1/roles/#{@role.id}"
-          @res = JSON.parse(response.body)
         end
 
-        it "returns a 200" do
-          expect(response.status).to eq(200)
+        it "returns a 204" do
+          expect(response.status).to eq(204)
         end
 
         it "deletes the role" do

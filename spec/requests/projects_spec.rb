@@ -200,11 +200,10 @@ RSpec.describe "Projects", :type => :request do
           @project.owner = @user.id
           @project.save
           delete "/api/v1/projects/#{@project.id}"
-          @res = JSON.parse(response.body)
         end
 
-        it "returns a 200" do
-          expect(response.ok?)
+        it "returns a 204" do
+          expect(response.status).to eq(204)
         end
 
         it "deletes the project" do

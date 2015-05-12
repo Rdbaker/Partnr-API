@@ -74,6 +74,7 @@ module V1
     delete ":id" do
       project_permissions(params[:id])
       @project.destroy
+      status 204
     end
   end
 end

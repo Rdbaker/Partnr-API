@@ -86,6 +86,7 @@ module V1
     delete ":id" do
       role_destroy_permissions(params[:id])
       @role.destroy
+      status 204
     end
 
   end
