@@ -14,6 +14,7 @@ module V1::Entities
 
     class AsPrivate < AsPublic
       expose :email, documentation: { type: "String", desc: "The user's email." }
+      expose :authentication_token, documentation: { type: "String", desc: "The user's auth token." }
     end
   end
 end
