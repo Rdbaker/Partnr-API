@@ -5,24 +5,24 @@ module V1
     helpers do
       def role_put_permissions(id)
         authenticated_user
-        @role = get_record(Role, id)
+        @role ||= get_record(Role, id)
         error!("401 Unauthorized", 401) unless @role.has_put_permissions current_user
       end
 
       def role_assign_permissions(id)
         authenticated_user
-        @role = get_record(Role, id)
+        @role ||= get_record(Role, id)
         error!("401 Unauthorized", 401) unless @role.project.has_admin_permissions current_user
       end
 
       def role_destroy_permissions(id)
         authenticated_user
-        @role = get_record(Role, id)
+        @role ||= get_record(Role, id)
         error!("401 Unauthorized", 401) unless @role.has_destroy_permissions current_user
       end
     end
 
-    desc "Retrieve all the roles or the roles of the user with the ID given.", entity: Entities::RoleData::AsDeep
+    desc "Retrieve all roles.", entity: Entities::RoleData::AsDeep
     params do
       optional :user, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
       optional :title, type: String, desc: "The title of the role to retrieve."
@@ -46,10 +46,47 @@ module V1
 
     desc "Create a new role for a project.", entity: Entities::RoleData::AsShallow
     params do
-      requires :title, type: Integer, allow_blank: false, desc: "The role title."
+      requires :title, type: String, allow_blank: false, desc: "The role title."
       requires :project_id, type: Integer, allow_blank: false, desc: "The project to which the role will belong."
     end
+    post do
+      authenticated_user
+      proj = get_record(Project, params[:project_id])
+      role = Role.create!({
+        title: params[:title],
+        project: proj,
+        user: nil
+      })
+      present role, with: Entities::RoleData::AsShallow
+    end
 
+    desc "Update a specific role for a project.", entity: Entities::RoleData::AsShallow
+    params do
+      requires :id, type: Integer, allow_blank: false, desc: "The role ID."
+      optional :title, type: String, allow_blank: false, desc: "The role title."
+      optional :user_id, type: Integer, allow_blank: false, desc: "The user ID assigned to the role."
+      at_least_one_of :title, :user_id
+    end
+    put ":id" do
+      role_assign_permissions(params[:id]) if !!params[:user_id]
+      role_put_permissions(params[:id]) if !!params[:title]
+
+      updates = {}
+      updates[:user] = get_record(User, params[:user_id]) if !!params[:user_id]
+      updates[:title] = params[:title] if !!params[:title]
+
+      @role.update!( updates )
+      present @role, with: Entities::RoleData::AsShallow
+    end
+
+    desc "Delete a role for a project."
+    params do
+      requires :id, type: Integer, allow_blank: false, desc: "The role ID."
+    end
+    delete ":id" do
+      role_destroy_permissions(params[:id])
+      @role.destroy
+    end
 
   end
 end

@@ -5,7 +5,7 @@ module V1
     helpers do
       def project_permissions(id)
         authenticated_user
-        @project = get_record(Project, params[:id])
+        @project ||= get_record(Project, params[:id])
         error!("401 Unauthorized", 401) unless @project.has_admin_permissions current_user
       end
     end
@@ -58,11 +58,11 @@ module V1
       optional :name, type: String, allow_blank: false, desc: "The Project's name."
       optional :description, type: String, allow_blank: false, desc: "The Project's description."
       optional :owner, type: Integer, allow_blank: false, valid_user: true, desc: "The Project's owner's ID."
+      at_least_one_of :name, :description, :owner
     end
     put ":id" do
       project_permissions(params[:id])
-      @project.update(permitted_params params)
-      @project.save
+      @project.update!(permitted_params params)
       present @project, with: Entities::ProjectData::AsShallow
     end
 

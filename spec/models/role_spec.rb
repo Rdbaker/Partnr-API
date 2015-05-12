@@ -29,21 +29,40 @@ RSpec.describe Role, :type => :model do
     @role.save
   end
 
-  describe "#has_admin_permissions" do
+  describe "#has_put_permissions" do
     it "fails if it isn't given a user" do
-      expect(@role.has_admin_permissions(4)).to be false
+      expect(@role.has_put_permissions(4)).to be false
     end
 
     it "passes if the user is the project owner" do
-      expect(@role.has_admin_permissions(@user)).to be true
+      expect(@role.has_put_permissions(@user)).to be true
     end
 
     it "passes if the user has the project role" do
-      expect(@role.has_admin_permissions(@user2)).to be true
+      expect(@role.has_put_permissions(@user2)).to be true
     end
 
     it "fails otherwise" do
-      expect(@role.has_admin_permissions(@user3)).to be false
+      expect(@role.has_put_permissions(@user3)).to be false
     end
   end
+
+  describe "#has_destroy_permissions" do
+    it "fails if it isn't given a user" do
+      expect(@role.has_destroy_permissions(4)).to be false
+    end
+
+    it "passes if the user is the project owner" do
+      expect(@role.has_destroy_permissions(@user)).to be true
+    end
+
+    it "fails if the user has the project role" do
+      expect(@role.has_destroy_permissions(@user2)).to be false
+    end
+
+    it "fails otherwise" do
+      expect(@role.has_destroy_permissions(@user3)).to be false
+    end
+  end
+
 end
