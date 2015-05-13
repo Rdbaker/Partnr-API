@@ -1,0 +1,17 @@
+{
+  "title" : "Shallow Application Schema",
+  "description" : "An application object model",
+  "type" : "object",
+  "properties" : {
+    "status" : {
+      "enum" : ["pending", "rejected", "accepted", "cancelled"]
+    },
+    "id" : {
+      "type" : "integer"
+    }
+  },
+  "required" : [
+    "status",
+    "id"
+  ]
+}

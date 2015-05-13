@@ -24,7 +24,7 @@ module V1
 
     desc "Retrieve all roles.", entity: Entities::RoleData::AsDeep
     params do
-      optional :user, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
+      optional :user_id, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
       optional :title, type: String, desc: "The title of the role to retrieve."
       optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."

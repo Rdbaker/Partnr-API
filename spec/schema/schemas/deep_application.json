@@ -1,0 +1,47 @@
+{
+  "title" : "Deep Application Schema",
+  "description" : "An application object model",
+  "type" : "object",
+  "properties" : {
+    "status" : {
+      "enum" : ["pending", "rejected", "accepted", "cancelled"]
+    },
+    "id" : {
+      "type" : "integer"
+    },
+    "role" : {
+      "type" : "object",
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        },
+        "user" : {
+          "type" : ["object", "null"]
+        },
+        "id" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "user" : {
+      "type" : "object",
+      "properties" : {
+        "first_name" : {
+          "type" : "string"
+        },
+        "last_name" : {
+          "type" : "string"
+        },
+        "id" : {
+          "type" : "integer"
+        }
+      }
+    }
+  },
+  "required" : [
+    "role",
+    "user",
+    "status",
+    "id"
+  ]
+}

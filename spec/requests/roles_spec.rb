@@ -41,7 +41,7 @@ RSpec.describe "Roles", :type => :request do
 
     context "with a supplied user id" do
       before(:each) do
-        get "/api/v1/roles", user: @user.id
+        get "/api/v1/roles", user_id: @user.id
         @res = JSON.parse(response.body)
       end
 
@@ -154,7 +154,7 @@ RSpec.describe "Roles", :type => :request do
           expect(@res["user"]).to eq(nil)
         end
 
-        it "returns a JSON Schema conforming project" do
+        it "returns a JSON Schema conforming role" do
           expect(@res).to match_json_schema(:shallow_role)
         end
       end
