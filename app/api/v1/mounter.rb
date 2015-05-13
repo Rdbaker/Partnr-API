@@ -4,6 +4,7 @@ module V1
     mount Projects => '/projects'
     mount Users    => '/users'
     mount Messages => '/messages'
+    mount Roles    => '/roles'
 
     add_swagger_documentation(
       base_path: '/api/v1',

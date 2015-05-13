@@ -1,9 +1,15 @@
 module V1::Entities
   class UserData
-    class AsPublic < Grape::Entity
+    class AsShallow < Grape::Entity
       expose :first_name, documentation: { type: "String", desc: "The user's first name." }
       expose :last_name, documentation: { type: "String", desc: "The user's last name." }
       expose :id, documentation: { type: "Integer", desc: "The user's id." }
+    end
+
+    class AsPublic < AsShallow
+      expose :roles, using: RoleData::AsShallow, documentation: { type: RoleData::AsShallow,
+                                                                  desc: "The roles this user has on projects.",
+                                                                  is_array: true }
     end
 
     class AsPrivate < AsPublic
