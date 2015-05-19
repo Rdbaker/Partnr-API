@@ -24,13 +24,15 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	function getCsrf() {
 		/* returns a csrfToken by returning the value or sending a
 		   request to the server */
+		var deferred = $q.defer();
 		if (csrfToken) {
-			return csrfToken;
+			deferred.resolve(csrfToken);
 		} else {
 			fetchCsrf().then(function() {
-				return csrfToken;
+				deferred.resolve(csrfToken);
 			});
 		}
+		return deferred.promise;
 	}
 
 	function authenticate(dataUser, dataCsrfToken) {
@@ -48,6 +50,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	}
 
 	return {
+		getCsrf : getCsrf,
 		identity : function(force) {
 			/* This function will check for an existing session and
 			   if so, a request will check the validity of that session
@@ -85,7 +88,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 
 		getHeaders : function() {
 			return {
-				'X-CSRF-Token' : getCsrf(),
+				'X-CSRF-Token' : getCsrf().then(function(csrf) { return csrf; }),
 				'Content-Type' : 'application/json'
 			};
 		},
@@ -122,7 +125,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				})
 				.error(function(data, status, headers, config) {
 					$log.error('[AUTH] Log in failure');
-				})
+				});
 			});
 
 			return promise;

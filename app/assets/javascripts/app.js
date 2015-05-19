@@ -6,7 +6,7 @@ angular.module('partnr', ['ui.router',
   'partnr.messaging', 'partnr.auth', 'partnr.users'
   ]).run(function ($state, $rootScope, $log, principal, authorization) {
    $rootScope.$state = $state; // application state
-   $rootScope.apiRoute  = '/'; 
+   $rootScope.apiRoute  = '/';
    $rootScope.version   = '0.3.1';
 
    $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
