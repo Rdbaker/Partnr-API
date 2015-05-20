@@ -26,6 +26,9 @@ module Partnr
       @@MAJOR_VERSION+'.'+@@MINOR_VERSION+'.'+@@PATCH_VERSION
     end
 
+    # include bower_components folder to search for assets
+    config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
+    
     config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
     config.autoload_paths += Dir[Rails.root.join('app', 'api', 'v1', 'helpers')]

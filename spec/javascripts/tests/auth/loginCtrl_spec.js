@@ -1,11 +1,13 @@
 describe('loginCtrl', function() {
 	beforeEach(module('partnr'));
 
-	var $state, $controller;
+	var $rootScope, $state, $controller, $httpBackend;
 
-	beforeEach(inject(function(_$state_, _$controller_) {
+	beforeEach(inject(function(_$rootScope_, _$state_, _$controller_, _$httpBackend_) {
+		$rootScope = _$rootScope_;
 		$state = _$state_;
 		$controller = _$controller_;
+		$httpBackend = _$httpBackend_;
 	}));
 
 	describe('doLogin', function() {
@@ -15,7 +17,15 @@ describe('loginCtrl', function() {
 				password : 'password'
 			};
 			var controller = $controller('LoginController', { $scope: $scope });
-			
+			var authRequestHandler = $httpBackend.when('POST', $rootScope.apiRoute + 'api/users/sign_in')
+				.respond({ 
+					"user" : { 
+						"first_name" : "Tyler", 
+						"last_name" : "Stone" 
+					}, 
+					"csrfToken" : "54239" 
+				});
+
 			$scope.doLogin().then(function() {
 				expect($state.current.name).to.be.equal('home');
 			});

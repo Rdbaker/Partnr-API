@@ -32,7 +32,17 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				deferred.resolve(csrfToken);
 			});
 		}
+		$log.debug(csrfToken);
 		return deferred.promise;
+	}
+
+	function getHeaders() {
+		return getCsrf().then(function(csrf) {
+			return {
+				'X-CSRF-Token' : csrf,
+				'Content-Type' : 'application/json'
+			};
+		});
 	}
 
 	function authenticate(dataUser, dataCsrfToken) {
@@ -51,6 +61,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 
 	return {
 		getCsrf : getCsrf,
+		getHeaders : getHeaders,
 		identity : function(force) {
 			/* This function will check for an existing session and
 			   if so, a request will check the validity of that session
@@ -86,13 +97,6 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 			return deferred.promise;
 		},
 
-		getHeaders : function() {
-			return {
-				'X-CSRF-Token' : getCsrf().then(function(csrf) { return csrf; }),
-				'Content-Type' : 'application/json'
-			};
-		},
-
 		login : function(email, password) {
 			/* Send login request to server */
 			$log.debug('[AUTH] About to log in...');
@@ -110,10 +114,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				return $http({
 					method: 'POST',
 					url: $rootScope.apiRoute + 'api/users/sign_in',
-					headers: {
-						'X-CSRF-Token' : getCsrf(),
-						'Content-Type' : 'application/json'
-					},
+					headers: getHeaders(),
 					data: request
 				})
 				.success(function(data, status, headers, config) {
@@ -137,7 +138,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 			return $http({
 				method: 'DELETE',
 				headers: {
-					'X-CSRF-Token' : getCsrf(),
+					'X-CSRF-Token' : getHeaders(),
 					'Content-Type' : 'application/json'
 				},
 				url: $rootScope.apiRoute + 'api/users/sign_out'
