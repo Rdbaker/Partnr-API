@@ -1,0 +1,28 @@
+{
+  "title" : "Shallow Project Schema",
+  "description" : "A project object model",
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "type" : "string"
+    },
+    "description" : {
+      "type" : ["string", "null"]
+    },
+    "owner" : {
+      "type" : "integer"
+    },
+    "creator" : {
+      "type" : "integer"
+    },
+    "id" : {
+      "type" : "integer"
+    }
+  },
+  "required" : [
+    "name",
+    "owner",
+    "creator",
+    "id"
+  ]
+}

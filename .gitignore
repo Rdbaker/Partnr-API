@@ -8,9 +8,6 @@ doc/
 /log/*.log
 /tmp
 
-# ignore db
-db/
-
 # ignore the installed rspec files
 rspec:install
 
