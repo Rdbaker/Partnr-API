@@ -1,4 +1,3 @@
-//= require angular
 //= require application
 //= require angular-mocks
 //= require support/expect

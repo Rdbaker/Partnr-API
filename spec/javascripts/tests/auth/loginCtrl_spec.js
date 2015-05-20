@@ -37,7 +37,11 @@ describe('loginCtrl', function() {
 				password : 'password'
 			};
 			var controller = $controller('LoginController', { $scope: $scope });
-			
+			var authRequestHandler = $httpBackend.when('POST', $rootScope.apiRoute + 'api/users/sign_in')
+				.respond({ 
+					"error": "401"
+				});
+
 			$scope.doLogin().then(function() {
 				expect($state.current.name).to.be.equal('login');
 			});
