@@ -2,14 +2,17 @@ describe('createUserCtrl', function() {
 	beforeEach(module('partnr'));
 
 	var $rootScope, $state, $controller, $httpBackend, $scope, 
-		$location, requestHandler, controller;
+		$location, requestHandler, controller, principal;
 
-	beforeEach(inject(function(_$rootScope_, _$state_, _$controller_, _$location_, _$httpBackend_) {
+	beforeEach(inject(function(_$rootScope_, _$state_, _$controller_, 
+		_$location_, _$httpBackend_, _principal_) {
+
 		$rootScope = _$rootScope_;
 		$state = _$state_;
 		$controller = _$controller_;
 		$httpBackend = _$httpBackend_;
 		$location = _$location_;
+		principal = _principal_;
 
 		requestHandler = $httpBackend.when('GET', $rootScope.apiRoute + 'api/users/sign_in').respond({
 			"csrfToken" : "54239" 
@@ -27,6 +30,27 @@ describe('createUserCtrl', function() {
 		$location.url('/account/create');
 		$rootScope.$digest();
 	}));
+
+	describe('when created', function() {
+		beforeEach(function() {
+			authRequestHandler = $httpBackend.when('POST', $rootScope.apiRoute + 'api/users/sign_in')
+				.respond({
+					"user" : { "first_name" : "Tyler", "last_name" : "Stone" },
+					"csrfToken" : "4321"
+				});
+
+			principal.login('user','pass');
+			$httpBackend.flush();
+		});
+
+		it('will relocate a logged in user to their respective home page', function() {
+			$scope = {};
+			controller = $controller('CreateUserController', { $scope: $scope });
+			$rootScope.$digest();
+
+			expect($state.current.name).to.be.equal('home');
+		});
+	});
 
 	describe('validate', function() {
 		it('will return true if all fields are entered', function() {

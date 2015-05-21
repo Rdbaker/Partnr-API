@@ -1,10 +1,15 @@
-angular.module('partnr.users').controller('CreateUserController', function($scope, $state, $log, $q, users) {
+angular.module('partnr.users').controller('CreateUserController', function($scope, $state, $log, $q, users, principal) {
 	$scope.acct = {
 		email : "",
 		first_name: "",
 		last_name: "",
 		password: ""
 	};
+
+	if (principal.isAuthenticated()) {
+		$state.go('home');
+	}
+
 
 	$scope.validate = function() {
 		var result = ($scope.acct.email.length > 0 && 
