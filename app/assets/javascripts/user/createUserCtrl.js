@@ -1,14 +1,31 @@
-angular.module('partnr.users').controller('CreateUserController', function($scope, $state, $log, users) {
-	$scope.acct = {};
-	$scope.acct.email = "";
-	$scope.acct.first_name = "";
-	$scope.acct.last_name = "";
-	$scope.acct.password = "";
+angular.module('partnr.users').controller('CreateUserController', function($scope, $state, $log, $q, users) {
+	$scope.acct = {
+		email : "",
+		first_name: "",
+		last_name: "",
+		password: ""
+	};
 
-	$scope.doAccountCreate = function() {
-		users.create($scope.acct).then(function(data, status, headers, config) {
-			$log.debug(status);
-			$state.go('home');
-		});
+	$scope.validate = function() {
+		var result = ($scope.acct.email.length > 0 && 
+			$scope.acct.first_name.length > 0 &&
+			$scope.acct.last_name.length > 0 &&
+			$scope.acct.password.length > 0);
+		return result;
+	}
+
+	$scope.doCreateUser = function() {
+		if ($scope.validate()) {
+			users.create($scope.acct).success(function(data, status, headers, config) {
+				if (data.user) {
+					$state.go('login');
+				} else {
+					$log.debug("[USER] Create error");
+					if (data.error) { $log.debug(data.error); }
+
+					// failure for account
+				}
+			});
+		}
 	}
 });
