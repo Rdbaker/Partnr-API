@@ -24,25 +24,27 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	function getCsrf() {
 		/* returns a csrfToken by returning the value or sending a
 		   request to the server */
-		var deferred = $q.defer();
+		var csrf = undefined;
+
 		if (csrfToken) {
-			deferred.resolve(csrfToken);
+			csrf = csrfToken;
 		} else {
 			fetchCsrf().then(function() {
-				deferred.resolve(csrfToken);
+				csrf = csrfToken;
 			});
 		}
-		$log.debug(csrfToken);
-		return deferred.promise;
+		return csrf;
+	}
+
+	function setCsrf(csrf) {
+		csrfToken = csrf;
 	}
 
 	function getHeaders() {
-		return getCsrf().then(function(csrf) {
-			return {
-				'X-CSRF-Token' : csrf,
-				'Content-Type' : 'application/json'
-			};
-		});
+		return {
+			'X-CSRF-Token' : getCsrf(),
+			'Content-Type' : 'application/json'
+		};
 	}
 
 	function authenticate(dataUser, dataCsrfToken) {
@@ -76,9 +78,13 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				}).success(function(data, status, headers, config) {
 					if (data.user && data.csrfToken) {
 						$log.debug('[AUTH] Cookie valid, storing user data');
+						$log.debug(data.csrfToken);
 						authenticate(data.user, data.csrfToken);
 						identityPrechecked = true;
 						deferred.resolve(user);
+					} else if (data.csrfToken) {
+						setCsrf(data.csrfToken);
+						deferred.resolve();
 					} else {
 						$log.debug('[AUTH] No preset user');
 						identityPrechecked = true;
@@ -114,7 +120,10 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				return $http({
 					method: 'POST',
 					url: $rootScope.apiRoute + 'api/users/sign_in',
-					headers: getHeaders(),
+					headers: {
+						'X-CSRF-Token' : getCsrf(),
+						'Content-Type' : 'application/json'
+					},
 					data: request
 				})
 				.success(function(data, status, headers, config) {
@@ -135,11 +144,12 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		logout : function() {
 			/* Send logout request to server */
 			$log.debug('[AUTH] Logging out...');
+			$log.debug(getHeaders());
 			return $http({
 				method: 'DELETE',
 				headers: {
-					'X-CSRF-Token' : getHeaders(),
-					'Content-Type' : 'application/json'
+						'X-CSRF-Token' : getCsrf(),
+						'Content-Type' : 'application/json'
 				},
 				url: $rootScope.apiRoute + 'api/users/sign_out'
 			}).success(function(data, status, headers, config) {
