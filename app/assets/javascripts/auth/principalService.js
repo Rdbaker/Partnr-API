@@ -148,8 +148,8 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 			return $http({
 				method: 'DELETE',
 				headers: {
-						'X-CSRF-Token' : getCsrf(),
-						'Content-Type' : 'application/json'
+					'X-CSRF-Token' : getCsrf(),
+					'Content-Type' : 'application/json'
 				},
 				url: $rootScope.apiRoute + 'api/users/sign_out'
 			}).success(function(data, status, headers, config) {
