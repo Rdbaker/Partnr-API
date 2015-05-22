@@ -1,8 +1,6 @@
 angular.module('partnr.auth').controller('LoginController', function($scope, $log, $state, $q, principal, toaster) {
 	$scope.email = '';
 	$scope.password = '';
-	
-	toaster.success("welcome!");
 
 	if (principal.isAuthenticated()) {
 		$state.go('home');
