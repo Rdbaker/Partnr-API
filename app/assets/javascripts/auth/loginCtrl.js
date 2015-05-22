@@ -1,7 +1,9 @@
-angular.module('partnr.auth').controller('LoginController', function($scope, $log, $state, $q, principal) {
+angular.module('partnr.auth').controller('LoginController', function($scope, $log, $state, $q, principal, toaster) {
 	$scope.email = '';
 	$scope.password = '';
 	
+	toaster.success("welcome!");
+
 	if (principal.isAuthenticated()) {
 		$state.go('home');
 	}
@@ -13,6 +15,8 @@ angular.module('partnr.auth').controller('LoginController', function($scope, $lo
 					$state.go('home');
 				}
 			});
+		} else {
+			toaster.warn("Please enter a valid email/password");
 		}
 	}
 });
