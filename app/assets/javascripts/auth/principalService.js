@@ -24,13 +24,27 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	function getCsrf() {
 		/* returns a csrfToken by returning the value or sending a
 		   request to the server */
+		var csrf = undefined;
+
 		if (csrfToken) {
-			return csrfToken;
+			csrf = csrfToken;
 		} else {
 			fetchCsrf().then(function() {
-				return csrfToken;
+				csrf = csrfToken;
 			});
 		}
+		return csrf;
+	}
+
+	function setCsrf(csrf) {
+		csrfToken = csrf;
+	}
+
+	function getHeaders() {
+		return {
+			'X-CSRF-Token' : getCsrf(),
+			'Content-Type' : 'application/json'
+		};
 	}
 
 	function authenticate(dataUser, dataCsrfToken) {
@@ -48,6 +62,8 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	}
 
 	return {
+		getCsrf : getCsrf,
+		getHeaders : getHeaders,
 		identity : function(force) {
 			/* This function will check for an existing session and
 			   if so, a request will check the validity of that session
@@ -62,9 +78,13 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				}).success(function(data, status, headers, config) {
 					if (data.user && data.csrfToken) {
 						$log.debug('[AUTH] Cookie valid, storing user data');
+						$log.debug(data.csrfToken);
 						authenticate(data.user, data.csrfToken);
 						identityPrechecked = true;
 						deferred.resolve(user);
+					} else if (data.csrfToken) {
+						setCsrf(data.csrfToken);
+						deferred.resolve();
 					} else {
 						$log.debug('[AUTH] No preset user');
 						identityPrechecked = true;
@@ -81,13 +101,6 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 			}
 
 			return deferred.promise;
-		},
-
-		getHeaders : function() {
-			return {
-				'X-CSRF-Token' : getCsrf(),
-				'Content-Type' : 'application/json'
-			};
 		},
 
 		login : function(email, password) {
@@ -122,7 +135,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				})
 				.error(function(data, status, headers, config) {
 					$log.error('[AUTH] Log in failure');
-				})
+				});
 			});
 
 			return promise;
@@ -131,11 +144,12 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		logout : function() {
 			/* Send logout request to server */
 			$log.debug('[AUTH] Logging out...');
+			$log.debug(getHeaders());
 			return $http({
 				method: 'DELETE',
 				headers: {
-					'X-CSRF-Token' : getCsrf(),
-					'Content-Type' : 'application/json'
+						'X-CSRF-Token' : getCsrf(),
+						'Content-Type' : 'application/json'
 				},
 				url: $rootScope.apiRoute + 'api/users/sign_out'
 			}).success(function(data, status, headers, config) {
