@@ -1,0 +1,10 @@
+{
+  "name": "partnr",
+  "version": "0.3.x",
+  "dependencies": {
+    "angular" : "latest",
+    "angular-ui-router" : "latest",
+    "angular-ui-utils" : "latest",
+    "angular-ui-bootstrap-bower" : "latest"
+  }
+}

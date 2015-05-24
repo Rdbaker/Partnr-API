@@ -19,3 +19,6 @@ rspec:install
 
 # ignore test coverage files
 coverage
+
+# ignore bower_components
+/vendor/assets/bower_components

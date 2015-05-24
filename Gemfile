@@ -36,6 +36,9 @@ group :test, :development do
   gem 'json-schema-rspec'
 end
 
+# bower for asset management
+gem 'bower-rails'
+
 # angular for rails
 gem 'angularjs-rails'
 
