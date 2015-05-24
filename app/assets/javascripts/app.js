@@ -1,9 +1,11 @@
-angular.module('partnr.messaging', []);
 angular.module('partnr.auth', []);
 angular.module('partnr.users', []);
+angular.module('partnr.messaging', []);
+angular.module('partnr.toaster', []);
 angular.module('partnr', ['ui.router', 
   'ui.bootstrap', 'templates', 
-  'partnr.messaging', 'partnr.auth', 'partnr.users'
+  'partnr.auth', 'partnr.users', 'partnr.messaging',
+  'partnr.toaster'
   ]).run(function ($state, $rootScope, $log, principal, authorization) {
    $rootScope.$state = $state; // application state
    $rootScope.apiRoute  = '/';

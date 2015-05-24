@@ -1,4 +1,4 @@
-angular.module('partnr.auth').factory('principal', function($rootScope, $http, $log, $q) {
+angular.module('partnr.auth').factory('principal', function($rootScope, $http, $log, $q, toaster) {
 	var identityPrechecked = false;
 
 	var user          = undefined;
@@ -131,10 +131,12 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 						authenticate(data.user, data.csrfToken);
 					} else {
 						$log.error('[AUTH] Log in failure')
+						toaster.error("Invalid email/password");
 					}
 				})
 				.error(function(data, status, headers, config) {
 					$log.error('[AUTH] Log in failure');
+					toaster.error("Could not connect to server");
 				});
 			});
 
@@ -158,6 +160,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				$log.debug('[AUTH] User signed out');
 			}).error(function(data, status, headers, config) {
 				$log.error('[AUTH] Log out error');
+				toaster.error("Could not connect to server");
 			});
 		},
 
