@@ -11,11 +11,7 @@ class Application < ActiveRecord::Base
   enum status: { pending: 0, accepted: 1 }
 
   def has_update_permissions(user)
-    user.class == User &&
-      (
-        self.user.id == user.id ||
-        self.project.owner == user.id
-      )
+    user.class == User && self.user.id == user.id
   end
 
   def has_destroy_permissions(user)
@@ -27,7 +23,7 @@ class Application < ActiveRecord::Base
   end
 
   def has_accept_permissions(user)
-    user.class == User && self.project.owner == user.id
+    user.class == User && self.project.has_admin_permissions(user)
   end
 
   def project_and_role_align

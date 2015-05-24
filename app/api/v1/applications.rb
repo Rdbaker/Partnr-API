@@ -70,14 +70,27 @@ module V1
       requires :status, type: String, allow_blank: false, values: ["pending", "accepted"], desc: "The application's status."
     end
     put ":id" do
+      @application = get_record(Application, params[:id])
+      @role = @application.role
       if params[:status] == "accepted"
         application_accept_permissions(params[:id])
-        get_record(Role, @application.role_id)
-        if !@application.user.nil?
-          puts 'her'
+        if @role.user.nil?
+          @role.user = @application.user
+          @application.status = "accepted"
+          @role.save
+          @application.save
+        else
+          error!("400 Bad Request: Role already has a user.", 400)
         end
       else
-        application_update_permissions(params[:id])
+        # change status to 'pending'
+        application_udpate_permissions(params[:id])
+        if @role.user == @application.user
+          @role.user = nil
+          @role.save
+        end
+        @application.status = "pending"
+        @application.save
       end
       present @application, with: Entities::ApplicationData::AsShallow
     end

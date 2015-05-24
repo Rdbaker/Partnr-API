@@ -15,7 +15,7 @@ RSpec.describe "Messages", :type => :request do
     end
 
     it "returns a 200" do
-      expect(response.ok?)
+      expect(response.status).to eq(200)
     end
 
     it "returns json" do
@@ -25,11 +25,14 @@ RSpec.describe "Messages", :type => :request do
 
   describe "POST /api/v1/messages" do
     before(:each) do
-      post "/api/v1/messages"
+      post "/api/v1/messages", {
+        "email" => "ryan.da.baker@gmail.com",
+        "message" => "hello"
+      }
     end
 
-    it "returns a 200" do
-      expect(response.ok?)
+    it "returns a 201" do
+      expect(response.status).to eq(201)
     end
   end
 
@@ -40,7 +43,7 @@ RSpec.describe "Messages", :type => :request do
       end
 
       it "returns a 200" do
-        expect(response.ok?)
+        expect(response.status).to eq(200)
       end
 
       it "returns json" do
@@ -61,11 +64,13 @@ RSpec.describe "Messages", :type => :request do
 
   describe "PUT /api/v1/messages/:id" do
     before(:each) do
-      put "/api/v1/messages/#{@msg_id}"
+      put "/api/v1/messages/#{@msg_id}", {
+        "message" => "hello"
+      }
     end
 
     it "returns a 200" do
-      expect(response.ok?)
+      expect(response.status).to eq(200)
     end
   end
 

@@ -4,9 +4,9 @@ gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
 curl -L https://get.rvm.io | bash -s stable --ruby
 source /usr/local/rvm/scripts/rvm
 rvm group add rvm "$USER"
-rvm install ruby-2.0.0-p598
+rvm install ruby-2.0.0
 source ~/.profile
-rvm use 2.0.0-p598
+rvm use 2.0.0
 gem install bundler
 bundle install
 sudo npm install bower -g

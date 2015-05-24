@@ -41,7 +41,7 @@ RSpec.describe "Roles", :type => :request do
   describe "GET /api/v1/applications" do
     it "returns a 200" do
       get "/api/v1/applications"
-      expect(response.ok?)
+      expect(response.status).to eq(200)
     end
 
     context "without any query params" do
@@ -125,7 +125,7 @@ RSpec.describe "Roles", :type => :request do
       end
 
       it "returns a 200" do
-        expect(response.ok?)
+        expect(response.status).to eq(200)
       end
 
       it "returns JSON Schema conforming application" do
@@ -188,8 +188,8 @@ RSpec.describe "Roles", :type => :request do
           @res = JSON.parse(response.body)
         end
 
-        it "returns a 200" do
-          expect(response.ok?)
+        it "returns a 201" do
+          expect(response.status).to eq(201)
         end
 
         it "has all the proper attributes we gave it" do
@@ -225,14 +225,21 @@ RSpec.describe "Roles", :type => :request do
 
         context "status becomes accepted" do
           before(:each) do
+            @role.user = nil
+            @role.save
             put "/api/v1/applications/#{@application.id}", {
               "status" => "accepted"
             }
             @res = JSON.parse(response.body)
           end
 
+          after(:each) do
+            @role.user = @user
+            @role.save
+          end
+
           it "returns a 200" do
-            expect(response.ok?)
+            expect(response.status).to eq(200)
           end
 
           it "returns a JSON schema matching application" do
@@ -244,7 +251,9 @@ RSpec.describe "Roles", :type => :request do
           end
 
           it "fills the role with the applicant" do
-            expect(@application.role.user.id).to eq(@user2.id)
+            get "/api/v1/roles/#{@application.role.id}"
+            res = JSON.parse(response.body)
+            expect(@application.user.id).to eq(res["user"]["id"])
           end
         end
 
@@ -258,16 +267,8 @@ RSpec.describe "Roles", :type => :request do
             @res = JSON.parse(response.body)
           end
 
-          it "returns a 200" do
-            expect(response.ok?)
-          end
-
-          it "returns a JSON schema matching application" do
-            expect(@res).to match_json_schema(:shallow_application)
-          end
-
-          it "changes to pending" do
-            expect(@res["status"]).to eq("pending")
+          it "returns a 401" do
+            expect(response.status).to eq(401)
           end
         end
 

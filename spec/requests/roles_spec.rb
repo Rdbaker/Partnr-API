@@ -20,7 +20,7 @@ RSpec.describe "Roles", :type => :request do
   describe "GET /api/v1/roles" do
     it "returns a 200" do
       get "/api/v1/roles"
-      expect(response.ok?)
+      expect(response.status).to eq(200)
     end
 
     context "without a supplied user id" do
@@ -78,7 +78,7 @@ RSpec.describe "Roles", :type => :request do
       end
 
       it "returns a 200" do
-        expect(response.ok?)
+        expect(response.status).to eq(200)
       end
 
       it "returns JSON Schema conforming role" do
@@ -144,8 +144,8 @@ RSpec.describe "Roles", :type => :request do
           @res = JSON.parse(response.body)
         end
 
-        it "returns a 200" do
-          expect(response.ok?)
+        it "returns a 201" do
+          expect(response.status).to eq(201)
         end
 
         it "has all the proper attributes we gave it" do
@@ -198,7 +198,7 @@ RSpec.describe "Roles", :type => :request do
         end
 
         it "returns a 200" do
-          expect(response.ok?)
+          expect(response.status).to eq(200)
         end
 
         it "returns the updated role" do
@@ -237,7 +237,7 @@ RSpec.describe "Roles", :type => :request do
         end
 
         it "returns a 200" do
-          expect(response.ok?)
+          expect(response.status).to eq(200)
         end
 
         it "returns the updated role" do
