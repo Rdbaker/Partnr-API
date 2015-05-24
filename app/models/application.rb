@@ -8,16 +8,26 @@ class Application < ActiveRecord::Base
   validates :user, uniqueness: { scope: :role,
                                  message: "A user can only apply to a role once." }
 
-  enum status: { pending: 0, cancelled: 1, accepted: 2, rejected: 3}
+  enum status: { pending: 0, accepted: 1 }
 
-  # does not include 'rejection'
   def has_update_permissions(user)
-    user.class == User && self.user.id == user.id
+    user.class == User &&
+      (
+        self.user.id == user.id ||
+        self.project.owner == user.id
+      )
   end
 
-  def has_rejection_permissions(user)
+  def has_destroy_permissions(user)
     user.class == User &&
-      self.role.project.has_admin_permissions(user)
+      (
+        self.role.project.has_admin_permissions(user) ||
+        user.id == self.user.id
+      )
+  end
+
+  def has_accept_permissions(user)
+    user.class == User && self.project.owner == user.id
   end
 
   def project_and_role_align

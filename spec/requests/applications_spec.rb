@@ -16,24 +16,26 @@ RSpec.describe "Roles", :type => :request do
     @project2 = create(:good_project2)
 
     @project.owner = @user.id
+    @project2.owner = @user2.id
 
     @role.project = @project
     @role2.project = @project2
     @role.user = @user
     @role2.user = nil
 
-    @application.role = @role2
+    @application.role = @role
     @application.user = @user2
     @application.project = @project
     @application2.role = @role2
     @application2.user = @user3
     @application2.project = @project2
 
+    @project.save
+    @project2.save
     @role.save
     @role2.save
     @application.save
     @application2.save
-    @project.save
   end
 
   describe "GET /api/v1/applications" do
@@ -150,8 +152,18 @@ RSpec.describe "Roles", :type => :request do
     describe "PUT /api/v1/applications/:id" do
       before(:each) do
         put "/api/v1/applications/#{@application.id}", {
-          "status" => "cancelled"
+          "status" => "accepted"
         }
+      end
+
+      it "returns a 401" do
+        expect(response.status).to eq(401)
+      end
+    end
+
+    describe "DELETE /api/v1/applications/:id" do
+      before(:each) do
+        delete "/api/v1/applications/#{@application.id}"
       end
 
       it "returns a 401" do
@@ -171,7 +183,7 @@ RSpec.describe "Roles", :type => :request do
       context "good request" do
         before(:each) do
           post "/api/v1/applications", {
-            "role_id" => @role2.id
+            "role_id" => @role.id
           }
           @res = JSON.parse(response.body)
         end
@@ -211,19 +223,6 @@ RSpec.describe "Roles", :type => :request do
           @project.save
         end
 
-        context "status becomes cancelled" do
-          before(:each) do
-            put "/api/v1/applications/#{@application.id}", {
-              "status" => "cancelled"
-            }
-            @res = JSON.parse(response.body)
-          end
-
-          it "returns a 401" do
-            expect(response.status).to eq(401)
-          end
-        end
-
         context "status becomes accepted" do
           before(:each) do
             put "/api/v1/applications/#{@application.id}", {
@@ -249,10 +248,12 @@ RSpec.describe "Roles", :type => :request do
           end
         end
 
-        context "status becomes rejected" do
+        context "status becomes pending" do
           before(:each) do
+            @application.status = "accepted"
+            @application.save
             put "/api/v1/applications/#{@application.id}", {
-              "status" => "rejected"
+              "status" => "pending"
             }
             @res = JSON.parse(response.body)
           end
@@ -265,8 +266,8 @@ RSpec.describe "Roles", :type => :request do
             expect(@res).to match_json_schema(:shallow_application)
           end
 
-          it "changes to rejected" do
-            expect(@res["status"]).to eq("rejected")
+          it "changes to pending" do
+            expect(@res["status"]).to eq("pending")
           end
         end
 
@@ -276,40 +277,6 @@ RSpec.describe "Roles", :type => :request do
         before(:each) do
           @application.user = @user3
           @application.save
-        end
-
-        context "status becomes cancelled" do
-          before(:each) do
-            put "/api/v1/applications/#{@application.id}", {
-              "status" => "cancelled"
-            }
-            @res = JSON.parse(response.body)
-          end
-
-          it "returns a 200" do
-            expect(response.ok?)
-          end
-
-          it "returns a JSON schema matching application" do
-            expect(@res).to match_json_schema(:shallow_application)
-          end
-
-          it "changes to accepted" do
-            expect(@res["status"]).to eq("cancelled")
-          end
-        end
-
-        context "status becomes rejected" do
-          before(:each) do
-            put "/api/v1/applications/#{@application.id}", {
-              "status" => "rejected"
-            }
-            @res = JSON.parse(response.body)
-          end
-
-          it "returns a 401" do
-            expect(response.status).to eq(401)
-          end
         end
 
         context "status becomes accepted" do
@@ -325,24 +292,6 @@ RSpec.describe "Roles", :type => :request do
           end
         end
 
-        context "status is rejected" do
-          before(:each) do
-            @application.status = "rejected"
-            @application.save
-          end
-
-          it "allows no change of status" do
-            put "/api/v1/applications/#{@application.id}", {
-              "status" => "pending"
-            }
-            expect(response.status).to eq(401)
-
-            put "/api/v1/applications/#{@application.id}", {
-              "status" => "cancelled"
-            }
-            expect(response.status).to eq(401)
-          end
-        end
       end
 
       context "as anybody else" do
@@ -356,16 +305,6 @@ RSpec.describe "Roles", :type => :request do
         it "doesn't allow any change" do
           put "/api/v1/applications/#{@application.id}", {
             "status" => "pending"
-          }
-          expect(response.status).to eq(401)
-
-          put "/api/v1/applications/#{@application.id}", {
-            "status" => "cancelled"
-          }
-          expect(response.status).to eq(401)
-
-          put "/api/v1/applications/#{@application.id}", {
-            "status" => "rejected"
           }
           expect(response.status).to eq(401)
 

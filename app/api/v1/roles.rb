@@ -35,6 +35,7 @@ module V1
         .per(params[:per_page]), with: Entities::RoleData::AsDeep
     end
 
+
     desc "Get a single role based on its ID.", entity: Entities::RoleData::AsDeep
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The role ID."
@@ -43,6 +44,7 @@ module V1
       role = get_record(Role, params[:id])
       present role, with: Entities::RoleData::AsDeep
     end
+
 
     desc "Create a new role for a project.", entity: Entities::RoleData::AsShallow
     params do
@@ -59,6 +61,7 @@ module V1
       })
       present role, with: Entities::RoleData::AsShallow
     end
+
 
     desc "Update a specific role for a project.", entity: Entities::RoleData::AsShallow
     params do
@@ -78,6 +81,7 @@ module V1
       @role.update!( updates )
       present @role, with: Entities::RoleData::AsShallow
     end
+
 
     desc "Delete a role for a project."
     params do
