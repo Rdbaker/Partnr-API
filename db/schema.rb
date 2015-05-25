@@ -11,10 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150430171316) do
+ActiveRecord::Schema.define(version: 20150512232545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "applications", force: true do |t|
+    t.integer  "status",     default: 0
+    t.integer  "user_id"
+    t.integer  "integer_id"
+    t.integer  "role_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "project_id"
+  end
+
+  add_index "applications", ["integer_id"], name: "index_applications_on_integer_id", using: :btree
+  add_index "applications", ["role_id"], name: "index_applications_on_role_id", using: :btree
+  add_index "applications", ["user_id"], name: "index_applications_on_user_id", using: :btree
 
   create_table "mailboxer_conversation_opt_outs", force: true do |t|
     t.integer "unsubscriber_id"
@@ -88,10 +102,11 @@ ActiveRecord::Schema.define(version: 20150430171316) do
 
   create_table "roles", force: true do |t|
     t.integer  "project_id"
-    t.string   "title",      null: false
+    t.string   "title",          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+    t.integer  "application_id"
   end
 
   add_index "roles", ["project_id"], name: "index_roles_on_project_id", using: :btree

@@ -7,9 +7,12 @@ module V1::Entities
     end
 
     class AsPublic < AsShallow
-      expose :roles, using: RoleData::AsShallow, documentation: { type: RoleData::AsShallow,
+      expose :roles, using: RoleData::AsShallow, documentation: { type: "RoleData (shallow)",
                                                                   desc: "The roles this user has on projects.",
                                                                   is_array: true }
+      expose :projects, using: ProjectData::AsShallow, documentation: { type: "ProjectData (shallow)",
+                                                                        desc: "The projects this user is associated with.",
+                                                                        is_array: true }
     end
 
     class AsPrivate < AsPublic
