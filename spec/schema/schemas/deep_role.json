@@ -1,0 +1,42 @@
+{
+  "title" : "Deep Role Schema",
+  "description" : "A role object model",
+  "type" : "object",
+  "properties" : {
+    "title" : {
+      "type" : "string"
+    },
+    "user" : {
+      "type" : ["object", "null"]
+    },
+    "id" : {
+      "type" : "integer"
+    },
+    "project" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : ["string", "null"]
+        },
+        "owner" : {
+          "type" : "integer"
+        },
+        "creator" : {
+          "type" : "integer"
+        },
+        "id" : {
+          "type" : "integer"
+        }
+      }
+    }
+  },
+  "required" : [
+    "title",
+    "user",
+    "project",
+    "id"
+  ]
+}

@@ -1,46 +1,70 @@
 require 'rails_helper'
 
 RSpec.describe "Messages", :type => :request do
-  describe "GET /messages" do
-    it "returns a 200" do
-      get messages_path
+  before(:each) do
+    @user = create(:user)
+    @user2 = create(:user2)
+    @user.send_message(@user2, "body", "subject")
+    login_as(@user, :scope => :user)
+    @msg_id = @user.mailbox.conversations.first.id
+  end
 
+  describe "GET /api/v1/messages" do
+    before(:each) do
+      get "/api/v1/messages"
+    end
+
+    it "returns a 200" do
+      expect(response.ok?)
+    end
+
+    it "returns json" do
+      expect(response.content_type).to eq("application/json")
+    end
+  end
+
+  describe "POST /api/v1/messages" do
+    before(:each) do
+      post "/api/v1/messages"
+    end
+
+    it "returns a 200" do
       expect(response.ok?)
     end
   end
 
-  describe "POST /messages" do
-    it "returns a 200" do
-      post messages_path
+  describe "GET /api/v1/messages/:id" do
+    context "good message id" do
+      before(:each) do
+        get "/api/v1/messages/#{@msg_id}"
+      end
 
-      expect(response.ok?)
+      it "returns a 200" do
+        expect(response.ok?)
+      end
+
+      it "returns json" do
+        expect(response.content_type).to eq("application/json")
+      end
+    end
+
+    context "bad message id" do
+      before(:each) do
+        get "/api/v1/messages/0"
+      end
+
+      it "returns a 404 if no conversation is found" do
+        expect(response.status).to eq(404)
+      end
     end
   end
 
-  describe "GET /messages/:id" do
-    it "returns a 200" do
-      params = {
-        :id => '1'
-      }
-      get '/messages', params
-
-      expect(response.ok?)
+  describe "PUT /api/v1/messages/:id" do
+    before(:each) do
+      put "/api/v1/messages/#{@msg_id}"
     end
 
-    it "redirects to a 404 if no conversation is found" do
-      params = {
-        :id => '-1'
-      }
-      get '/messages', params
-
-      expect(response.code).to eq("302")
-    end
-  end
-
-  describe "PUT /messages/:id" do
     it "returns a 200" do
-      put '/messages/1'
-
       expect(response.ok?)
     end
   end

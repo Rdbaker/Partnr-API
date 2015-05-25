@@ -6,6 +6,12 @@ FactoryGirl.define do
       creator 1
     end
 
+    factory :good_project2 do
+      name "A fine project"
+      owner 2
+      creator 2
+    end
+
     factory :invalid_project do
       name "A not so great project"
       owner nil

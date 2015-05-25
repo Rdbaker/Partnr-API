@@ -16,12 +16,6 @@ gem 'coffee-rails', '~> 4.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
-
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
@@ -42,8 +36,17 @@ group :test, :development do
   gem 'json-schema-rspec'
 end
 
-# use backbone for MVP client framework
-gem 'rails-backbone'
+# bower for asset management
+gem 'bower-rails'
+
+# angular for rails
+gem 'angularjs-rails'
+
+# to store html files in angular's templatecache
+gem 'angular-rails-templates'
+
+# formats angular js for correct minification
+gem 'ngannotate-rails'
 
 # use devise for authentication
 gem 'devise'
@@ -56,5 +59,17 @@ gem 'puma'
 
 # use mailboxer as the mailing system
 gem 'mailboxer'
+
+# use kaminari to paginate the models
+gem 'kaminari'
+
+# gems for API building and documentation
+gem 'grape', '~> 0.11.0'
+gem 'grape-entity', '~> 0.4.5'
+gem 'grape-swagger', '~> 0.9.0' # before upgrading this one, test it thoroughly, versions 0.8 and 0.10 both currently have bugs
+gem 'grape-swagger-rails', '~> 0.1.0'
+
+# allow Grape to handle the security instead of strong_params
+gem 'hashie-forbidden_attributes'
 
 ruby '2.0.0'

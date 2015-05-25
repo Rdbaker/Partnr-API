@@ -2,19 +2,19 @@
 <html>
 <head>
   <title>Partnr</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= stylesheet_link_tag    params[:controller] %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag params[:controller] %>
   <%= csrf_meta_tags %>
-
+  <% if ENV['RACK_ENV'] != 'production' %>
+    <meta name="robots" content="noindex" />
+  <% end %>
   <!-- temporary bootstrap theme -->
-  <link href="http://bootswatch.com/superhero/bootstrap.css" rel="stylesheet" type="text/css"/>
+  <link href="https://bootswatch.com/superhero/bootstrap.css" rel="stylesheet" type="text/css"/>
+
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
 </head>
-<body>
-  <%= render "shared/notifications" %>
-
-<%= yield %>
-
+<body ng-app="partnr">
+	<div class="content container">
+		<div ui-view="content"></div>
+	</div>
 </body>
 </html>

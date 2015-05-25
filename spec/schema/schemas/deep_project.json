@@ -1,0 +1,42 @@
+{
+  "title" : "Deep Project Schema",
+  "description" : "A project object model",
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "type" : "string"
+    },
+    "description" : {
+      "type" : ["string", "null"]
+    },
+    "owner" : {
+      "type" : "integer"
+    },
+    "creator" : {
+      "type" : "integer"
+    },
+    "id" : {
+      "type" : "integer"
+    },
+    "roles" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string"
+          },
+          "user" : {
+            "type" : ["integer", "null"]
+          }
+        }
+      }
+    }
+  },
+  "required" : [
+    "name",
+    "owner",
+    "creator",
+    "id"
+  ]
+}

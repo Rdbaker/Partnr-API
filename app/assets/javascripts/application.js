@@ -1,13 +1,7 @@
-//= require jquery
-//= require jquery_ujs
-//= require turbolinks
-//= require underscore
-//= require backbone
-//= require backbone_rails_sync
-//= require backbone_datalink
-
-$(document).ready(function() {
-  $('.close-alert').click(function() {
-    $(this.parentElement).slideUp();
-  });
-});
+//= require angular/angular.min
+//= require angular-rails-templates
+//= require angular-ui-bootstrap-bower/ui-bootstrap.min
+//= require angular-ui-bootstrap-bower/ui-bootstrap-tpls.min
+//= require angular-ui-router/release/angular-ui-router.min
+//= require angular-ui-utils/ui-utils.min
+//= require_tree .

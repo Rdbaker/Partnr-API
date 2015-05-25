@@ -25,6 +25,29 @@ RSpec.describe User, :type => :model do
     end
   end
 
+  describe "#is_a_preapproved_user" do
+    before(:each) do
+      @user = User.new
+      @user.first_name = "test"
+      @user.last_name  = "test"
+      @user.password = "a long enough password"
+    end
+
+    it "works for Ryan" do
+      @user.email = "ryan.da.baker@gmail.com"
+      @user.save
+
+      expect(@user.errors.messages).to eq(Hash.new)
+    end
+
+    it "doesn't work for Ryan's mom" do
+      @user.email = "mom.of.ryan@gmail.com"
+      @user.save
+
+      expect(@user.errors.messages).to eq({ :email => ["You must be a pre-approved user to access this website"]})
+    end
+  end
+
   describe "#json_conversations" do
     it "returns an empty list if there are no conversations" do
       expect(@user.json_conversations).to eq []
@@ -46,12 +69,12 @@ RSpec.describe User, :type => :model do
   end
 
   describe "#get_conv" do
-    it "returns an empty list if given wrong params" do
-      expect(@user.get_conv(nil)).to eq([])
+    it "returns nil if given wrong params" do
+      expect(@user.get_conv(nil)).to eq(nil)
     end
 
-    it "returns an empty list if the conversation doesn't exist" do
-      expect(@user.get_conv(-1)).to eq([])
+    it "returns nil if the conversation doesn't exist" do
+      expect(@user.get_conv(-1)).to eq(nil)
     end
 
     it "returns an array of message/sender objects" do

@@ -2,14 +2,21 @@ FactoryGirl.define do
   factory :user do
     first_name "John"
     last_name  "Doe"
-    email "jdoe@test.com"
+    email "ryan.da.baker@gmail.com"
     password "example_password"
   end
 
   factory :user2, class: User do
     first_name "Bob"
     last_name "Jones"
-    email "bjones@test.com"
+    email "kzizza@gmail.com"
+    password "example_password"
+  end
+
+  factory :user3, class: User do
+    first_name "Sean"
+    last_name "TheTester"
+    email "tylerstonephoto@gmail.com"
     password "example_password"
   end
 end
