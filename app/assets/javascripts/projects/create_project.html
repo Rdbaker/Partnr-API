@@ -1,0 +1,31 @@
+<header ng-include="'shared/header.html'"></header>
+<div class="col-md-8" ng-show="step === 1">
+	<h2>Create a New Project</h2>
+	<div class="form-group">
+		<label for="name">Name</label>
+		<input name="name" type="text" class="form-control" ng-model="project.name" />
+		<label for="description">Description</label>
+		<textarea class="form-control" ng-model="project.description"></textarea>
+	</div>
+	<button class="btn btn-primary" ng-click="doProjectCreate()">Create</button>
+</div>
+<div ng-show="step === 2">
+	<h2>Congratulations, your project has been created</h2>
+	<h3>What is your role on this project?</h3>
+	<div class="col-md-8">
+		<input name="owner_role" type="text" class="form-control" ng-model="ownerRole.title" />
+		<button class="btn btn-primary" ng-disabled="!(validateOwnerRole())" ng-click="processOwnerRole()">Next ></button>
+	</div>
+</div>
+<div ng-show="step === 3">
+	<h2>Create additional roles for this project</h2>
+	<div class="clearfix">	
+		<div class="form-group col-md-8">
+			<input ng-repeat="role in roles" name="additional_role" type="text" class="form-control" ng-model="roles[$index].title" />
+		</div>
+		<div class="col-md-4">
+			<button class="btn btn-primary" ng-click="addRole()">Add a Role</button>
+		</div>
+	</div>
+	<button class="btn btn-primary" ng-click="processAdditionalRoles()">Finish</button>
+</div>

@@ -94,6 +94,20 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 			}
 		})
 
+		.state('project_create', {
+			parent: 'site',
+			url: '/projects/create',
+			views: {
+				'content@': {
+					templateUrl: 'projects/create_project.html',
+					controller: 'CreateProjectController'
+				}
+			},
+			data: {
+				roles: ['Admin']
+			}
+		})
+
 		.state('settings', {
 			parent: 'site',
 			url: '/settings',

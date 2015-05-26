@@ -1,4 +1,4 @@
-angular.module('partnr.users').controller('CreateUserController', function($scope, $state, $log, $q, users, principal) {
+angular.module('partnr.users').controller('CreateUserController', function($scope, $state, $log, $q, users, principal, toaster) {
 	$scope.acct = {
 		email : "",
 		first_name: "",
@@ -27,10 +27,11 @@ angular.module('partnr.users').controller('CreateUserController', function($scop
 				} else {
 					$log.debug("[USER] Create error");
 					if (data.error) { $log.debug(data.error); }
-
-					// failure for account
+					toaster.error("User could not be created.");
 				}
 			});
+		} else {
+			toaster.error("Please ensure that you entered data in all of the fields");
 		}
 	}
 });
