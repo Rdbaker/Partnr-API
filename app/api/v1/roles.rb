@@ -74,11 +74,17 @@ module V1
       role_assign_permissions(params[:id]) if !!params[:user_id]
       role_put_permissions(params[:id]) if !!params[:title]
 
-      updates = {}
-      updates[:user] = get_record(User, params[:user_id]) if !!params[:user_id]
-      updates[:title] = params[:title] if !!params[:title]
+      if !!params[:user_id]
+        role_assign_permissions params[:id]
+        @role.user = get_record(User, params[:user_id])
+      end
 
-      @role.update!( updates )
+      if !!params[:title]
+        role_put_permissions params[:id]
+        @role.title = params[:title]
+      end
+
+      @role.save
       present @role, with: Entities::RoleData::AsShallow
     end
 
