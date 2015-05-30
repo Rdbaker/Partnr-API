@@ -3,7 +3,8 @@ sudo apt-get install build-essential zlib1g-dev git-core gnupg2 libpq-dev nodejs
 gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
 curl -L https://get.rvm.io | bash -s stable --ruby
 source /home/vagrant/.rvm/scripts/rvm
-rvm install ruby-2.0.0-p598
+rvm group add rvm "$USER"
+rvm install ruby-2.0.0
 source ~/.profile
 rvm use 2.0.0
 gem install bundler

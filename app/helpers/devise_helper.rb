@@ -1,6 +1,6 @@
 module DeviseHelper
   def devise_error_messages!
-    return "" if resource.errors.empty?
+    return {}.to_json if resource.errors.empty?
 
     messages = resource.errors.full_messages
     sentence = I18n.t("errors.messages.not_saved",
