@@ -24,7 +24,7 @@ module V1
 
     desc "Retrieve all roles.", entity: Entities::RoleData::AsDeep
     params do
-      optional :user, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
+      optional :user_id, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
       optional :title, type: String, desc: "The title of the role to retrieve."
       optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."
@@ -35,6 +35,7 @@ module V1
         .per(params[:per_page]), with: Entities::RoleData::AsDeep
     end
 
+
     desc "Get a single role based on its ID.", entity: Entities::RoleData::AsDeep
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The role ID."
@@ -43,6 +44,7 @@ module V1
       role = get_record(Role, params[:id])
       present role, with: Entities::RoleData::AsDeep
     end
+
 
     desc "Create a new role for a project.", entity: Entities::RoleData::AsShallow
     params do
@@ -60,6 +62,7 @@ module V1
       present role, with: Entities::RoleData::AsShallow
     end
 
+
     desc "Update a specific role for a project.", entity: Entities::RoleData::AsShallow
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The role ID."
@@ -71,13 +74,20 @@ module V1
       role_assign_permissions(params[:id]) if !!params[:user_id]
       role_put_permissions(params[:id]) if !!params[:title]
 
-      updates = {}
-      updates[:user] = get_record(User, params[:user_id]) if !!params[:user_id]
-      updates[:title] = params[:title] if !!params[:title]
+      if !!params[:user_id]
+        role_assign_permissions params[:id]
+        @role.user = get_record(User, params[:user_id])
+      end
 
-      @role.update!( updates )
+      if !!params[:title]
+        role_put_permissions params[:id]
+        @role.title = params[:title]
+      end
+
+      @role.save
       present @role, with: Entities::RoleData::AsShallow
     end
+
 
     desc "Delete a role for a project."
     params do

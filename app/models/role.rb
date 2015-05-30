@@ -1,4 +1,5 @@
 class Role < ActiveRecord::Base
+  has_many :applications
   belongs_to :project
   belongs_to :user
 
