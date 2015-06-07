@@ -11,7 +11,7 @@ module Partnr
   class Application < Rails::Application
     @@MAJOR_VERSION = '0'
     @@MINOR_VERSION = '3'
-    @@PATCH_VERSION = '1'
+    @@PATCH_VERSION = '2'
 
     # use rspec for testing
     config.generators do |g|
@@ -28,7 +28,7 @@ module Partnr
 
     # include bower_components folder to search for assets
     config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
-    
+
     config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
     config.autoload_paths += Dir[Rails.root.join('app', 'api', 'v1', 'helpers')]
