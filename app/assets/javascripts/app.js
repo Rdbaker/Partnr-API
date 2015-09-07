@@ -9,7 +9,7 @@ angular.module('partnr', ['ui.router',
   ]).run(function ($state, $rootScope, $log, principal, authorization) {
    $rootScope.$state = $state; // application state
    $rootScope.apiRoute  = '/';
-   $rootScope.version   = '0.3.1';
+   $rootScope.version   = '0.3.3';
 
    $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
       $log.debug("[STATE] State change occurring: " + toState.name);
