@@ -22,13 +22,12 @@ angular.module('partnr.users').controller('CreateUserController', function($scop
 	$scope.doCreateUser = function() {
 		if ($scope.validate()) {
 			users.create($scope.acct).success(function(data, status, headers, config) {
-				if (data.user) {
+				console.log(data);
+				if (data.id) {
 					$state.go('login');
 				} else {
 					$log.debug("[USER] Create error");
 					if (data.error) { $log.debug(data.error); }
-
-					// failure for account
 				}
 			});
 		}
