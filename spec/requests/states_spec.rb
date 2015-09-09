@@ -54,12 +54,50 @@ RSpec.describe "States", :type => :request do
       end
     end
 
+    describe "POST /api/v1/states" do
+      before(:each) do
+        @name = "new state"
+        post "/api/v1/states", {
+          "name" => @name,
+          "project_id" => @project.id
+        }
+        @res = JSON.parse(response.body)
+      end
+
+      it "returns a 201" do
+        expect(response.status).to eq(201)
+      end
+
+      it "has all the proper attributes we gave it" do
+        expect(@res["name"]).to eq(@name)
+        expect(@res["project"]["id"]).to eq(@project.id)
+      end
+    end
+
   end
 
   context "as a project participant" do
   end
 
   context "as anybody else" do
+    before(:each) do
+      login_as(@user, :scope => :user)
+    end
+
+    describe "POST /api/v1/states" do
+      before(:each) do
+        @name = "new state"
+        post "/api/v1/states", {
+          "name" => @name,
+          "project_id" => @project.id
+        }
+        @res = JSON.parse(response.body)
+      end
+
+      it "should return a 401" do
+        expect(response.status).to eq(201)
+      end
+    end
 
   end
 end
