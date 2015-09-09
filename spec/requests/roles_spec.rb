@@ -136,10 +136,10 @@ RSpec.describe "Roles", :type => :request do
       context "good request" do
         before(:each) do
           @title = "Some title"
-          @project = @project.id
+          @proj = @project.id
           post "/api/v1/roles", {
             "title" => @title,
-            "project_id" => @project
+            "project_id" => @proj
           }
           @res = JSON.parse(response.body)
         end
