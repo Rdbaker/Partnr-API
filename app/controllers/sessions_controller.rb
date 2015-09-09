@@ -1,8 +1,10 @@
 class SessionsController < Devise::SessionsController
   alias :super_destroy :destroy
+  rescue_from ActionController::InvalidAuthenticityToken, :with => :check_csrf_token
 
   respond_to :json
-  before_action :set_default_response_format
+  prepend_before_filter :set_default_response_format
+  prepend_before_filter :check_post_params, only: :create
 
   def new
     render :json => {
@@ -12,15 +14,19 @@ class SessionsController < Devise::SessionsController
   end
 
   def create
-    self.resource = warden.authenticate!({
-      scope: :user,
-    })
-    sign_in(:resource, resource)
-    render :json => {
-      'user' => resource.serializable_hash,
-      'csrfParam' => request_forgery_protection_token,
-      'csrfToken' => form_authenticity_token
-    }
+    check_post_params
+
+    resource = User.find_for_database_authentication(:email => params[:user][:email])
+    return invalid_login_attempt unless resource
+
+    if resource.valid_password?(params[:user][:password])
+      render :json => { 'user' => resource.serializable_hash }
+      return
+    else
+      warden.custom_failure!
+      render :json=> {:error => "That email/password does not match our records."}, :status => 401
+    end
+
   end
 
   def destroy
@@ -53,6 +59,25 @@ class SessionsController < Devise::SessionsController
         "csrfParam" => request_forgery_protection_token,
         "csrfToken" => form_authenticity_token
       }
+    end
+  end
+
+  private
+
+  def check_csrf_token
+    render json: {
+      error: 'Missing required header: X-CSRF-Token',
+      status: 400
+    }, status: 400
+  end
+
+  def check_post_params
+    user = params[:user]
+    if user.nil? || ( user[:email].nil? || user[:password].nil? )
+      render json: {
+        error: '{ user : { email : <email>, password : <password> } } format required for sign in',
+        status: 400
+      }, status: 400
     end
   end
 end

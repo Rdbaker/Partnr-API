@@ -6,11 +6,8 @@ angular.module('partnr.users').factory('users', function($rootScope, $http, $log
 
 			return $http({
 				method: 'POST',
-				url: '/api/users',
-				headers: {
-					'X-CSRF-Token' : principal.getHeaders(),
-					'Content-Type' : 'application/json'
-				},
+				url: $rootScope.apiRoute + 'api/users',
+				headers: principal.getHeaders(),
 				data: { "user" : acct }
 			});
 		}

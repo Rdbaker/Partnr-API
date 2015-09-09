@@ -22,3 +22,6 @@ coverage
 
 # ignore bower_components
 /vendor/assets/bower_components
+
+# ignore Gemfile.lock
+Gemfile.lock

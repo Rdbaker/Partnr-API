@@ -6,6 +6,7 @@ module V1
     mount Messages     => '/messages'
     mount Roles        => '/roles'
     mount Applications => '/applications'
+    mount States       => '/states'
 
     add_swagger_documentation(
       base_path: '/api/v1',
