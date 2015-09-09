@@ -1,0 +1,21 @@
+{
+  "title" : "State Schema",
+  "description" : "A state object model",
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "type" : "string"
+    },
+    "project" : {
+      "type" : "object"
+    },
+    "id" : {
+      "type" : "integer"
+    }
+  },
+  "required" : [
+    "name",
+    "project",
+    "id"
+  ]
+}
