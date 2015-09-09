@@ -15,8 +15,7 @@ describe('principal', function() {
 
 		authRequestHandler = $httpBackend.when('POST', $rootScope.apiRoute + 'api/users/sign_in')
 			.respond({
-				"user" : { "first_name" : "Tyler", "last_name" : "Stone" },
-				"csrfToken" : "4321"
+				"user" : { "first_name" : "Tyler", "last_name" : "Stone" }
 			});
 
 		$httpBackend.when('DELETE', $rootScope.apiRoute + 'api/users/sign_out')

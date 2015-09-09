@@ -47,7 +47,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		};
 	}
 
-	function authenticate(dataUser, dataCsrfToken) {
+	function authenticate(dataUser) {
 		/* Set all user data */
 		user = dataUser;
 
@@ -55,7 +55,6 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		user.roles = [ 'Admin' ];
 		/** REMOVE FOR ROLE-BASED AUTH **/
 
-		csrfToken = dataCsrfToken;
 		authenticated = true;
 		$log.debug('[AUTH] User authenticated');
 		$log.debug(user);
@@ -76,15 +75,11 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 					method: 'GET',
 					url: $rootScope.apiRoute + 'api/users/sign_in'
 				}).success(function(data, status, headers, config) {
-					if (data.user && data.csrfToken) {
+					if (data.user) {
 						$log.debug('[AUTH] Cookie valid, storing user data');
-						$log.debug(data.csrfToken);
-						authenticate(data.user, data.csrfToken);
+						authenticate(data.user);
 						identityPrechecked = true;
 						deferred.resolve(user);
-					} else if (data.csrfToken) {
-						setCsrf(data.csrfToken);
-						deferred.resolve();
 					} else {
 						$log.debug('[AUTH] No preset user');
 						identityPrechecked = true;
@@ -110,8 +105,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				var request = {
 					'user' : {
 						'email' : email,
-						'password' : password,
-						'authenticity_token' : csrfToken
+						'password' : password
 					}
 				};
 
@@ -127,16 +121,16 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 					data: request
 				})
 				.success(function(data, status, headers, config) {
-					if (data.user && data.csrfToken) {
-						authenticate(data.user, data.csrfToken);
+					if (data.user) {
+						authenticate(data.user);
 					} else {
 						$log.error('[AUTH] Log in failure')
 						toaster.error("Invalid email/password");
 					}
 				})
 				.error(function(data, status, headers, config) {
-					$log.error('[AUTH] Log in failure');
-					toaster.error("Could not connect to server");
+          $log.error('[AUTH] Log in failure')
+          toaster.error("Invalid email/password");
 				});
 			});
 
