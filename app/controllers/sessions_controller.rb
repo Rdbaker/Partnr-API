@@ -20,7 +20,13 @@ class SessionsController < Devise::SessionsController
     return invalid_login_attempt unless resource
 
     if resource.valid_password?(params[:user][:password])
-      render :json => { 'user' => resource.serializable_hash }
+      self.resource = warden.authenticate!({
+        scope: :user
+      })
+      sign_in(:resource, resource)
+      render :json => {
+        'user' => resource.serializable_hash
+      }
       return
     else
       warden.custom_failure!
