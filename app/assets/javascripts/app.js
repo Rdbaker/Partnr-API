@@ -7,7 +7,7 @@ angular.module('partnr', ['ui.router',
   'ui.bootstrap', 'templates', 
   'partnr.auth', 'partnr.users', 'partnr.messaging',
   'partnr.toaster', 'partnr.users.assets'
-  ]).run(function ($state, $rootScope, $log, $urlRouter, principal, authorization) {
+  ]).run(function ($state, $rootScope, $log, principal, authorization) {
    $rootScope.$state = $state; // application state
    $rootScope.apiRoute  = '/api/v1/';
    $rootScope.version   = '0.3.4';
@@ -27,7 +27,11 @@ angular.module('partnr', ['ui.router',
 
       authorization.authorize().then(function(authorized) {
         if (authorized) {
-          $urlRouter.sync();
+          if ($state.current.name == toState) {
+            bypassAuthCheck = false;
+          } else {
+            $state.go(toState, toParams);
+          }
         } else {
           if ($state.current.name == 'login') {
             bypassAuthCheck = false;
