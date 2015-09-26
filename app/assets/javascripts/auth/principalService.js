@@ -69,6 +69,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 			   if so, a request will check the validity of that session
 			   and store the resulting user value if it's still valid
 			*/
+			$log.debug('[AUTH] Identity Pre-checked: ' + identityPrechecked);
 			var deferred = $q.defer();
 			if (!user && !identityPrechecked || force) {
 				$log.debug('[AUTH] Checking if user session exists');
@@ -87,19 +88,18 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 						deferred.resolve();
 					} else {
 						$log.debug('[AUTH] No preset user');
-						identityPrechecked = true;
 						deferred.resolve();
 					}
 				})
 				.error(function(data, status, headers, config) {
 					$log.error('[AUTH] Request to server failed');
-					identityPrechecked = true;
 					deferred.resolve();
 				})
 			} else {
 				deferred.resolve();
 			}
 
+			identityPrechecked = true;
 			return deferred.promise;
 		},
 
