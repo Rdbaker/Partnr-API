@@ -2,6 +2,6 @@
 <div class="col-md-8">
 	<h2>Projects</h2>
 	<div ng-repeat="p in projects">
-		<h3>{{ p.name }}</h3>
+		<a ui-sref="project({ id: p.id })">{{ p.name }}</h3>
 	</div>
 </div>

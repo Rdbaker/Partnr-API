@@ -1,5 +1,14 @@
 angular.module('partnr.users.assets').factory('projects', function($rootScope, $http, $log, principal) {
 	return {
+		get : function(id) {
+			$log.debug('[PROJECT] Sending get request for project ' + id);
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'projects/' + id,
+				headers: principal.getHeaders()
+			});
+		},
+
 		list : function() {
 			$log.debug('[PROJECT] Sending list request');
 
