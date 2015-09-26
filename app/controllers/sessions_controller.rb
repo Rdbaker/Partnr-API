@@ -15,15 +15,24 @@ class SessionsController < Devise::SessionsController
 
   def create
     check_post_params
-    self.resource = warden.authenticate!({
-      scope: :user,
-    })
-    sign_in(:resource, resource)
-    render :json => {
-      'user' => resource.serializable_hash,
-      'csrfParam' => request_forgery_protection_token,
-      'csrfToken' => form_authenticity_token
-    }
+
+    resource = User.find_for_database_authentication(:email => params[:user][:email])
+    return invalid_login_attempt unless resource
+
+    if resource.valid_password?(params[:user][:password])
+      self.resource = warden.authenticate!({
+        scope: :user
+      })
+      sign_in(:resource, resource)
+      render :json => {
+        'user' => resource.serializable_hash
+      }
+      return
+    else
+      warden.custom_failure!
+      render :json=> {:error => "That email/password does not match our records."}, :status => 401
+    end
+
   end
 
   def destroy
