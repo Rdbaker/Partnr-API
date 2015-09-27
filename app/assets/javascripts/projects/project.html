@@ -1,4 +1,12 @@
 <header ng-include="'shared/header.html'"></header>
 <div class="col-md-8">
 	<h2>{{ project.name }}</h2>
+	<div class="btn-group" ng-if="isOwner" dropdown is-open="status.isopen">
+      <button id="single-button" type="button" class="btn btn-primary" dropdown-toggle ng-disabled="disabled">
+        Actions<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+        <li role="menuitem"><a href ng-click="doDelete()">Delete</a></li>
+      </ul>
+    </div>
 </div>

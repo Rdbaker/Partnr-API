@@ -20,7 +20,7 @@ angular.module('partnr.users.assets').factory('projects', function($rootScope, $
 		},
 
 		create : function(project) {
-			$log.debug("[PROJECT] Sending Create request");
+			$log.debug("[PROJECT] Sending create request");
 
 			project.owner = principal.getUser().id;
 			$log.debug(project);
@@ -30,6 +30,16 @@ angular.module('partnr.users.assets').factory('projects', function($rootScope, $
 				url: $rootScope.apiRoute + 'projects',
 				headers: principal.getHeaders(),
 				data: project
+			});
+		},
+
+		delete : function(id) {
+			$log.debug("[PROJECT] Sending delete request");
+
+			return $http({
+				method: 'DELETE',
+				url: $rootScope.apiRoute + 'projects/' + id,
+				headers: principal.getHeaders()
 			});
 		}
 	};
