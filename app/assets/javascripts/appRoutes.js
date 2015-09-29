@@ -94,20 +94,6 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 			}
 		})
 
-		.state('project', {
-			parent: 'site',
-			url: '/projects/{id}',
-			views: {
-				'content@': {
-					templateUrl: 'projects/project.html',
-					controller: 'ProjectController'
-				}
-			},
-			data: {
-				roles: ['Admin']
-			}
-		})
-		
 		.state('project_list', {
 			parent: 'site',
 			url: '/projects',
@@ -129,6 +115,20 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				'content@': {
 					templateUrl: 'projects/create_project.html',
 					controller: 'CreateProjectController'
+				}
+			},
+			data: {
+				roles: ['Admin']
+			}
+		})
+
+		.state('project', {
+			parent: 'site',
+			url: '/projects/{id}',
+			views: {
+				'content@': {
+					templateUrl: 'projects/project.html',
+					controller: 'ProjectController'
 				}
 			},
 			data: {
