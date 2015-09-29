@@ -81,7 +81,7 @@ RSpec.describe "States", :type => :request do
 
   context "as anybody else" do
     before(:each) do
-      login_as(@user, :scope => :user)
+      login_as(@user3, :scope => :user)
     end
 
     describe "POST /api/v1/states" do
@@ -95,7 +95,7 @@ RSpec.describe "States", :type => :request do
       end
 
       it "should return a 401" do
-        expect(response.status).to eq(201)
+        expect(response.status).to eq(401)
       end
     end
 

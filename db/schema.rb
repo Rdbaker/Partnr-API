@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150706014552) do
+ActiveRecord::Schema.define(version: 20150926170713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,18 @@ ActiveRecord::Schema.define(version: 20150706014552) do
   add_index "mailboxer_receipts", ["notification_id"], name: "index_mailboxer_receipts_on_notification_id", using: :btree
   add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type", using: :btree
 
+  create_table "posts", force: true do |t|
+    t.string   "content"
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "state_id"
+    t.integer  "user_id"
+  end
+
+  add_index "posts", ["state_id"], name: "index_posts_on_state_id", using: :btree
+  add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
+
   create_table "projects", force: true do |t|
     t.string   "name"
     t.text     "description"
@@ -118,9 +130,11 @@ ActiveRecord::Schema.define(version: 20150706014552) do
     t.integer  "integer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "post_id"
   end
 
   add_index "states", ["integer_id"], name: "index_states_on_integer_id", using: :btree
+  add_index "states", ["post_id"], name: "index_states_on_post_id", using: :btree
   add_index "states", ["project_id"], name: "index_states_on_project_id", using: :btree
 
   create_table "users", force: true do |t|

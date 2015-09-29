@@ -10,4 +10,9 @@ class Project < ActiveRecord::Base
   def has_admin_permissions(user)
     user.class == User && self.owner == user.id
   end
+
+  def has_create_post_permissions(user)
+    user.class == User && ( owner == user.id ||
+                            roles.any? { |role| role.user == user })
+  end
 end
