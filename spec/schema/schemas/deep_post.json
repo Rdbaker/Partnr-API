@@ -1,0 +1,29 @@
+{
+  "title" : "Shallow Post Schema",
+  "description" : "A post object model",
+  "type" : "object",
+  "properties" : {
+    "title" : {
+      "type" : "string"
+    },
+    "state" : {
+      "type" : "object"
+    },
+    "user" : {
+      "type" : "object"
+    },
+    "content" : {
+      "type" : "string"
+    },
+    "id" : {
+      "type" : "integer"
+    }
+  },
+  "required" : [
+    "title",
+    "state",
+    "user",
+    "content",
+    "id"
+  ]
+}
