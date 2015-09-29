@@ -11,6 +11,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 	};
 	
 	projects.get($stateParams.id).then(function(result) {
+		$log.debug(result.data);
 		$scope.project = result.data;
 		if (result.data.owner === principal.getUser().id) {
 			$scope.isOwner = true;
