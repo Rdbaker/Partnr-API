@@ -7,7 +7,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 
 	function fetchCsrf() {
 		/* Gets the csrf token from the user */
-		var promise = $http.get($rootScope.apiRoute + 'api/users/sign_in')
+		var promise = $http.get('/api/users/sign_in')
 		.success(function(data, status, headers, config) {
 			if (data.csrfToken) {
 				csrfToken = data.csrfToken;
@@ -68,12 +68,13 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 			   if so, a request will check the validity of that session
 			   and store the resulting user value if it's still valid
 			*/
+			$log.debug('[AUTH] Identity Pre-checked: ' + identityPrechecked);
 			var deferred = $q.defer();
 			if (!user && !identityPrechecked || force) {
 				$log.debug('[AUTH] Checking if user session exists');
 				$http({
 					method: 'GET',
-					url: $rootScope.apiRoute + 'api/users/sign_in'
+					url: '/api/users/sign_in'
 				}).success(function(data, status, headers, config) {
 					if (data.user) {
 						$log.debug('[AUTH] Cookie valid, storing user data');
@@ -82,19 +83,18 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 						deferred.resolve(user);
 					} else {
 						$log.debug('[AUTH] No preset user');
-						identityPrechecked = true;
 						deferred.resolve();
 					}
 				})
 				.error(function(data, status, headers, config) {
 					$log.error('[AUTH] Request to server failed');
-					identityPrechecked = true;
 					deferred.resolve();
 				})
 			} else {
 				deferred.resolve();
 			}
 
+			identityPrechecked = true;
 			return deferred.promise;
 		},
 
@@ -113,7 +113,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 
 				return $http({
 					method: 'POST',
-					url: $rootScope.apiRoute + 'api/users/sign_in',
+					url: '/api/users/sign_in',
 					headers: {
 						'X-CSRF-Token' : getCsrf(),
 						'Content-Type' : 'application/json'
@@ -147,7 +147,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 					'X-CSRF-Token' : getCsrf(),
 					'Content-Type' : 'application/json'
 				},
-				url: $rootScope.apiRoute + 'api/users/sign_out'
+				url: '/api/users/sign_out'
 			}).success(function(data, status, headers, config) {
 				user = {};
 				authenticated = false;

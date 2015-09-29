@@ -1,9 +1,9 @@
-angular.module('partnr.auth').factory('authorization', function($rootScope, $state, $log, principal) {
+angular.module('partnr.auth').factory('authorization', function($rootScope, $state, $log, $q, principal) {
   return {
     authorize: function() {
+      var deferred = $q.defer();
       // first check for existing session
-      return principal.identity()
-        .then(function() {
+      principal.identity().then(function() {
           var isAuthenticated = principal.isAuthenticated();
 
           $log.debug("[AUTH] Authorizing page access...");
@@ -23,17 +23,19 @@ angular.module('partnr.auth').factory('authorization', function($rootScope, $sta
 
             $log.debug("[AUTH] User is not authorized to view this page");
             
-            if (isAuthenticated) {
-                $log.debug("[AUTH] Redirecting user to restricted page");
-                $state.go('login'); // restricted page in the future
-            } else {
-                $log.debug("[AUTH] Redirecting user to login page");
-                $state.go('login');
-            }
+            // do nothing for now, no restricted page built yet
+            // if (isAuthenticated) {
+            //     $log.debug("[AUTH] Redirecting user to restricted page");
+            // } else {
+            //     $log.debug("[AUTH] Redirecting user to login page");
+            // }
+            deferred.resolve(false);
           } else {
             $log.debug("[AUTH] User is authorized to view this page");
+            deferred.resolve(true);
           }
         });
+      return deferred.promise;
     }
   };
 });

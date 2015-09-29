@@ -1,0 +1,19 @@
+<header ng-include="'shared/header.html'"></header>
+<div class="col-md-8">
+	<h2>{{ project.name }}</h2>
+	<div class="btn-group" ng-if="isOwner" dropdown is-open="status.isopen">
+      <button id="single-button" type="button" class="btn btn-primary" dropdown-toggle ng-disabled="disabled">
+        Actions<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+        <li role="menuitem"><a href ng-click="doDelete()">Delete</a></li>
+      </ul>
+    </div>
+    <h3>Description</h3>
+    <p>{{project.description}}</p>
+    <h3>Roles</h3>
+    <div ng-repeat="role in project.roles">
+    	<h4>Name: {{role.title}}</h4>
+    	<h4>User: {{role.user}}</h4>
+    </div>
+</div>
