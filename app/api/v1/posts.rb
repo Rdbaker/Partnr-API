@@ -14,6 +14,12 @@ module V1
         @post ||= get_record(Post, id)
         error!("401 Unauthorized", 401) unless @post.has_destroy_permissions current_user
       end
+
+      def post_create_permissions(proj_id)
+        authenticated_user
+        @proj ||= get_record(Project, proj_id)
+        error!("401 Unauthorized", 401) unless @proj.has_create_post_permissions current_user
+      end
     end
 
     desc "Retrieve all posts for a given state.", entity: Entities::PostData::AsShallow
@@ -50,6 +56,7 @@ module V1
     post do
       authenticated_user
       state = get_record(State, params[:state_id])
+      post_create_permissions(state.project_id)
       post = Post.create!({
         title: params[:title],
         content: params[:content],

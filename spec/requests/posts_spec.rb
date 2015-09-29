@@ -5,11 +5,13 @@ RSpec.describe "Posts", :type => :request do
     # owner
     @user = create(:user)
     @project = build(:good_project)
-    @project.id = 1
-    @project.owner = @user
+    @project.owner = @user.id
     # author
     @user2 = create(:user2)
+    @role = build(:role)
     @post = build(:post)
+    @role.project = @project
+    @role.user = @user2
     @post.user = @user2
     # anybody else
     @user3 = create(:user3)
@@ -17,10 +19,9 @@ RSpec.describe "Posts", :type => :request do
     @state = build(:state)
     @state.project = @project
     @post.state = @state
-    @post.id = 1
-    @state.id = 1
 
     @project.save
+    @role.save
     @state.save
     @post.save
   end
@@ -52,7 +53,7 @@ RSpec.describe "Posts", :type => :request do
         post "/api/v1/posts", {
           "title" => @title,
           "content" => @content,
-          "state" => @state.id
+          "state_id" => @state.id
         }
         @res = JSON.parse(response.body)
       end
@@ -65,14 +66,13 @@ RSpec.describe "Posts", :type => :request do
         expect(@res["title"]).to eq(@title)
         expect(@res["content"]).to eq(@content)
         expect(@res["state"]["id"]).to eq(@state.id)
-        @new_post_id = @res["id"]
       end
     end
-=begin
+
     describe "DELETE /api/v1/posts/:id" do
-      before(:all) do
-        delete "/api/v1/posts/#{@new_post_id}"
-        @res = JSON.parse(response.body)
+      before(:each) do
+        @old_post_id = @post.id
+        delete "/api/v1/posts/#{@post.id}"
       end
 
       it "returns a 204" do
@@ -80,11 +80,10 @@ RSpec.describe "Posts", :type => :request do
       end
 
       it "no longer exists" do
-        get "/api/v1/posts#{@new_post_id}"
+        get "/api/v1/posts/#{@old_post_id}"
         expect(response.status).to eq(404)
       end
     end
-=end
 
   end
 
@@ -117,7 +116,7 @@ RSpec.describe "Posts", :type => :request do
         post "/api/v1/posts", {
           "title" => @title,
           "content" => @content,
-          "state" => @state.id
+          "state_id" => @state.id
         }
         @res = JSON.parse(response.body)
       end
@@ -130,15 +129,13 @@ RSpec.describe "Posts", :type => :request do
         expect(@res["title"]).to eq(@title)
         expect(@res["content"]).to eq(@content)
         expect(@res["state"]["id"]).to eq(@state.id)
-        @new_post_id = @res["id"]
       end
     end
 
-=begin
     describe "DELETE /api/v1/posts/:id" do
-      before(:all) do
-        delete "/api/v1/posts/#{@new_post_id}"
-        @res = JSON.parse(response.body)
+      before(:each) do
+        @old_post_id = @post.id
+        delete "/api/v1/posts/#{@old_post_id}"
       end
 
       it "returns a 204" do
@@ -146,15 +143,14 @@ RSpec.describe "Posts", :type => :request do
       end
 
       it "no longer exists" do
-        get "/api/v1/posts#{@new_post_id}"
+        get "/api/v1/posts/#{@old_post_id}"
         expect(response.status).to eq(404)
       end
     end
-=end
+
 
     describe "PUT /api/v1/posts/:id" do
-      before(:all) do
-        @old_title = @post.title
+      before(:each) do
         @new_title = "some different title than before"
         put "/api/v1/posts/#{@post.id}", {
           "title" => @new_title
@@ -168,7 +164,6 @@ RSpec.describe "Posts", :type => :request do
 
       it "changes the title" do
         expect(@res["title"]).to eq(@new_title)
-        expect(@new_title).to.not eq(@old_title)
       end
     end
 
@@ -186,7 +181,7 @@ RSpec.describe "Posts", :type => :request do
         post "/api/v1/posts", {
           "title" => @title,
           "content" => @content,
-          "state" => @state.id
+          "state_id" => @state.id
         }
         @res = JSON.parse(response.body)
       end
@@ -213,7 +208,6 @@ RSpec.describe "Posts", :type => :request do
     describe "DELETE /api/v1/posts/:id" do
       before(:each) do
         delete "/api/v1/posts/#{@post.id}"
-        @res = JSON.parse(response.body)
       end
 
       it "should return a 401" do
