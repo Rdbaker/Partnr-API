@@ -45,6 +45,8 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 					$scope.ownerRole = data;
 					$scope.ownerRole.user = principal.getUser().id;
 					projectRoles.update($scope.ownerRole).success(function(data, status, headers, config) {
+						$log.debug("[PROJECT ROLE] Created and Updated Role");
+						$log.debug(data);
 						$scope.step += 1;
 					});
 				} else {

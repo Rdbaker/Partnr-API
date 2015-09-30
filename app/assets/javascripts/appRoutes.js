@@ -124,11 +124,25 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 
 		.state('project', {
 			parent: 'site',
-			url: '/projects/{id}',
+			url: '/projects/{id:int}',
 			views: {
 				'content@': {
 					templateUrl: 'projects/project.html',
 					controller: 'ProjectController'
+				}
+			},
+			data: {
+				roles: ['Admin']
+			}
+		})
+
+		.state('project_application', {
+			parent: 'site',
+			url: '/projects/{project_id:int}/apply?role_id',
+			views: {
+				'content@': {
+					templateUrl: 'applications/application.html',
+					controller: 'ApplicationController'
 				}
 			},
 			data: {

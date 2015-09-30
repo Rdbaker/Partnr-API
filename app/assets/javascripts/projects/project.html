@@ -14,6 +14,7 @@
     <h3>Roles</h3>
     <div ng-repeat="role in project.roles">
     	<h4>Name: {{role.title}}</h4>
-    	<h4>User: {{role.user}}</h4>
+    	<h4 ng-show="role.user">User: {{role.user.first_name}} {{role.user.last_name}}</h4>
+    	<button type="button" class="btn btn-primary" ng-if="!role.user" ng-click="doApplication()">Apply</button>
     </div>
 </div>
