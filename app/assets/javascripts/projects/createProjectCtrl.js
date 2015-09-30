@@ -39,7 +39,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 
 	$scope.processOwnerRole = function() {
 		if ($scope.validateOwnerRole()) {
-			$scope.ownerRole.project_id = $scope.project.id;
+			$scope.ownerRole.project = $scope.project.id;
 			projectRoles.create($scope.ownerRole).success(function(data, status, headers, config) {
 				if (data.id) {
 					$scope.ownerRole = data;
@@ -71,7 +71,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		for (var i = 0; i < $scope.roles.length; i++) {
 			var curRole = $scope.roles[i];
 			if ($scope.validateRole(curRole)) {
-				curRole.project_id = $scope.project.id;
+				curRole.project = $scope.project.id;
 				cleanedRoles.push(curRole);
 			}	
 		}
