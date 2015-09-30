@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
   has_many :roles
   has_many :applications, through: :roles
 
-  validates :name, :owner, :creator, presence: true
+  validates :title, :owner, :creator, presence: true
 
   attr_readonly :creator
 
@@ -14,5 +14,9 @@ class Project < ActiveRecord::Base
   def has_create_post_permissions(user)
     user.class == User && ( owner == user.id ||
                             roles.any? { |role| role.user == user })
+  end
+
+  def has_create_state_permissions(user)
+    has_create_post_permissions user
   end
 end

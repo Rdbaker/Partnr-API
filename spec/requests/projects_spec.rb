@@ -86,7 +86,7 @@ RSpec.describe "Projects", :type => :request do
     describe "POST /api/v1/projects" do
       before(:each) do
         post "/api/v1/projects", {
-          "name" => "a brand new project",
+          "title" => "a brand new project",
           "description" => "this is just a test, I suppose",
           "owner" => @user.id
         }
@@ -100,7 +100,7 @@ RSpec.describe "Projects", :type => :request do
     describe "PUT /api/v1/projects/:id" do
       before(:each) do
         put "/api/v1/projects/#{@project.id}", {
-          "name" => "the new name for this project"
+          "title" => "the new title for this project"
         }
       end
 
@@ -118,10 +118,10 @@ RSpec.describe "Projects", :type => :request do
 
     describe "POST /api/v1/projects" do
       before(:each) do
-        @name = "a brand new project"
+        @title = "a brand new project"
         @description = "this is just a test, I suppose"
         post "/api/v1/projects", {
-          "name" => @name,
+          "title" => @title,
           "description" => @description,
           "owner" => @user.id
         }
@@ -133,7 +133,7 @@ RSpec.describe "Projects", :type => :request do
       end
 
       it "has all the proper attributes we gave it" do
-        expect(@res["name"]).to eq(@name)
+        expect(@res["title"]).to eq(@title)
         expect(@res["description"]).to eq(@description)
         expect(@res["owner"]).to eq(@user.id)
         expect(@res["creator"]).to eq(@user.id)
@@ -149,7 +149,7 @@ RSpec.describe "Projects", :type => :request do
       context "user does not have permissions" do
         before(:each) do
           put "/api/v1/projects/#{@project2.id}", {
-            "name" => "the new name for this project"
+            "title" => "the new title for this project"
           }
         end
 
@@ -162,9 +162,9 @@ RSpec.describe "Projects", :type => :request do
         before(:each) do
           @project.owner = @user.id
           @project.save
-          @name = "the brand new name for this project"
+          @title = "the brand new title for this project"
           put "/api/v1/projects/#{@project.id}", {
-            "name" => @name
+            "title" => @title
           }
           @res = JSON.parse(response.body)
         end
@@ -174,7 +174,7 @@ RSpec.describe "Projects", :type => :request do
         end
 
         it "returns the updated project" do
-          expect(@res["name"]).to eq(@name)
+          expect(@res["title"]).to eq(@title)
         end
 
         it "returns a JSON Schema conforming project" do

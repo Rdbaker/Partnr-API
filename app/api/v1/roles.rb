@@ -24,7 +24,7 @@ module V1
 
     desc "Retrieve all roles.", entity: Entities::RoleData::AsDeep
     params do
-      optional :user_id, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
+      optional :user, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
       optional :title, type: String, desc: "The title of the role to retrieve."
       optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."
@@ -49,11 +49,11 @@ module V1
     desc "Create a new role for a project.", entity: Entities::RoleData::AsShallow
     params do
       requires :title, type: String, allow_blank: false, desc: "The role title."
-      requires :project_id, type: Integer, allow_blank: false, desc: "The project to which the role will belong."
+      requires :project, type: Integer, allow_blank: false, desc: "The project to which the role will belong."
     end
     post do
       authenticated_user
-      proj = get_record(Project, params[:project_id])
+      proj = get_record(Project, params[:project])
       role = Role.create!({
         title: params[:title],
         project: proj,
@@ -67,16 +67,20 @@ module V1
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The role ID."
       optional :title, type: String, allow_blank: false, desc: "The role title."
-      optional :user_id, type: Integer, allow_blank: false, desc: "The user ID assigned to the role."
-      at_least_one_of :title, :user_id
+      optional :user, type: Integer, allow_blank: false, desc: "The user ID assigned to the role."
+      at_least_one_of :title, :user
     end
     put ":id" do
-      role_assign_permissions(params[:id]) if !!params[:user_id]
+      role_assign_permissions(params[:id]) if !!params[:user]
       role_put_permissions(params[:id]) if !!params[:title]
 
-      if !!params[:user_id]
+      if !!params[:user] && current_user.id == params[:user]
         role_assign_permissions params[:id]
-        @role.user = get_record(User, params[:user_id])
+        if current_user.id == params[:user] && @role.user.nil?
+          @role.user = get_record(User, params[:user])
+        else
+          return error!("401 Unauthorized", 401)
+        end
       end
 
       if !!params[:title]

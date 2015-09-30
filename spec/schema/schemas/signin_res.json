@@ -36,17 +36,9 @@
           "created_at",
           "authentication_token"
         ]
-    },
-    "csrfToken" : {
-      "type" : "string"
-    },
-    "csrfParam" : {
-      "type" : "string"
     }
   },
   "required" : [
-    "user",
-    "csrfParam",
-    "csrfToken"
+    "user"
   ]
 }

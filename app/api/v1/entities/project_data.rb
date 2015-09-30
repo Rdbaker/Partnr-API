@@ -1,7 +1,7 @@
 module V1::Entities
   class ProjectData
     class AsShallow < Grape::Entity
-      expose :name, documentation: { type: "String", desc: "The project name." }
+      expose :title, documentation: { type: "String", desc: "The project title." }
       expose :description, documentation: { type: "Integer", desc: "The project description." }
       expose :owner, documentation: { type: "Integer", desc: "The current project owner." }
       expose :creator, documentation: { type: "Integer", desc: "The project creator." }
