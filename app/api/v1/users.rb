@@ -20,6 +20,14 @@ module V1
         .per(params[:per_page]), with: Entities::UserData::AsShallow
     end
 
+    desc "Retrieve info about the current user.", entity: Entities::UserData::AsPrivate
+    get :me do
+      if authenticated
+        present current_user, with: Entities::UserData::AsPrivate
+      else
+        error!("401 Unauthorized", 401)
+      end
+    end
 
     desc "Retrieve info for a single user.", entity: Entities::UserData::AsPublic
     params do
