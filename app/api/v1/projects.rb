@@ -36,14 +36,14 @@ module V1
 
     desc "Create a project.", entity: Entities::ProjectData::AsShallow
     params do
-      requires :name, type: String, allow_blank: false, desc: "The Project's name."
+      requires :title, type: String, allow_blank: false, desc: "The Project's title."
       optional :description, type: String, allow_blank: false, desc: "The Project's description."
       requires :owner, type: Integer, allow_blank: false, valid_user: true, desc: "The Project's owner's ID."
     end
     post do
       authenticated_user
       project = Project.create!({
-        name: params[:name],
+        title: params[:title],
         description: params[:description],
         owner: params[:owner],
         creator: current_user.id
@@ -55,10 +55,10 @@ module V1
     desc "Update a project.", entity: Entities::ProjectData::AsShallow
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The Project ID."
-      optional :name, type: String, allow_blank: false, desc: "The Project's name."
+      optional :title, type: String, allow_blank: false, desc: "The Project's title."
       optional :description, type: String, allow_blank: false, desc: "The Project's description."
       optional :owner, type: Integer, allow_blank: false, valid_user: true, desc: "The Project's owner's ID."
-      at_least_one_of :name, :description, :owner
+      at_least_one_of :title, :description, :owner
     end
     put ":id" do
       project_permissions(params[:id])

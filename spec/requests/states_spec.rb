@@ -56,9 +56,9 @@ RSpec.describe "States", :type => :request do
 
     describe "POST /api/v1/states" do
       before(:each) do
-        @name = "new state"
+        @title = "new state"
         post "/api/v1/states", {
-          "name" => @name,
+          "title" => @title,
           "project" => @project.id
         }
         @res = JSON.parse(response.body)
@@ -69,7 +69,7 @@ RSpec.describe "States", :type => :request do
       end
 
       it "has all the proper attributes we gave it" do
-        expect(@res["name"]).to eq(@name)
+        expect(@res["title"]).to eq(@title)
         expect(@res["project"]["id"]).to eq(@project.id)
       end
     end
@@ -86,9 +86,9 @@ RSpec.describe "States", :type => :request do
 
     describe "POST /api/v1/states" do
       before(:each) do
-        @name = "new state"
+        @title = "new state"
         post "/api/v1/states", {
-          "name" => @name,
+          "title" => @title,
           "project" => @project.id
         }
         @res = JSON.parse(response.body)

@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
   has_many :roles
   has_many :applications, through: :roles
 
-  validates :name, :owner, :creator, presence: true
+  validates :title, :owner, :creator, presence: true
 
   attr_readonly :creator
 
