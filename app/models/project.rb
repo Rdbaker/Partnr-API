@@ -15,4 +15,8 @@ class Project < ActiveRecord::Base
     user.class == User && ( owner == user.id ||
                             roles.any? { |role| role.user == user })
   end
+
+  def has_create_state_permissions(user)
+    has_create_post_permissions user
+  end
 end

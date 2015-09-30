@@ -24,8 +24,8 @@ module V1
 
     desc "Retrieve all posts for a given state.", entity: Entities::PostData::AsShallow
     params do
-      requires :state_id, type: Integer, allow_blank: false, desc: "The state id to which the post was posted."
-      optional :user_id, type: Integer, allow_blank: false, desc: "The author's User ID for the posts to retrieve."
+      requires :state, type: Integer, allow_blank: false, desc: "The state id to which the post was posted."
+      optional :user, type: Integer, allow_blank: false, desc: "The author's User ID for the posts to retrieve."
       optional :title, type: String, desc: "The title of the post to retrieve."
       optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of posts per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the posts."
@@ -51,11 +51,11 @@ module V1
     params do
       requires :title, type: String, allow_blank: false, desc: "The post title."
       requires :content, type: String, allow_blank: false, desc: "The post content."
-      requires :state_id, type: Integer, allow_blank: false, desc: "The state to which the post will belong."
+      requires :state, type: Integer, allow_blank: false, desc: "The state to which the post will belong."
     end
     post do
       authenticated_user
-      state = get_record(State, params[:state_id])
+      state = get_record(State, params[:state])
       post_create_permissions(state.project_id)
       post = Post.create!({
         title: params[:title],

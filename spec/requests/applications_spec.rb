@@ -62,7 +62,7 @@ RSpec.describe "Roles", :type => :request do
 
     context "with a supplied user id" do
       before(:each) do
-        get "/api/v1/applications", user_id: @user2.id
+        get "/api/v1/applications", user: @user2.id
         @res = JSON.parse(response.body)
       end
 
@@ -77,7 +77,7 @@ RSpec.describe "Roles", :type => :request do
 
     context "with a supplied project id" do
       before(:each) do
-        get "/api/v1/applications", project_id: @project.id
+        get "/api/v1/applications", project: @project.id
         @res = JSON.parse(response.body)
       end
 
@@ -92,7 +92,7 @@ RSpec.describe "Roles", :type => :request do
 
     context "with a supplied role id" do
       before(:each) do
-        get "/api/v1/applications", role_id: @role2.id
+        get "/api/v1/applications", role: @role2.id
         @res = JSON.parse(response.body)
       end
 
@@ -139,7 +139,7 @@ RSpec.describe "Roles", :type => :request do
     describe "POST /api/v1/applications" do
       before(:each) do
         post "/api/v1/applications", {
-          "role_id" => @role.id
+          "role" => @role.id
         }
         @res = JSON.parse(response.body)
       end
@@ -183,7 +183,7 @@ RSpec.describe "Roles", :type => :request do
       context "good request" do
         before(:each) do
           post "/api/v1/applications", {
-            "role_id" => @role.id
+            "role" => @role.id
           }
           @res = JSON.parse(response.body)
         end
@@ -205,7 +205,7 @@ RSpec.describe "Roles", :type => :request do
       context "bad request" do
         before(:each) do
           post "/api/v1/applications", {
-            "role_id" => 0
+            "role" => 0
           }
           @res = JSON.parse(response.body)
         end

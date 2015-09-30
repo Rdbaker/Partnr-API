@@ -24,7 +24,7 @@ RSpec.describe "States", :type => :request do
     @role.user = @user2
     @role.project = @project
 
-    @project.owner = @user
+    @project.owner = @user.id
 
     @state.save
     @state2.save
@@ -59,7 +59,7 @@ RSpec.describe "States", :type => :request do
         @name = "new state"
         post "/api/v1/states", {
           "name" => @name,
-          "project_id" => @project.id
+          "project" => @project.id
         }
         @res = JSON.parse(response.body)
       end
@@ -89,7 +89,7 @@ RSpec.describe "States", :type => :request do
         @name = "new state"
         post "/api/v1/states", {
           "name" => @name,
-          "project_id" => @project.id
+          "project" => @project.id
         }
         @res = JSON.parse(response.body)
       end
