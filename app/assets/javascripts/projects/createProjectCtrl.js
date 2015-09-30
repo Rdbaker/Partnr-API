@@ -1,7 +1,7 @@
 angular.module('partnr.users.assets').controller('CreateProjectController', function($scope, $state, $log, $q, projects, projectRoles, principal, toaster) {
 	$scope.step = 1;
 	$scope.project = {
-		name: '',
+		title: '',
 		description: ''
 	};
 
@@ -9,7 +9,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 	$scope.roles = [{ title: '' }];
 
 	$scope.validateProject = function() {
-		return ($scope.project.name.length > 0);
+		return ($scope.project.title.length > 0);
 	}
 
 	$scope.validateOwnerRole = function() {
@@ -33,7 +33,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 				}
 			});
 		} else {
-			toaster.error("Please enter a name.");
+			toaster.error("Please enter a title.");
 		}
 	}
 
