@@ -3,7 +3,7 @@
   "description" : "A state object model",
   "type" : "object",
   "properties" : {
-    "name" : {
+    "title" : {
       "type" : "string"
     },
     "project" : {
@@ -14,7 +14,7 @@
     }
   },
   "required" : [
-    "name",
+    "title",
     "project",
     "id"
   ]

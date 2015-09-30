@@ -3,7 +3,7 @@
   "description" : "A project object model",
   "type" : "object",
   "properties" : {
-    "name" : {
+    "title" : {
       "type" : "string"
     },
     "description" : {
@@ -34,7 +34,7 @@
     }
   },
   "required" : [
-    "name",
+    "title",
     "owner",
     "creator",
     "id"

@@ -2,7 +2,7 @@ class State < ActiveRecord::Base
   belongs_to :project
   has_many :posts
 
-  validates :name, :project, presence: true
+  validates :title, :project, presence: true
 
   attr_readonly :project
 
