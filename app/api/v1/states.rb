@@ -19,8 +19,8 @@ module V1
 
     desc "Retrieve all states for a project", entity: Entities::StateData::AsShallow
     params do
-      requires :project_id, type: Integer, allow_blank: false, desc: "The Project ID for the states to retreive."
-      optional :name, type: String, desc: "The name of the project state to retrieve."
+      requires :project, type: Integer, allow_blank: false, desc: "The Project ID for the states to retreive."
+      optional :title, type: String, desc: "The title of the project state to retrieve."
       optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of states per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the states."
     end
@@ -43,30 +43,34 @@ module V1
 
     desc "Create a new state for a project.", entity: Entities::StateData::AsShallow
     params do
-      requires :name, type: String, allow_blank: false, desc: "The name of the state for the project."
-      requires :project_id, type: Integer, allow_blank: false, desc: "The project to which the state will belong."
+      requires :title, type: String, allow_blank: false, desc: "The title of the state for the project."
+      requires :project, type: Integer, allow_blank: false, desc: "The project ID to which the state will belong."
     end
     post do
       authenticated_user
-      proj = get_record(Project, params[:project_id])
-      state = State.create!({
-        name: params[:name],
-        project: proj
-      })
-      present state, with: Entities::StateData::AsShallow
+      proj = get_record(Project, params[:project])
+      if proj.has_create_state_permissions current_user
+        state = State.create!({
+          title: params[:title],
+          project: proj
+        })
+        present state, with: Entities::StateData::AsShallow
+      else
+        error!("401 Unauthorized", 401)
+      end
     end
 
 
     desc "Update a specific state for a project.", entity: Entities::RoleData::AsShallow
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The state ID."
-      optional :name, type: String, allow_blank: false, desc: "The state title."
-      at_least_one_of :name
+      requires :title, type: String, allow_blank: false, desc: "The state title."
+      at_least_one_of :title
     end
     put ":id" do
-      if !!params[:name]
+      if !!params[:title]
         state_put_permissions(params[:id])
-        @state.name = params[:name]
+        @state.title = params[:title]
       end
 
       @state.save

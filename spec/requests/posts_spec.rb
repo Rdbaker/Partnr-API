@@ -53,7 +53,7 @@ RSpec.describe "Posts", :type => :request do
         post "/api/v1/posts", {
           "title" => @title,
           "content" => @content,
-          "state_id" => @state.id
+          "state" => @state.id
         }
         @res = JSON.parse(response.body)
       end
@@ -116,7 +116,7 @@ RSpec.describe "Posts", :type => :request do
         post "/api/v1/posts", {
           "title" => @title,
           "content" => @content,
-          "state_id" => @state.id
+          "state" => @state.id
         }
         @res = JSON.parse(response.body)
       end
@@ -181,7 +181,7 @@ RSpec.describe "Posts", :type => :request do
         post "/api/v1/posts", {
           "title" => @title,
           "content" => @content,
-          "state_id" => @state.id
+          "state" => @state.id
         }
         @res = JSON.parse(response.body)
       end

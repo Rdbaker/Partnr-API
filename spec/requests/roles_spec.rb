@@ -41,7 +41,7 @@ RSpec.describe "Roles", :type => :request do
 
     context "with a supplied user id" do
       before(:each) do
-        get "/api/v1/roles", user_id: @user.id
+        get "/api/v1/roles", user: @user.id
         @res = JSON.parse(response.body)
       end
 
@@ -93,7 +93,7 @@ RSpec.describe "Roles", :type => :request do
       before(:each) do
         post "/api/v1/roles", {
           "title" => "Some title",
-          "project_id" => @project.id
+          "project" => @project.id
         }
       end
 
@@ -105,7 +105,7 @@ RSpec.describe "Roles", :type => :request do
     describe "PUT /api/v1/roles/:id" do
       before(:each) do
         put "/api/v1/roles/#{@role.id}", {
-          "user_id" => @user.id
+          "title" => "new title"
         }
       end
 
@@ -139,7 +139,7 @@ RSpec.describe "Roles", :type => :request do
           @proj = @project.id
           post "/api/v1/roles", {
             "title" => @title,
-            "project_id" => @proj
+            "project" => @proj
           }
           @res = JSON.parse(response.body)
         end
@@ -191,8 +191,10 @@ RSpec.describe "Roles", :type => :request do
         before(:each) do
           @project.owner = @user.id
           @project.save
+          @role.user = nil
+          @role.save
           put "/api/v1/roles/#{@role.id}", {
-            "user_id" => @user2.id
+            "user" => @user.id
           }
           @res = JSON.parse(response.body)
         end
@@ -202,7 +204,7 @@ RSpec.describe "Roles", :type => :request do
         end
 
         it "returns the updated role" do
-          expect(@res["user"]["id"]).to eq(@user2.id)
+          expect(@res["user"]["id"]).to eq(@user.id)
         end
 
         it "returns a JSON Schema conforming role" do
@@ -212,10 +214,12 @@ RSpec.describe "Roles", :type => :request do
 
       context "user does not have proper permissions to update 'user' field" do
         before(:each) do
+          @project.owner = @user2
+          @project.save
           @role.user = @user
           @role.save
           put "/api/v1/roles/#{@role.id}", {
-            "user_id" => @user2.id
+            "user" => @user2.id
           }
           @res = JSON.parse(response.body)
         end
@@ -249,12 +253,14 @@ RSpec.describe "Roles", :type => :request do
         end
       end
 
-      context "user does not have proper permissions to update 'title' field" do
+      context "user does not have proper permissions to update 'user' field" do
         before(:each) do
+          @project.owner = @user2.id
+          @project.save
           @role2.user = @user2
           @role2.save
           put "/api/v1/roles/#{@role2.id}", {
-            "user_id" => @user2.id
+            "user" => @user.id
           }
           @res = JSON.parse(response.body)
         end
