@@ -15,6 +15,6 @@
     <div ng-repeat="role in project.roles">
     	<h4>Name: {{role.title}}</h4>
     	<h4 ng-show="role.user">User: {{role.user.first_name}} {{role.user.last_name}}</h4>
-    	<button type="button" class="btn btn-primary" ng-if="!role.user" ng-click="doApplication()">Apply</button>
+    	<button type="button" class="btn btn-primary" ng-if="!role.user && canApply" ng-click="$state.go('project_role_apply', {'project_id': project.id, 'role_id': role.id})">Apply</button>
     </div>
 </div>

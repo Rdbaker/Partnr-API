@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('CreateProjectController', function($scope, $state, $log, $q, projects, projectRoles, principal, toaster) {
+angular.module('partnr.users.assets').controller('CreateProjectController', function($scope, $state, $log, $q, projects, roles, principal, toaster) {
 	$scope.step = 1;
 	$scope.project = {
 		title: '',
@@ -40,11 +40,12 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 	$scope.processOwnerRole = function() {
 		if ($scope.validateOwnerRole()) {
 			$scope.ownerRole.project = $scope.project.id;
-			projectRoles.create($scope.ownerRole).success(function(data, status, headers, config) {
+			roles.create($scope.ownerRole).success(function(data, status, headers, config) {
 				if (data.id) {
 					$scope.ownerRole = data;
 					$scope.ownerRole.user = principal.getUser().id;
-					projectRoles.update($scope.ownerRole).success(function(data, status, headers, config) {
+					$log.debug($scope.ownerRole);
+					roles.update($scope.ownerRole).success(function(data, status, headers, config) {
 						$log.debug("[PROJECT ROLE] Created and Updated Role");
 						$log.debug(data);
 						$scope.step += 1;
@@ -77,7 +78,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		}
 
 		for (var i = 0; i < cleanedRoles.length; i++) {
-			projectRoles.create(cleanedRoles[i]).success(function(data, status, headers, config) {
+			roles.create(cleanedRoles[i]).success(function(data, status, headers, config) {
 				rolesProcessed += 1;
 
 				if (rolesProcessed === cleanedRoles.length) {

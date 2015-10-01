@@ -1,5 +1,6 @@
 angular.module('partnr.users.assets').controller('ProjectController', function($scope, $state, $stateParams, $log, $q, projects, principal, toaster) {
 	$scope.project = {};
+	$scope.canApply = true;
 	$scope.isOwner = false;
 	$scope.loadComplete = false;
 
