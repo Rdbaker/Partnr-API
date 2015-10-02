@@ -181,6 +181,31 @@ RSpec.describe "Projects", :type => :request do
           expect(@res).to match_json_schema(:shallow_project)
         end
       end
+
+      context "user has proper permissions changing the status" do
+        before(:each) do
+          @project.owner = @user.id
+          @project.save
+          @status = "complete"
+          put "/api/v1/projects/#{@project.id}", {
+            "status" => @status
+          }
+          @res = JSON.parse(response.body)
+        end
+
+        it "returns a 200" do
+          expect(response.status).to eq(200)
+        end
+
+        it "returns the updated project" do
+          expect(@res["status"]).to eq(@status)
+        end
+
+        it "returns a JSON Schema conforming project" do
+          expect(@res).to match_json_schema(:shallow_project)
+        end
+      end
+
     end
 
 

@@ -3,7 +3,9 @@ class Project < ActiveRecord::Base
   has_many :roles
   has_many :applications, through: :roles
 
-  validates :title, :owner, :creator, presence: true
+  validates :title, :owner, :creator, :status, presence: true
+
+  enum status: { not_started: 0, in_progress: 1, complete: 2 }
 
   attr_readonly :creator
 
@@ -18,5 +20,9 @@ class Project < ActiveRecord::Base
 
   def has_create_state_permissions(user)
     has_create_post_permissions user
+  end
+
+  def has_status_permissions(user)
+    has_admin_permissions user
   end
 end

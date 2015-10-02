@@ -9,6 +9,9 @@
     "description" : {
       "type" : ["string", "null"]
     },
+    "status" : {
+      "type" : "string"
+    },
     "owner" : {
       "type" : "integer"
     },
@@ -23,6 +26,7 @@
     "title",
     "owner",
     "creator",
+    "status",
     "id"
   ]
 }
