@@ -10,7 +10,7 @@ angular.module('partnr', ['ui.router',
   ]).run(function ($state, $rootScope, $log, principal, authorization) {
    $rootScope.$state = $state; // application state
    $rootScope.apiRoute  = '/api/v1/';
-   $rootScope.version   = '0.3.4';
+   $rootScope.version   = '0.3.5';
    var bypassAuthCheck = false;
 
    $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
