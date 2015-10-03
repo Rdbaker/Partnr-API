@@ -1,4 +1,5 @@
 require_relative './validators/valid_user'
+require_relative './validators/valid_pagination'
 
 module V1
   class Applications < Grape::API
@@ -22,18 +23,18 @@ module V1
       end
     end
 
-    desc "Retrieve all applications.", entity: Entities::ApplicationData::AsShallow
+    desc "Retrieve all applications.", entity: Entities::ApplicationData::AsDeep
     params do
       optional :user, type: Integer, allow_blank: false, desc: "The applicant's ID."
       optional :project, type: Integer, allow_blank: false, desc: "The application's project's ID."
       optional :role, type: Integer, allow_blank: false, desc: "The application's role's ID."
-      optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of roles per page."
+      optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."
     end
     get do
       present Application.where(permitted_params params)
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::ApplicationData::AsShallow
+        .per(params[:per_page]), with: Entities::ApplicationData::AsDeep
     end
 
 
@@ -47,7 +48,7 @@ module V1
     end
 
 
-    desc "Create a new application for a role.", entity: Entities::ApplicationData::AsShallow
+    desc "Create a new application for a role.", entity: Entities::ApplicationData::AsDeep
     params do
       requires :role, type: Integer, allow_blank: false, desc: "The role ID to which the application will belong."
     end
@@ -55,12 +56,15 @@ module V1
       authenticated_user
       role = Role.find_by(id: params[:role])
       error!("Role #{params[:role]} does not exist", 400) if role.nil?
+      if role.project.belongs_to_project(current_user)
+        error!("You cannot apply for a role when you're already working on the project!", 400)
+      end
       application = Application.create!({
         role: role,
         user: current_user,
         project: role.project
       })
-      present application, with: Entities::ApplicationData::AsShallow
+      present application, with: Entities::ApplicationData::AsDeep
     end
 
 

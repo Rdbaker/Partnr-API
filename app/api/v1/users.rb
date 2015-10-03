@@ -1,3 +1,5 @@
+require_relative './validators/valid_pagination'
+
 module V1
   class Users < Grape::API
     helpers do
@@ -11,7 +13,7 @@ module V1
 
     desc "Retrieve all the users.", entity: Entities::UserData::AsShallow
     params do
-      optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of users per page."
+      optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of users per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page of the users to get."
     end
     get do
