@@ -27,7 +27,7 @@ module V1
       if authenticated
         present current_user, with: Entities::UserData::AsPrivate
       else
-        error!("401 Unauthorized", 401)
+        {}
       end
     end
 
