@@ -159,3 +159,15 @@ hr {
 [role="button"] {
   cursor: pointer;
 }
+
+// footer
+footer {
+  margin: 20px;
+
+  span {
+    text-align: center;
+    display: block;
+    color: #bbb;
+    font-size: 11px;
+  }
+}

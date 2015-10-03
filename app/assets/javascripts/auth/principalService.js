@@ -74,7 +74,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				$log.debug('[AUTH] Checking if user session exists');
 				$http({
 					method: 'GET',
-					url: $rootScope.apiRoute + '/users/me'
+					url: $rootScope.apiRoute + 'users/me'
 				}).success(function(data, status, headers, config) {
 					if (data.email) {
 						$log.debug('[AUTH] Cookie valid, storing user data');
