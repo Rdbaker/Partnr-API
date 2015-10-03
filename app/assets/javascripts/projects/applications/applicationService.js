@@ -7,7 +7,11 @@ angular.module('partnr.users.assets').factory('applications', function($rootScop
 
 			return $http({
 				method: 'GET',
-				url: $rootScope.apiRoute + 'applications?user=' + user_id + '?project=' + project_id,
+				url: $rootScope.apiRoute + 'applications',
+				params: {
+					user: user_id,
+					project: project_id
+				},
 				headers: principal.getHeaders()
 			});
 		},

@@ -39,8 +39,11 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		doLoadStep();
 	});
 
-	applications.get($stateParams.id, principal.getUser().id).then(function () {
+	applications.get($stateParams.id, principal.getUser().id).then(function(result) {
 		$log.debug(result.data);
+		if (result.data.length > 0) {
+			$scope.canApply = false;
+		}
 	});
 
 	var doLoadStep = function() {
