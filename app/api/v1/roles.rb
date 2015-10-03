@@ -1,4 +1,5 @@
 require_relative './validators/valid_user'
+require_relative './validators/valid_pagination'
 
 module V1
   class Roles < Grape::API
@@ -27,7 +28,7 @@ module V1
       optional :user, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
       optional :empty, type: Boolean, desc: "Search for empty roles."
       optional :title, type: String, desc: "The title of the role to retrieve."
-      optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of roles per page."
+      optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."
       mutually_exclusive :user, :empty
     end

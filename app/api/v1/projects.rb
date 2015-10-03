@@ -1,4 +1,5 @@
 require_relative './validators/valid_user'
+require_relative './validators/valid_pagination'
 
 module V1
   class Projects < Grape::API
@@ -21,7 +22,7 @@ module V1
     params do
       optional :owner, type: Integer, allow_blank: false, desc: "The User ID for the projects to retrieve."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The project's status."
-      optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of projects per page."
+      optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of projects per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of projects."
     end
     get do
