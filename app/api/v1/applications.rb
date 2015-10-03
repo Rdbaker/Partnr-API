@@ -22,7 +22,7 @@ module V1
       end
     end
 
-    desc "Retrieve all applications.", entity: Entities::ApplicationData::AsShallow
+    desc "Retrieve all applications.", entity: Entities::ApplicationData::AsDeep
     params do
       optional :user, type: Integer, allow_blank: false, desc: "The applicant's ID."
       optional :project, type: Integer, allow_blank: false, desc: "The application's project's ID."
@@ -33,7 +33,7 @@ module V1
     get do
       present Application.where(permitted_params params)
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::ApplicationData::AsShallow
+        .per(params[:per_page]), with: Entities::ApplicationData::AsDeep
     end
 
 
@@ -47,7 +47,7 @@ module V1
     end
 
 
-    desc "Create a new application for a role.", entity: Entities::ApplicationData::AsShallow
+    desc "Create a new application for a role.", entity: Entities::ApplicationData::AsDeep
     params do
       requires :role, type: Integer, allow_blank: false, desc: "The role ID to which the application will belong."
     end
@@ -63,7 +63,7 @@ module V1
         user: current_user,
         project: role.project
       })
-      present application, with: Entities::ApplicationData::AsShallow
+      present application, with: Entities::ApplicationData::AsDeep
     end
 
 
