@@ -55,6 +55,9 @@ module V1
       authenticated_user
       role = Role.find_by(id: params[:role])
       error!("Role #{params[:role]} does not exist", 400) if role.nil?
+      if role.project.belongs_to_project(current_user)
+        error!("You cannot apply for a role when you're already working on the project!", 400)
+      end
       application = Application.create!({
         role: role,
         user: current_user,

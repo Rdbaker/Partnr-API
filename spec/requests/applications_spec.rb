@@ -214,6 +214,21 @@ RSpec.describe "Roles", :type => :request do
           expect(response.status).to eq(400)
         end
       end
+
+      context "already on project" do
+        before(:each) do
+          @role.user = @user3
+          @role.save
+
+          post "/api/v1/applications", {
+            "role" => @role.id
+          }
+        end
+
+        it "returns a 400" do
+          expect(response.status).to eq(400)
+        end
+      end
     end
 
     describe "PUT /api/v1/applications/:id" do
