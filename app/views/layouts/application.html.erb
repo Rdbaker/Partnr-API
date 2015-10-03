@@ -6,13 +6,13 @@
   <% if ENV['RACK_ENV'] != 'production' %>
     <meta name="robots" content="noindex" />
   <% end %>
-  <!-- temporary bootstrap theme -->
-  <link href="https://bootswatch.com/superhero/bootstrap.css" rel="stylesheet" type="text/css"/>
 
+  <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
 </head>
 <body ng-app="partnr">
+  <header ng-include="'shared/header.html'"></header>
 	<div class="content container">
 		<div ui-view="content"></div>
 	</div>
