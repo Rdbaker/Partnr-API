@@ -14,8 +14,7 @@ class Project < ActiveRecord::Base
   end
 
   def has_create_post_permissions(user)
-    user.class == User && ( owner == user.id ||
-                            roles.any? { |role| role.user == user })
+    user.class == User && ( owner == user.id || belongs_to_project(user) )
   end
 
   def has_create_state_permissions(user)
@@ -24,5 +23,9 @@ class Project < ActiveRecord::Base
 
   def has_status_permissions(user)
     has_admin_permissions user
+  end
+
+  def belongs_to_project(user)
+    roles.any? { |role| role.user == user }
   end
 end
