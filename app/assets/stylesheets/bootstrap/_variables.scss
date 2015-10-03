@@ -26,6 +26,9 @@ $brand-default-blue:	#002b33 !default;
 $brand-neutral-blue:	#04859d !default;
 $brand-bright-blue:		#49a4b6 !default;
 
+//== Extras
+$default-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.22);
+
 //== Scaffolding
 //
 //## Settings for some of the most global styles.
@@ -376,7 +379,7 @@ $navbar-collapse-max-height:       340px !default;
 
 $navbar-default-color:             #777 !default;
 $navbar-default-bg:                #f8f8f8 !default;
-$navbar-default-border:            $brand-neutral-blue;
+$navbar-default-border:            $brand-bright-blue;
 
 // Navbar links
 $navbar-default-link-color:                #777 !default;

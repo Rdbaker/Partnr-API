@@ -39,7 +39,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 
 	$scope.processOwnerRole = function() {
 		if ($scope.validateOwnerRole()) {
-			$scope.ownerRole.project_id = $scope.project.id;
+			$scope.ownerRole.project = $scope.project.id;
 			projectRoles.create($scope.ownerRole).success(function(data, status, headers, config) {
 				if (data.id) {
 					$scope.ownerRole = data;
