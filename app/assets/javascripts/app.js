@@ -13,6 +13,10 @@ angular.module('partnr', ['ui.router',
    $rootScope.version   = '0.3.4';
    var bypassAuthCheck = false;
 
+   $rootScope.isLoggedIn = function() {
+      return principal.isAuthenticated();
+   };
+
    $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
       if (bypassAuthCheck) {
         bypassAuthCheck = false;

@@ -1,15 +1,20 @@
-<h1>Create your account</h1>
-<toasts></toasts>
-<div class="col-md-4">
-	<div class="form-group">
-		<label for="email">E-Mail</label>
-		<input name="email" type="text" class="form-control" ng-model="acct.email" />
-		<label for="first_name">First Name</label>
-		<input name="first_name" type="text" class="form-control" ng-model="acct.first_name" />
-		<label for="last_name">Last Name</label>
-		<input name="last_name" type="text" class="form-control" ng-model="acct.last_name" />
-		<label for="password">Password</label>
-		<input name="password" type="password" class="form-control" ng-model="acct.password" />
+<div class="centered col-md-6 has-logo-underlay">
+	<img src="/assets/collabor8.png" alt="partnr" class="partnr-logo-underlay" />
+	<h1 class="text-center">Create an Account</h1>
+	<div class="content-container">
+		<toasts></toasts>
+		<div class="form-group">
+			<label for="email">E-Mail</label>
+			<input name="email" type="text" class="form-control" ng-model="acct.email" />
+			<label for="first_name">First Name</label>
+			<input name="first_name" type="text" class="form-control" ng-model="acct.first_name" />
+			<label for="last_name">Last Name</label>
+			<input name="last_name" type="text" class="form-control" ng-model="acct.last_name" />
+			<label for="password">Password</label>
+			<input name="password" type="password" class="form-control" ng-model="acct.password" />
+		</div>
+		<div class="text-center">
+			<button class="btn btn-primary" ng-click="doCreateUser()">Create</button>
+		</div>
 	</div>
-	<button class="btn btn-primary" ng-click="doCreateUser()">Create</button>
 </div>

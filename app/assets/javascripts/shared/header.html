@@ -1,10 +1,10 @@
 <nav class="navbar navbar-default">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand" ui-sref="home">Partnr v{{ version }}</a>
+			<a class="navbar-brand logo-container" ui-sref="home"><img class="partnr-logo" src="/assets/partnr-logo.png"><span class="version">v{{ version }}</span></a>
 		</div>
 
-		<div class="collapse navbar-collapse pull-right">
+		<div ng-if="isLoggedIn()" class="collapse navbar-collapse pull-right">
 			<ul class="nav navbar-nav">
 				<li ng-class="{'active': $state.includes('home')}"><a ui-sref="home">Home</a></li>
 				<li ng-class="{'active': $state.includes('inbox')}"><a ui-sref="inbox">Inbox</a></li>
@@ -15,4 +15,3 @@
 		</div>
 	</div>
 </nav>
-<toasts></toasts>
