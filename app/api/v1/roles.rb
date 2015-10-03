@@ -25,11 +25,22 @@ module V1
     desc "Retrieve all roles.", entity: Entities::RoleData::AsDeep
     params do
       optional :user, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
+      optional :empty, type: Boolean, desc: "Search for empty roles."
       optional :title, type: String, desc: "The title of the role to retrieve."
       optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."
+      mutually_exclusive :user, :empty
     end
     get do
+      if params.has_key? :empty
+        if !!params[:empty]
+          params[:user] = nil
+        else
+          params.delete :user
+        end
+        params.delete :empty
+      end
+
       present Role.where(permitted_params params)
         .page(params[:page])
         .per(params[:per_page]), with: Entities::RoleData::AsDeep

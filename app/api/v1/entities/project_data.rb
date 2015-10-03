@@ -3,6 +3,7 @@ module V1::Entities
     class AsShallow < Grape::Entity
       expose :title, documentation: { type: "String", desc: "The project title." }
       expose :description, documentation: { type: "Integer", desc: "The project description." }
+      expose :status, documentation: { type: "String", desc: "The project status." }
       expose :owner, documentation: { type: "Integer", desc: "The current project owner." }
       expose :creator, documentation: { type: "Integer", desc: "The project creator." }
       expose :id, documentation: { type: "Integer", desc: "The project id." }
