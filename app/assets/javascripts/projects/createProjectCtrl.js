@@ -7,6 +7,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 
 	$scope.ownerRole = { title: '' };
 	$scope.roles = [{ title: '' }];
+	$scope.loading = false;
 
 	$scope.validateProject = function() {
 		return ($scope.project.title.length > 0);
@@ -22,13 +23,16 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 
 	$scope.doProjectCreate = function() {
 		if ($scope.validateProject()) {
-			projects.create($scope.project).success(function(data, status, headers, config) {
-				if (data.id) {
+			$scope.loading = true;
+			projects.create($scope.project).then(function(result) {
+				$scope.loading = false;
+				$log.debug(result.data);
+				if (result.data.id) {
 					$scope.step += 1;
-					$scope.project = data;
+					$scope.project = result.data;
 				} else {
 					$log.debug("[PROJECT] Create error");
-					if (data.error) { $log.debug(data.error); }
+					if (result.data.error) { $log.debug(result.data.error); }
 					toaster.error("Project could not be created. Please try again.");
 				}
 			});
@@ -39,17 +43,19 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 
 	$scope.processOwnerRole = function() {
 		if ($scope.validateOwnerRole()) {
+			$scope.loading = true;
 			$scope.ownerRole.project = $scope.project.id;
-			projectRoles.create($scope.ownerRole).success(function(data, status, headers, config) {
-				if (data.id) {
-					$scope.ownerRole = data;
+			projectRoles.create($scope.ownerRole).then(function(result) {
+				$scope.loading = false;
+				if (result.data.id) {
+					$scope.ownerRole = result.data;
 					$scope.ownerRole.user = principal.getUser().id;
-					projectRoles.update($scope.ownerRole).success(function(data, status, headers, config) {
+					projectRoles.update($scope.ownerRole).success(function(result) {
 						$scope.step += 1;
 					});
 				} else {
 					$log.debug("[PROJECT ROLE] Create error");
-					if (data.error) { $log.debug(data.error); }
+					if (result.data.error) { $log.debug(result.data.error); }
 					toaster.error("Project role could not be created. Please try again.");
 				}
 			});
@@ -69,17 +75,20 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		for (var i = 0; i < $scope.roles.length; i++) {
 			var curRole = $scope.roles[i];
 			if ($scope.validateRole(curRole)) {
-				curRole.project_id = $scope.project.id;
+				curRole.project = $scope.project.id;
 				cleanedRoles.push(curRole);
 			}	
 		}
 
 		for (var i = 0; i < cleanedRoles.length; i++) {
-			projectRoles.create(cleanedRoles[i]).success(function(data, status, headers, config) {
+			$scope.loading = true;
+			projectRoles.create(cleanedRoles[i]).then(function(result) {
 				rolesProcessed += 1;
 
 				if (rolesProcessed === cleanedRoles.length) {
-					$state.go('home');
+					$scope.loading = false;
+					$state.go('project_list');
+					toaster.success('Project created!');
 				}
 			});
 		}

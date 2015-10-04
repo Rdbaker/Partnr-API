@@ -104,7 +104,9 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		login : function(email, password) {
 			/* Send login request to server */
 			$log.debug('[AUTH] About to log in...');
-			var promise = fetchCsrf().then(function() {
+			var deferred = $q.defer();
+
+			fetchCsrf().then(function() {
 				var request = {
 					'user' : {
 						'email' : email,
@@ -128,18 +130,21 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 					if (data.user) {
 						fetchCsrf();
 						authenticate(data.user);
+						deferred.resolve(true);
 					} else {
 						$log.error('[AUTH] Log in failure')
 						toaster.error("Invalid email/password");
+						deferred.resolve(false);
 					}
 				})
 				.error(function(data, status, headers, config) {
 		            $log.error('[AUTH] Log in failure')
 		            toaster.error("Invalid email/password");
+		            deferred.resolve(false);
 				});
 			});
 
-			return promise;
+			return deferred.promise;
 		},
 
 		logout : function() {

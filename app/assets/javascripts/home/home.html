@@ -1,12 +1,15 @@
-<h1>Welcome to the home page</h1>
-<div class="btn-group" dropdown>
-	<button id="split-button" type="button" class="btn btn-default" ng-click="$state.go('project_list')">My Projects</button>
-	<button type="button" class="btn btn-default" dropdown-toggle>
-		<span class="caret"></span>
-		<span class="sr-only">Options</span>
-	</button>
-	<ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
-		<li role="menuitem"><a ui-sref="project_create">Create</a></li>
-	</ul>
+<toasts></toasts>
+<h1>Welcome, {{ user.first_name }}</h1>
+<div class="content-container">
+	<div class="btn-group" dropdown>
+		<button id="split-button" type="button" class="btn btn-default" ng-click="$state.go('project_list')">My Projects</button>
+		<button type="button" class="btn btn-default" dropdown-toggle>
+			<span class="caret"></span>
+			<span class="sr-only">Options</span>
+		</button>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+			<li role="menuitem"><a ui-sref="project_create">Create</a></li>
+		</ul>
+	</div>
+	<button class="btn btn-primary" ng-click="doLogout()">Log out</button>
 </div>
-<button class="btn btn-primary" ng-click="doLogout()">Log out</button>
