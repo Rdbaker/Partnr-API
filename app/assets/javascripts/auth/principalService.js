@@ -33,6 +33,8 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				csrf = csrfToken;
 			});
 		}
+		$log.debug("CSRF requested:");
+		$log.debug(csrf);
 		return csrf;
 	}
 
@@ -124,6 +126,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				})
 				.success(function(data, status, headers, config) {
 					if (data.user) {
+						fetchCsrf();
 						authenticate(data.user);
 					} else {
 						$log.error('[AUTH] Log in failure')
