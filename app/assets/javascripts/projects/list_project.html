@@ -1,6 +1,10 @@
-<div class="col-md-8">
-	<h2>Projects</h2>
-	<div ng-repeat="p in projects">
+<toasts></toasts>
+<h1>Your Projects</h1>
+<div class="content-container">
+	<div ng-show="loadComplete" ng-repeat="p in projects">
 		<a ui-sref="project({ id: p.id })">{{ p.title }}</h3>
+	</div>
+	<div ng-hide="loadComplete" class="text-center loading">
+		<img src="/assets/ajax-loader.gif">
 	</div>
 </div>
