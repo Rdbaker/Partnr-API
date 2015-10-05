@@ -81,12 +81,8 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		}
 
 		for (var i = 0; i < cleanedRoles.length; i++) {
-<<<<<<< HEAD
-			roles.create(cleanedRoles[i]).success(function(data, status, headers, config) {
-=======
 			$scope.loading = true;
-			projectRoles.create(cleanedRoles[i]).then(function(result) {
->>>>>>> f6629cf02fc492d81913b62f638253a999107b18
+			roles.create(cleanedRoles[i]).then(function(result) {
 				rolesProcessed += 1;
 
 				if (rolesProcessed === cleanedRoles.length) {
