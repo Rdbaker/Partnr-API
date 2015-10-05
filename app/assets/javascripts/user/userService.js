@@ -6,7 +6,7 @@ angular.module('partnr.users').factory('users', function($rootScope, $http, $log
 
 			return $http({
 				method: 'POST',
-				url: $rootScope.apiRoute + 'api/users',
+				url: '/api/users',
 				headers: principal.getHeaders(),
 				data: { "user" : acct }
 			});

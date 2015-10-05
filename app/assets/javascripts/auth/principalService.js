@@ -33,6 +33,8 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				csrf = csrfToken;
 			});
 		}
+		$log.debug("CSRF requested:");
+		$log.debug(csrf);
 		return csrf;
 	}
 
@@ -74,11 +76,12 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				$log.debug('[AUTH] Checking if user session exists');
 				$http({
 					method: 'GET',
-					url: '/api/users/sign_in'
+					url: $rootScope.apiRoute + 'users/me'
 				}).success(function(data, status, headers, config) {
-					if (data.user) {
+					if (data.email) {
 						$log.debug('[AUTH] Cookie valid, storing user data');
-						authenticate(data.user);
+						getCsrf();
+						authenticate(data);
 						identityPrechecked = true;
 						deferred.resolve(user);
 					} else {
@@ -109,6 +112,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 					}
 				};
 
+				$log.debug(getHeaders());
 				$log.debug(request);
 
 				return $http({
@@ -122,6 +126,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				})
 				.success(function(data, status, headers, config) {
 					if (data.user) {
+						fetchCsrf();
 						authenticate(data.user);
 					} else {
 						$log.error('[AUTH] Log in failure')
@@ -129,8 +134,8 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 					}
 				})
 				.error(function(data, status, headers, config) {
-          $log.error('[AUTH] Log in failure')
-          toaster.error("Invalid email/password");
+		            $log.error('[AUTH] Log in failure')
+		            toaster.error("Invalid email/password");
 				});
 			});
 
@@ -151,6 +156,8 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 			}).success(function(data, status, headers, config) {
 				user = {};
 				authenticated = false;
+				identityPrechecked = false;
+				csrfToken = undefined;
 				$log.debug('[AUTH] User signed out');
 			}).error(function(data, status, headers, config) {
 				$log.error('[AUTH] Log out error');

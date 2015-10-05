@@ -11,7 +11,7 @@ module Partnr
   class Application < Rails::Application
     @@MAJOR_VERSION = '0'
     @@MINOR_VERSION = '3'
-    @@PATCH_VERSION = '4'
+    @@PATCH_VERSION = '5'
 
     # use rspec for testing
     config.generators do |g|

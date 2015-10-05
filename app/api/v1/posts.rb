@@ -1,4 +1,5 @@
 require_relative './validators/valid_user'
+require_relative './validators/valid_pagination'
 
 module V1
   class Posts < Grape::API
@@ -27,7 +28,7 @@ module V1
       requires :state, type: Integer, allow_blank: false, desc: "The state id to which the post was posted."
       optional :user, type: Integer, allow_blank: false, desc: "The author's User ID for the posts to retrieve."
       optional :title, type: String, desc: "The title of the post to retrieve."
-      optional :per_page, type: Integer, default: 10, allow_blank: false, desc: "The number of posts per page."
+      optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of posts per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the posts."
     end
     get do
