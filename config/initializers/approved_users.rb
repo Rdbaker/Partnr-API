@@ -4,6 +4,6 @@ Rails.application.config.approved_users = [
   'shrinkandb@gmail.com',
   'kzizza@gmail.com',
   'tylerstonephoto@gmail.com',
-  'Amrusso351@gmail.com',
+  'amrusso351@gmail.com',
   'vinny.sabo@gmail.com'
 ]

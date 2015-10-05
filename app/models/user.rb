@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
     # if it's not prod, you need to be a
     # pre-approved user
     unless Rails.env.production?
-      if Rails.application.config.approved_users.find_index(email).nil?
+      if Rails.application.config.approved_users.find_index(email.downcase).nil?
         errors.add(:email, "You must be a pre-approved user to access this website")
       end
     end
