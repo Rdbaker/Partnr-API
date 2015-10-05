@@ -1,17 +1,13 @@
 angular.module('partnr.users.assets').factory('applications', function($rootScope, $http, $log, principal) {
 	return {
-		get : function(project_id, user_id) {
+		list : function(filters) {
 			$log.debug("[APPLICATION] Sending get request");
-			$log.debug(project_id);
-			$log.debug(user_id);
+			$log.debug(filters);
 
 			return $http({
 				method: 'GET',
 				url: $rootScope.apiRoute + 'applications',
-				params: {
-					user: user_id,
-					project: project_id
-				},
+				params: filters,
 				headers: principal.getHeaders()
 			});
 		},

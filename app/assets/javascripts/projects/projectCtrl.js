@@ -15,7 +15,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 
 	$scope.doApply = function(role) {
 		applications.create({ role : role }).then(function(result) {
-			toaster.success('Request Sent!');
+			toaster.success('Request sent!');
 		});
 		$scope.canApply = false;
 	};
@@ -39,7 +39,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		doLoadStep();
 	});
 
-	applications.get($stateParams.id, principal.getUser().id).then(function(result) {
+	applications.list({'project' : $stateParams.id, 'user' : principal.getUser().id}).then(function(result) {
 		$log.debug(result.data);
 		if (result.data.length > 0) {
 			$scope.canApply = false;

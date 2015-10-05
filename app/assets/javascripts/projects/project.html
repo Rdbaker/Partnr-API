@@ -6,6 +6,7 @@
         Actions<span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+        <li role="menuitem"><a href ng-show="isOwner" ng-click="$state.go('project_applications', {'project_id' : project.id})">View Applications</a></li>
         <li role="menuitem"><a href ng-click="doDelete()">Delete</a></li>
       </ul>
     </div>
