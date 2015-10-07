@@ -86,4 +86,8 @@ class SessionsController < Devise::SessionsController
       }, status: 400
     end
   end
+
+  def invalid_login_attempt
+    render :json=> {:error => "There is no user with that email."}, :status => 400
+  end
 end
