@@ -25,6 +25,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		$scope.project = result.data;
 		if (result.data.owner === principal.getUser().id) {
 			$scope.isOwner = true;
+			$scope.canApply = false;
 		}
 
 		for (var i = 0; i < result.data.roles.length; i++) {
