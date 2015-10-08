@@ -1,5 +1,5 @@
 class Role < ActiveRecord::Base
-  has_many :applications
+  has_many :applications, :dependent => :delete_all
   belongs_to :project
   belongs_to :user
 
