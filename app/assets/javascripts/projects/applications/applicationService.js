@@ -22,6 +22,32 @@ angular.module('partnr.users.assets').factory('applications', function($rootScop
 				headers: principal.getHeaders(),
 				data: application
 			});
+		},
+
+		accept : function(id) {
+			$log.debug("[APPLICATION] Sending accept update");
+			$log.debug(id);
+
+			return $http({
+				method: 'PUT',
+				url: $rootScope.apiRoute + 'applications/' + id,
+				headers: principal.getHeaders(),
+				data: {
+					"id" : id,
+					"status" : "accepted"
+				}
+			});
+		},
+
+		reject : function(id) {
+			$log.debug("[APPLICATION] Sending delete request");
+			$log.debug(id);
+
+			return $http({
+				method: 'DELETE',
+				url: $rootScope.apiRoute + 'applications/' + id,
+				headers: principal.getHeaders()
+			});
 		}
 	};
 });

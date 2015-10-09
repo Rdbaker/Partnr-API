@@ -16,9 +16,30 @@ angular.module('partnr.users.assets').controller('ListApplicationsController', f
 		doLoadStep();
 	});
 
+	$scope.doAccept = function(application) {
+		applications.accept(application.id);
+		toaster.success("Application Accepted!");
+		$scope.doReload();
+	};
+
+	$scope.doReject = function(application) {
+		applications.reject(application.id);
+		toaster.success("Application Rejected.");
+		$scope.doReload();
+	};
+
+	$scope.doReload = function() {
+		$scope.loadComplete = false;
+		applications.list({'project' : $stateParams.project_id}).then(function(result) {
+			$log.debug(result.data);
+			$scope.applications = result.data;
+			$scope.loadComplete = true;
+		});
+	};
+
 	var doLoadStep = function() {
 		loadStepsAchieved += 1;
-		if (loadStepsAchieved === loadSteps) {
+		if (loadStepsAchieved >= loadSteps) {
 			$scope.loadComplete = true;
 		}
 	};
