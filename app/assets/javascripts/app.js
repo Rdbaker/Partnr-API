@@ -7,10 +7,13 @@ angular.module('partnr', ['ui.router',
   'ui.bootstrap', 'templates', 
   'partnr.auth', 'partnr.users', 'partnr.messaging',
   'partnr.toaster', 'partnr.users.assets'
-  ]).run(function ($state, $rootScope, $log, principal, authorization) {
+  ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization) {
+   // run initial csrf fetch
+   principal.getCsrf();
+
    $rootScope.$state = $state; // application state
    $rootScope.apiRoute  = '/api/v1/';
-   $rootScope.version   = '0.3.5';
+   $rootScope.version   = '0.3.6';
    var bypassAuthCheck = false;
 
    $rootScope.isLoggedIn = function() {
@@ -44,5 +47,13 @@ angular.module('partnr', ['ui.router',
           }
         }
       });
+   });
+
+   $rootScope.$on('$stateChangeSuccess', function(event) {
+    if (!$window.ga)
+      return;
+
+    $log.debug($window.ga);
+    $window.ga('send', 'pageview', { page: $location.url() });
    });
 });
