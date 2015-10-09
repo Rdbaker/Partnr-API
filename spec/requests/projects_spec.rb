@@ -4,9 +4,17 @@ RSpec.describe "Projects", :type => :request do
   before(:each) do
     @project = create(:good_project)
     @project2 = create(:good_project2)
+
     @user = create(:user)
+    @user2 = create(:user2)
+
     @project.owner = @user.id
-    @project.save
+    @project.creator = @user.id
+    @project2.owner = @user2.id
+    @project2.creator = @user2.id
+
+    @project.save!
+    @project2.save!
   end
 
 
@@ -135,8 +143,7 @@ RSpec.describe "Projects", :type => :request do
       it "has all the proper attributes we gave it" do
         expect(@res["title"]).to eq(@title)
         expect(@res["description"]).to eq(@description)
-        expect(@res["owner"]).to eq(@user.id)
-        expect(@res["creator"]).to eq(@user.id)
+        expect(@res["owner"]["id"]).to eq(@user.id)
       end
 
       it "returns a JSON Schema conforming project" do

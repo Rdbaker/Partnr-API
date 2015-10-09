@@ -12,11 +12,22 @@
     "status" : {
       "type" : "string"
     },
-    "owner" : {
-      "type" : "integer"
-    },
     "creator" : {
       "type" : "integer"
+    },
+    "owner" : {
+      "type" : "object",
+      "properties" : {
+        "first_name" : {
+          "type" : "string"
+        },
+        "last_name" : {
+          "type" : "string"
+        },
+        "id" : {
+          "type" : "integer"
+        }
+      }
     },
     "id" : {
       "type" : "integer"

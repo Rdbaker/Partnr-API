@@ -1,6 +1,6 @@
 class State < ActiveRecord::Base
   belongs_to :project
-  has_many :posts
+  has_many :posts, :dependent => :delete_all
 
   validates :title, :project, presence: true
 
