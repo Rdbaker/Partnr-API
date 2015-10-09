@@ -6,6 +6,7 @@
         Actions<span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+        <li role="menuitem"><a href ng-show="isOwner" ng-click="$state.go('project_applications', {'project_id' : project.id})">View Applications</a></li>
         <li role="menuitem"><a href ng-click="doDelete()">Delete</a></li>
       </ul>
     </div>
@@ -14,6 +15,7 @@
     <h3>Roles</h3>
     <div ng-repeat="role in project.roles">
     	<h4>Name: {{role.title}}</h4>
-    	<h4>User: {{role.user}}</h4>
+    	<h4 ng-show="role.user">User: {{role.user.first_name}} {{role.user.last_name}}</h4>
+    	<button type="button" class="btn btn-primary" ng-if="!role.user && canApply" ng-click="doApply(role.id)">Apply</button>
     </div>
 </div>

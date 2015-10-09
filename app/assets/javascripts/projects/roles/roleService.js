@@ -1,5 +1,16 @@
-angular.module('partnr.users.assets').factory('projectRoles', function($rootScope, $http, $log, principal) {
+angular.module('partnr.users.assets').factory('roles', function($rootScope, $http, $log, principal) {
 	return {
+		get : function(id) {
+			$log.debug("[PROJECT ROLE] Sending Get request");
+			$log.debug(id);
+
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'roles/' + id,
+				headers: principal.getHeaders()
+			});
+		},
+
 		create : function(role) {
 			$log.debug("[PROJECT ROLE] Sending Create request");
 			$log.debug(role);

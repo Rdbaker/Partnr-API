@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
   validate :is_a_pre_approved_user
   validates :first_name, :last_name, presence: true
 
-  has_and_belongs_to_many :projects
-  has_many :roles
+  has_many :roles, :dependent => :nullify
+  has_many :projects, through: :roles
 
   before_save :ensure_authenticaion_token
 
@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
     # if it's not prod, you need to be a
     # pre-approved user
     unless Rails.env.production?
-      if Rails.application.config.approved_users.find_index(email).nil?
+      if Rails.application.config.approved_users.find_index(email.downcase).nil?
         errors.add(:email, "You must be a pre-approved user to access this website")
       end
     end

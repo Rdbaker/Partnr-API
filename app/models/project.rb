@@ -1,7 +1,8 @@
 class Project < ActiveRecord::Base
-  has_and_belongs_to_many :users
-  has_many :roles
+  belongs_to :user, :foreign_key => 'owner'
+  has_many :roles, :dependent => :delete_all
   has_many :applications, through: :roles
+  has_many :users, through: :roles
 
   validates :title, :owner, :creator, :status, presence: true
 

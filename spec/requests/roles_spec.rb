@@ -6,7 +6,11 @@ RSpec.describe "Roles", :type => :request do
     @role2 = build(:role2)
     @user = create(:user)
     @user2 = create(:user2)
+    @user3 = create(:user3)
     @project = create(:good_project)
+    @project.owner = @user3.id
+    @project.creator = @user3.id
+    @project.save!
 
     @role.project = @project
     @role2.project = @project

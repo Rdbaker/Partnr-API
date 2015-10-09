@@ -6,12 +6,14 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	var csrfToken     = undefined;
 
 	function fetchCsrf() {
+		$log.debug("[AUTH] Requesting CSRF from server");
 		/* Gets the csrf token from the user */
 		var promise = $http.get('/api/users/sign_in')
 		.success(function(data, status, headers, config) {
 			if (data.csrfToken) {
 				csrfToken = data.csrfToken;
 				$log.debug('[AUTH] CSRF token acquired');
+				$log.debug(data.csrfToken);
 			}
 		})
 		.error(function(data, status, headers, config) {
@@ -33,7 +35,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				csrf = csrfToken;
 			});
 		}
-		$log.debug("CSRF requested:");
+		$log.debug("[AUTH] CSRF requested:");
 		$log.debug(csrf);
 		return csrf;
 	}
@@ -164,6 +166,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				identityPrechecked = false;
 				csrfToken = undefined;
 				$log.debug('[AUTH] User signed out');
+				getCsrf();
 			}).error(function(data, status, headers, config) {
 				$log.error('[AUTH] Log out error');
 				toaster.error("Could not connect to server");
