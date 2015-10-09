@@ -3,8 +3,8 @@
 	<div ng-show="loadComplete">
 		<h3>Applications for {{ project.title }}</h3>
 		<div class="internal-container" ng-repeat="a in applications track by $index">
-			<span><strong><a href>{{ a.user.first_name }} {{ a.user.last_name }}</a></strong><br/>For Role: {{ a.role.title }}</span>
-			<div ng-if="a.status === 'pending'">
+			<span class="title"><a href>{{ a.user.first_name }} {{ a.user.last_name }}</a></span><span class="subtitle">For Role: {{ a.role.title }}</span>
+			<div class="buttons-right" ng-if="a.status === 'pending'">
 				<button type="button" class="btn btn-default" ng-click="doAccept(a)">Accept</button>
 				<button type="button" class="btn btn-danger" ng-click="doReject(a)">Reject</button>
 			</div>

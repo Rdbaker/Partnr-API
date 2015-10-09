@@ -18,3 +18,19 @@
   padding: 20px;
   box-shadow: $default-box-shadow;
 }
+
+.internal-container {
+	border-radius: $border-radius-container;
+	border: 1px solid #dddddd;
+	padding: 10px;
+	box-shadow: 0px 0px 3px 0px #cccccc;
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+  .title {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: $brand-default-blue;
+  }
+}

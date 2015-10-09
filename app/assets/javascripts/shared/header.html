@@ -7,10 +7,12 @@
 		<div ng-if="isLoggedIn()" class="collapse navbar-collapse pull-right">
 			<ul class="nav navbar-nav">
 				<li ng-class="{'active': $state.includes('home')}"><a ui-sref="home">Home</a></li>
-				<li ng-class="{'active': $state.includes('inbox')}"><a ui-sref="inbox">Inbox</a></li>
+				<li ng-class="{'active': $state.includes('project_list')}"><a ui-sref="project_list">Browse</a></li>
+				<li><a href>Me</a></li>
+				<!-- <li ng-class="{'active': $state.includes('inbox')}"><a ui-sref="inbox">Inbox</a></li>
 				<li ng-class="{'active': $state.includes('partners')}"><a ui-sref="partners">Partners</a></li>
 				<li ng-class="{'active': $state.includes('portfolio')}"><a ui-sref="portfolio">Portfolio</a></li>
-				<li ng-class="{'active': $state.includes('settings')}"><a ui-sref="settings">Settings</a></li>
+				<li ng-class="{'active': $state.includes('settings')}"><a ui-sref="settings">Settings</a></li> -->
 			</ul>
 		</div>
 	</div>
