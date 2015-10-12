@@ -25,9 +25,10 @@ $brand-danger:          #d9534f !default;
 $brand-default-blue:	#002b33 !default;
 $brand-neutral-blue:	#04859d !default;
 $brand-bright-blue:		#49a4b6 !default;
+$brand-border-blue:		#c3dde2 !default;
 
 //== Extras
-$default-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.22);
+$default-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.22);
 
 //== Scaffolding
 //
@@ -114,7 +115,7 @@ $padding-xs-horizontal:     5px !default;
 $line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Chrome
 $line-height-small:         1.5 !default;
 
-$border-radius-container:   10px !default;
+$border-radius-container:   3px !default;
 $border-radius-base:        4px !default;
 $border-radius-large:       6px !default;
 $border-radius-small:       3px !default;
@@ -157,9 +158,9 @@ $table-border-color:            #ddd !default;
 
 $btn-font-weight:                normal !default;
 
-$btn-default-color:              #333 !default;
-$btn-default-bg:                 #fff !default;
-$btn-default-border:             #ccc !default;
+$btn-default-color:              #fff !default;
+$btn-default-bg:                 #1F6A78 !default;
+$btn-default-border:             darken($btn-default-bg, 5%) !default;
 
 $btn-primary-color:              #fff !default;
 $btn-primary-bg:                 $brand-primary !default;
@@ -337,7 +338,7 @@ $screen-md-max:              ($screen-lg-min - 1) !default;
 //** Number of columns in the grid.
 $grid-columns:              12 !default;
 //** Padding between columns. Gets divided in half for the left and right.
-$grid-gutter-width:         30px !default;
+$grid-gutter-width:         10px !default;
 // Navbar collapse
 //** Point at which the navbar becomes uncollapsed.
 $grid-float-breakpoint:     $screen-sm-min !default;
@@ -379,7 +380,7 @@ $navbar-collapse-max-height:       340px !default;
 
 $navbar-default-color:             #777 !default;
 $navbar-default-bg:                #f8f8f8 !default;
-$navbar-default-border:            $brand-bright-blue;
+$navbar-default-border:            $brand-border-blue;
 
 // Navbar links
 $navbar-default-link-color:                #777 !default;

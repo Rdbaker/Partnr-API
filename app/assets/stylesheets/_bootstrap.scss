@@ -18,7 +18,6 @@
 @import "bootstrap/type";
 @import "bootstrap/code";
 @import "bootstrap/grid";
-@import "bootstrap/content-container";
 @import "bootstrap/tables";
 @import "bootstrap/forms";
 @import "bootstrap/buttons";
@@ -57,6 +56,7 @@
 @import "bootstrap/responsive-utilities";
 
 // Partnr-Specific Components
+@import "components/content-containers";
 @import "components/inline-modals";
 @import "components/header";
 @import "components/misc";
