@@ -1,27 +1,36 @@
 <toasts></toasts>
-<div class="content-container">
+<div class="content-container" ng-if="isOwner">
+  <div class="btn-group" dropdown is-open="status.isopen">
+    <button id="single-button" type="button" class="btn btn-primary" dropdown-toggle ng-disabled="disabled">
+      Actions<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+      <li role="menuitem"><a href ng-click="$state.go('project_applications', {'project_id' : project.id})">View Applications</a></li>
+      <li role="menuItem"><a href ng-click="$state.go('project_edit', {'project_id' : project.id})">Edit</a></li>
+      <li role="menuitem"><a href ng-click="doDelete()">Delete</a></li>
+    </ul>
+  </div>
+</div>
+<div class="content-container" ng-show="loadComplete">
 	<h2>{{ project.title }}</h2>
-	<div class="btn-group" ng-if="isOwner" dropdown is-open="status.isopen">
-      <button id="single-button" type="button" class="btn btn-primary" dropdown-toggle ng-disabled="disabled">
-        Actions<span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-        <li role="menuitem"><a href ng-show="isOwner" ng-click="$state.go('project_applications', {'project_id' : project.id})">View Applications</a></li>
-        <li role="menuitem"><a href ng-click="doDelete()">Delete</a></li>
-      </ul>
-    </div>
-    <h3 class="inline">Description</h3>
-    <p>{{project.description}}</p>
-    <h3 class="inline">Roles</h3>
-    <div class="clearfix">
-      <div class="col-md-3" ng-repeat="role in project.roles">
-        <div class="internal-container">
-        	<span class="title">{{role.title}}</span>
-        	<span class="subtitle" ng-show="role.user">{{role.user.first_name}} {{role.user.last_name}}</span><span class="subtitle" ng-hide="role.user"><em>None</em></span>
-          <div class="buttons-right">
-          	<button type="button" class="btn btn-primary" ng-if="!role.user && canApply" ng-click="doApply(role.id)">Apply</button>
-          </div>
+  <span>{{ getStatus() }}</span>
+  <h3 class="inline">Description</h3>
+  <p>{{project.description}}</p>
+  <h3 class="inline">Roles</h3>
+  <div class="clearfix">
+    <div class="col-md-3" ng-repeat="role in project.roles">
+      <div class="internal-container">
+      	<span class="title">{{role.title}}</span>
+      	<span class="subtitle" ng-show="role.user">{{role.user.first_name}} {{role.user.last_name}}</span><span class="subtitle" ng-hide="role.user"><em>None</em></span>
+        <div class="buttons-right">
+        	<button type="button" class="btn btn-primary" ng-if="!role.user && canApply" ng-click="doApply(role.id)">Apply</button>
         </div>
       </div>
     </div>
+  </div>
+</div>
+<div ng-hide="loadComplete" class="content-container">
+  <div class="text-center loading">
+    <img src="/assets/ajax-loader.gif">
+  </div>
 </div>

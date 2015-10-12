@@ -33,6 +33,18 @@ angular.module('partnr.users.assets').factory('projects', function($rootScope, $
 			});
 		},
 
+		update : function(project) {
+			$log.debug("[PROJECT] Sending update request");
+			$log.debug(project);
+
+			return $http({
+				method: 'PUT',
+				url: $rootScope.apiRoute + 'projects/' + project.id,
+				headers: principal.getHeaders(),
+				data: project
+			});
+		},
+
 		delete : function(id) {
 			$log.debug("[PROJECT] Sending delete request");
 

@@ -136,6 +136,20 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 			}
 		})
 
+		.state('project_edit', {
+			parent: 'site',
+			url: '/projects/{project_id:int}/edit',
+			views: {
+				'content@': {
+					templateUrl: 'projects/edit_project.html',
+					controller: 'EditProjectController'
+				}
+			},
+			data: {
+				roles: ['Admin']
+			}
+		})
+
 		.state('project_applications', {
 			parent: 'site',
 			url: '/projects/{project_id:int}/applications',
