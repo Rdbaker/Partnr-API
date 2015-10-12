@@ -19,6 +19,22 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		});
 		$scope.canApply = false;
 	};
+
+	$scope.getStatus = function() {
+		var result = 'Not Started';
+		switch($scope.project.status) {
+			case 'not_started':
+				result = "Not Started";
+				break;
+			case 'in_progress':
+				result = "In Progress";
+				break;
+			case "complete":
+				result = "Completed";
+				break;
+		}
+		return result;
+	};
 	
 	projects.get($stateParams.id).then(function(result) {
 		$log.debug(result.data);
@@ -45,6 +61,8 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		if (result.data.length > 0) {
 			$scope.canApply = false;
 		}
+
+		doLoadStep();
 	});
 
 	var doLoadStep = function() {
