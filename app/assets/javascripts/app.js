@@ -13,7 +13,7 @@ angular.module('partnr', ['ui.router',
 
    $rootScope.$state = $state; // application state
    $rootScope.apiRoute  = '/api/v1/';
-   $rootScope.version   = '0.3.6';
+   $rootScope.version   = '0.3.7';
    var bypassAuthCheck = false;
 
    $rootScope.isLoggedIn = function() {
