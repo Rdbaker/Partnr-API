@@ -92,5 +92,10 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 				}
 			});
 		}
+
+		if (cleanedRoles.length === 0) {
+			$state.go('project_list');
+			toaster.success('Project created!');
+		}
 	}
 });
