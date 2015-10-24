@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Roles", :type => :request do
+RSpec.describe "Applications", :type => :request do
   before(:each) do
     @role = build(:role)
     @role2 = build(:role2)
@@ -8,9 +8,15 @@ RSpec.describe "Roles", :type => :request do
     @application = build(:application)
     @application2 = build(:application2)
 
-    @user = create(:user)
-    @user2 = create(:user2)
-    @user3 = create(:user3)
+    @user = build(:user)
+    @user2 = build(:user2)
+    @user3 = build(:user3)
+    @user.confirmed_at = Time.zone.now
+    @user2.confirmed_at = Time.zone.now
+    @user3.confirmed_at = Time.zone.now
+    @user.save!
+    @user2.save!
+    @user3.save!
 
     @project = create(:good_project)
     @project2 = create(:good_project2)
@@ -30,12 +36,12 @@ RSpec.describe "Roles", :type => :request do
     @application2.user = @user3
     @application2.project = @project2
 
-    @project.save
-    @project2.save
-    @role.save
-    @role2.save
-    @application.save
-    @application2.save
+    @project.save!
+    @project2.save!
+    @role.save!
+    @role2.save!
+    @application.save!
+    @application2.save!
   end
 
   describe "GET /api/v1/applications" do

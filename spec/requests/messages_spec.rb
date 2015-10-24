@@ -2,8 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "Messages", :type => :request do
   before(:each) do
-    @user = create(:user)
-    @user2 = create(:user2)
+    @user = build(:user)
+    @user2 = build(:user2)
+    @user.confirmed_at = Time.zone.now
+    @user2.confirmed_at = Time.zone.now
+    @user.save!
+    @user2.save!
+
     @user.send_message(@user2, "body", "subject")
     login_as(@user, :scope => :user)
     @msg_id = @user.mailbox.conversations.first.id
