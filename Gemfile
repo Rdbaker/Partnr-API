@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.8'
+gem 'rails', '4.2.4'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -33,7 +33,9 @@ group :test, :development do
   gem 'simplecov'
   gem 'capybara'
   gem 'teaspoon'
+  gem 'teaspoon-mocha'
   gem 'json-schema-rspec'
+  gem 'byebug'
 end
 
 # bower for asset management

@@ -8,9 +8,6 @@ Rails.application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
-  # Devise default url
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
@@ -36,4 +33,22 @@ Rails.application.configure do
     "teaspoon-mocha.js",
     "mocha/1.17.1.js"
   ]
+
+  # set things up for local email forwarding
+  config.action_mailer.delivery_method = :smtp
+  if ENV['local'] == 'true'
+    config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+    config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  else
+    config.action_mailer.default_url_options = { :host => 'dev.partnr.org' }
+    config.action_mailer.smtp_settings = {
+      :user_name => 'partnremailer',
+      :password => 'P4rtnrS3nds3m4ilsN0w',
+      :domain => 'smtp.sendgrid.net',
+      :address => 'smtp.sendgrid.net',
+      :port => 587,
+      :authentication => :plain,
+      :enable_starttls_auto => true
+    }
+  end
 end

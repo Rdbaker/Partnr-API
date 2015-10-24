@@ -5,7 +5,8 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :confirmable
 
   validate :is_a_pre_approved_user
   validates :first_name, :last_name, presence: true
@@ -25,6 +26,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  # override devise's default behavior to queue up an email instead
+  # of sending it immediately
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
+  end
 
   # return the full name of the user
   def name
