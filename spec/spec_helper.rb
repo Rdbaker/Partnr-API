@@ -24,9 +24,9 @@ RSpec.configure do |config|
 
   Warden.test_mode!
 
-  Dir.new("./spec/schema/schemas").each do |f|
+  Dir.new("./spec/schema/v1").each do |f|
     config.json_schemas[File.basename(f, ".*").to_sym] =
-      File.absolute_path("./spec/schema/schemas/#{f}")
+      File.absolute_path("./spec/schema/v1/#{f}")
   end
 
   config.expect_with :rspec do |expectations|

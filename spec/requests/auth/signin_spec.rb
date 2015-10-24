@@ -2,7 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "Signing In", :type => :request do
   before(:each) do
-    @user = create(:user)
+    @user = build(:user)
+    @user.confirmed_at = Time.zone.now
+    @user.save
   end
 
   describe "POST /api/users/sign_in" do

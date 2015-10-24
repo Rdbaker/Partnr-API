@@ -3,27 +3,33 @@ require 'rails_helper'
 RSpec.describe "Posts", :type => :request do
   before(:each) do
     # owner
-    @user = create(:user)
+    @user = build(:user)
+    @user.confirmed_at = Time.zone.now
+    @user.save!
     @project = build(:good_project)
     @project.owner = @user.id
     # author
-    @user2 = create(:user2)
+    @user2 = build(:user2)
+    @user2.confirmed_at = Time.zone.now
+    @user2.save!
     @role = build(:role)
     @post = build(:post)
     @role.project = @project
     @role.user = @user2
     @post.user = @user2
     # anybody else
-    @user3 = create(:user3)
+    @user3 = build(:user3)
+    @user3.confirmed_at = Time.zone.now
+    @user3.save!
 
     @state = build(:state)
     @state.project = @project
     @post.state = @state
 
-    @project.save
-    @role.save
-    @state.save
-    @post.save
+    @project.save!
+    @role.save!
+    @state.save!
+    @post.save!
   end
 
   context "as the project owner" do

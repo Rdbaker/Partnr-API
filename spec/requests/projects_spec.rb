@@ -5,8 +5,12 @@ RSpec.describe "Projects", :type => :request do
     @project = create(:good_project)
     @project2 = create(:good_project2)
 
-    @user = create(:user)
-    @user2 = create(:user2)
+    @user = build(:user)
+    @user2 = build(:user2)
+    @user.confirmed_at = Time.zone.now
+    @user2.confirmed_at = Time.zone.now
+    @user.save!
+    @user2.save!
 
     @project.owner = @user.id
     @project.creator = @user.id

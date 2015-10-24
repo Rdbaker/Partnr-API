@@ -8,12 +8,18 @@ RSpec.describe "States", :type => :request do
     @state4 = build(:state4)
 
     # owner
-    @user = create(:user)
+    @user = build(:user)
+    @user.confirmed_at = Time.zone.now
+    @user.save!
     # participant
     @user2 = create(:user2)
+    @user2.confirmed_at = Time.zone.now
+    @user2.save!
     @role = build(:role)
     # anybody else
     @user3 = create(:user3)
+    @user3.confirmed_at = Time.zone.now
+    @user3.save!
     @project = create(:good_project)
 
     @state.project = @project
@@ -26,12 +32,12 @@ RSpec.describe "States", :type => :request do
 
     @project.owner = @user.id
 
-    @state.save
-    @state2.save
-    @state3.save
-    @state4.save
-    @project.save
-    @role.save
+    @state.save!
+    @state2.save!
+    @state3.save!
+    @state4.save!
+    @project.save!
+    @role.save!
   end
 
   context "as the project owner" do

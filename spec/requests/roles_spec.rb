@@ -4,9 +4,15 @@ RSpec.describe "Roles", :type => :request do
   before(:each) do
     @role = build(:role)
     @role2 = build(:role2)
-    @user = create(:user)
-    @user2 = create(:user2)
-    @user3 = create(:user3)
+    @user = build(:user)
+    @user2 = build(:user2)
+    @user3 = build(:user3)
+    @user.confirmed_at = Time.zone.now
+    @user2.confirmed_at = Time.zone.now
+    @user3.confirmed_at = Time.zone.now
+    @user.save!
+    @user2.save!
+    @user3.save!
     @project = create(:good_project)
     @project.owner = @user3.id
     @project.creator = @user3.id
@@ -17,8 +23,8 @@ RSpec.describe "Roles", :type => :request do
     @role.user = @user
     @role2.user = nil
 
-    @role.save
-    @role2.save
+    @role.save!
+    @role2.save!
   end
 
   describe "GET /api/v1/roles" do

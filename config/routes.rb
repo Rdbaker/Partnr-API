@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   scope '/api' do
     devise_for :users, :controllers => {
       sessions: 'sessions',
-      registrations: 'registrations'
+      registrations: 'registrations',
+      confirmations: 'confirmations'
     }
   end
 
