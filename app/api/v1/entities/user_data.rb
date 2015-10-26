@@ -13,6 +13,9 @@ module V1::Entities
       expose :projects, using: ProjectData::AsShallow, documentation: { type: "ProjectData (shallow)",
                                                                         desc: "The projects this user is associated with.",
                                                                         is_array: true }
+      expose :comments, using: CommentData::AsShallow, documentation: { type: "CommentData (shallow)",
+                                                                        desc: "The comments user has made.",
+                                                                        is_array: true }
     end
 
     class AsPrivate < AsPublic

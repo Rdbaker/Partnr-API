@@ -8,6 +8,7 @@ module V1
     mount Applications => '/applications'
     mount States       => '/states'
     mount Posts        => '/posts'
+    mount Comments     => '/comments'
 
     add_swagger_documentation(
       base_path: '/api/v1',

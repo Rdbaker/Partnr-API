@@ -45,6 +45,29 @@
           }
         }
       }
+    },
+    "comments" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "integer"
+          },
+          "user" : {
+            "type" : "object"
+          },
+          "created_at" : {
+            "type" : "string"
+          },
+          "project" : {
+            "type" : "object"
+          }
+        }
+      }
     }
   },
   "required" : [
@@ -52,6 +75,8 @@
     "owner",
     "creator",
     "status",
+    "roles",
+    "comments",
     "id"
   ]
 }

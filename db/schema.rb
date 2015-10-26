@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151019175845) do
+ActiveRecord::Schema.define(version: 20151026200021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "applications", force: true do |t|
+  create_table "applications", force: :cascade do |t|
     t.integer  "status",     default: 0
     t.integer  "user_id"
     t.integer  "integer_id"
@@ -30,7 +30,18 @@ ActiveRecord::Schema.define(version: 20151019175845) do
   add_index "applications", ["role_id"], name: "index_applications_on_role_id", using: :btree
   add_index "applications", ["user_id"], name: "index_applications_on_user_id", using: :btree
 
-  create_table "mailboxer_conversation_opt_outs", force: true do |t|
+  create_table "comments", force: :cascade do |t|
+    t.text     "content",    null: false
+    t.integer  "project_id", null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "comments", ["project_id"], name: "index_comments_on_project_id", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "mailboxer_conversation_opt_outs", force: :cascade do |t|
     t.integer "unsubscriber_id"
     t.string  "unsubscriber_type"
     t.integer "conversation_id"
@@ -39,13 +50,13 @@ ActiveRecord::Schema.define(version: 20151019175845) do
   add_index "mailboxer_conversation_opt_outs", ["conversation_id"], name: "index_mailboxer_conversation_opt_outs_on_conversation_id", using: :btree
   add_index "mailboxer_conversation_opt_outs", ["unsubscriber_id", "unsubscriber_type"], name: "index_mailboxer_conversation_opt_outs_on_unsubscriber_id_type", using: :btree
 
-  create_table "mailboxer_conversations", force: true do |t|
+  create_table "mailboxer_conversations", force: :cascade do |t|
     t.string   "subject",    default: ""
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
 
-  create_table "mailboxer_notifications", force: true do |t|
+  create_table "mailboxer_notifications", force: :cascade do |t|
     t.string   "type"
     t.text     "body"
     t.string   "subject",              default: ""
@@ -68,7 +79,7 @@ ActiveRecord::Schema.define(version: 20151019175845) do
   add_index "mailboxer_notifications", ["sender_id", "sender_type"], name: "index_mailboxer_notifications_on_sender_id_and_sender_type", using: :btree
   add_index "mailboxer_notifications", ["type"], name: "index_mailboxer_notifications_on_type", using: :btree
 
-  create_table "mailboxer_receipts", force: true do |t|
+  create_table "mailboxer_receipts", force: :cascade do |t|
     t.integer  "receiver_id"
     t.string   "receiver_type"
     t.integer  "notification_id",                            null: false
@@ -83,7 +94,7 @@ ActiveRecord::Schema.define(version: 20151019175845) do
   add_index "mailboxer_receipts", ["notification_id"], name: "index_mailboxer_receipts_on_notification_id", using: :btree
   add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type", using: :btree
 
-  create_table "posts", force: true do |t|
+  create_table "posts", force: :cascade do |t|
     t.string   "content"
     t.string   "title"
     t.datetime "created_at"
@@ -95,7 +106,7 @@ ActiveRecord::Schema.define(version: 20151019175845) do
   add_index "posts", ["state_id"], name: "index_posts_on_state_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
-  create_table "projects", force: true do |t|
+  create_table "projects", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
     t.datetime "created_at",              null: false
@@ -106,7 +117,7 @@ ActiveRecord::Schema.define(version: 20151019175845) do
     t.integer  "status",      default: 0
   end
 
-  create_table "projects_users", id: false, force: true do |t|
+  create_table "projects_users", id: false, force: :cascade do |t|
     t.integer "project_id"
     t.integer "user_id"
   end
@@ -114,7 +125,7 @@ ActiveRecord::Schema.define(version: 20151019175845) do
   add_index "projects_users", ["project_id"], name: "index_projects_users_on_project_id", using: :btree
   add_index "projects_users", ["user_id"], name: "index_projects_users_on_user_id", using: :btree
 
-  create_table "roles", force: true do |t|
+  create_table "roles", force: :cascade do |t|
     t.integer  "project_id"
     t.string   "title",          null: false
     t.datetime "created_at"
@@ -125,7 +136,7 @@ ActiveRecord::Schema.define(version: 20151019175845) do
 
   add_index "roles", ["project_id"], name: "index_roles_on_project_id", using: :btree
 
-  create_table "states", force: true do |t|
+  create_table "states", force: :cascade do |t|
     t.string   "title",      null: false
     t.integer  "project_id"
     t.integer  "integer_id"
@@ -138,7 +149,7 @@ ActiveRecord::Schema.define(version: 20151019175845) do
   add_index "states", ["post_id"], name: "index_states_on_post_id", using: :btree
   add_index "states", ["project_id"], name: "index_states_on_project_id", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -165,7 +176,7 @@ ActiveRecord::Schema.define(version: 20151019175845) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "users_projects", id: false, force: true do |t|
+  create_table "users_projects", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "project_id"
   end
@@ -173,10 +184,7 @@ ActiveRecord::Schema.define(version: 20151019175845) do
   add_index "users_projects", ["project_id"], name: "index_users_projects_on_project_id", using: :btree
   add_index "users_projects", ["user_id"], name: "index_users_projects_on_user_id", using: :btree
 
-  add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", name: "mb_opt_outs_on_conversations_id", column: "conversation_id"
-
-  add_foreign_key "mailboxer_notifications", "mailboxer_conversations", name: "notifications_on_conversation_id", column: "conversation_id"
-
-  add_foreign_key "mailboxer_receipts", "mailboxer_notifications", name: "receipts_on_notification_id", column: "notification_id"
-
+  add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
+  add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
+  add_foreign_key "mailboxer_receipts", "mailboxer_notifications", column: "notification_id", name: "receipts_on_notification_id"
 end

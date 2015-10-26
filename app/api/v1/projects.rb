@@ -50,14 +50,13 @@ module V1
     params do
       requires :title, type: String, allow_blank: false, desc: "The Project's title."
       optional :description, type: String, allow_blank: false, desc: "The Project's description."
-      requires :owner, type: Integer, allow_blank: false, valid_user: true, desc: "The Project's owner's ID."
     end
     post do
       authenticated_user
       project = Project.create!({
         title: params[:title],
         description: params[:description],
-        owner: params[:owner],
+        owner: current_user.id,
         creator: current_user.id
       })
       present project, with: Entities::ProjectData::AsShallow

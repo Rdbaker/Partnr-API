@@ -134,8 +134,7 @@ RSpec.describe "Projects", :type => :request do
         @description = "this is just a test, I suppose"
         post "/api/v1/projects", {
           "title" => @title,
-          "description" => @description,
-          "owner" => @user.id
+          "description" => @description
         }
         @res = JSON.parse(response.body)
       end
