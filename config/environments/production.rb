@@ -40,4 +40,16 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_mailer.default_url_options = { :host => 'partnr.org' }
+  config.action_mailer.smtp_settings = {
+    :user_name => 'partnremailer',
+    :password => 'P4rtnrS3nds3m4ilsN0w',
+    :domain => 'smtp.sendgrid.net',
+    :address => 'smtp.sendgrid.net',
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
+
 end

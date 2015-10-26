@@ -14,7 +14,8 @@ Some of the commands inside the setup.sh file must be done manually. If you have
 
 
 ## Set up the mailer
-For local development, you should set up a local emailer. Our email tool, mailcatcher, recommends that we install it ourselves instead of putting it into our Gemfile.
+For local development, you should set up a local emailer.
+Our email tool, mailcatcher, recommends that we install it ourselves instead of putting it into our Gemfile.
 
 To install mailcatcher run:
 
