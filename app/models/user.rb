@@ -90,6 +90,12 @@ class User < ActiveRecord::Base
     end
   end
 
+protected
+
+  def confirmation_required?
+    false
+  end
+
 private
 
   def generate_authentication_token
