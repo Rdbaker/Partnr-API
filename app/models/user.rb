@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   validates :first_name, :last_name, presence: true
 
   has_many :roles, :dependent => :nullify
+  has_many :comments, :dependent => :nullify
   has_many :projects, through: :roles
 
   before_save :ensure_authenticaion_token

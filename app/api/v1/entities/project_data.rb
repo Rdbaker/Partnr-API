@@ -10,6 +10,7 @@ module V1::Entities
 
     class AsDeep < AsShallow
       expose :roles, documentation: { type: "RoleData (shallow)", desc: "The roles for the project." }, using: RoleData::AsShallow
+      expose :comments, documentation: { type: "CommentData (shallow)", desc: "The comments on the project." }, using: CommentData::AsShallow
       expose :creator, documentation: { type: "Integer", desc: "The project creator's id." }
     end
   end

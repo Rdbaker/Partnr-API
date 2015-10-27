@@ -3,6 +3,7 @@ class Project < ActiveRecord::Base
   has_many :roles, :dependent => :delete_all
   has_many :applications, through: :roles
   has_many :users, through: :roles
+  has_many :comments, :dependent => :delete_all
 
   validates :title, :owner, :creator, :status, presence: true
 
