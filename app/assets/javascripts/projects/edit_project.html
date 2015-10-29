@@ -1,9 +1,11 @@
 <toasts></toasts>
 <div ng-if="isOwner" class="content-container">
   <button class="btn btn-primary" ng-click="doSave()">Save</button>
+  <button class="btn btn-default" ng-click="addRole()">Add a Role</button>
 </div>
-<div class="content-container" ng-show="loadComplete">
-  <h2>{{ project.title }}</h2>
+<div ng-if="isOwner" class="content-container" ng-show="loadComplete">
+  <h3>Name</h3>
+  <input type="text" name="name" class="form-control" ng-model="project.title" />
   <h3>Status</h3>
   <div class="btn-group">
       <label class="btn btn-primary" ng-model="project.status" btn-radio="'not_started'">Not Started</label>
@@ -11,7 +13,7 @@
       <label class="btn btn-primary" ng-model="project.status" btn-radio="'complete'">Completed</label>
   </div>
   <h3>Description</h3>
-  <p>{{project.description}}</p>
+  <textarea name="description" class="form-control" ng-model="project.description" /></textarea>
   <h3 class="inline">Roles</h3>
   <div class="clearfix">
     <div class="col-md-3" ng-repeat="role in project.roles">
@@ -19,7 +21,16 @@
         <span class="title">{{role.title}}</span>
         <span class="subtitle" ng-show="role.user">{{role.user.first_name}} {{role.user.last_name}}</span><span class="subtitle" ng-hide="role.user"><em>None</em></span>
         <div class="buttons-right">
-          <button type="button" class="btn btn-primary" ng-if="!role.user && canApply" ng-click="doApply(role.id)">Apply</button>
+          <button type="button" class="btn btn-danger" ng-click="deleteRole(role.id)" ng-show="role.user.id === principal.getUser().id">Delete</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3" ng-repeat="role in newRoles track by $index">
+      <div class="internal-container">
+        <input type="text" class="title form-control" ng-model="role.title"/>
+        <span class="subtitle"><em>None</em></span>
+        <div class="buttons-right">
+          <button type="button" class="btn btn-danger" ng-click="deleteNewRole($index)">Delete</button>
         </div>
       </div>
     </div>
