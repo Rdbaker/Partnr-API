@@ -32,7 +32,22 @@ angular.module('partnr.users.assets').factory('roles', function($rootScope, $htt
 				url: $rootScope.apiRoute + 'roles/' + role.id,
 				headers: principal.getHeaders(),
 				data: role
-			})
+			});
+		},
+
+		delete : function(id) {
+			$log.debug("[PROJECT ROLE] Sending delete request");
+			$log.debug(id);
+
+			return $http({
+				method: 'DELETE',
+				url: $rootScope.apiRoute + 'roles/' + id,
+				headers: principal.getHeaders()
+			});
+		},
+
+		isValid : function(role) {
+			return (role.title.length > 0);
 		}
 	};
 });

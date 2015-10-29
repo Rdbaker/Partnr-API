@@ -14,11 +14,11 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 	}
 
 	$scope.validateOwnerRole = function() {
-		return $scope.validateRole($scope.ownerRole);
+		return roles.isValid($scope.ownerRole);
 	}
 
 	$scope.validateRole = function(role) {
-		return (role.title.length > 0);
+		return roles.isValid(role);
 	}
 
 	$scope.doProjectCreate = function() {

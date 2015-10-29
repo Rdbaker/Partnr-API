@@ -1,9 +1,12 @@
-angular.module('partnr.users.assets').controller('EditProjectController', function($scope, $state, $stateParams, $log, $q, projects, applications, principal, toaster) {
+angular.module('partnr.users.assets').controller('EditProjectController', function($scope, $state, 
+	$stateParams, $log, $q, $filter, projects, applications, roles, principal, toaster) {
 	$scope.project = {
 		status: 'not_started'
 	};
 	$scope.isOwner = false;
 	$scope.loadComplete = false;
+	$scope.newRoles = [];
+	$scope.rolesToDelete = [];
 	
 	projects.get($stateParams.project_id).then(function(result) {
 		$log.debug(result.data);
@@ -17,16 +20,51 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 		$scope.loadComplete = true;
 	});
 
+	$scope.addRole = function() {
+		$scope.newRoles.push({ 
+			title: "Add a title...", 
+			project: $scope.project.id
+		});
+	};
+
+	$scope.deleteNewRole = function(index) {
+		$scope.newRoles.splice(index, 1);
+	};
+
+	$scope.deleteRole = function(id) {
+		var role = single_object = $filter('filter')(
+			$scope.project.roles, 
+			function (d) {
+				return d.id === id;
+			})[0];
+		var roleIndex = $scope.project.roles.indexOf(role);
+		$scope.project.roles.splice(roleIndex, 1);
+		$scope.rolesToDelete.push(role);
+	};
+
 	$scope.doSave = function() {
 		var preparedProject = angular.copy($scope.project);
 		delete preparedProject.owner;
-		
-		projects.update(preparedProject).then(function(result) {
-			$log.debug(result);
-			if (result.data) {
-				toaster.success("Project updated!");
-				$state.go('project', {id : $scope.project.id});
+		$scope.loadComplete = false;
+
+		var requests = [];
+		requests.push(projects.update(preparedProject).$promise);
+
+		for (var i = 0; i < $scope.rolesToDelete.length; i++) {
+			requests.push(roles.delete($scope.rolesToDelete[i].id).$promise);
+		}
+
+		for (var i = 0; i < $scope.newRoles.length; i++) {
+			if (roles.isValid($scope.newRoles[i])) {
+				requests.push(roles.create($scope.newRoles[i]).$promise);
 			}
+		}
+
+		$q.all(requests).then(function(result) {
+			$log.debug(result);
+			toaster.success("Project updated!");
+			$state.go('project', {id : $scope.project.id});
+			$scope.loadComplete = true;
 		});
 	};
 });
