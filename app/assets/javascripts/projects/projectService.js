@@ -9,6 +9,18 @@ angular.module('partnr.users.assets').factory('projects', function($rootScope, $
 			});
 		},
 
+		listByOwner : function(id) {
+			$log.debug('[PROJECT] Sending list for owner');
+			$log.debug(id);
+
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'projects',
+				headers: principal.getHeaders(),
+				params: { owner: id }
+			});
+		},
+
 		list : function() {
 			$log.debug('[PROJECT] Sending list request');
 
