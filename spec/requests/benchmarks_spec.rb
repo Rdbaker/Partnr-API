@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe "States", :type => :request do
+RSpec.describe "Benchmarks", :type => :request do
   before(:each) do
-    @state = build(:state)
-    @state2 = build(:state2)
-    @state3 = build(:state3)
-    @state4 = build(:state4)
+    @benchmark = build(:bmark)
+    @benchmark2 = build(:bmark2)
+    @benchmark3 = build(:bmark3)
+    @benchmark4 = build(:bmark4)
 
-    # owner
+    # owner/creator
     @user = build(:user)
     @user.confirmed_at = Time.zone.now
     @user.save!
@@ -22,20 +22,25 @@ RSpec.describe "States", :type => :request do
     @user3.save!
     @project = create(:good_project)
 
-    @state.project = @project
-    @state2.project = @project
-    @state3.project = @project
-    @state4.project = @project
+    @benchmark.user = @user
+    @benchmark2.user = @user
+    @benchmark3.user = @user
+    @benchmark4.user = @user
+
+    @benchmark.project = @project
+    @benchmark2.project = @project
+    @benchmark3.project = @project
+    @benchmark4.project = @project
 
     @role.user = @user2
     @role.project = @project
 
     @project.owner = @user.id
 
-    @state.save!
-    @state2.save!
-    @state3.save!
-    @state4.save!
+    @benchmark.save!
+    @benchmark2.save!
+    @benchmark3.save!
+    @benchmark4.save!
     @project.save!
     @role.save!
   end
@@ -45,9 +50,9 @@ RSpec.describe "States", :type => :request do
       login_as(@user, :scope => :user)
     end
 
-    describe "GET /api/v1/states/:id" do
+    describe "GET /api/v1/benchmarks/:id" do
       before(:each) do
-        get "/api/v1/states/#{@state.id}"
+        get "/api/v1/benchmarks/#{@benchmark.id}"
         @res = JSON.parse(response.body)
       end
 
@@ -55,15 +60,15 @@ RSpec.describe "States", :type => :request do
         expect(response.status).to eq(200)
       end
 
-      it "returns a JSON Schema conforming state" do
-        expect(@res).to match_json_schema(:shallow_state)
+      it "returns a JSON Schema conforming benchmark" do
+        expect(@res).to match_json_schema(:shallow_benchmark)
       end
     end
 
-    describe "POST /api/v1/states" do
+    describe "POST /api/v1/benchmarks" do
       before(:each) do
-        @title = "new state"
-        post "/api/v1/states", {
+        @title = "new benchmark"
+        post "/api/v1/benchmarks", {
           "title" => @title,
           "project" => @project.id
         }
@@ -76,7 +81,6 @@ RSpec.describe "States", :type => :request do
 
       it "has all the proper attributes we gave it" do
         expect(@res["title"]).to eq(@title)
-        expect(@res["project"]["id"]).to eq(@project.id)
       end
     end
 
@@ -90,10 +94,10 @@ RSpec.describe "States", :type => :request do
       login_as(@user3, :scope => :user)
     end
 
-    describe "POST /api/v1/states" do
+    describe "POST /api/v1/benchmarks" do
       before(:each) do
-        @title = "new state"
-        post "/api/v1/states", {
+        @title = "new benchmark"
+        post "/api/v1/benchmarks", {
           "title" => @title,
           "project" => @project.id
         }
