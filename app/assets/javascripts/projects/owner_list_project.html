@@ -1,0 +1,10 @@
+<toasts></toasts>
+<h1>My Projects</h1>
+<div class="content-container">
+	<div ng-show="loadComplete" ng-repeat="p in projects">
+		<a ui-sref="project({ id: p.id })">{{ p.title }}</a>
+	</div>
+	<div ng-hide="loadComplete" class="text-center loading">
+		<img src="/assets/ajax-loader.gif">
+	</div>
+</div>
