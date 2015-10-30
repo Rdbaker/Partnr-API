@@ -3,8 +3,8 @@ angular.module('partnr.users', []);
 angular.module('partnr.messaging', []);
 angular.module('partnr.toaster', []);
 angular.module('partnr.users.assets', []);
-angular.module('partnr', ['ui.router', 
-  'ui.bootstrap', 'templates', 
+angular.module('partnr', ['ui.router',
+  'ui.bootstrap', 'templates',
   'partnr.auth', 'partnr.users', 'partnr.messaging',
   'partnr.toaster', 'partnr.users.assets'
   ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization) {
@@ -13,7 +13,7 @@ angular.module('partnr', ['ui.router',
 
    $rootScope.$state = $state; // application state
    $rootScope.apiRoute  = '/api/v1/';
-   $rootScope.version   = '0.3.7';
+   $rootScope.version   = '0.3.8';
    var bypassAuthCheck = false;
 
    $rootScope.isLoggedIn = function() {
