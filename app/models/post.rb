@@ -1,6 +1,6 @@
 class Post < ActiveRecord::Base
   belongs_to :user
-  belongs_to :state
+  belongs_to :bmark
 
   validates :title, :content, :user, presence: true
 
@@ -8,7 +8,7 @@ class Post < ActiveRecord::Base
     user.class == User &&
       (
         user == self.user ||
-        self.state.project.has_admin_permissions(user)
+        self.bmark.project.has_admin_permissions(user)
       )
   end
 

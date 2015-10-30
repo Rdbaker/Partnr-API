@@ -6,7 +6,7 @@
     "title" : {
       "type" : "string"
     },
-    "state" : {
+    "benchmark" : {
       "type" : "object"
     },
     "id" : {
@@ -15,7 +15,7 @@
   },
   "required" : [
     "title",
-    "state",
+    "benchmark",
     "id"
   ]
 }

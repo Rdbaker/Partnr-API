@@ -22,13 +22,14 @@ RSpec.describe "Posts", :type => :request do
     @user3.confirmed_at = Time.zone.now
     @user3.save!
 
-    @state = build(:state)
-    @state.project = @project
-    @post.state = @state
+    @benchmark = build(:bmark)
+    @benchmark.project = @project
+    @benchmark.user = @user
+    @post.bmark = @benchmark
 
     @project.save!
     @role.save!
-    @state.save!
+    @benchmark.save!
     @post.save!
   end
 
@@ -59,7 +60,7 @@ RSpec.describe "Posts", :type => :request do
         post "/api/v1/posts", {
           "title" => @title,
           "content" => @content,
-          "state" => @state.id
+          "benchmark" => @benchmark.id
         }
         @res = JSON.parse(response.body)
       end
@@ -71,7 +72,7 @@ RSpec.describe "Posts", :type => :request do
       it "has all the proper attributes we gave it" do
         expect(@res["title"]).to eq(@title)
         expect(@res["content"]).to eq(@content)
-        expect(@res["state"]["id"]).to eq(@state.id)
+        expect(@res["benchmark"]["id"]).to eq(@benchmark.id)
       end
     end
 
@@ -122,7 +123,7 @@ RSpec.describe "Posts", :type => :request do
         post "/api/v1/posts", {
           "title" => @title,
           "content" => @content,
-          "state" => @state.id
+          "benchmark" => @benchmark.id
         }
         @res = JSON.parse(response.body)
       end
@@ -134,7 +135,7 @@ RSpec.describe "Posts", :type => :request do
       it "has all the proper attributes we gave it" do
         expect(@res["title"]).to eq(@title)
         expect(@res["content"]).to eq(@content)
-        expect(@res["state"]["id"]).to eq(@state.id)
+        expect(@res["benchmark"]["id"]).to eq(@benchmark.id)
       end
     end
 
@@ -187,7 +188,7 @@ RSpec.describe "Posts", :type => :request do
         post "/api/v1/posts", {
           "title" => @title,
           "content" => @content,
-          "state" => @state.id
+          "benchmark" => @benchmark.id
         }
         @res = JSON.parse(response.body)
       end

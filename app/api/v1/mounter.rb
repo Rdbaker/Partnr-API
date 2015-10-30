@@ -6,7 +6,7 @@ module V1
     mount Messages     => '/messages'
     mount Roles        => '/roles'
     mount Applications => '/applications'
-    mount States       => '/states'
+    mount Benchmarks   => '/benchmarks'
     mount Posts        => '/posts'
     mount Comments     => '/comments'
 

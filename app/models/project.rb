@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   belongs_to :user, :foreign_key => 'owner'
   has_many :roles, :dependent => :delete_all
+  has_many :bmarks, :dependent => :delete_all
   has_many :applications, through: :roles
   has_many :users, through: :roles
   has_many :comments, :dependent => :delete_all
@@ -19,8 +20,8 @@ class Project < ActiveRecord::Base
     user.class == User && ( owner == user.id || belongs_to_project(user) )
   end
 
-  def has_create_state_permissions(user)
-    has_create_post_permissions user
+  def has_create_benchmark_permissions(user)
+    has_admin_permissions user
   end
 
   def has_status_permissions(user)

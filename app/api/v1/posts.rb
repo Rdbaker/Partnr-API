@@ -23,9 +23,9 @@ module V1
       end
     end
 
-    desc "Retrieve all posts for a given state.", entity: Entities::PostData::AsShallow
+    desc "Retrieve all posts for a given benchmark.", entity: Entities::PostData::AsShallow
     params do
-      requires :state, type: Integer, allow_blank: false, desc: "The state id to which the post was posted."
+      requires :benchmark, type: Integer, allow_blank: false, desc: "The benchmark id to which the post was posted."
       optional :user, type: Integer, allow_blank: false, desc: "The author's User ID for the posts to retrieve."
       optional :title, type: String, desc: "The title of the post to retrieve."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of posts per page."
@@ -48,27 +48,27 @@ module V1
     end
 
 
-    desc "Create a new post for a state in a project.", entity: Entities::PostData::AsShallow
+    desc "Create a new post for a benchmark in a project.", entity: Entities::PostData::AsShallow
     params do
       requires :title, type: String, allow_blank: false, desc: "The post title."
       requires :content, type: String, allow_blank: false, desc: "The post content."
-      requires :state, type: Integer, allow_blank: false, desc: "The state to which the post will belong."
+      requires :benchmark, type: Integer, allow_blank: false, desc: "The benchmark to which the post will belong."
     end
     post do
       authenticated_user
-      state = get_record(State, params[:state])
-      post_create_permissions(state.project_id)
+      benchmark = get_record(Bmark, params[:benchmark])
+      post_create_permissions(benchmark.project_id)
       post = Post.create!({
         title: params[:title],
         content: params[:content],
-        state: state,
+        bmark: benchmark,
         user: current_user
       })
       present post, with: Entities::PostData::AsDeep
     end
 
 
-    desc "Update a specific post in a state.", entity: Entities::PostData::AsDeep
+    desc "Update a specific post in a benchmark.", entity: Entities::PostData::AsDeep
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The post ID."
       optional :title, type: String, allow_blank: false, desc: "The post title."
@@ -91,7 +91,7 @@ module V1
     end
 
 
-    desc "Delete a post in a state."
+    desc "Delete a post on a benchmark."
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The post ID."
     end

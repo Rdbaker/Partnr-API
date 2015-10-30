@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151026200021) do
+ActiveRecord::Schema.define(version: 20151030040158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,19 @@ ActiveRecord::Schema.define(version: 20151026200021) do
   add_index "applications", ["integer_id"], name: "index_applications_on_integer_id", using: :btree
   add_index "applications", ["role_id"], name: "index_applications_on_role_id", using: :btree
   add_index "applications", ["user_id"], name: "index_applications_on_user_id", using: :btree
+
+  create_table "bmarks", force: :cascade do |t|
+    t.string   "title",                      null: false
+    t.boolean  "complete",   default: false, null: false
+    t.datetime "due_date"
+    t.integer  "user_id"
+    t.integer  "project_id",                 null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "bmarks", ["project_id"], name: "index_bmarks_on_project_id", using: :btree
+  add_index "bmarks", ["user_id"], name: "index_bmarks_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.text     "content",    null: false
@@ -99,11 +112,11 @@ ActiveRecord::Schema.define(version: 20151026200021) do
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "state_id"
     t.integer  "user_id"
+    t.integer  "bmark_id"
   end
 
-  add_index "posts", ["state_id"], name: "index_posts_on_state_id", using: :btree
+  add_index "posts", ["bmark_id"], name: "index_posts_on_bmark_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
@@ -113,7 +126,6 @@ ActiveRecord::Schema.define(version: 20151026200021) do
     t.datetime "updated_at",              null: false
     t.integer  "owner",                   null: false
     t.integer  "creator",                 null: false
-    t.integer  "state_id"
     t.integer  "status",      default: 0
   end
 
@@ -135,19 +147,6 @@ ActiveRecord::Schema.define(version: 20151026200021) do
   end
 
   add_index "roles", ["project_id"], name: "index_roles_on_project_id", using: :btree
-
-  create_table "states", force: :cascade do |t|
-    t.string   "title",      null: false
-    t.integer  "project_id"
-    t.integer  "integer_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "post_id"
-  end
-
-  add_index "states", ["integer_id"], name: "index_states_on_integer_id", using: :btree
-  add_index "states", ["post_id"], name: "index_states_on_post_id", using: :btree
-  add_index "states", ["project_id"], name: "index_states_on_project_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -187,4 +186,5 @@ ActiveRecord::Schema.define(version: 20151026200021) do
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
   add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
   add_foreign_key "mailboxer_receipts", "mailboxer_notifications", column: "notification_id", name: "receipts_on_notification_id"
+  add_foreign_key "posts", "bmarks"
 end
