@@ -5,6 +5,7 @@
     "angular" : "latest",
     "angular-ui-router" : "latest",
     "angular-ui-utils" : "0.2.3",
-    "angular-ui-bootstrap-bower" : "latest"
+    "angular-ui-bootstrap-bower" : "latest",
+    "fontawesome" : "latest"
   }
 }
