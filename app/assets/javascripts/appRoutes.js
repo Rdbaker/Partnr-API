@@ -57,7 +57,7 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 			url: '/inbox',
 			views: {
 				'content@': { 
-					templateUrl: 'messaging/messageList.html',
+					templateUrl: 'messaging/list_message.html',
 					controller: 'MessageController',
 				}
 			},

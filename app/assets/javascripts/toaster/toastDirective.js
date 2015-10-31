@@ -1,4 +1,4 @@
-angular.module('partnr.toaster').directive('toasts', function($rootScope, toaster) {
+angular.module('partnr.notify').directive('toasts', function($rootScope, toaster) {
     return {
         restrict: 'AE',
         templateUrl: 'toaster/toasts.html',

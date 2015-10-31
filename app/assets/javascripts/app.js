@@ -1,12 +1,12 @@
 angular.module('partnr.auth', []);
 angular.module('partnr.users', []);
 angular.module('partnr.messaging', []);
-angular.module('partnr.toaster', []);
+angular.module('partnr.notify', []);
 angular.module('partnr.users.assets', []);
 angular.module('partnr', ['ui.router',
   'ui.bootstrap', 'templates',
   'partnr.auth', 'partnr.users', 'partnr.messaging',
-  'partnr.toaster', 'partnr.users.assets'
+  'partnr.notify', 'partnr.users.assets'
   ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization) {
    // run initial csrf fetch
    principal.getCsrf();
