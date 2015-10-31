@@ -6,13 +6,6 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 	var loadSteps = 2;
 	var loadStepsAchieved = 0;
 
-	$scope.doDelete = function() {
-		projects.delete($scope.project.id).then(function(result) {
-			$state.go('project_list');
-			toaster.success('Project deleted');
-		});
-	};
-
 	$scope.doApply = function(role) {
 		applications.create({ role : role }).then(function(result) {
 			toaster.success('Request sent!');

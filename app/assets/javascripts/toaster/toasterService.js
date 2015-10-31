@@ -1,4 +1,4 @@
-angular.module('partnr.toaster').factory('toaster', function($rootScope) {
+angular.module('partnr.notify').factory('toaster', function($rootScope) {
   var toasts = [];
 
   function toast(type, text) {

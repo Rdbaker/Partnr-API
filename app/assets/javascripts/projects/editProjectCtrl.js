@@ -1,5 +1,5 @@
 angular.module('partnr.users.assets').controller('EditProjectController', function($scope, $state, 
-	$stateParams, $log, $q, $filter, projects, applications, roles, principal, toaster) {
+	$stateParams, $log, $q, $filter, projects, applications, roles, principal, toaster, modals) {
 	$scope.project = {
 		status: 'not_started'
 	};
@@ -40,6 +40,17 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 		var roleIndex = $scope.project.roles.indexOf(role);
 		$scope.project.roles.splice(roleIndex, 1);
 		$scope.rolesToDelete.push(role);
+	};
+
+	$scope.deleteProject = function() {
+		modals.confirm("Are you sure you want to delete this project? It cannot be undone.", function(result) {
+			if (result) {
+				projects.delete($scope.project.id).then(function(result) {
+					$state.go('owner_project_list');
+					toaster.success('Project deleted');
+				});
+			}
+		});
 	};
 
 	$scope.doSave = function() {
