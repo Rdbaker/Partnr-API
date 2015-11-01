@@ -58,13 +58,15 @@ module V1
       authenticated_user
       benchmark = get_record(Bmark, params[:benchmark])
       post_create_permissions(benchmark.project_id)
-      post = Post.create!({
+      p = Post.new
+      p.user_notifier = current_user
+      p.update!({
         title: params[:title],
         content: params[:content],
         bmark: benchmark,
         user: current_user
       })
-      present post, with: Entities::PostData::AsDeep
+      present p, with: Entities::PostData::AsDeep
     end
 
 
@@ -77,16 +79,11 @@ module V1
     end
     put ":id" do
       post_put_permissions(params[:id])
-
-      if !!params[:content]
-        @post.content = params[:content]
-      end
-
-      if !!params[:title]
-        @post.title = params[:title]
-      end
-
-      @post.save
+      @post.user_notifier = current_user
+      @post.update!({
+        title: params[:title] || @post.title,
+        content: params[:content] || @post.content
+      })
       present @post, with: Entities::PostData::AsDeep
     end
 
@@ -97,6 +94,7 @@ module V1
     end
     delete ":id" do
       post_destroy_permissions(params[:id])
+      @post.user_notifier = current_user
       @post.destroy
       status 204
     end

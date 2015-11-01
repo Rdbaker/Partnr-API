@@ -52,13 +52,15 @@ module V1
       authenticated_user
       proj = get_record(Project, params[:project])
       if proj.has_create_benchmark_permissions current_user
-        benchmark = Bmark.create!({
+        b = Bmark.new
+        b.user_notifier = current_user
+        b.update!({
           title: params[:title],
           project: proj,
           due_date: params[:due_date],
           user: current_user
         })
-        present benchmark, with: Entities::BenchmarkData::AsShallow
+        present b, with: Entities::BenchmarkData::AsShallow
       else
         error!("401 Unauthorized", 401)
       end
@@ -77,20 +79,12 @@ module V1
     end
     put ":id" do
       benchmark_put_permissions(params[:id])
-
-      if !!params[:title]
-        @benchmark.title = params[:title]
-      end
-
-      if !!params[:complete]
-        @benchmark.complete = params[:complete]
-      end
-
-      if !!params[:due_date]
-        @benchmark.due_date = params[:due_date]
-      end
-
-      @benchmark.save
+      @benchmark.user_notifier = current_user
+      @benchmark.update!({
+        title: params[:title] || @benchmark.title,
+        complete: params[:complete] || @benchmark.complete,
+        due_date: params[:due_date] || @benchmark.due_date
+      })
       present @benchmark, with: Entities::BenchmarkData::AsShallow
     end
 
@@ -101,6 +95,7 @@ module V1
     end
     delete ":id" do
       benchmark_destroy_permissions(params[:id])
+      @benchmark.user_notifier = current_user
       @benchmark.destroy
       status 204
     end

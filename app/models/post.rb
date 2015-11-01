@@ -1,4 +1,4 @@
-class Post < ActiveRecord::Base
+class Post < Notifier
   belongs_to :user
   belongs_to :bmark
 
@@ -16,5 +16,9 @@ class Post < ActiveRecord::Base
     # for now, anybody who can delete should be
     # able to update the post as well
     has_destroy_permissions user
+  end
+
+  def followers
+    bmark.followers
   end
 end

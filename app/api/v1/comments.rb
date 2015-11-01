@@ -32,13 +32,13 @@ module V1
     end
 
 
-    desc "Get a single comment based on its ID.", entity: Entities::CommentData::AsShallow
+    desc "Get a single comment based on its ID.", entity: Entities::CommentData::AsDeep
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The comment ID."
     end
     get ":id" do
       comment = get_record(Comment, params[:id])
-      present comment, with: Entities::CommentData::AsShallow
+      present comment, with: Entities::CommentData::AsDeep
     end
 
 
@@ -50,12 +50,14 @@ module V1
     post do
       authenticated_user
       project = get_record(Project, params[:project])
-      comment = Comment.create!({
+      c = Comment.new
+      c.user_notifier = current_user
+      c.update!({
         content: params[:content],
         project: project,
         user: current_user
       })
-      present comment, with: Entities::CommentData::AsShallow
+      present c, with: Entities::CommentData::AsShallow
     end
 
 
@@ -66,8 +68,9 @@ module V1
     end
     put ":id" do
       comment_put_permissions(params[:id])
+      @comment.user_notifier = current_user
       @comment.content = params[:content]
-      @comment.save
+      @comment.save!
       present @comment, with: Entities::CommentData::AsShallow
     end
 
@@ -78,6 +81,7 @@ module V1
     end
     delete ":id" do
       comment_destroy_permissions(params[:id])
+      @comment.user_notifier = current_user
       @comment.destroy
       status 204
     end

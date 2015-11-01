@@ -66,12 +66,14 @@ module V1
     post do
       authenticated_user
       proj = get_record(Project, params[:project])
-      role = Role.create!({
+      r = Role.new
+      r.user_notifier = current_user
+      r.update!({
         title: params[:title],
         project: proj,
         user: nil
       })
-      present role, with: Entities::RoleData::AsShallow
+      present r, with: Entities::RoleData::AsShallow
     end
 
 
@@ -100,7 +102,8 @@ module V1
         @role.title = params[:title]
       end
 
-      @role.save
+      @role.user_notifier = current_user
+      @role.save!
       present @role, with: Entities::RoleData::AsShallow
     end
 
@@ -111,6 +114,7 @@ module V1
     end
     delete ":id" do
       role_destroy_permissions(params[:id])
+      @role.user_notifier = current_user
       @role.destroy
       status 204
     end

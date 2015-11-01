@@ -1,10 +1,13 @@
 {
-  "title" : "Shallow Comment Schema",
+  "title" : "Deep Comment Schema",
   "description" : "A comment object model",
   "type" : "object",
   "properties" : {
     "content" : {
       "type" : "string"
+    },
+    "project" : {
+      "type" : "object"
     },
     "user" : {
       "type" : "object"
@@ -17,6 +20,7 @@
     }
   },
   "required" : [
+    "project",
     "created_at",
     "user",
     "content",

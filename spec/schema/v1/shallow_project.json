@@ -26,6 +26,9 @@
         }
       }
     },
+    "comments" : {
+      "type" : "array"
+    },
     "id" : {
       "type" : "integer"
     }
@@ -34,6 +37,7 @@
     "title",
     "owner",
     "status",
+    "comments",
     "id"
   ]
 }

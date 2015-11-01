@@ -1,10 +1,12 @@
-class Project < ActiveRecord::Base
+require 'set'
+
+class Project < Notifier
   belongs_to :user, :foreign_key => 'owner'
-  has_many :roles, :dependent => :delete_all
-  has_many :bmarks, :dependent => :delete_all
+  has_many :roles, :dependent => :destroy
+  has_many :bmarks, :dependent => :destroy
   has_many :applications, through: :roles
   has_many :users, through: :roles
-  has_many :comments, :dependent => :delete_all
+  has_many :comments, :dependent => :destroy
 
   validates :title, :owner, :creator, :status, presence: true
 
@@ -30,5 +32,9 @@ class Project < ActiveRecord::Base
 
   def belongs_to_project(user)
     roles.any? { |role| role.user == user }
+  end
+
+  def followers
+    Set.new(users + (comments.map { |c| c.user }) + (applications.map { |a| a.user })).to_a
   end
 end

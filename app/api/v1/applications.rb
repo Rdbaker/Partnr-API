@@ -59,12 +59,14 @@ module V1
       if role.project.belongs_to_project(current_user)
         error!("You cannot apply for a role when you're already working on the project!", 400)
       end
-      application = Application.create!({
+      a = Application.new
+      a.user_notifier = current_user
+      a.update!({
         role: role,
         user: current_user,
         project: role.project
       })
-      present application, with: Entities::ApplicationData::AsDeep
+      present a, with: Entities::ApplicationData::AsDeep
     end
 
 
@@ -76,13 +78,14 @@ module V1
     put ":id" do
       @application = get_record(Application, params[:id])
       @role = @application.role
+      @role.user_notifier = current_user
+      @application.user_notifier = current_user
       if params[:status] == "accepted"
         application_accept_permissions(params[:id])
         if @role.user.nil?
           @role.user = @application.user
           @application.status = "accepted"
-          @role.save
-          @application.save
+          @role.save!
         else
           error!("400 Bad Request: Role already has a user.", 400)
         end
@@ -91,11 +94,11 @@ module V1
         application_udpate_permissions(params[:id])
         if @role.user == @application.user
           @role.user = nil
-          @role.save
+          @role.save!
         end
         @application.status = "pending"
-        @application.save
       end
+      @application.save!
       present @application, with: Entities::ApplicationData::AsShallow
     end
 
@@ -105,7 +108,8 @@ module V1
     end
     delete ":id" do
       application_destroy_permissions(params[:id])
-      @application.destroy
+      @application.user_notifier = current_user
+      @application.destroy!
       status 204
     end
 

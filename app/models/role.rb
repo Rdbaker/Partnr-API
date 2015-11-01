@@ -1,5 +1,5 @@
-class Role < ActiveRecord::Base
-  has_many :applications, :dependent => :delete_all
+class Role < Notifier
+  has_many :applications, :dependent => :destroy
   belongs_to :project
   belongs_to :user
 
@@ -17,4 +17,7 @@ class Role < ActiveRecord::Base
       self.project.has_admin_permissions(user)
   end
 
+  def followers
+    project.followers
+  end
 end

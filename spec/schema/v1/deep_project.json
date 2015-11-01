@@ -32,6 +32,9 @@
     "id" : {
       "type" : "integer"
     },
+    "applications" : {
+      "type" : "array"
+    },
     "roles" : {
       "type" : "array",
       "items" : {

@@ -40,7 +40,7 @@ RSpec.describe "Comments", :type => :request do
       end
 
       it "returns a JSON Schema conforming comment" do
-        expect(@res).to match_json_schema(:shallow_comment)
+        expect(@res).to match_json_schema(:deep_comment)
       end
     end
 
@@ -61,7 +61,6 @@ RSpec.describe "Comments", :type => :request do
       it "has all the proper attributes we gave it" do
         expect(@res["content"]).to eq(@content)
         expect(@res["user"]["id"]).to eq(@user.id)
-        expect(@res["project"]["id"]).to eq(@project.id)
       end
     end
 
@@ -135,7 +134,6 @@ RSpec.describe "Comments", :type => :request do
       end
 
       it "has all the proper attributes we gave it" do
-        expect(@res["project"]["id"]).to eq(@project.id)
         expect(@res["content"]).to eq(@content)
         expect(@res["user"]["id"]).to eq(@user2.id)
       end
@@ -215,7 +213,6 @@ RSpec.describe "Comments", :type => :request do
       it "has all the proper attributes we gave it" do
         expect(@res["content"]).to eq(@content)
         expect(@res["user"]["id"]).to eq(@user3.id)
-        expect(@res["project"]["id"]).to eq(@project.id)
       end
     end
 

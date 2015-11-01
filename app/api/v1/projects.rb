@@ -53,13 +53,15 @@ module V1
     end
     post do
       authenticated_user
-      project = Project.create!({
+      p = Project.new
+      p.user_notifier = current_user
+      p.update!({
         title: params[:title],
         description: params[:description],
         owner: current_user.id,
         creator: current_user.id
       })
-      present project, with: Entities::ProjectData::AsShallow
+      present p, with: Entities::ProjectData::AsShallow
     end
 
 
@@ -75,10 +77,13 @@ module V1
     put ":id" do
       if !!params[:title] || !!params[:description] || !!params[:owner]
         project_permissions(params[:id])
+        @project.user_notifier = current_user
         @project.update!(permitted_params params)
       elsif !!params[:status]
         project_status_permissions(params[:id])
+        @project.user_notifier = current_user
         @project.status = params[:status]
+        @project.save!
       end
       present @project, with: Entities::ProjectData::AsShallow
     end
@@ -90,6 +95,7 @@ module V1
     end
     delete ":id" do
       project_permissions(params[:id])
+      @project.user_notifier = current_user
       @project.destroy
       status 204
     end
