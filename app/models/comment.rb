@@ -1,4 +1,4 @@
-class Comment < ActiveRecord::Base
+class Comment < Notifier
   belongs_to :user
   belongs_to :project
 
@@ -16,5 +16,9 @@ class Comment < ActiveRecord::Base
         has_put_permissions(user) ||
         self.project.has_admin_permissions(user)
       )
+  end
+
+  def followers
+    project.followers
   end
 end

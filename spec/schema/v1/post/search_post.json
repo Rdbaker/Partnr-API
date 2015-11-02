@@ -1,13 +1,13 @@
 {
-  "title" : "Shallow Post Schema",
+  "title" : "Search Post Schema",
   "description" : "A post object model",
   "type" : "object",
   "properties" : {
     "title" : {
       "type" : "string"
     },
-    "benchmark" : {
-      "type" : "object"
+    "content" : {
+      "type" : "string"
     },
     "id" : {
       "type" : "integer"
@@ -15,7 +15,7 @@
   },
   "required" : [
     "title",
-    "benchmark",
+    "content",
     "id"
   ]
 }

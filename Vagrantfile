@@ -17,5 +17,4 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Forward the mailcatcher ports to the host
   config.vm.network :forwarded_port, guest: 1080, host: 1080
-  config.vm.network :forwarded_port, guest: 1025, host: 1025
 end

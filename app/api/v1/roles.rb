@@ -23,7 +23,7 @@ module V1
       end
     end
 
-    desc "Retrieve all roles.", entity: Entities::RoleData::AsDeep
+    desc "Retrieve all roles.", entity: Entities::RoleData::AsSearch
     params do
       optional :user, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
       optional :empty, type: Boolean, desc: "Search for empty roles."
@@ -44,21 +44,21 @@ module V1
 
       present Role.where(permitted_params params)
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::RoleData::AsDeep
+        .per(params[:per_page]), with: Entities::RoleData::AsSearch
     end
 
 
-    desc "Get a single role based on its ID.", entity: Entities::RoleData::AsDeep
+    desc "Get a single role based on its ID.", entity: Entities::RoleData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The role ID."
     end
     get ":id" do
       role = get_record(Role, params[:id])
-      present role, with: Entities::RoleData::AsDeep
+      present role, with: Entities::RoleData::AsFull
     end
 
 
-    desc "Create a new role for a project.", entity: Entities::RoleData::AsShallow
+    desc "Create a new role for a project.", entity: Entities::RoleData::AsFull
     params do
       requires :title, type: String, allow_blank: false, desc: "The role title."
       requires :project, type: Integer, allow_blank: false, desc: "The project to which the role will belong."
@@ -66,16 +66,18 @@ module V1
     post do
       authenticated_user
       proj = get_record(Project, params[:project])
-      role = Role.create!({
+      r = Role.new
+      r.user_notifier = current_user
+      r.update!({
         title: params[:title],
         project: proj,
         user: nil
       })
-      present role, with: Entities::RoleData::AsShallow
+      present r, with: Entities::RoleData::AsFull
     end
 
 
-    desc "Update a specific role for a project.", entity: Entities::RoleData::AsShallow
+    desc "Update a specific role for a project.", entity: Entities::RoleData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The role ID."
       optional :title, type: String, allow_blank: false, desc: "The role title."
@@ -100,8 +102,9 @@ module V1
         @role.title = params[:title]
       end
 
-      @role.save
-      present @role, with: Entities::RoleData::AsShallow
+      @role.user_notifier = current_user
+      @role.save!
+      present @role, with: Entities::RoleData::AsFull
     end
 
 
@@ -111,6 +114,7 @@ module V1
     end
     delete ":id" do
       role_destroy_permissions(params[:id])
+      @role.user_notifier = current_user
       @role.destroy
       status 204
     end

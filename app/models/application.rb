@@ -1,4 +1,4 @@
-class Application < ActiveRecord::Base
+class Application < Notifier
   belongs_to :user
   belongs_to :role
   belongs_to :project
@@ -30,5 +30,9 @@ class Application < ActiveRecord::Base
     if self.project.id != self.role.project.id
       errors.add(:project, "The application and role must belong to the same project")
     end
+  end
+
+  def followers
+    project.followers
   end
 end

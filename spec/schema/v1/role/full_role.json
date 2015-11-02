@@ -1,5 +1,5 @@
 {
-  "title" : "Shallow Role Schema",
+  "title" : "Full Role Schema",
   "description" : "A role object model",
   "type" : "object",
   "properties" : {
@@ -11,11 +11,15 @@
     },
     "id" : {
       "type" : "integer"
+    },
+    "project" : {
+      "type" : "object"
     }
   },
   "required" : [
     "title",
     "user",
+    "project",
     "id"
   ]
 }

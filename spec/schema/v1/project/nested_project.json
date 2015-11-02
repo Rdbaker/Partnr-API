@@ -1,5 +1,5 @@
 {
-  "title" : "Shallow Project Schema",
+  "title" : "Nested Project Schema",
   "description" : "A project object model",
   "type" : "object",
   "properties" : {
@@ -12,27 +12,12 @@
     "status" : {
       "type" : "string"
     },
-    "owner" : {
-      "type" : "object",
-      "properties" : {
-        "first_name" : {
-          "type" : "string"
-        },
-        "last_name" : {
-          "type" : "string"
-        },
-        "id" : {
-          "type" : "integer"
-        }
-      }
-    },
     "id" : {
       "type" : "integer"
     }
   },
   "required" : [
     "title",
-    "owner",
     "status",
     "id"
   ]
