@@ -1,13 +1,10 @@
 {
-  "title" : "Benchmark Schema",
+  "title" : "Search Benchmark Schema",
   "description" : "A benchmark object model",
   "type" : "object",
   "properties" : {
     "title" : {
       "type" : "string"
-    },
-    "project" : {
-      "type" : "object"
     },
     "complete": {
       "type" : "boolean"
@@ -24,7 +21,6 @@
   },
   "required" : [
     "title",
-    "project",
     "complete",
     "due_date",
     "created_at",

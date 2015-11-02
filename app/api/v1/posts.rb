@@ -23,7 +23,7 @@ module V1
       end
     end
 
-    desc "Retrieve all posts for a given benchmark.", entity: Entities::PostData::AsShallow
+    desc "Retrieve all posts for a given benchmark.", entity: Entities::PostData::AsSearch
     params do
       requires :benchmark, type: Integer, allow_blank: false, desc: "The benchmark id to which the post was posted."
       optional :user, type: Integer, allow_blank: false, desc: "The author's User ID for the posts to retrieve."
@@ -34,21 +34,21 @@ module V1
     get do
       present Post.where(permitted_params params)
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::PostData::AsShallow
+        .per(params[:per_page]), with: Entities::PostData::AsSearch
     end
 
 
-    desc "Get a single post based on its ID.", entity: Entities::PostData::AsDeep
+    desc "Get a single post based on its ID.", entity: Entities::PostData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The post ID."
     end
     get ":id" do
       post = get_record(Post, params[:id])
-      present post, with: Entities::PostData::AsDeep
+      present post, with: Entities::PostData::AsFull
     end
 
 
-    desc "Create a new post for a benchmark in a project.", entity: Entities::PostData::AsShallow
+    desc "Create a new post for a benchmark in a project.", entity: Entities::PostData::AsFull
     params do
       requires :title, type: String, allow_blank: false, desc: "The post title."
       requires :content, type: String, allow_blank: false, desc: "The post content."
@@ -66,11 +66,11 @@ module V1
         bmark: benchmark,
         user: current_user
       })
-      present p, with: Entities::PostData::AsDeep
+      present p, with: Entities::PostData::AsFull
     end
 
 
-    desc "Update a specific post in a benchmark.", entity: Entities::PostData::AsDeep
+    desc "Update a specific post in a benchmark.", entity: Entities::PostData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The post ID."
       optional :title, type: String, allow_blank: false, desc: "The post title."
@@ -84,7 +84,7 @@ module V1
         title: params[:title] || @post.title,
         content: params[:content] || @post.content
       })
-      present @post, with: Entities::PostData::AsDeep
+      present @post, with: Entities::PostData::AsFull
     end
 
 

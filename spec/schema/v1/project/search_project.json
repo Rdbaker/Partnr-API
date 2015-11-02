@@ -1,5 +1,5 @@
 {
-  "title" : "Shallow Project Schema",
+  "title" : "Search Project Schema",
   "description" : "A project object model",
   "type" : "object",
   "properties" : {
@@ -12,19 +12,8 @@
     "status" : {
       "type" : "string"
     },
-    "owner" : {
-      "type" : "object",
-      "properties" : {
-        "first_name" : {
-          "type" : "string"
-        },
-        "last_name" : {
-          "type" : "string"
-        },
-        "id" : {
-          "type" : "integer"
-        }
-      }
+    "users" : {
+      "type" : "array"
     },
     "comments" : {
       "type" : "array"
@@ -35,7 +24,7 @@
   },
   "required" : [
     "title",
-    "owner",
+    "users",
     "status",
     "comments",
     "id"

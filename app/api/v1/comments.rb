@@ -18,7 +18,7 @@ module V1
     end
 
 
-    desc "Retrieve all comments for a given project.", entity: Entities::CommentData::AsShallow
+    desc "Retrieve all comments for a given project.", entity: Entities::CommentData::AsSearch
     params do
       requires :project, type: Integer, allow_blank: false, desc: "The project ID on which the comments were made."
       optional :user, type: Integer, allow_blank: false, desc: "The author's User ID who made the comments."
@@ -28,21 +28,21 @@ module V1
     get do
       present Comment.where(permitted_params params)
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::CommentData::AsShallow
+        .per(params[:per_page]), with: Entities::CommentData::AsSearch
     end
 
 
-    desc "Get a single comment based on its ID.", entity: Entities::CommentData::AsDeep
+    desc "Get a single comment based on its ID.", entity: Entities::CommentData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The comment ID."
     end
     get ":id" do
       comment = get_record(Comment, params[:id])
-      present comment, with: Entities::CommentData::AsDeep
+      present comment, with: Entities::CommentData::AsFull
     end
 
 
-    desc "Create a new comment on a project.", entity: Entities::CommentData::AsShallow
+    desc "Create a new comment on a project.", entity: Entities::CommentData::AsFull
     params do
       requires :content, type: String, allow_blank: false, desc: "The comment content."
       requires :project, type: Integer, allow_blank: false, desc: "The project ID for the comment."
@@ -57,11 +57,11 @@ module V1
         project: project,
         user: current_user
       })
-      present c, with: Entities::CommentData::AsShallow
+      present c, with: Entities::CommentData::AsFull
     end
 
 
-    desc "Update a comment on a project.", entity: Entities::CommentData::AsShallow
+    desc "Update a comment on a project.", entity: Entities::CommentData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The comment ID."
       requires :content, type: String, allow_blank: false, desc: "The new content for the comment."
@@ -71,7 +71,7 @@ module V1
       @comment.user_notifier = current_user
       @comment.content = params[:content]
       @comment.save!
-      present @comment, with: Entities::CommentData::AsShallow
+      present @comment, with: Entities::CommentData::AsFull
     end
 
 

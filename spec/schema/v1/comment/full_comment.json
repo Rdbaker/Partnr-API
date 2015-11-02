@@ -1,18 +1,18 @@
 {
-  "title" : "Shallow Post Schema",
-  "description" : "A post object model",
+  "title" : "Full Comment Schema",
+  "description" : "A comment object model",
   "type" : "object",
   "properties" : {
-    "title" : {
+    "content" : {
       "type" : "string"
     },
-    "benchmark" : {
+    "project" : {
       "type" : "object"
     },
     "user" : {
       "type" : "object"
     },
-    "content" : {
+    "created_at" : {
       "type" : "string"
     },
     "id" : {
@@ -20,8 +20,8 @@
     }
   },
   "required" : [
-    "title",
-    "benchmark",
+    "project",
+    "created_at",
     "user",
     "content",
     "id"

@@ -40,7 +40,7 @@ RSpec.describe "Comments", :type => :request do
       end
 
       it "returns a JSON Schema conforming comment" do
-        expect(@res).to match_json_schema(:deep_comment)
+        expect(@res).to match_json_schema(:full_comment)
       end
     end
 
@@ -115,7 +115,7 @@ RSpec.describe "Comments", :type => :request do
       end
 
       it "returns a JSON Schema conforming comment" do
-        expect(@res).to match_json_schema(:shallow_comment)
+        expect(@res).to match_json_schema(:full_comment)
       end
     end
 
@@ -192,7 +192,7 @@ RSpec.describe "Comments", :type => :request do
       end
 
       it "returns a JSON Schema conforming comment" do
-        expect(@res).to match_json_schema(:shallow_comment)
+        expect(@res).to match_json_schema(:full_comment)
       end
     end
 

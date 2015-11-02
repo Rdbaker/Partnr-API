@@ -23,7 +23,7 @@ module V1
       end
     end
 
-    desc "Retrieve all applications.", entity: Entities::ApplicationData::AsDeep
+    desc "Retrieve all applications.", entity: Entities::ApplicationData::AsSearch
     params do
       optional :user, type: Integer, allow_blank: false, desc: "The applicant's ID."
       optional :project, type: Integer, allow_blank: false, desc: "The application's project's ID."
@@ -34,21 +34,21 @@ module V1
     get do
       present Application.where(permitted_params params)
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::ApplicationData::AsDeep
+        .per(params[:per_page]), with: Entities::ApplicationData::AsSearch
     end
 
 
-    desc "Get a single application based on its ID.", entity: Entities::ApplicationData::AsDeep
+    desc "Get a single application based on its ID.", entity: Entities::ApplicationData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The application ID."
     end
     get ":id" do
       application = get_record(Application, params[:id])
-      present application, with: Entities::ApplicationData::AsDeep
+      present application, with: Entities::ApplicationData::AsFull
     end
 
 
-    desc "Create a new application for a role.", entity: Entities::ApplicationData::AsDeep
+    desc "Create a new application for a role.", entity: Entities::ApplicationData::AsFull
     params do
       requires :role, type: Integer, allow_blank: false, desc: "The role ID to which the application will belong."
     end
@@ -66,11 +66,11 @@ module V1
         user: current_user,
         project: role.project
       })
-      present a, with: Entities::ApplicationData::AsDeep
+      present a, with: Entities::ApplicationData::AsFull
     end
 
 
-    desc "Update a specific application for a role.", entity: Entities::ApplicationData::AsShallow
+    desc "Update a specific application for a role.", entity: Entities::ApplicationData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The appliction's ID."
       requires :status, type: String, allow_blank: false, values: ["pending", "accepted"], desc: "The application's status."
@@ -99,7 +99,7 @@ module V1
         @application.status = "pending"
       end
       @application.save!
-      present @application, with: Entities::ApplicationData::AsShallow
+      present @application, with: Entities::ApplicationData::AsFull
     end
 
     desc "Destroy an application."
