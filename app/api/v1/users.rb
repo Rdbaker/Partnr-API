@@ -11,7 +11,7 @@ module V1
     end
 
 
-    desc "Retrieve all the users.", entity: Entities::UserData::AsShallow
+    desc "Retrieve all the users.", entity: Entities::UserData::AsSearch
     params do
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of users per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page of the users to get."
@@ -19,7 +19,7 @@ module V1
     get do
       present User
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::UserData::AsShallow
+        .per(params[:per_page]), with: Entities::UserData::AsSearch
     end
 
     desc "Retrieve info about the current user.", entity: Entities::UserData::AsPrivate

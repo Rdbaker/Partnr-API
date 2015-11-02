@@ -44,8 +44,8 @@ RSpec.describe "Roles", :type => :request do
       end
 
       it "matches the JSON schema" do
-        expect(@res[0]).to match_json_schema(:deep_role)
-        expect(@res[1]).to match_json_schema(:deep_role)
+        expect(@res[0]).to match_json_schema(:search_role)
+        expect(@res[1]).to match_json_schema(:search_role)
       end
     end
 
@@ -60,7 +60,7 @@ RSpec.describe "Roles", :type => :request do
       end
 
       it "matches the JSON schema" do
-        expect(@res[0]).to match_json_schema(:deep_role)
+        expect(@res[0]).to match_json_schema(:search_role)
       end
 
       it "has a user with the supplied id" do
@@ -92,7 +92,7 @@ RSpec.describe "Roles", :type => :request do
       end
 
       it "returns JSON Schema conforming role" do
-        expect(@res).to match_json_schema(:deep_role)
+        expect(@res).to match_json_schema(:full_role)
       end
     end
   end
@@ -165,7 +165,7 @@ RSpec.describe "Roles", :type => :request do
         end
 
         it "returns a JSON Schema conforming role" do
-          expect(@res).to match_json_schema(:shallow_role)
+          expect(@res).to match_json_schema(:full_role)
         end
       end
 
@@ -218,7 +218,7 @@ RSpec.describe "Roles", :type => :request do
         end
 
         it "returns a JSON Schema conforming role" do
-          expect(@res).to match_json_schema(:shallow_role)
+          expect(@res).to match_json_schema(:full_role)
         end
       end
 
@@ -259,7 +259,7 @@ RSpec.describe "Roles", :type => :request do
         end
 
         it "returns a JSON Schema conforming role" do
-          expect(@res).to match_json_schema(:shallow_role)
+          expect(@res).to match_json_schema(:full_role)
         end
       end
 

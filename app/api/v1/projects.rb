@@ -18,7 +18,7 @@ module V1
     end
 
 
-    desc "Retrieve all the projects or the projects of the user with the ID given.", entity: Entities::ProjectData::AsShallow
+    desc "Retrieve all the projects or the projects of the user with the ID given.", entity: Entities::ProjectData::AsSearch
     params do
       optional :owner, type: Integer, allow_blank: false, desc: "The User ID for the projects to retrieve."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The project's status."
@@ -32,38 +32,40 @@ module V1
 
       present Project.where(permitted_params params)
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::ProjectData::AsShallow
+        .per(params[:per_page]), with: Entities::ProjectData::AsSearch
     end
 
 
-    desc "Retrieve a single project.", entity: Entities::ProjectData::AsDeep
+    desc "Retrieve a single project.", entity: Entities::ProjectData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The Project ID."
     end
     get ":id" do
       project = get_record(Project, params[:id])
-      present project, with: Entities::ProjectData::AsDeep
+      present project, with: Entities::ProjectData::AsFull
     end
 
 
-    desc "Create a project.", entity: Entities::ProjectData::AsShallow
+    desc "Create a project.", entity: Entities::ProjectData::AsFull
     params do
       requires :title, type: String, allow_blank: false, desc: "The Project's title."
       optional :description, type: String, allow_blank: false, desc: "The Project's description."
     end
     post do
       authenticated_user
-      project = Project.create!({
+      p = Project.new
+      p.user_notifier = current_user
+      p.update!({
         title: params[:title],
         description: params[:description],
         owner: current_user.id,
         creator: current_user.id
       })
-      present project, with: Entities::ProjectData::AsShallow
+      present p, with: Entities::ProjectData::AsFull
     end
 
 
-    desc "Update a project.", entity: Entities::ProjectData::AsShallow
+    desc "Update a project.", entity: Entities::ProjectData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The Project ID."
       optional :title, type: String, allow_blank: false, desc: "The Project's title."
@@ -75,12 +77,15 @@ module V1
     put ":id" do
       if !!params[:title] || !!params[:description] || !!params[:owner]
         project_permissions(params[:id])
+        @project.user_notifier = current_user
         @project.update!(permitted_params params)
       elsif !!params[:status]
         project_status_permissions(params[:id])
+        @project.user_notifier = current_user
         @project.status = params[:status]
+        @project.save!
       end
-      present @project, with: Entities::ProjectData::AsShallow
+      present @project, with: Entities::ProjectData::AsFull
     end
 
 
@@ -90,6 +95,7 @@ module V1
     end
     delete ":id" do
       project_permissions(params[:id])
+      @project.user_notifier = current_user
       @project.destroy
       status 204
     end

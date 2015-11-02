@@ -39,8 +39,8 @@ RSpec.describe "Projects", :type => :request do
       end
 
       it "matches the JSON schema" do
-        expect(@res[0]).to match_json_schema(:shallow_project)
-        expect(@res[1]).to match_json_schema(:shallow_project)
+        expect(@res[0]).to match_json_schema(:search_project)
+        expect(@res[1]).to match_json_schema(:search_project)
       end
     end
 
@@ -55,7 +55,7 @@ RSpec.describe "Projects", :type => :request do
       end
 
       it "matches the JSON schema" do
-        expect(@res[0]).to match_json_schema(:shallow_project)
+        expect(@res[0]).to match_json_schema(:search_project)
       end
 
       it "has an owner with the supplied id" do
@@ -88,7 +88,7 @@ RSpec.describe "Projects", :type => :request do
       end
 
       it "returns JSON Schema conforming project" do
-        expect(@res).to match_json_schema(:deep_project)
+        expect(@res).to match_json_schema(:full_project)
       end
     end
   end
@@ -150,7 +150,7 @@ RSpec.describe "Projects", :type => :request do
       end
 
       it "returns a JSON Schema conforming project" do
-        expect(@res).to match_json_schema(:shallow_project)
+        expect(@res).to match_json_schema(:full_project)
       end
     end
 
@@ -188,7 +188,7 @@ RSpec.describe "Projects", :type => :request do
         end
 
         it "returns a JSON Schema conforming project" do
-          expect(@res).to match_json_schema(:shallow_project)
+          expect(@res).to match_json_schema(:full_project)
         end
       end
 
@@ -212,7 +212,7 @@ RSpec.describe "Projects", :type => :request do
         end
 
         it "returns a JSON Schema conforming project" do
-          expect(@res).to match_json_schema(:shallow_project)
+          expect(@res).to match_json_schema(:full_project)
         end
       end
 

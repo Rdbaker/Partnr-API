@@ -25,8 +25,15 @@ RSpec.configure do |config|
   Warden.test_mode!
 
   Dir.new("./spec/schema/v1").each do |f|
-    config.json_schemas[File.basename(f, ".*").to_sym] =
-      File.absolute_path("./spec/schema/v1/#{f}")
+    if f.index('.').nil?
+      Dir.new("./spec/schema/v1/#{f}").each do |nest|
+        config.json_schemas[File.basename(nest, ".*").to_sym] =
+          File.absolute_path("./spec/schema/v1/#{f}/#{nest}")
+      end
+    else
+      config.json_schemas[File.basename(f, ".*").to_sym] =
+        File.absolute_path("./spec/schema/v1/#{f}")
+    end
   end
 
   config.expect_with :rspec do |expectations|

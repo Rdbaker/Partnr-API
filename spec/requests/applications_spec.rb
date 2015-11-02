@@ -61,8 +61,8 @@ RSpec.describe "Applications", :type => :request do
       end
 
       it "matches the JSON schema" do
-        expect(@res[0]).to match_json_schema(:deep_application)
-        expect(@res[1]).to match_json_schema(:deep_application)
+        expect(@res[0]).to match_json_schema(:search_application)
+        expect(@res[1]).to match_json_schema(:search_application)
       end
     end
 
@@ -77,7 +77,7 @@ RSpec.describe "Applications", :type => :request do
       end
 
       it "matches the JSON schema" do
-        expect(@res[0]).to match_json_schema(:deep_application)
+        expect(@res[0]).to match_json_schema(:search_application)
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe "Applications", :type => :request do
       end
 
       it "matches the JSON schema" do
-        expect(@res[0]).to match_json_schema(:deep_application)
+        expect(@res[0]).to match_json_schema(:search_application)
       end
     end
 
@@ -107,7 +107,7 @@ RSpec.describe "Applications", :type => :request do
       end
 
       it "matches the JSON schema" do
-        expect(@res[0]).to match_json_schema(:deep_application)
+        expect(@res[0]).to match_json_schema(:search_application)
       end
     end
   end
@@ -135,7 +135,7 @@ RSpec.describe "Applications", :type => :request do
       end
 
       it "returns JSON Schema conforming application" do
-        expect(@res).to match_json_schema(:deep_application)
+        expect(@res).to match_json_schema(:full_application)
       end
     end
   end
@@ -203,7 +203,7 @@ RSpec.describe "Applications", :type => :request do
         end
 
         it "returns a JSON Schema conforming application" do
-          expect(@res).to match_json_schema(:deep_application)
+          expect(@res).to match_json_schema(:full_application)
         end
       end
 
@@ -264,7 +264,7 @@ RSpec.describe "Applications", :type => :request do
           end
 
           it "returns a JSON schema matching application" do
-            expect(@res).to match_json_schema(:shallow_application)
+            expect(@res).to match_json_schema(:full_application)
           end
 
           it "changes to accepted" do
