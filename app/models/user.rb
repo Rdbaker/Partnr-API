@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :comments, :dependent => :nullify
   has_many :bmarks, :dependent => :nullify
   has_many :projects, through: :roles
+  has_many :applications, :dependent => :destroy
 
   before_save :ensure_authenticaion_token
 
