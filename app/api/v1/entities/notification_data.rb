@@ -7,8 +7,12 @@ module V1::Entities
     expose :created_at, documentation: { type: "Time", desc: "The date and time the notification was created." }
     expose :notifier, documentation: { type: "[Notifier]Data::AsNested", desc: "The notifier data." }
     expose :notifier do |notification, options|
-      entity = "V1::Entities::#{notification.notifier.class}Data::AsNested".constantize
-      entity.represent(notification.notifier).as_json
+      if not notification.notifier.nil?
+        entity = "V1::Entities::#{notification.notifier.class}Data::AsNested".constantize
+        entity.represent(notification.notifier).as_json
+      else
+        "Somebody deleted something somewhere."
+      end
     end
   end
 end

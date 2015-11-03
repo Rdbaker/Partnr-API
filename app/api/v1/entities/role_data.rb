@@ -5,6 +5,10 @@ module V1::Entities
       expose :title, documentation: { type: "String", desc: "The role title." }
     end
 
+    class AsChild < AsNested
+      expose :user, documentation: { type: "UserData (nested)", desc: "The user with this project role."}, using: UserData::AsNested
+    end
+
     class AsSearch < AsNested
       expose :user, documentation: { type: "UserData (nested)", desc: "The user with this project role."}, using: UserData::AsNested
       expose :project, documentation: { type: "ProjectData (nested)", desc: "The project this role belongs to."}, using: ProjectData::AsNested
