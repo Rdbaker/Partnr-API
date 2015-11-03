@@ -23,8 +23,8 @@ en:
   notification:
     Application:
       created: "applied to the role {role} on the project {project}"
-      updated: "updated their application for the role {role} on the project {project}"
-      deleted: "cancelled their application for the role {role}"
+      updated: "updated the application for the role {role} on the project {project}"
+      deleted: "deleted the application for the role {role}"
     Bmark:
       created: "created the benchmark {benchmark} for the project {project}"
       updated: "updated the benchmark {benchmark} for the project {project}"
