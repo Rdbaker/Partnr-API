@@ -18,7 +18,12 @@ class Notification < ActiveRecord::Base
   end
 
   def message
-    I18n.t "notification.#{notifier.class}.#{action}"
+    m = I18n.t "notification.#{notifier.class}.#{action}"
+    if m.start_with? "translation missing: en.notification."
+      "Somebody deleted something somewhere."
+    else
+      m
+    end
   end
 
   def is_notifier(user)

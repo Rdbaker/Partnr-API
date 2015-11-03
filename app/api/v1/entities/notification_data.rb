@@ -11,7 +11,7 @@ module V1::Entities
         entity = "V1::Entities::#{notification.notifier.class}Data::AsNested".constantize
         entity.represent(notification.notifier).as_json
       else
-        "Somebody deleted something somewhere."
+        nil
       end
     end
   end
