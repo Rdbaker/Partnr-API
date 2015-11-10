@@ -128,7 +128,6 @@ ActiveRecord::Schema.define(version: 20151031025517) do
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "state_id"
     t.integer  "user_id"
     t.integer  "bmark_id"
   end
@@ -144,7 +143,6 @@ ActiveRecord::Schema.define(version: 20151031025517) do
     t.datetime "updated_at",              null: false
     t.integer  "owner",                   null: false
     t.integer  "creator",                 null: false
-    t.integer  "state_id"
     t.integer  "status",      default: 0
   end
 
@@ -166,19 +164,6 @@ ActiveRecord::Schema.define(version: 20151031025517) do
   end
 
   add_index "roles", ["project_id"], name: "index_roles_on_project_id", using: :btree
-
-  create_table "states", force: :cascade do |t|
-    t.string   "title",      null: false
-    t.integer  "project_id"
-    t.integer  "integer_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "post_id"
-  end
-
-  add_index "states", ["integer_id"], name: "index_states_on_integer_id", using: :btree
-  add_index "states", ["post_id"], name: "index_states_on_post_id", using: :btree
-  add_index "states", ["project_id"], name: "index_states_on_project_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
