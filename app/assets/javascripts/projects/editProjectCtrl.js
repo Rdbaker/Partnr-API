@@ -32,7 +32,7 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 	};
 
 	$scope.deleteRole = function(id) {
-		var role = single_object = $filter('filter')(
+		var role = $filter('filter')(
 			$scope.project.roles, 
 			function (d) {
 				return d.id === id;
