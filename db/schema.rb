@@ -133,7 +133,6 @@ ActiveRecord::Schema.define(version: 20151031025517) do
   end
 
   add_index "posts", ["bmark_id"], name: "index_posts_on_bmark_id", using: :btree
-  add_index "posts", ["state_id"], name: "index_posts_on_state_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
