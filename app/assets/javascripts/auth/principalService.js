@@ -8,36 +8,23 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 	function fetchCsrf() {
 		$log.debug("[AUTH] Requesting CSRF from server");
 		/* Gets the csrf token from the user */
-		var promise = $http.get('/api/users/sign_in')
+		var deferred = $q.defer();
+
+		$http.get('/api/users/sign_in')
 		.success(function(data, status, headers, config) {
 			if (data.csrfToken) {
 				csrfToken = data.csrfToken;
-				$log.debug('[AUTH] CSRF token acquired');
+				$log.debug('[AUTH] CSRF token acquired from server');
 				$log.debug(data.csrfToken);
+				deferred.resolve();
 			}
 		})
 		.error(function(data, status, headers, config) {
 			$log.error('[AUTH] CSRF request failure');
+			deferred.resolve();
 		});
 
-		return promise;
-	}
-
-	function getCsrf() {
-		/* returns a csrfToken by returning the value or sending a
-		   request to the server */
-		var csrf = undefined;
-
-		if (csrfToken) {
-			csrf = csrfToken;
-		} else {
-			fetchCsrf().then(function() {
-				csrf = csrfToken;
-			});
-		}
-		$log.debug("[AUTH] CSRF requested:");
-		$log.debug(csrf);
-		return csrf;
+		return deferred.promise;
 	}
 
 	function setCsrf(csrf) {
@@ -46,7 +33,6 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 
 	function getHeaders() {
 		return {
-			'X-CSRF-Token' : getCsrf(),
 			'Content-Type' : 'application/json'
 		};
 	}
@@ -62,10 +48,13 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		authenticated = true;
 		$log.debug('[AUTH] User authenticated');
 		$log.debug(user);
+
+		$rootScope.$broadcast('auth', {
+	      status: 'login_success'
+	    });
 	}
 
 	return {
-		getCsrf : getCsrf,
 		getHeaders : getHeaders,
 		identity : function(force) {
 			/* This function will check for an existing session and
@@ -82,7 +71,6 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				}).success(function(data, status, headers, config) {
 					if (data.email) {
 						$log.debug('[AUTH] Cookie valid, storing user data');
-						getCsrf();
 						authenticate(data);
 						identityPrechecked = true;
 						deferred.resolve(user);
@@ -119,18 +107,17 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				$log.debug(getHeaders());
 				$log.debug(request);
 
-				return $http({
+				$http({
 					method: 'POST',
 					url: '/api/users/sign_in',
 					headers: {
-						'X-CSRF-Token' : getCsrf(),
+						'X-CSRF-Token' : csrfToken,
 						'Content-Type' : 'application/json'
 					},
 					data: request
 				})
 				.success(function(data, status, headers, config) {
 					if (data.user) {
-						fetchCsrf();
 						authenticate(data.user);
 						deferred.resolve(true);
 					} else {
@@ -141,7 +128,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				})
 				.error(function(data, status, headers, config) {
 		            $log.error('[AUTH] Log in failure')
-		            toaster.error("Invalid email/password");
+		            toaster.error("Trouble communicating with server");
 		            deferred.resolve(false);
 				});
 			});
@@ -153,24 +140,36 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 			/* Send logout request to server */
 			$log.debug('[AUTH] Logging out...');
 			$log.debug(getHeaders());
-			return $http({
-				method: 'DELETE',
-				headers: {
-					'X-CSRF-Token' : getCsrf(),
-					'Content-Type' : 'application/json'
-				},
-				url: '/api/users/sign_out'
-			}).success(function(data, status, headers, config) {
-				user = {};
-				authenticated = false;
-				identityPrechecked = false;
-				csrfToken = undefined;
-				$log.debug('[AUTH] User signed out');
-				getCsrf();
-			}).error(function(data, status, headers, config) {
-				$log.error('[AUTH] Log out error');
-				toaster.error("Could not connect to server");
+
+			var deferred = $q.defer();
+
+			fetchCsrf().then(function() {
+				$http({
+					method: 'DELETE',
+					headers: {
+						'X-CSRF-Token' : csrfToken,
+						'Content-Type' : 'application/json'
+					},
+					url: '/api/users/sign_out'
+				}).success(function(data, status, headers, config) {
+					user = {};
+					authenticated = false;
+					identityPrechecked = false;
+					$log.debug('[AUTH] User signed out');
+
+					$rootScope.$broadcast('auth', {
+				      status: 'logout_success'
+				    });
+					
+					deferred.resolve(true);
+				}).error(function(data, status, headers, config) {
+					$log.error('[AUTH] Log out error');
+					toaster.error("Could not connect to server");
+					deferred.resolve(false);
+				});
 			});
+
+			return deferred.promise;
 		},
 
 		hasUser : function() {

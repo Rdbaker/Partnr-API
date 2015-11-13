@@ -1,4 +1,4 @@
-angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
+angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider) {
 	
 	$stateProvider
 		.state('site', {
