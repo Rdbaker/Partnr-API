@@ -6,6 +6,7 @@ angular.module('partnr.core').controller('SharedController', function($scope, $s
         	notifications.enablePolling();
         	notifications.poller(function(result) {
         		$scope.notifications = result;
+                $log.debug($scope.notifications);
         	});
         } else if (eventData.status === "logout_success") {
         	notifications.disablePolling();

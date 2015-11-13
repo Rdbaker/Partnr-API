@@ -10,7 +10,7 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 				url: $rootScope.apiRoute + 'notifications',
 				headers: principal.getHeaders()
 			}).then(function(result) {
-				callback(result);
+				callback(result.data);
 
 				if (polling) {
 					$timeout(function() {
