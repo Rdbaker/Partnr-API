@@ -3,25 +3,28 @@ require_relative './validators/valid_user'
 module V1
   class Profiles < Grape::API
     helpers do
-      def profile_udpate_permissions(id)
+      def profile_update_permissions
         authenticated_user
-        @profile ||= get_record(Profile, id)
-        error!("401 Unauthorized", 401) unless @profile.user == current_user
+        @profile = current_user.profile || Profile.new({user: current_user})
       end
 
-      def profile_destroy_permissions(id)
-        profile_update_permissions(id)
+      def profile_destroy_permissions
+        profile_update_permissions
       end
 
       def profile_create
         authenticated_user
-        @profile = current_user.profile || Profile.new
-        @profile.user = current_user
-        @profile
+        if current_user.profile.nil?
+          @profile = Profile.new
+          @profile.user = current_user
+        else
+          @profile = current_user.profile
+        end
       end
 
       def create_entity(cls, params)
-        cls.create!(params.merge({ :profile => @profile }))
+        ent = cls.create!(params.merge({ :profile => @profile }))
+        ent
       end
 
       def entity_align(entity, profile)
@@ -29,117 +32,216 @@ module V1
       end
     end
 
-    route_param :id do
-
-      namespace :interests do
-        desc "Creates a new interest for a profile.", entity: Entities::Profile::InterestData::AsNested
-        params do
-          requires :title, type: String, allow_blank: false, desc: "The title of a new interest."
-        end
-        post do
-          profile_create
-          create_entity(Interest, {title: params[:title]})
-          @profile.save!
-        end
-
-        desc "Updates an existing interest.", entity: Entities::Profile::InterestData::AsNested
-        params do
-          requires :interest_id, type: Integer, allow_blank: false, desc: "The ID of the interest."
-          requires :title, type: String, allow_blank: false, desc: "The new title of the interest."
-        end
-        put ":interest_id" do
-          profile_udpate_permissions(params[:id])
-          interest = get_record(Interest, params[:interest_id])
-          entity_align(interest, @profile)
-          interest.title = params[:title]
-          interest.save!
-        end
-
-        desc "Destroy an existing interest.", entity: Entities::Profile::InterestData::AsNested
-        params do
-          requires :interest_id, type: Integer, allow_blank: false, desc: "The ID of the interest."
-        end
-        delete ":interest_id" do
-          profile_destroy_permissions(params[:id])
-          interest = get_record(Interest, params[:interest_id])
-          entity_align(interest, @profile)
-          interest.destroy!
-          status 204
-        end
+    namespace :interests do
+      desc "Creates a new interest for a profile.", entity: Entities::Profile::InterestData::AsNested
+      params do
+        requires :title, type: String, allow_blank: false, desc: "The title of a new interest."
+      end
+      post do
+        profile_create
+        ent = create_entity(Interest, {title: params[:title]})
+        @profile.save!
+        present ent, with: Entities::Profile::InterestData::AsNested
       end
 
-
-      namespace :location do
-        desc "Creates a new location for a profile.", entity: Entities::Profile::LocationData::AsNested
-        params do
-          requires :geo_string, type: String, allow_blank: false, desc: "The location string for a location."
-        end
-        post do
-          profile_create
-          location = @profile.location || Location.new
-          location.geo_string = params[:geo_string]
-          location.save!
-          @profile.save!
-        end
-
-        desc "Updates an existing location.", entity: Entities::Profile::LocationData::AsNested
-        params do
-          requires :location_id, type: Integer, allow_blank: false, desc: "The ID of the location."
-          requires :geo_string, type: String, allow_blank: false, desc: "The new location string of the location."
-        end
-        put ":location_id" do
-          profile_udpate_permissions(params[:id])
-          location = get_record(Location, params[:location_id])
-          entity_align(location, @profile)
-          location.geo_string = params[:geo_string]
-          location.save!
-        end
-
-        desc "Destroy an existing location.", entity: Entities::Profile::LocationData::AsNested
-        delete do
-          profile_destroy_permissions(params[:id])
-          @profile.location.destroy!
-          status 204
-        end
+      desc "Updates an existing interest.", entity: Entities::Profile::InterestData::AsNested
+      params do
+        requires :id, type: Integer, allow_blank: false, desc: "The ID of the interest."
+        requires :title, type: String, allow_blank: false, desc: "The new title of the interest."
+      end
+      put ":id" do
+        profile_udpate_permissions
+        interest = get_record(Interest, params[:id])
+        entity_align(interest, @profile)
+        interest.title = params[:title]
+        @profile.save!
+        interest.save!
+        present interest, with: Entities::Profile::InterestData::AsNested
       end
 
+      desc "Destroy an existing interest."
+      params do
+        requires :id, type: Integer, allow_blank: false, desc: "The ID of the interest."
+      end
+      delete ":id" do
+        profile_destroy_permissions
+        interest = get_record(Interest, params[:id])
+        entity_align(interest, @profile)
+        interest.destroy!
+        status 204
+      end
+    end
 
-      namespace :position do
-        desc "Creates a new position for a profile.", entity: Entities::Profile::PositionData::AsNested
-        params do
-          requires :title, type: String, allow_blank: false, desc: "The title of a new position."
-          requires :company, type: String, allow_blank: false, desc: "The company of a new position."
-        end
-        post do
-          profile_create
-          create_entity(Position, {title: params[:title], company: params[:company]})
-          @profile.save!
-        end
 
-        desc "Updates an existing interest.", entity: Entities::Profile::InterestData::AsNested
-        params do
-          requires :interest_id, type: Integer, allow_blank: false, desc: "The ID of the interest."
-          requires :title, type: String, allow_blank: false, desc: "The new title of the interest."
-        end
-        put ":interest_id" do
-          profile_udpate_permissions(params[:id])
-          interest = get_record(Interest, params[:interest_id])
-          entity_align(interest, @profile)
-          interest.title = params[:title]
-          interest.save!
-        end
+    namespace :location do
+      desc "Creates a new location for a profile.", entity: Entities::Profile::LocationData::AsNested
+      params do
+        requires :geo_string, type: String, allow_blank: false, desc: "The location string for a location."
+      end
+      post do
+        profile_create
+        location = @profile.location || Location.new
+        location.geo_string = params[:geo_string]
+        location.profile = @profile
+        location.save!
+        present location, with: Entities::Profile::LocationData::AsNested
+      end
 
-        desc "Destroy an existing interest.", entity: Entities::Profile::InterestData::AsNested
-        params do
-          requires :interest_id, type: Integer, allow_blank: false, desc: "The ID of the interest."
+      desc "Updates an existing location.", entity: Entities::Profile::LocationData::AsNested
+      params do
+        requires :id, type: Integer, allow_blank: false, desc: "The ID of the location."
+        requires :geo_string, type: String, allow_blank: false, desc: "The new location string of the location."
+      end
+      put ":id" do
+        profile_udpate_permissions
+        location = get_record(Location, params[:location_id])
+        entity_align(location, @profile)
+        location.geo_string = params[:geo_string]
+        @profile.save!
+        location.save!
+        present location, with: Entities::Profile::LocationData::AsNested
+      end
+
+      desc "Destroy an existing location."
+      delete do
+        profile_destroy_permissions
+        if @profile.location.nil?
+          error!("There is no location on this profile.", 404)
         end
-        delete ":interest_id" do
-          profile_destroy_permissions(params[:id])
-          interest = get_record(Interest, params[:interest_id])
-          entity_align(interest, @profile)
-          interest.destroy!
-          status 204
-        end
+        @profile.location.destroy!
+        status 204
+      end
+    end
+
+
+    namespace :position do
+      desc "Creates a new position for a profile.", entity: Entities::Profile::PositionData::AsNested
+      params do
+        requires :title, type: String, allow_blank: false, desc: "The title of a new position."
+        requires :company, type: String, allow_blank: false, desc: "The company of a new position."
+      end
+      post do
+        profile_create
+        ent = create_entity(Position, {title: params[:title], company: params[:company]})
+        @profile.save!
+        present ent, with: Entities::Profile::PositionData::AsNested
+      end
+
+      desc "Updates an existing position.", entity: Entities::Profile::PositionData::AsNested
+      params do
+        requires :id, type: Integer, allow_blank: false, desc: "The ID of the position."
+        requires :title, type: String, allow_blank: false, desc: "The new title of the position."
+      end
+      put ":id" do
+        profile_udpate_permissions
+        position = get_record(Position, params[:id])
+        entity_align(position, @profile)
+        position.title = params[:title]
+        @profile.save!
+        position.save!
+        present position, with: Entities::Profile::PositionData::AsNested
+      end
+
+      desc "Destroy an existing position."
+      params do
+        requires :id, type: Integer, allow_blank: false, desc: "The ID of the position."
+      end
+      delete ":id" do
+        profile_destroy_permissions
+        position = get_record(Position, params[:id])
+        entity_align(position, @profile)
+        position.destroy!
+        status 204
+      end
+    end
+
+
+    namespace :school do
+      desc "Creates a new school info for a profile.", entity: Entities::Profile::SchoolInfoData::AsNested
+      params do
+        requires :school_name, type: String, allow_blank: false, desc: "The school name of a new school info."
+        requires :grad_year, type: String, allow_blank: false, desc: "The graduation year of a new school info."
+        optional :field, type: String, allow_blank: false, desc: "The field of study of a new school info."
+      end
+      post do
+        profile_create
+        ent = create_entity(SchoolInfo, {school_name: params[:school_name], grad_year: params[:grad_year], field: params[:field]})
+        @profile.save!
+        present ent, with: Entities::Profile::SchoolInfoData::AsNested
+      end
+
+      desc "Updates an existing school info.", entity: Entities::Profile::SchoolInfoData::AsNested
+      params do
+        requires :id, type: Integer, allow_blank: false, desc: "The ID of the position."
+        optional :school_name, type: String, allow_blank: false, desc: "The school name of a school info."
+        optional :grad_year, type: String, allow_blank: false, desc: "The graduation year of a school info."
+        optional :field, type: String, allow_blank: false, desc: "The field of study of a school info."
+        at_least_one_of :school_name, :grad_year, :field
+      end
+      put ":id" do
+        profile_udpate_permissions
+        si = get_record(SchoolInfo, params[:id])
+        entity_align(si, @profile)
+        si.update!({
+          school_name: params[:school_name] || si.school_name,
+          grad_year: params[:grad_year] || si.grad_yaer,
+          field: params[:field] || si.field,
+        })
+        @profile.save!
+        si.save!
+        present si, with: Entities::Profile::SchoolInfoData::AsNested
+      end
+
+      desc "Destroy an existing school info."
+      params do
+        requires :id, type: Integer, allow_blank: false, desc: "The ID of the school info."
+      end
+      delete ":id" do
+        profile_destroy_permissions
+        si = get_record(SchoolInfo, params[:id])
+        entity_align(si, @profile)
+        si.destroy!
+        status 204
+      end
+    end
+
+    namespace :skill do
+      desc "Creates a new skill for a profile.", entity: Entities::Profile::SkillData::AsNested
+      params do
+        requires :title, type: String, allow_blank: false, desc: "The title of a new skill."
+      end
+      post do
+        profile_create
+        ent = create_entity(Skill, {title: params[:title]})
+        @profile.save!
+        present ent, with: Entities::Profile::SkillData::AsNested
+      end
+
+      desc "Updates an existing skill.", entity: Entities::Profile::SkillData::AsNested
+      params do
+        requires :id, type: Integer, allow_blank: false, desc: "The ID of the skill."
+        requires :title, type: String, allow_blank: false, desc: "The new title of the skill."
+      end
+      put ":id" do
+        profile_udpate_permissions
+        skill = get_record(Skill, params[:id])
+        entity_align(skill, @profile)
+        skill.title = params[:title]
+        @profile.save!
+        skill.save!
+        present skill, with: Entities::Profile::SkillData::AsNested
+      end
+
+      desc "Destroy an existing skill."
+      params do
+        requires :id, type: Integer, allow_blank: false, desc: "The ID of the skill"
+      end
+      delete ":id" do
+        profile_destroy_permissions
+        skill = get_record(Skill, params[:id])
+        entity_align(skill, @profile)
+        skill.destroy!
+        status 204
       end
     end
 
@@ -189,36 +291,11 @@ module V1
     end
 
 
-    desc "Deletes a profile or one of its sub-entities", entity: Entities::ProfileData::AsFull
-    params do
-      requires :id, type: Integer, allow_blank: false, desc: "The profile ID."
-      optional :entity_id, type: Integer, allow_blank: false, desc: "The ID of the sub entity to delete."
-      optional :entity_name, type: String, allow_blank: false, desc: "The class name of the subentity."
-      all_or_none_of :entity_id, :entity_name
-    end
-    delete ":id" do
+    desc "Deletes your profile."
+    delete do
       profile_destroy_permissions
-      if params[:entity_name]
-        error!("400 Entity, #{params[:entity_name]}, does not exist", 400) unless Object.const_defined? params[:entity_name].capitalize
-        entity = getRecord(params[:entity_name].capitalize.constantize, params[:entity_id])
-        error!("401 Unauthorized: Entity does not belong to profile", 401) unless entity.profile == @profile
-      else
-        entity = @profile
-      end
-      entity.destroy!
+      @profile.destroy!
       status 204
-    end
-
-
-    namespace :interest do
-      route_param :id do
-        params do
-          requires :profile_id, type: Integer, allow_blank: false, desc: "The profile ID."
-          requires :title, type: String, allow_blank: false, desc: "The name if the interest"
-        end
-        post do
-        end
-      end
     end
   end
 end
