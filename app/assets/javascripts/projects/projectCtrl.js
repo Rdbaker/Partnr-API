@@ -1,5 +1,12 @@
-angular.module('partnr.users.assets').controller('ProjectController', function($scope, $state, $stateParams, $log, $q, projects, applications, principal, toaster) {
+angular.module('partnr.users.assets').controller('ProjectController', function($scope, $state, $stateParams, $log, $q, projects, 
+	applications, comments, principal, toaster) {
+	
 	$scope.project = {};
+	$scope.newComment = {
+		content: "",
+		project: null
+	};
+	$scope.isCommentSubmitting = false;
 	$scope.canApply = true;
 	$scope.isOwner = false;
 	$scope.loadComplete = false;
@@ -27,6 +34,27 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 				break;
 		}
 		return result;
+	};
+
+	$scope.addComment = function() {
+		$scope.isCommentSubmitting = true;
+		$scope.newComment.project = $scope.project.id;
+		if (comments.isValid($scope.newComment)) {
+			comments.create($scope.newComment).then(function(result) {
+				$log.debug(result.data);
+				$scope.newComment.content = "";
+				$scope.project.comments.push(result.data);
+				$scope.isCommentSubmitting = false;
+			});
+		}
+	};
+
+	$scope.deleteComment = function(comment) {
+		comments.delete(comment.id).then(function(result) {
+			$log.debug(result);
+			var commentIndex = $scope.project.comments.indexOf(comment);
+			$scope.project.comments.splice(commentIndex, 1);
+		});
 	};
 	
 	projects.get($stateParams.id).then(function(result) {
