@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151031025517) do
+ActiveRecord::Schema.define(version: 20151110033632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,22 @@ ActiveRecord::Schema.define(version: 20151031025517) do
 
   add_index "comments", ["project_id"], name: "index_comments_on_project_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "interests", force: :cascade do |t|
+    t.string   "title",      null: false
+    t.integer  "profile_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "interests", ["profile_id"], name: "index_interests_on_profile_id", using: :btree
+
+  create_table "locations", force: :cascade do |t|
+    t.integer  "profile_id", null: false
+    t.string   "geo_string", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "mailboxer_conversation_opt_outs", force: :cascade do |t|
     t.integer "unsubscriber_id"
@@ -123,6 +139,16 @@ ActiveRecord::Schema.define(version: 20151031025517) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "positions", force: :cascade do |t|
+    t.string   "title",      null: false
+    t.string   "company"
+    t.integer  "profile_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "positions", ["profile_id"], name: "index_positions_on_profile_id", using: :btree
+
   create_table "posts", force: :cascade do |t|
     t.string   "content"
     t.string   "title"
@@ -134,6 +160,12 @@ ActiveRecord::Schema.define(version: 20151031025517) do
 
   add_index "posts", ["bmark_id"], name: "index_posts_on_bmark_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
+
+  create_table "profiles", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "projects", force: :cascade do |t|
     t.string   "title"
@@ -163,6 +195,24 @@ ActiveRecord::Schema.define(version: 20151031025517) do
   end
 
   add_index "roles", ["project_id"], name: "index_roles_on_project_id", using: :btree
+
+  create_table "school_infos", force: :cascade do |t|
+    t.integer  "profile_id",  null: false
+    t.string   "school_name", null: false
+    t.integer  "grad_year",   null: false
+    t.string   "field"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "skills", force: :cascade do |t|
+    t.string   "title",      null: false
+    t.integer  "profile_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "skills", ["profile_id"], name: "index_skills_on_profile_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -201,9 +251,12 @@ ActiveRecord::Schema.define(version: 20151031025517) do
   add_index "users_projects", ["project_id"], name: "index_users_projects_on_project_id", using: :btree
   add_index "users_projects", ["user_id"], name: "index_users_projects_on_user_id", using: :btree
 
+  add_foreign_key "interests", "profiles"
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
   add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
   add_foreign_key "mailboxer_receipts", "mailboxer_notifications", column: "notification_id", name: "receipts_on_notification_id"
+  add_foreign_key "positions", "profiles"
   add_foreign_key "posts", "bmarks"
+  add_foreign_key "skills", "profiles"
   add_foreign_key "users", "notifications"
 end
