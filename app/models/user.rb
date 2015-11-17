@@ -99,6 +99,10 @@ protected
     false
   end
 
+  def send_confirmation_notification?
+    true
+  end
+
 private
 
   def generate_authentication_token
