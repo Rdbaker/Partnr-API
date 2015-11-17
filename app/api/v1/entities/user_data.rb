@@ -17,9 +17,11 @@ module V1::Entities
     end
 
     class AsPublic < AsSearch
-      expose :comments, using: CommentData::AsNested, documentation: { type: "CommentData (shallow)",
+      expose :comments, using: CommentData::AsNested, documentation: { type: "CommentData (nested)",
                                                                         desc: "The comments user has made.",
                                                                         is_array: true }
+      expose :profile, using: ProfileData::AsNested, documentation: { type: "ProfileData (nested)",
+                                                                      desc: "The profile of the user"}
     end
 
     class AsPrivate < AsPublic
