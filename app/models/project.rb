@@ -35,6 +35,6 @@ class Project < Notifier
   end
 
   def followers
-    Set.new(users + (comments.map { |c| c.user }) + (applications.map { |a| a.user })).to_a
+    Set.new(users + (comments.map { |c| c.user }) + (applications.map { |a| a.user }) + owner).to_a
   end
 end

@@ -7,7 +7,7 @@ class Notification < ActiveRecord::Base
 
   enum action: { created: 0, updated: 1, deleted: 2 }
 
-  attr_readonly :actor, :notify, :notifier, :action, :is_read
+  attr_readonly :actor, :notify, :notifier, :action
 
   def read?
     is_read
