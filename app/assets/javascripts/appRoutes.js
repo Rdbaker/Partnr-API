@@ -178,6 +178,20 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
+		.state('notification_list', {
+			parent: 'site',
+			url: '/notifications',
+			views: {
+				'content@': {
+					templateUrl: 'notifications/list_notifications.html',
+					controller: 'ListNotificationsController'
+				}
+			},
+			data: {
+				roles: ['Admin']
+			}
+		})
+
 		.state('settings', {
 			parent: 'site',
 			url: '/settings',

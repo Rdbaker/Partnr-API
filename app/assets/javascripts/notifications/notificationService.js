@@ -24,15 +24,17 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 	return {
 		poller : poller,
 
-		update : function(notification) {
-			$log.debug("[NOTIFICATIONS] Sending update request");
-			$log.debug(notification);
+		setRead : function(id) {
+			$log.debug("[NOTIFICATIONS] Sending read request");
+			$log.debug(id);
 
 			return $http({
 				method: 'PUT',
-				url: $rootScope.apiRoute + 'notifications/' + notification.id,
+				url: $rootScope.apiRoute + 'notifications/' + id,
 				headers: principal.getHeaders(),
-				data: notification
+				data: {
+					read: true
+				}
 			});
 		},
 
