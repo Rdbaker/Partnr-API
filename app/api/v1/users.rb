@@ -78,6 +78,20 @@ module V1
           { :message => "Reset instructions were successfully sent to #{params[:email]}" }
         end
       end
+
+      desc "Reset the password given the new one."
+      params do
+        requires :reset_password_token, type: String, allow_blank: false, desc: "The reset token for the user."
+        requires :password, type: String, allow_blank: false, desc: "The new password for the user."
+        requires :password_confirmation, type: String, allow_blank: false, desc: "The confirmation for the new password."
+      end
+      put :reset do
+        u = User.reset_password_by_token(params)
+        if u.errors.to_json != "{}"
+          error!(u.errors.to_json, 400)
+        end
+        present u, with: Entities::UserData::AsPrivate
+      end
     end
   end
 end
