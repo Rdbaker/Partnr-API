@@ -74,4 +74,7 @@ gem 'grape-swagger-rails', '~> 0.1.0'
 # allow Grape to handle the security instead of strong_params
 gem 'hashie-forbidden_attributes'
 
+# let's do some location things
+gem 'geokit-rails'
+
 ruby '2.0.0'
