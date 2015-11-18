@@ -42,7 +42,14 @@ module V1
         params.delete :empty
       end
 
-      present Role.where(permitted_params params)
+      if params.has_key? :title
+        like_hash = { :title => "%#{params[:title]}%"}
+        params.delete :title
+      else
+        like_hash = { :title => "%%" }
+      end
+
+      present Role.where(permitted_params params).where("roles.title LIKE :title", like_hash)
         .page(params[:page])
         .per(params[:per_page]), with: Entities::RoleData::AsSearch
     end
