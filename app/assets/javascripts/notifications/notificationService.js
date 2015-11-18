@@ -40,7 +40,8 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
         		notifications = result;
                 $log.debug(notifications);
 
-                if (JSON.stringify(notifications) !== JSON.stringify(old)) {
+                if (angular.toJson(notifications) !== angular.toJson(old)) {
+        			$log.debug("[NOTIFICATIONS] new notifications");
                 	$rootScope.$broadcast('notifications', notifications);
                 }
         	});
@@ -56,7 +57,7 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 		disablePolling : disablePolling,
 
 		get : function() {
-			return notifications;
+			return angular.copy(notifications);
 		},
 
 		getNew : function() {

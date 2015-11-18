@@ -1,8 +1,14 @@
 angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications) {
 	$scope.newNotifications = {};
+    $scope.notificationsDropdownVisible = false;
 
     $scope.$on('notifications', function() {
-        $log.debug("NEW NOTIFICATIONS");
         $scope.newNotifications = notifications.getNew();
     });
+
+    $scope.toggleNotificationsDropdown = function() {
+        $log.debug($scope.notificationsDropdownVisible);
+        $scope.notificationsDropdownVisible = !($scope.notificationsDropdownVisible);
+        $log.debug($scope.notificationsDropdownVisible);
+    };
 });

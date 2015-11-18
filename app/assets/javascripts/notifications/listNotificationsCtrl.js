@@ -3,7 +3,6 @@ angular.module('partnr.users.assets').controller('ListNotificationsController', 
 	$scope.allNotifications = notifications.get();
 
 	$scope.$on("notifications", function(event, notificationList) {
-		$log.debug("NEW NOTIFICATIONS");
 		$log.debug(notificationList);
 
 		$scope.allNotifications = notificationList;
