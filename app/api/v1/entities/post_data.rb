@@ -11,7 +11,7 @@ module V1::Entities
 
     class AsFull < AsSearch
       expose :user, documentation: { type: "UserData (nested)", desc: "The author of the post."}, using: UserData::AsNested
-      expose :bmark, documentation: { type: "BenchmarkData (nested)", desc: "The project benchmark on which this was posted" }, using: BenchmarkData::AsNested, as: :benchmark
+      expose :bmark, documentation: { type: "BenchmarkData (nested)", desc: "The project benchmark on which this was posted" }, using: BmarkData::AsNested, as: :benchmark
     end
   end
 end
