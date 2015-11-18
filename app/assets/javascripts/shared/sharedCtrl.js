@@ -7,8 +7,6 @@ angular.module('partnr.core').controller('SharedController', function($scope, $s
     });
 
     $scope.toggleNotificationsDropdown = function() {
-        $log.debug($scope.notificationsDropdownVisible);
         $scope.notificationsDropdownVisible = !($scope.notificationsDropdownVisible);
-        $log.debug($scope.notificationsDropdownVisible);
     };
 });
