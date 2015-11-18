@@ -1,5 +1,6 @@
 angular.module('partnr.notify').factory('notifications', function($rootScope, $http, $log, $timeout, principal) {
 	var polling = false;
+	var notifications = {};
 
 	var poller = function(callback) {
 		if (polling) {
@@ -21,8 +22,48 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 		}
 	};
 
+	var enablePolling = function() {
+		$log.debug("[NOTIFICATIONS] polling enabled");
+		polling = true;
+	};
+
+	var disablePolling = function() {
+		$log.debug("[NOTIFICATIONS] polling disabled");
+		polling = false;
+	};
+
+	$rootScope.$on('auth', function(event, eventData) {
+        if (eventData.status === "login_success") {
+        	enablePolling();
+        	poller(function(result) {
+        		var old = notifications;
+        		notifications = result;
+                $log.debug(notifications);
+
+                if (JSON.stringify(notifications) !== JSON.stringify(old)) {
+                	$rootScope.$broadcast('notifications', notifications);
+                }
+        	});
+        } else if (eventData.status === "logout_success") {
+        	disablePolling();
+        	notifications = {};
+        }
+    });
+
 	return {
 		poller : poller,
+		enablePolling : enablePolling,
+		disablePolling : disablePolling,
+
+		get : function() {
+			return notifications;
+		},
+
+		getNew : function() {
+			return notifications.filter(function(n) {
+				return !(n.read);
+			});
+		},
 
 		setRead : function(id) {
 			$log.debug("[NOTIFICATIONS] Sending read request");
@@ -36,16 +77,6 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 					read: true
 				}
 			});
-		},
-
-		enablePolling : function() {
-			$log.debug("[NOTIFICATIONS] polling enabled");
-			polling = true;
-		},
-
-		disablePolling : function() {
-			$log.debug("[NOTIFICATIONS] polling disabled");
-			polling = false;
 		}
 	};
 });
