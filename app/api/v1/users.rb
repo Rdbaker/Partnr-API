@@ -44,5 +44,54 @@ module V1
       end
     end
 
+    namespace :passwords do
+      desc "Update the password for a user", entity: Entities::UserData::AsPrivate
+      params do
+        requires :old_password, type: String, allow_blank: false, desc: "The old password for the user."
+        requires :password, type: String, allow_blank: false, desc: "The new password for the user."
+        requires :confirm_password, type: String, allow_blank: false, desc: "Confirm the new password for the user."
+      end
+      put do
+        error!("401 Unauthorized", 401) unless authenticated
+        @user = User.find(current_user.id)
+        error!("Old password is incorrect", 400) unless @user.valid_password? params[:old_password]
+        @user.password = params[:password]
+        @user.password_confirmation = params[:confirm_password]
+        if @user.save
+          present @user, with: Entities::UserData::AsPrivate
+        else
+          error!(@user.errors.messages.to_json, 400)
+        end
+      end
+
+
+      desc "Send the reset password email for a user"
+      params do
+        requires :email, type: String, allow_blank: false, desc: "The user's email to reset the password."
+      end
+      get :reset do
+        u = User.find_by email: params[:email]
+        if u.nil?
+          error!("There is no user with that email", 404)
+        else
+          u.send_reset_password_instructions
+          { :message => "Reset instructions were successfully sent to #{params[:email]}" }
+        end
+      end
+
+      desc "Reset the password given the new one."
+      params do
+        requires :reset_password_token, type: String, allow_blank: false, desc: "The reset token for the user."
+        requires :password, type: String, allow_blank: false, desc: "The new password for the user."
+        requires :password_confirmation, type: String, allow_blank: false, desc: "The confirmation for the new password."
+      end
+      put :reset do
+        u = User.reset_password_by_token(params)
+        if u.errors.to_json != "{}"
+          error!(u.errors.to_json, 400)
+        end
+        present u, with: Entities::UserData::AsPrivate
+      end
+    end
   end
 end
