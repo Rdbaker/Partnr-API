@@ -1,4 +1,4 @@
-angular.module('partnr').controller('HomeController', function($scope, $state, principal, toaster) {
+angular.module('partnr.core').controller('HomeController', function($scope, $state, principal, toaster) {
 	$scope.user = principal.getUser();
 
 	$scope.doLogout = function() {

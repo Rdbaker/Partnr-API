@@ -1,5 +1,5 @@
 module V1::Entities
-  class BenchmarkData
+  class BmarkData
     class AsNested < Grape::Entity
       expose :id, documentation: { type: "Integer", desc: "The ID of the benchmark." }
       expose :title, documentation: { type: "String", desc: "The benchmark title." }

@@ -18,7 +18,7 @@ module V1
     end
 
 
-    desc "Retrieve all benchmarks for a project", entity: Entities::BenchmarkData::AsSearch
+    desc "Retrieve all benchmarks for a project", entity: Entities::BmarkData::AsSearch
     params do
       requires :project, type: Integer, allow_blank: false, desc: "The Project ID for the benchmarks to retreive."
       optional :title, type: String, desc: "The title of the project benchmark to retrieve."
@@ -28,21 +28,21 @@ module V1
     get do
       present Bmark.where(permitted_params params)
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::BenchmarkData::AsSearch
+        .per(params[:per_page]), with: Entities::BmarkData::AsSearch
     end
 
 
-    desc "Get a single benchmark based on its ID.", entity: Entities::BenchmarkData::AsFull
+    desc "Get a single benchmark based on its ID.", entity: Entities::BmarkData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The benchmark ID."
     end
     get ":id" do
       benchmark = get_record(Bmark, params[:id])
-      present benchmark, with: Entities::BenchmarkData::AsFull
+      present benchmark, with: Entities::BmarkData::AsFull
     end
 
 
-    desc "Create a new benchmark for a project.", entity: Entities::BenchmarkData::AsFull
+    desc "Create a new benchmark for a project.", entity: Entities::BmarkData::AsFull
     params do
       requires :title, type: String, allow_blank: false, desc: "The title of the benchmark for the project."
       requires :project, type: Integer, allow_blank: false, desc: "The project ID to which the benchmark will belong."
@@ -60,7 +60,7 @@ module V1
           due_date: params[:due_date],
           user: current_user
         })
-        present b, with: Entities::BenchmarkData::AsFull
+        present b, with: Entities::BmarkData::AsFull
       else
         error!("401 Unauthorized", 401)
       end
@@ -85,7 +85,7 @@ module V1
         complete: params[:complete] || @benchmark.complete,
         due_date: params[:due_date] || @benchmark.due_date
       })
-      present @benchmark, with: Entities::BenchmarkData::AsFull
+      present @benchmark, with: Entities::BmarkData::AsFull
     end
 
 

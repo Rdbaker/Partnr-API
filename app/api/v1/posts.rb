@@ -23,16 +23,28 @@ module V1
       end
     end
 
-    desc "Retrieve all posts for a given benchmark.", entity: Entities::PostData::AsSearch
+    desc "Search from all posts.", entity: Entities::PostData::AsSearch
     params do
-      requires :benchmark, type: Integer, allow_blank: false, desc: "The benchmark id to which the post was posted."
+      optional :benchmark, type: Integer, allow_blank: false, desc: "The benchmark id to which the post was posted."
       optional :user, type: Integer, allow_blank: false, desc: "The author's User ID for the posts to retrieve."
       optional :title, type: String, desc: "The title of the post to retrieve."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of posts per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the posts."
     end
     get do
-      present Post.where(permitted_params params)
+      if params.has_key? :title
+        like_hash = { :title => "%#{params[:title]}%"}
+        params.delete :title
+      else
+        like_hash = { :title => "%%" }
+      end
+
+      if params[:benchmark]
+        params[:bmark] = params[:benchmark]
+        params.delete :benchmark
+      end
+
+      present Post.where(permitted_params params).where("posts.title LIKE :title", like_hash)
         .page(params[:page])
         .per(params[:per_page]), with: Entities::PostData::AsSearch
     end

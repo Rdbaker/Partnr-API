@@ -287,6 +287,10 @@ module V1
         create_entity(Skill, {title: params[:skill_title]})
       end
 
+      if @profile.id.nil?
+        @profile.save
+      end
+
       present @profile, with: Entities::ProfileData::AsFull
     end
 

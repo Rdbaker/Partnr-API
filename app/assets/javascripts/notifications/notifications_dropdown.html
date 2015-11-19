@@ -1,0 +1,8 @@
+<div class="notifications-dropdown content-container">
+	<div>	
+		<div class="notification-item" ng-repeat="n in notifications | limitTo:5">
+			<span class="badge" ng-hide="n.read">new!</span>&nbsp;<a href>{{ n.actor.first_name }} {{ n.actor.last_name }} {{ n.message }}</a>
+		</div>
+	</div>
+	<div><a ui-sref="notification_list">view more</a></div>
+</div>
