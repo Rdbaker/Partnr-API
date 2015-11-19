@@ -25,17 +25,26 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		});
 
 		return deferred.promise;
-	}
+	};
 
 	function setCsrf(csrf) {
 		csrfToken = csrf;
-	}
+	};
 
 	function getHeaders() {
 		return {
 			'Content-Type' : 'application/json'
 		};
-	}
+	};
+
+	function getHeadersWithCsrf() {
+		var deferred = $q.defer();
+
+		return {
+			'Content-Type' : 'application/json',
+			'X-CSRF-Token' : csrfToken
+		};
+	};
 
 	function authenticate(dataUser) {
 		/* Set all user data */
@@ -52,10 +61,12 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		$rootScope.$broadcast('auth', {
 	      status: 'login_success'
 	    });
-	}
+	};
 
 	return {
+		fetchCsrf : fetchCsrf,
 		getHeaders : getHeaders,
+		getHeadersWithCsrf : getHeadersWithCsrf,
 		identity : function(force) {
 			/* This function will check for an existing session and
 			   if so, a request will check the validity of that session
@@ -155,6 +166,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 					user = {};
 					authenticated = false;
 					identityPrechecked = false;
+					fetchCsrf();
 					$log.debug('[AUTH] User signed out');
 
 					$rootScope.$broadcast('auth', {

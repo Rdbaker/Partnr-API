@@ -4,10 +4,11 @@ angular.module('partnr.users').factory('users', function($rootScope, $http, $log
 			$log.debug("[USER] Sending Create request");
 			$log.debug(acct);
 
+			
 			return $http({
 				method: 'POST',
 				url: '/api/users',
-				headers: principal.getHeaders(),
+				headers: principal.getHeadersWithCsrf(),
 				data: { "user" : acct }
 			});
 		}

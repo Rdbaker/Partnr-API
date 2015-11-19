@@ -8,6 +8,7 @@ angular.module('partnr.core', ['ui.router',
   'partnr.auth', 'partnr.users', 'partnr.messaging',
   'partnr.notify', 'partnr.users.assets'
   ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization) {
+   principal.fetchCsrf();
    $rootScope.$state = $state; // application state
    $rootScope.apiRoute  = '/api/v1/';
    $rootScope.version   = '0.3.8';
