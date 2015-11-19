@@ -139,7 +139,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				})
 				.error(function(data, status, headers, config) {
 		            $log.error('[AUTH] Log in failure')
-		            toaster.error("Trouble communicating with server");
+		            toaster.error("Invalid email/password");
 		            deferred.resolve(false);
 				});
 			});
