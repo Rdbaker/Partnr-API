@@ -13,5 +13,12 @@ module V1::Entities
     class AsFull < AsSearch
       expose :project, documentation: { type: "ProjectData (nested)", desc: "The project on which the comment was made." }, using: ProjectData::AsNested
     end
+
+    class AsNotification < AsFull
+      unexpose :user
+      expose :itself, as: :comment do
+        expose :id
+      end
+    end
   end
 end

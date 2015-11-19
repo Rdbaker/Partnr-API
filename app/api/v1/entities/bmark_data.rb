@@ -16,5 +16,15 @@ module V1::Entities
       expose :user, documentation: { type: "UserData (public)", desc: "The user who created the benchmark." }, using: UserData::AsNested, as: :creator
       expose :posts, documentation: { type: "PostData (nested)", desc: "The posts on the benchmark." }, using: PostData::AsNested
     end
+
+    class AsNotification < AsFull
+      unexpose :posts
+      unexpose :user
+      expose :itself, as: :benchmark do
+        expose :id
+        expose :title
+      end
+    end
+
   end
 end

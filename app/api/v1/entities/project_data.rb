@@ -19,5 +19,12 @@ module V1::Entities
       expose :bmarks, documentation: { type: "BenchmarkData (nested)", desc: "The benchmarks for the project." }, using: BmarkData::AsNested, as: :benchmarks
       expose :creator, documentation: { type: "Integer", desc: "The project creator's id." }
     end
+
+    class AsNotification < AsNested
+      expose :itself, as: :project do
+        expose :title
+        expose :id
+      end
+    end
   end
 end

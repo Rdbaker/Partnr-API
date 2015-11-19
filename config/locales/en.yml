@@ -22,21 +22,21 @@
 en:
   notification:
     Application:
-      created: "applied to the role {role} on the project {project}"
-      updated: "updated the application for the role {role} on the project {project}"
-      deleted: "deleted the application for the role {role}"
+      created: "applied {application} to the role {role} on the project {project}"
+      updated: "updated the application {application} for the role {role} on the project {project}"
+      deleted: "deleted the application {application} for the role {role}"
     Bmark:
       created: "created the benchmark {benchmark} for the project {project}"
       updated: "updated the benchmark {benchmark} for the project {project}"
       deleted: "deleted the benchmark {benchmark} for the project {project}"
     Comment:
-      created: "commented on the project {project}"
-      updated: "edited their comment on the project {project}"
-      deleted: "deleted their comment from the project {project}"
+      created: "commented {comment} on the project {project}"
+      updated: "edited their comment {comment} on the project {project}"
+      deleted: "deleted their comment {comment} from the project {project}"
     Post:
-      created: "posted to the benchmark {benchmark}"
-      updated: "edited their post on the benchmark {benchmark}"
-      deleted: "deleted their post from the benchmark {benchmark}"
+      created: "posted {post} to the benchmark {benchmark}"
+      updated: "edited their post {post} on the benchmark {benchmark}"
+      deleted: "deleted their post {post} from the benchmark {benchmark}"
     Project:
       created: "created the project {project}"
       updated: "edited their project {project}"
