@@ -22,15 +22,23 @@ module V1
     params do
       optional :owner, type: Integer, allow_blank: false, desc: "The User ID for the projects to retrieve."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The project's status."
+      optional :title, type: String, allow_blank: false, desc: "The title of the project."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of projects per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of projects."
     end
     get do
-      if !!params[:status]
+      if params.has_key? :status
         params[:status] = { "not_started" => 0, "in_progress" => 1, "complete" => 2 }[params[:status]]
       end
 
-      present Project.where(permitted_params params)
+      if params.has_key? :title
+        like_hash = { :title => "%#{params[:title]}%"}
+        params.delete :title
+      else
+        like_hash = { :title => "%%" }
+      end
+
+      present Project.where(permitted_params params).where("projects.title LIKE :title", like_hash)
         .page(params[:page])
         .per(params[:per_page]), with: Entities::ProjectData::AsSearch
     end
