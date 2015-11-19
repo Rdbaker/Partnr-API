@@ -1,4 +1,4 @@
-angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
+angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider) {
 	
 	$stateProvider
 		.state('site', {
@@ -171,6 +171,20 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				'content@': {
 					templateUrl: 'projects/applications/list_applications.html',
 					controller: 'ListApplicationsController'
+				}
+			},
+			data: {
+				roles: ['Admin']
+			}
+		})
+
+		.state('notification_list', {
+			parent: 'site',
+			url: '/notifications',
+			views: {
+				'content@': {
+					templateUrl: 'notifications/list_notifications.html',
+					controller: 'ListNotificationsController'
 				}
 			},
 			data: {

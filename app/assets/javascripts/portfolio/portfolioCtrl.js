@@ -1,3 +1,3 @@
-angular.module('partnr').controller('PortfolioController', function($scope) {
+angular.module('partnr.users.assets').controller('PortfolioController', function($scope) {
 	
 });
