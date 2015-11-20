@@ -17,9 +17,8 @@ module V1::Entities
       expose :posts, documentation: { type: "PostData (nested)", desc: "The posts on the benchmark." }, using: PostData::AsNested
     end
 
-    class AsNotification < AsFull
-      unexpose :posts
-      unexpose :user
+    class AsNotification < Grape::Entity
+      expose :project, documentation: { type: "ProjectData (nested)", desc: "The project this benchmark belongs to." }, using: ProjectData::AsNested
       expose :itself, as: :benchmark do
         expose :id
         expose :title

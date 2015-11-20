@@ -14,8 +14,8 @@ module V1::Entities
       expose :project, documentation: { type: "ProjectData (nested)", desc: "The project on which the comment was made." }, using: ProjectData::AsNested
     end
 
-    class AsNotification < AsFull
-      unexpose :user
+    class AsNotification < Grape::Entity
+      expose :project, documentation: { type: "ProjectData (nested)", desc: "The project on which the comment was made." }, using: ProjectData::AsNested
       expose :itself, as: :comment do
         expose :id
       end

@@ -14,8 +14,8 @@ module V1::Entities
       expose :project, documentation: { type: "ProjectData (nested)", desc: "The project this role belongs to."}, using: ProjectData::AsNested
     end
 
-    class AsNotification < AsSearch
-      unexpose :user
+    class AsNotification < Grape::Entity
+      expose :project, documentation: { type: "ProjectData (nested)", desc: "The project this role belongs to."}, using: ProjectData::AsNested
       expose :itself, as: :role do
         expose :id
         expose :title

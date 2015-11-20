@@ -10,8 +10,8 @@ module V1::Entities
       expose :user, documentation: { type: "UserData (nested)", desc: "The applicant for the role." }, using: UserData::AsNested
     end
 
-    class AsNotification < AsSearch
-      unexpose :user
+    class AsNotification < Grape::Entity
+      expose :role, documentation: { type: "RoleData (nested)", desc: "The role for the application." }, using: RoleData::AsNested
       expose :project, documentation: { type: "ProjectData (nested)", desc: "The project on which the application was made." }, using: ProjectData::AsNested
       expose :itself, as: :application do
         expose :id

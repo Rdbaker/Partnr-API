@@ -20,7 +20,7 @@ module V1::Entities
       expose :creator, documentation: { type: "Integer", desc: "The project creator's id." }
     end
 
-    class AsNotification < AsNested
+    class AsNotification < Grape::Entity
       expose :itself, as: :project do
         expose :title
         expose :id

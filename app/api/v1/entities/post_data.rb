@@ -14,9 +14,8 @@ module V1::Entities
       expose :bmark, documentation: { type: "BenchmarkData (nested)", desc: "The project benchmark on which this was posted" }, using: BmarkData::AsNested, as: :benchmark
     end
 
-    class AsNotification < AsFull
-      unexpose :user
-      unexpose :content
+    class AsNotification < Grape::Entity
+      expose :bmark, documentation: { type: "BenchmarkData (nested)", desc: "The project benchmark on which this was posted" }, using: BmarkData::AsNested, as: :benchmark
       expose :itself, as: :post do
         expose :id
         expose :title
