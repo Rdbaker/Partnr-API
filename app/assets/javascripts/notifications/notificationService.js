@@ -22,6 +22,22 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 		}
 	};
 
+	var processPollResult = function(result) {
+		var old = notifications;
+		notifications = result;
+
+		for (var i = 0; i < notifications.length; i++) {
+			notifications[i].parsedMessage = parse(notifications[i]);
+		}
+
+        $log.debug(notifications);
+
+        if (angular.toJson(notifications) !== angular.toJson(old)) {
+			$log.debug("[NOTIFICATIONS] new notifications");
+        	$rootScope.$broadcast('notifications', notifications);
+        }
+	};
+
 	var enablePolling = function() {
 		$log.debug("[NOTIFICATIONS] polling enabled");
 		polling = true;
@@ -32,19 +48,20 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 		polling = false;
 	};
 
+	var parse = function(notification) {
+		var result = notification.message;
+
+		for (var k in notification.notifier) {
+			result = result.replace('{' + k + '}', notification.notifier[k].title);
+		}
+
+		return result;
+	};
+
 	$rootScope.$on('auth', function(event, eventData) {
         if (eventData.status === "login_success") {
         	enablePolling();
-        	poller(function(result) {
-        		var old = notifications;
-        		notifications = result;
-                $log.debug(notifications);
-
-                if (angular.toJson(notifications) !== angular.toJson(old)) {
-        			$log.debug("[NOTIFICATIONS] new notifications");
-                	$rootScope.$broadcast('notifications', notifications);
-                }
-        	});
+        	poller(processPollResult);
         } else if (eventData.status === "logout_success") {
         	disablePolling();
         	notifications = {};
@@ -55,6 +72,7 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 		poller : poller,
 		enablePolling : enablePolling,
 		disablePolling : disablePolling,
+		parse : parse,
 
 		get : function() {
 			return angular.copy(notifications);
