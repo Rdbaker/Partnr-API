@@ -13,3 +13,27 @@
 	</div>
 	<button class="btn btn-primary" ng-click="doLogout()">Log out</button>
 </div>
+<div class="content-container">
+	<div>
+		<h3>Find something new</h3>
+		<input type="text" class="form-control" ng-model="search.keywords">
+		<button type="button" class="btn btn-primary" ng-click="doSearch()">Search</button>
+	</div>
+	<div class="results" ng-show="search.queried">
+		<div ng-show="search.result.projects.length > 0">
+			<h4>Projects</h4>
+			<span ng-repeat="p in search.result.projects">
+				<a ui-sref="project({ id: p.id })">{{ p.title }}</a>
+			</span>
+		</div>
+		<div ng-show="search.result.roles.length > 0">
+			<h4>Roles</h4>
+			<span ng-repeat="r in search.result.roles">
+				<a ui-sref="project({ id: r.project.id })">{{ r.title }}</a>
+			</span>
+		</div>
+		<div ng-show="search.result.roles.length === 0 && search.result.projects.length === 0">
+			No Results
+		</div>
+	</div>
+</div>
