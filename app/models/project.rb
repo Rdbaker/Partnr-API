@@ -37,4 +37,8 @@ class Project < Notifier
   def followers
     Set.new(users + (comments.map { |c| c.user }) + (applications.map { |a| a.user }) + [User.find(owner)]).to_a
   end
+
+  def self_link
+    "/api/v1/projects/#{id}"
+  end
 end

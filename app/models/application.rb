@@ -35,4 +35,8 @@ class Application < Notifier
   def followers
     project.followers
   end
+
+  def self_link
+    "/api/v1/applications/#{id}"
+  end
 end

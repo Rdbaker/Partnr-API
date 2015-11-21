@@ -6,6 +6,9 @@ module V1::Entities
       expose :complete, documentation: { type: "Boolean", desc: "The benchmark's completeness." }
       expose :due_date, documentation: { type: "DateTime", desc: "The due date of the benchmark." }
       expose :created_at, documentation: { type: "String", desc: "The benchmark's create date." }
+      expose :links do
+        expose :self_link, documentation: { type: "URI", desc: "The link for the full benchmark entity." }, as: :self
+      end
     end
 
     class AsSearch < AsNested
@@ -22,6 +25,9 @@ module V1::Entities
       expose :itself, as: :benchmark do
         expose :id
         expose :title
+        expose :links do
+          expose :self_link, documentation: { type: "URI", desc: "The link for the full benchmark entity." }, as: :self
+        end
       end
     end
 

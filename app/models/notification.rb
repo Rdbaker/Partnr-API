@@ -29,4 +29,12 @@ class Notification < ActiveRecord::Base
   def is_notifier(user)
     user.class == User && user == notify
   end
+
+  def self_link
+    "/api/v1/notifications/#{id}"
+  end
+
+  def notifier_link
+    notifier.self_link
+  end
 end

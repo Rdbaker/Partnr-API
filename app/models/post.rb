@@ -21,4 +21,8 @@ class Post < Notifier
   def followers
     bmark.followers
   end
+
+  def self_link
+    "/api/v1/posts/#{id}"
+  end
 end

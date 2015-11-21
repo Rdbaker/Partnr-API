@@ -5,6 +5,9 @@ module V1::Entities
       expose :description, documentation: { type: "Integer", desc: "The project description." }
       expose :status, documentation: { type: "String", desc: "The project status." }
       expose :id, documentation: { type: "Integer", desc: "The project id." }
+      expose :links do
+        expose :self_link, documentation: { type: "URI", desc: "The link for the full project entity." }, as: :self
+      end
     end
 
     class AsSearch < AsNested
@@ -24,6 +27,9 @@ module V1::Entities
       expose :itself, as: :project do
         expose :title
         expose :id
+        expose :links do
+          expose :self_link, documentation: { type: "URI", desc: "The link for the full project entity." }, as: :self
+        end
       end
     end
   end

@@ -3,6 +3,9 @@ module V1::Entities
     class AsNested < Grape::Entity
       expose :id, documentation: { type: "Integer", desc: "The ID of the role." }
       expose :title, documentation: { type: "String", desc: "The role title." }
+      expose :links do
+        expose :self_link, documentation: { type: "URI", desc: "The link for the full role entity." }, as: :self
+      end
     end
 
     class AsChild < AsNested
@@ -19,6 +22,9 @@ module V1::Entities
       expose :itself, as: :role do
         expose :id
         expose :title
+        expose :links do
+          expose :self_link, documentation: { type: "URI", desc: "The link for the full role entity." }, as: :self
+        end
       end
     end
 
