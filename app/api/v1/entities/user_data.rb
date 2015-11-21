@@ -5,6 +5,9 @@ module V1::Entities
       expose :first_name, documentation: { type: "String", desc: "The user's first name." }
       expose :last_name, documentation: { type: "String", desc: "The user's last name." }
       expose :id, documentation: { type: "Integer", desc: "The user's id." }
+      expose :links do
+        expose :self_link, documentation: { type: "URI", desc: "The link for the full user entity." }, as: :self
+      end
     end
 
     class AsSearch < AsNested

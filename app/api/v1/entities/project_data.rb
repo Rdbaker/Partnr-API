@@ -5,6 +5,9 @@ module V1::Entities
       expose :description, documentation: { type: "Integer", desc: "The project description." }
       expose :status, documentation: { type: "String", desc: "The project status." }
       expose :id, documentation: { type: "Integer", desc: "The project id." }
+      expose :links do
+        expose :self_link, documentation: { type: "URI", desc: "The link for the full project entity." }, as: :self
+      end
     end
 
     class AsSearch < AsNested
@@ -18,6 +21,16 @@ module V1::Entities
       expose :roles, documentation: { type: "RoleData (nested)", desc: "The roles for the project." }, using: RoleData::AsChild
       expose :bmarks, documentation: { type: "BenchmarkData (nested)", desc: "The benchmarks for the project." }, using: BmarkData::AsNested, as: :benchmarks
       expose :creator, documentation: { type: "Integer", desc: "The project creator's id." }
+    end
+
+    class AsNotification < Grape::Entity
+      expose :itself, as: :project do
+        expose :title
+        expose :id
+        expose :links do
+          expose :self_link, documentation: { type: "URI", desc: "The link for the full project entity." }, as: :self
+        end
+      end
     end
   end
 end

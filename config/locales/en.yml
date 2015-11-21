@@ -34,9 +34,9 @@ en:
       updated: "edited their comment on the project {project}"
       deleted: "deleted their comment from the project {project}"
     Post:
-      created: "posted to the benchmark {benchmark}"
-      updated: "edited their post on the benchmark {benchmark}"
-      deleted: "deleted their post from the benchmark {benchmark}"
+      created: "posted {post} to the benchmark {benchmark}"
+      updated: "edited their post {post} on the benchmark {benchmark}"
+      deleted: "deleted their post {post} from the benchmark {benchmark}"
     Project:
       created: "created the project {project}"
       updated: "edited their project {project}"

@@ -36,6 +36,10 @@ class User < ActiveRecord::Base
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
+  def self_link
+    "/api/v1/users/#{id}"
+  end
+
   # return the full name of the user
   def name
     first_name + " " + last_name
