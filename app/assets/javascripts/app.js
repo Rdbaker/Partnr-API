@@ -2,11 +2,12 @@ angular.module('partnr.auth', []);
 angular.module('partnr.users', []);
 angular.module('partnr.messaging', []);
 angular.module('partnr.notify', []);
+angular.module('partnr.search', []);
 angular.module('partnr.users.assets', []);
 angular.module('partnr.core', ['ui.router',
   'ui.bootstrap', 'templates',
   'partnr.auth', 'partnr.users', 'partnr.messaging',
-  'partnr.notify', 'partnr.users.assets'
+  'partnr.notify', 'partnr.search', 'partnr.users.assets'
   ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization) {
    principal.fetchCsrf();
    $rootScope.$state = $state; // application state
