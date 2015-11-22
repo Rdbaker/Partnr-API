@@ -27,12 +27,19 @@ module V1
     params do
       optional :user, type: Integer, allow_blank: false, desc: "The applicant's ID."
       optional :project, type: Integer, allow_blank: false, desc: "The application's project's ID."
+      optional :show_rejected, type: Boolean, allow_blank: false, default: false, desc: "The application's project's ID."
       optional :role, type: Integer, allow_blank: false, desc: "The application's role's ID."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."
     end
     get do
-      present Application.where(permitted_params params)
+      if not params[:show_rejected]
+        not_params = { :status => 2 }
+      else
+        not_params = {}
+      end
+      params.delete :show_rejected
+      present Application.where(permitted_params params).where.not(not_params)
         .page(params[:page])
         .per(params[:per_page]), with: Entities::ApplicationData::AsSearch
     end
@@ -109,7 +116,8 @@ module V1
     delete ":id" do
       application_destroy_permissions(params[:id])
       @application.user_notifier = current_user
-      @application.destroy!
+      @application.status = 2
+      @application.save
       status 204
     end
 

@@ -3,6 +3,7 @@ class Comment < Notifier
   belongs_to :project
 
   validates :content, :user, :project, presence: true
+  skip_callback :destroy, :before, :destroy_notification
 
   attr_readonly :user, :project
 
