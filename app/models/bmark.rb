@@ -4,6 +4,7 @@ class Bmark < Notifier
   has_many :posts, :dependent => :destroy
 
   validates :title, :project, :user, presence: true
+  skip_callback :destroy, :before, :destroy_notification
 
   attr_readonly :project, :user
 
