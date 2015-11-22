@@ -4,6 +4,7 @@ class Role < Notifier
   belongs_to :user
 
   validates :title, :project, presence: true
+  skip_callback :destroy, :before, :destroy_notification
 
   attr_readonly :project
 
