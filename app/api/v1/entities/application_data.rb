@@ -25,6 +25,7 @@ module V1::Entities
     end
 
     class AsFull < AsSearch
+      expose :project, documentation: { type: "ProjectData (nested)", desc: "The project on which the application was made." }, using: ProjectData::AsNested
     end
   end
 end

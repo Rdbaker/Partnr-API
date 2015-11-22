@@ -3,6 +3,7 @@ class Post < Notifier
   belongs_to :bmark
 
   validates :title, :content, :user, presence: true
+  skip_callback :destroy, :before, :destroy_notification
 
   def has_destroy_permissions(user)
     user.class == User &&
