@@ -38,8 +38,10 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 		var matches = pattern.exec(url);
 		var result = {};
 
-		for (var i = 1; i < matches.length; i++) {
-			result[matches[i]] = "";
+		if (matches != null) {
+			for (var i = 1; i < matches.length; i++) {
+				result[matches[i]] = "";
+			}
 		}
 
 		return result;
@@ -68,20 +70,30 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 					if (key.indexOf("_") > -1) {
 						var pattern = new RegExp("^(\\w+)_(\\w+)$");
 						var matches = pattern.exec(key);
-						var dependencyName = matches[1];
-						var dependencyAttr = matches[2];
 
-						var attrValue = result.data[dependencyName][dependencyAttr];
-						route.params[key] = attrValue;
+						if (matches != null) {
+							var dependencyName = matches[1];
+							var dependencyAttr = matches[2];
+
+							var attrValue = result.data[dependencyName][dependencyAttr];
+							route.params[key] = attrValue;
+						} else {
+							$log.debug("[ROUTE UTILS] Error parsing key: " + key);
+						}
 					} else {
 						var pattern = new RegExp("^(\\w+)_?")
 						var matches = pattern.exec(route.name);
-						var parentEntity = matches[1];
+						
+						if (matches != null) {
+							var parentEntity = matches[1];
 
-						if (apiLink.indexOf(parentEntity) > -1) {
-							route.params[key] = result.data[key];
+							if (apiLink.indexOf(parentEntity) > -1) {
+								route.params[key] = result.data[key];
+							} else {
+								route.params[key] = result.data[parentEntity][key];
+							}
 						} else {
-							route.params[key] = result.data[parentEntity][key];
+							$log.debug("[ROUTE UTILS] Error parsing key: " + key);
 						}
 					}
 
@@ -136,12 +148,18 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 	var resolveEntityLink = function(apiLink) {
 		var pattern = new RegExp("^\/api\/" + $rootScope.apiVersion + "\/(\\w+)\/(\\d+)");
 		var matches = pattern.exec(apiLink);
-		var entity = matches[1];
-		var entityId = matches[2];
+		
+		if (matches != null) {
+			var entity = matches[1];
+			var entityId = matches[2];
 
-		$log.debug("[ROUTE UTILS] Extracted entity: " + entity);
+			$log.debug("[ROUTE UTILS] Extracted entity: " + entity);
 
-		return entityStateResolveStrategy(apiLink, entity, entityId);
+			return entityStateResolveStrategy(apiLink, entity, entityId);
+		} else {
+			$log.debug("[ROUTE UTILS] Error parsing api route: " + apiLink);
+			return resolveToHome();
+		}
 	};
 
 	return {
