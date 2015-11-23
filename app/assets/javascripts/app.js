@@ -26,8 +26,6 @@ angular.module('partnr.core', ['ui.router',
         return;
       };
 
-      $log.debug($state.get());
-
       e.preventDefault();
       $log.debug("[STATE] State change occurring: " + toState.name);
       bypassAuthCheck = true;

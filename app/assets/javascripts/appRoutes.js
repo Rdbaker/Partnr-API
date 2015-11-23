@@ -20,7 +20,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: []
 			}
 		})
 
@@ -34,7 +35,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: []
+				roles: [],
+				entities: []
 			}
 		})
 
@@ -48,7 +50,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: []
+				roles: [],
+				entities: []
 			}
 		})
 
@@ -62,7 +65,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: []
 			}
 		})
 
@@ -76,7 +80,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: []
 			}
 		})
 
@@ -90,7 +95,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: []
 			}
 		})
 
@@ -104,7 +110,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['project']
 			}
 		})
 
@@ -118,7 +125,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['project']
 			}
 		})
 		
@@ -132,7 +140,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['project']
 			}
 		})
 
@@ -146,7 +155,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['project', 'comment', 'role', 'benchmark']
 			}
 		})
 
@@ -160,7 +170,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['project']
 			}
 		})
 
@@ -174,7 +185,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['application']
 			}
 		})
 
@@ -188,7 +200,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['notification']
 			}
 		})
 
@@ -202,7 +215,8 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: []
 			}
 		});
 

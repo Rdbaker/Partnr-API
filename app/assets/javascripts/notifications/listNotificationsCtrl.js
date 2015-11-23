@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('ListNotificationsController', function($scope, $state, $stateParams, $log, notifications) {
+angular.module('partnr.users.assets').controller('ListNotificationsController', function($scope, $state, $stateParams, $log, notifications, routeUtils) {
 	$scope.loadComplete = true;
 	$scope.allNotifications = notifications.get();
 
