@@ -1,7 +1,6 @@
 <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" media="all" href="http://dev.partnr.org/assets/_bootstrap.css" />
-<link rel="stylesheet" media="all" href="http://dev.partnr.org/assets/application.css" />
-<link rel="stylesheet" media="all" href="http://localhost:3000/assets/email.css" />
+<link rel="stylesheet" media="all" href="<%= Rails.application.config.host %>/assets/_bootstrap.css" />
+<link rel="stylesheet" media="all" href="<%= Rails.application.config.host %>/assets/email.css" />
 
 <div class="container text-center" id="welcome">
   <%= render "shared/email/header" %>
