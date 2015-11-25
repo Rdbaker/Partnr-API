@@ -1,5 +1,6 @@
 angular.module('partnr.users.assets').controller('ListNotificationsController', function($scope, $state, $stateParams, $log, notifications, routeUtils) {
 	$scope.loadComplete = true;
+	$scope.notifications = notifications;
 	$scope.allNotifications = notifications.get();
 
 	$scope.$on("notifications", function(event, notificationList) {

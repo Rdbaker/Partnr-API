@@ -1,11 +1,9 @@
-angular.module('partnr.notify').factory('notifications', function($rootScope, $http, $log, $timeout, principal) {
+angular.module('partnr.notify').factory('notifications', function($rootScope, $http, $log, $q, $timeout, principal) {
 	var polling = false;
 	var notifications = {};
 
 	var poller = function(callback) {
 		if (polling) {
-			$log.debug("[NOTIFICATIONS] Sending Get request");
-			
 			$http({
 				method: 'GET',
 				url: $rootScope.apiRoute + 'notifications',
@@ -30,10 +28,9 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 			notifications[i].parsedMessage = parse(notifications[i]);
 		}
 
-        $log.debug(notifications);
-
         if (angular.toJson(notifications) !== angular.toJson(old)) {
 			$log.debug("[NOTIFICATIONS] new notifications");
+	        $log.debug(notifications);
         	$rootScope.$broadcast('notifications', notifications);
         }
 	};
@@ -58,6 +55,61 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 		return result;
 	};
 
+	var linkParamResolveStrategy = function(apiLink, route, notification) {
+		// documentation about this function can be found in routeUtils
+
+		var deferred = $q.defer();
+
+		if (Object.keys(route.params).length > 0) {
+			for (var key in route.params) {
+				if (key.indexOf("_") > -1) {
+					var pattern = new RegExp("^(\\w+)_(\\w+)$");
+					var matches = pattern.exec(key);
+
+					if (matches != null) {
+						var dependencyName = matches[1];
+						var dependencyAttr = matches[2];
+
+						var attrValue = notification.notifier[dependencyName][dependencyAttr];
+						route.params[key] = attrValue;
+					} else {
+						$log.debug("[NOTIFICATIONS] Error parsing key: " + key);
+					}
+				} else {
+					var pattern = new RegExp("^(\\w+)_?");
+					var matches = pattern.exec(route.name);
+
+					if (matches != null) {
+						var parentEntity = matches[1];
+
+						if (notification.notifier[parentEntity] != undefined) {
+							route.params[key] = notification.notifier[parentEntity][key];
+						} else {
+							$log.debug("[NOTIFICATIONS] Cannot find necessary value for entity: " + parentEntity);
+						}
+					} else {
+						$log.debug("[NOTIFICATIONS] Error parsing key: " + key);
+					}
+				}
+
+				if (route.params[key] === undefined) {
+					$log.debug("[NOTIFICATIONS] Error retrieving URL parameter for " + key + " from notification object");
+				}
+			}
+
+			$log.debug("[NOTIFICATIONS] Route params resolved");
+			$log.debug(route.params);
+
+			deferred.resolve(route.params);
+		} else {
+			$log.debug("[NOTIFICATIONS] Route params resolved");
+			$log.debug(route.params);
+			deferred.resolve(route.params);
+		}
+
+		return deferred.promise;
+	};
+
 	$rootScope.$on('auth', function(event, eventData) {
         if (eventData.status === "login_success") {
         	enablePolling();
@@ -73,6 +125,7 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 		enablePolling : enablePolling,
 		disablePolling : disablePolling,
 		parse : parse,
+		linkParamResolveStrategy : linkParamResolveStrategy,
 
 		get : function() {
 			return angular.copy(notifications);

@@ -3,9 +3,6 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 		this.name = "";
 		this.params = {};
 		this.sref = "";
-		this.links = {
-			ui: ""
-		};
 	};
 
 	var resolveToHome = function() {
@@ -70,16 +67,8 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 		});
 	};
 
-	var constructRouteObject = function(state, apiLink) {
-		// we now attempt to format the response using a given
-		// state and information from the api
-
-		var route = new routeObject();
+	var defaultStateParamResolveStrategy = function(apiLink, route) {
 		var deferred = $q.defer();
-
-		route.name = state.name;
-		route.links.ui = state.url;
-		route.params = extractParams(state.url);
 
 		// if there aren't any paramaters, we don't need
 		// to go through this mess
@@ -149,32 +138,25 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 						}
 					}
 
-					// replace the tokens in the link with the actual value
-					route.links.ui.replace("{" + key + "}", attrValue);
-
 					if (route.params[key] === undefined) {
 						$log.debug("[ROUTE UTILS] Error retrieving URL parameter for " + key + " from REST object");
 					}
 				}
 
-				route.sref = route.name + "(" + angular.toJson(route.params) + ")";
+				$log.debug("[ROUTE UTILS] Route params resolved");
+				$log.debug(route.params);
 
-				$log.debug("[ROUTE UTILS] Route resolved");
-				$log.debug(route);
-
-				deferred.resolve(route);
+				deferred.resolve(route.params);
 			});
 		} else {
-			route.sref = route.name + "()";
+			$log.debug("[ROUTE UTILS] Route params resolved");
+			$log.debug(route.params);
 
-			$log.debug("[ROUTE UTILS] Route resolved");
-			$log.debug(route);
-
-			deferred.resolve(route);
+			deferred.resolve(route.params);
 		}
 
 		return deferred.promise;
-	};
+	}
 
 	var entityStateResolveStrategy = function(apiLink, entity, entityId) {
 		// we're trying to resolve the api link to a relevant state
@@ -212,10 +194,10 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 			chosenState = $state.get("home");
 		}
 
-		return constructRouteObject(chosenState, apiLink);
+		return chosenState;
 	};
 
-	var resolveEntityLink = function(apiLink) {
+	var resolveEntityLink = function(apiLink, searchData, customParamResolveStrategy) {
 		// pattern for /api/v1/{entity}/{entityId}
 		var pattern = new RegExp("^\/api\/" + $rootScope.apiVersion + "\/(\\w+)\/(\\d+)");
 		var matches = pattern.exec(apiLink);
@@ -223,10 +205,23 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 		if (matches != null) {
 			var entity = matches[1];
 			var entityId = matches[2];
-
 			$log.debug("[ROUTE UTILS] Extracted entity: " + entity);
 
-			return entityStateResolveStrategy(apiLink, entity, entityId);
+			var deferred = $q.defer();
+			var chosenState = entityStateResolveStrategy(apiLink, entity, entityId);
+			var paramResolveStrategy = (customParamResolveStrategy ? customParamResolveStrategy : defaultStateParamResolveStrategy);
+			var route = new routeObject();
+
+			route.name = chosenState.name;
+			route.params = extractParams(chosenState.url);
+
+			paramResolveStrategy(apiLink, route, searchData).then(function(resolvedParams) {
+				route.params = resolvedParams;
+				route.sref = route.name + "(" + angular.toJson(route.params) + ")";
+				deferred.resolve(route);
+			});
+
+			return deferred.promise;
 		} else {
 			$log.debug("[ROUTE UTILS] Error parsing api route: " + apiLink);
 			return resolveToHome();
@@ -235,8 +230,8 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 
 	return {
 		resolveEntityLink : resolveEntityLink,
-		resolveEntityLinkAndGo : function(apiLink) {
-			resolveEntityLink(apiLink).then(function(route) {
+		resolveEntityLinkAndGo : function(apiLink, searchData, customParamResolveStrategy) {
+			resolveEntityLink(apiLink, searchData, customParamResolveStrategy).then(function(route) {
 				$state.go(route.name, route.params);
 			});
 		}
