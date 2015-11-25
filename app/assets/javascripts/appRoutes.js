@@ -55,6 +55,36 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
+		.state('account_forgot_password', {
+			parent: 'site',
+			url: '/account/forgot_password',
+			views: {
+				'content@': {
+					templateUrl: 'user/forgot_password.html',
+					controller: 'ForgotPasswordController'
+				}
+			},
+			data: {
+				roles: [],
+				entities: []
+			}
+		})
+
+		.state('account_reset_password', {
+			parent: 'site',
+			url: '/account/reset_password',
+			views: {
+				'content@': {
+					templateUrl: 'user/reset_password.html',
+					controller: 'ForgotPasswordController'
+				}
+			},
+			data: {
+				roles: [],
+				entities: []
+			}
+		})
+
 		.state('inbox', {
 			parent: 'site',
 			url: '/inbox',
