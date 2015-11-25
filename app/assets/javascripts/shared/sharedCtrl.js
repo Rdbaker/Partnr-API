@@ -1,4 +1,6 @@
-angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications) {
+angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications, routeUtils) {
+	$scope.routeUtils = routeUtils;
+	
 	$scope.newNotifications = {};
     $scope.notificationsDropdownVisible = false;
 

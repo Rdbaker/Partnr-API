@@ -1,7 +1,7 @@
 <toasts></toasts>
 <div class="content-container" ng-if="isOwner">
   <button class="btn btn-primary" ng-click="$state.go('project_edit', {'project_id' : project.id})">Edit</button>
-  <button class="btn btn-default" ng-click="$state.go('project_applications', {'project_id' : project.id})">View Applications</button>
+  <button class="btn btn-default" ng-click="$state.go('application_list', {'project_id' : project.id})">View Applications</button>
 </div>
 <div class="content-container" ng-show="loadComplete">
 	<h2>{{ project.title }}</h2>

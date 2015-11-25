@@ -7,10 +7,10 @@ module V1::Entities
       expose :links do
         expose :self_link, documentation: { type: "URI", desc: "The link for the full comment entity." }, as: :self
       end
+      expose :user, documentation: { type: "UserData (nested)", desc: "The user that made the comment." }, using: UserData::AsNested
     end
 
     class AsSearch < AsNested
-      expose :user, documentation: { type: "UserData (nested)", desc: "The user that made the comment." }, using: UserData::AsNested
     end
 
     class AsFull < AsSearch

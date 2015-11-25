@@ -11,7 +11,8 @@ angular.module('partnr.core', ['ui.router',
   ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization) {
    principal.fetchCsrf();
    $rootScope.$state = $state; // application state
-   $rootScope.apiRoute  = '/api/v1/';
+   $rootScope.apiVersion = "v1";
+   $rootScope.apiRoute  = '/api/' + $rootScope.apiVersion + '/';
    $rootScope.version   = '0.3.8';
    var bypassAuthCheck = false;
 
