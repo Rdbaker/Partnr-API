@@ -9,7 +9,7 @@ angular.module('partnr.users').controller('ResetPasswordController', function($s
 	$log.debug("Got token: " + $scope.token);
 
 	$scope.validate = function() {
-		return ($scope.password === $scope.confirmPassword);
+		return ($scope.password === $scope.confirmPassword) && $scope.password.length >= 8;
 	}
 
 	$scope.doSubmit = function() {
@@ -19,12 +19,13 @@ angular.module('partnr.users').controller('ResetPasswordController', function($s
 				$scope.submitted = true;
 				$scope.loadComplete = true;
 			}, function(result) {
+				$log.debug(result);
 				$scope.loadComplete = true;
 				$scope.invalidToken = true;
 				$scope.submitted = true;
 			});
 		} else {
-			toaster.error("Passwords do not match");
+			toaster.error("Passwords must match and be greater than 8 characters in length");
 		}
 	}
 });
