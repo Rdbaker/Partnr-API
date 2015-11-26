@@ -10,7 +10,7 @@ angular.module('partnr.users').controller('ForgotPasswordController', function($
 	$scope.doSubmit = function() {
 		if ($scope.validate()) {
 			$scope.loadComplete = false;
-			users.resetPassword($scope.email).then(function(result) {
+			users.sendPasswordResetRequest($scope.email).then(function(result) {
 				$scope.submitted = true;
 				$scope.loadComplete = true;
 			});

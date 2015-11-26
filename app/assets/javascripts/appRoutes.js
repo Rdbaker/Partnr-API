@@ -72,11 +72,11 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 
 		.state('account_reset_password', {
 			parent: 'site',
-			url: '/account/reset_password',
+			url: '/account/reset_password?reset_password_token',
 			views: {
 				'content@': {
 					templateUrl: 'user/reset_password.html',
-					controller: 'ForgotPasswordController'
+					controller: 'ResetPasswordController'
 				}
 			},
 			data: {
