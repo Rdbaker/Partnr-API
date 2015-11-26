@@ -1,14 +1,16 @@
-angular.module('partnr.notify').directive('notificationsDropdown', function($rootScope, $log, routeUtils, notifications) {
+angular.module('partnr.notify').directive('notificationsDropdown', function($rootScope, $state, $log, routeUtils, notifications) {
     return {
         restrict: 'AE',
         templateUrl: 'notifications/notifications_dropdown.html',
         scope: {
-            visible: '='
+            visible: '=',
+            doDropdownChange: '&'
         },
         link: function($scope, elem, attr, ctrl) {
             $scope.dropdownLimit = 10;
             $scope.notifications = notifications.get();
             $scope.hasBeenOpened = false;
+            $scope.routeUtils = routeUtils;
 
             $scope.$on('notifications', function(event, notifications) {
                 $scope.notifications = notifications;
@@ -32,6 +34,16 @@ angular.module('partnr.notify').directive('notificationsDropdown', function($roo
                     }
                 }
             });
+
+            $scope.doViewMore = function() {
+                $state.go('notification_list');
+                $scope.doDropdownChange();
+            };
+
+            $scope.resolveLink = function(n) {
+                routeUtils.resolveEntityLinkAndGo(n.links.notifier, n, notifications.linkParamResolveStrategy);
+                $scope.doDropdownChange();
+            };
         }
     };
 });

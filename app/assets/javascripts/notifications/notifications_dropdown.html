@@ -1,8 +1,8 @@
 <div class="notifications-dropdown content-container" ng-show="visible">
 	<div>	
 		<div class="notification-item" ng-repeat="n in notifications | limitTo:dropdownLimit">
-			<span class="badge" ng-hide="n.read">new!</span>&nbsp;<a href ng-click="routeUtils.resolveEntityLinkAndGo(n.links.notifier, n, notifications.linkParamResolveStrategy)">{{ n.actor.first_name }} {{ n.actor.last_name }} {{ n.parsedMessage }}</a>
+			<span class="badge" ng-hide="n.read">new!</span>&nbsp;<a href ng-click="resolveLink(n)">{{ n.actor.first_name }} {{ n.actor.last_name }} {{ n.parsedMessage }}</a>
 		</div>
 	</div>
-	<div><a ui-sref="notification_list">view more</a></div>
+	<div><a href ng-click="doViewMore()">view more</a></div>
 </div>
