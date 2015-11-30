@@ -1,4 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
+  alias :super_create :create
   respond_to :json
   before_action :set_default_response_format
 
@@ -9,9 +10,17 @@ class RegistrationsController < Devise::RegistrationsController
     }
   end
 
+  def create
+    super_create
+  end
+
   protected
 
   def set_default_response_format
       request.format = :json
+  end
+
+  def sign_up(resource_name, resource)
+    true
   end
 end
