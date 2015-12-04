@@ -85,6 +85,21 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
+		.state('profile_create', {
+			parent: 'site',
+			url: '/profile/create',
+			views: {
+				'content@': {
+					templateUrl: 'user/profile/create_profile.html',
+					controller: 'CreateProfileController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: []
+			}
+		})
+
 		.state('inbox', {
 			parent: 'site',
 			url: '/inbox',
