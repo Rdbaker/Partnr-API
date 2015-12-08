@@ -129,7 +129,10 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 				})
 				.success(function(data, status, headers, config) {
 					if (data.user) {
-						authenticate(data.user);
+						$log.debug(data);
+						var newUser = data.user;
+						newUser.last_login = data.last_sign_in_at;
+						authenticate(newUser);
 						deferred.resolve(true);
 					} else {
 						$log.error('[AUTH] Log in failure')
