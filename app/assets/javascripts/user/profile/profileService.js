@@ -21,6 +21,58 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 			});
 		},
 
+		addItem : function(item, entityName) {
+			$log.debug("[PROFILE] Sending " + entityName + " create request");
+			$log.debug(item);
+
+			var entity = entityName;
+
+			if (entityName === "interest") {
+				entity = "interests";
+			}
+
+			return $http({
+				method: 'POST',
+				url: $rootScope.apiRoute + 'profiles/' + entity,
+				headers: principal.getHeaders(),
+				data: item
+			});
+		},
+
+		updateItem : function(id, item, entityName) {
+			$log.debug("[PROFILE] Sending " + entityName + " update request");
+			$log.debug(item);
+
+			var entity = entityName;
+
+			if (entityName === "interest") {
+				entity = "interests";
+			}
+
+			return $http({
+				method: 'PUT',
+				url: $rootScope.apiRoute + 'profiles/' + entity + '/' + id,
+				headers: principal.getHeaders(),
+				data: item
+			});
+		},
+
+		deleteItem : function(id, entityName) {
+			$log.debug("[PROFILE] Sending " + entityName + " delete request");
+
+			var entity = entityName;
+
+			if (entityName === "interest") {
+				entity = "interests"
+			}
+
+			return $http({
+				method: 'DELETE',
+				url: $rootScope.apiRoute + 'profiles/' + entity + '/' + id,
+				headers: principal.getHeaders()
+			});
+		},
+
 		addSchool : function(school) {
 			$log.debug("[PROFILE] Sending school create request");
 			$log.debug(school);
@@ -67,6 +119,21 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 				headers: principal.getHeaders(),
 				data: interest
 			});
+		},
+
+		isValidItem : function(item, entityName) {
+			switch (entityName) {
+				case "location":
+					return this.isValidLocation(item);
+				case "school":
+					return this.isValidSchool(item);
+				case "skill":
+					return this.isValidSkill(item);
+				case "position":
+					return this.isValidPosition(item);
+				case "interest":
+					return this.isValidInterest(item);
+			}
 		},
 
 		isValidLocation : function(location) {

@@ -100,6 +100,21 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
+		.state('profile_edit', {
+			parent: 'site',
+			url: '/profile/edit',
+			views: {
+				'content@': {
+					templateUrl: 'user/profile/edit_profile.html',
+					controller: 'EditProfileController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: []
+			}
+		})
+
 		.state('inbox', {
 			parent: 'site',
 			url: '/inbox',
