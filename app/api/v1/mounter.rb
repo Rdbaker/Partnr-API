@@ -11,6 +11,7 @@ module V1
     mount Comments      => '/comments'
     mount Notifications => '/notifications'
     mount Profiles      => '/profiles'
+    mount Conversations => '/conversations'
 
     add_swagger_documentation(
       base_path: '/api/v1',

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110033632) do
+ActiveRecord::Schema.define(version: 20151204020001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,18 @@ ActiveRecord::Schema.define(version: 20151110033632) do
 
   add_index "comments", ["project_id"], name: "index_comments_on_project_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "conversations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "conversations_users", force: :cascade do |t|
+    t.integer "conversation_id"
+    t.integer "user_id"
+  end
+
+  add_index "conversations_users", ["conversation_id", "user_id"], name: "index_conversations_users_on_conversation_id_and_user_id", using: :btree
 
   create_table "interests", force: :cascade do |t|
     t.string   "title",      null: false
@@ -170,12 +182,15 @@ ActiveRecord::Schema.define(version: 20151110033632) do
   create_table "projects", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "owner",                   null: false
-    t.integer  "creator",                 null: false
-    t.integer  "status",      default: 0
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "owner",                       null: false
+    t.integer  "creator",                     null: false
+    t.integer  "status",          default: 0
+    t.integer  "conversation_id"
   end
+
+  add_index "projects", ["conversation_id"], name: "index_projects_on_conversation_id", using: :btree
 
   create_table "projects_users", id: false, force: :cascade do |t|
     t.integer "project_id"
@@ -257,6 +272,7 @@ ActiveRecord::Schema.define(version: 20151110033632) do
   add_foreign_key "mailboxer_receipts", "mailboxer_notifications", column: "notification_id", name: "receipts_on_notification_id"
   add_foreign_key "positions", "profiles"
   add_foreign_key "posts", "bmarks"
+  add_foreign_key "projects", "conversations"
   add_foreign_key "skills", "profiles"
   add_foreign_key "users", "notifications"
 end

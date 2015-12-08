@@ -93,6 +93,9 @@ module V1
           @role.user = @application.user
           @application.status = "accepted"
           @role.save!
+          # add the user to the project conversation
+          @application.project.conversation << @application.user
+          @application.project.conversation.save!
         else
           error!("400 Bad Request: Role already has a user.", 400)
         end
