@@ -12,6 +12,7 @@
 		</ul>
 	</div>
 	<button class="btn btn-default" ng-click="$state.go('profile_edit')">Edit Profile</button>
+	<button class="btn btn-default" ng-click="$state.go('profile', { id : user.id })">View Profile</button>
 	<button class="btn btn-primary" ng-click="doLogout()">Log out</button>
 </div>
 <div class="content-container">
