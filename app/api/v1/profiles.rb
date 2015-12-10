@@ -50,7 +50,7 @@ module V1
         requires :title, type: String, allow_blank: false, desc: "The new title of the interest."
       end
       put ":id" do
-        profile_udpate_permissions
+        profile_update_permissions
         interest = get_record(Interest, params[:id])
         entity_align(interest, @profile)
         interest.title = params[:title]
@@ -93,7 +93,7 @@ module V1
         requires :geo_string, type: String, allow_blank: false, desc: "The new location string of the location."
       end
       put ":id" do
-        profile_udpate_permissions
+        profile_update_permissions
         location = get_record(Location, params[:location_id])
         entity_align(location, @profile)
         location.geo_string = params[:geo_string]
@@ -133,7 +133,7 @@ module V1
         requires :title, type: String, allow_blank: false, desc: "The new title of the position."
       end
       put ":id" do
-        profile_udpate_permissions
+        profile_update_permissions
         position = get_record(Position, params[:id])
         entity_align(position, @profile)
         position.title = params[:title]
@@ -179,7 +179,7 @@ module V1
         at_least_one_of :school_name, :grad_year, :field
       end
       put ":id" do
-        profile_udpate_permissions
+        profile_update_permissions
         si = get_record(SchoolInfo, params[:id])
         entity_align(si, @profile)
         si.update!({
@@ -223,7 +223,7 @@ module V1
         requires :title, type: String, allow_blank: false, desc: "The new title of the skill."
       end
       put ":id" do
-        profile_udpate_permissions
+        profile_update_permissions
         skill = get_record(Skill, params[:id])
         entity_align(skill, @profile)
         skill.title = params[:title]
