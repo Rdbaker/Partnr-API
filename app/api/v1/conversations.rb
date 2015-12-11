@@ -5,7 +5,7 @@ module V1
   class Conversations < Grape::API
     helpers do
       def find_conv
-        authenticate_user
+        authenticated_user
         @conv = Conversation.find_by(id: params[:id])
         error!("Conversation with id #{param[:id]} was not found", 404) if @conv.nil?
         error!("User is not involved in the conversation", 401) unless @conv.users.include? current_user
@@ -40,24 +40,34 @@ module V1
     end
 
 
-    desc "Sends a message in the conversatin or posts a new one if a conversation doesn't exist", entity: Entities::ConversationData::AsDeep
+    desc "Sends a message in the conversation or posts a new one if a conversation doesn't exist", entity: Entities::ConversationData::AsDeep
     params do
       requires :users, type: Array[Integer], allow_blank: false, desc: "The list of user IDs to send the message to.", documentation: { example: "42,87,17,6" }
       optional :message, type: String, allow_blank: false, desc: "The message to add to the conversation."
     end
     post do
       authenticated_user
-      users = User.where(id: params[:users])
+      users = User.where(id: params[:users]) + [current_user]
+      if users.length <= 1
+        error!("You can't start a conversation between less than 2 users!", 400)
+      end
       convs = users.map { |user| user.conversations.to_a }
       intersection = convs.reduce { |convs_intersection, user_convs| convs_intersection & user_convs }
       if not intersection.empty?
-        # add a new message
-        {}
+        c = intersection[0]
       else
         c = Conversation.new(users: users)
         c.save!
-        # add a new message to the conversation from current_user
       end
+      if params[:message]
+        m = Message.new({
+          user: current_user,
+          body: params[:message],
+          conversation: intersection[0]
+        })
+        m.save!
+      end
+      present c, with: Entities::ConversationData::AsDeep
     end
 
 
@@ -69,7 +79,27 @@ module V1
     put ":id" do
       find_conv
       # add a new message to the conversation
+      Message.create!({
+        user: current_user,
+        body: params[:message],
+        conversation: @conv
+      })
       present @conv, with: Entities::ConversationData::AsDeep
+    end
+
+
+    desc "Deletes a message from an existing conversation", entity: Entities::ConversationData::AsFull
+    params do
+      requires :id, type: Integer, allow_blank: false, desc: "The ID of the message."
+    end
+    delete ":id" do
+      authenticated_user
+      msg = Message.find_by(id: params[:id])
+      error!("No message could be found with that ID.", 404) if msg.nil?
+      error!("You can only delete messages you sent.", 401) unless msg.user == current_user
+      conv = msg.conversation
+      msg.destroy!
+      present conv, with: Entities::ConversationData::AsDeep
     end
   end
 end

@@ -3,7 +3,6 @@ module V1
 
     mount Projects      => '/projects'
     mount Users         => '/users'
-    mount Messages      => '/messages'
     mount Roles         => '/roles'
     mount Applications  => '/applications'
     mount Benchmarks    => '/benchmarks'
