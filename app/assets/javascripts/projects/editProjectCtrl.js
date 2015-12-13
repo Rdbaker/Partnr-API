@@ -12,7 +12,6 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 		$log.debug(result.data);
 		$scope.project = result.data;
 
-		$log.debug(result.data);
 		if (result.data.owner.id === principal.getUser().id) {
 			$scope.isOwner = true;
 		}

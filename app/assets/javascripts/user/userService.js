@@ -1,5 +1,15 @@
 angular.module('partnr.users').factory('users', function($rootScope, $http, $log, principal) {
 	return {
+		get : function(id) {
+			$log.debug("[USER] Sending GET request");
+
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'users/' + id,
+				headers: principal.getHeaders()
+			});
+		},
+
 		create : function(acct) {
 			$log.debug("[USER] Sending Create request");
 			$log.debug(acct);
