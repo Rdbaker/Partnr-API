@@ -35,4 +35,11 @@ Rails.application.configure do
 
   # something about the new version of rails etc..
   config.active_record.raise_in_transactional_callbacks = true
+
+  # set up the mailer
+  config.action_mailer.delivery_method = :smtp
+  Rails.application.config.host = 'http://localhost:3000'
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+
 end

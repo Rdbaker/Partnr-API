@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110033632) do
+ActiveRecord::Schema.define(version: 20151208184252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,18 @@ ActiveRecord::Schema.define(version: 20151110033632) do
 
   add_index "comments", ["project_id"], name: "index_comments_on_project_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "conversations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "conversations_users", force: :cascade do |t|
+    t.integer "conversation_id"
+    t.integer "user_id"
+  end
+
+  add_index "conversations_users", ["conversation_id", "user_id"], name: "index_conversations_users_on_conversation_id_and_user_id", using: :btree
 
   create_table "interests", force: :cascade do |t|
     t.string   "title",      null: false
@@ -123,6 +135,17 @@ ActiveRecord::Schema.define(version: 20151110033632) do
   add_index "mailboxer_receipts", ["notification_id"], name: "index_mailboxer_receipts_on_notification_id", using: :btree
   add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type", using: :btree
 
+  create_table "messages", force: :cascade do |t|
+    t.string   "body"
+    t.integer  "user_id"
+    t.integer  "conversation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "messages", ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
+
   create_table "notifications", force: :cascade do |t|
     t.integer  "notifier_id",                   null: false
     t.string   "notifier_type",                 null: false
@@ -170,12 +193,15 @@ ActiveRecord::Schema.define(version: 20151110033632) do
   create_table "projects", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "owner",                   null: false
-    t.integer  "creator",                 null: false
-    t.integer  "status",      default: 0
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "owner",                       null: false
+    t.integer  "creator",                     null: false
+    t.integer  "status",          default: 0
+    t.integer  "conversation_id"
   end
+
+  add_index "projects", ["conversation_id"], name: "index_projects_on_conversation_id", using: :btree
 
   create_table "projects_users", id: false, force: :cascade do |t|
     t.integer "project_id"
@@ -255,8 +281,11 @@ ActiveRecord::Schema.define(version: 20151110033632) do
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
   add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
   add_foreign_key "mailboxer_receipts", "mailboxer_notifications", column: "notification_id", name: "receipts_on_notification_id"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users"
   add_foreign_key "positions", "profiles"
   add_foreign_key "posts", "bmarks"
+  add_foreign_key "projects", "conversations"
   add_foreign_key "skills", "profiles"
   add_foreign_key "users", "notifications"
 end

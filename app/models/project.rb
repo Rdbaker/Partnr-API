@@ -7,6 +7,7 @@ class Project < Notifier
   has_many :applications, through: :roles
   has_many :users, through: :roles
   has_many :comments, :dependent => :destroy
+  has_one :conversation
 
   validates :title, :owner, :creator, :status, presence: true
   skip_callback :destroy, :before, :destroy_notification
@@ -32,7 +33,7 @@ class Project < Notifier
   end
 
   def belongs_to_project(user)
-    roles.any? { |role| role.user == user }
+    (roles.any? { |role| role.user == user }) || user.id == owner
   end
 
   def followers

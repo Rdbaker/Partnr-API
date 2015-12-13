@@ -3,7 +3,6 @@ module V1
 
     mount Projects      => '/projects'
     mount Users         => '/users'
-    mount Messages      => '/messages'
     mount Roles         => '/roles'
     mount Applications  => '/applications'
     mount Benchmarks    => '/benchmarks'
@@ -11,6 +10,7 @@ module V1
     mount Comments      => '/comments'
     mount Notifications => '/notifications'
     mount Profiles      => '/profiles'
+    mount Conversations => '/conversations'
 
     add_swagger_documentation(
       base_path: '/api/v1',
