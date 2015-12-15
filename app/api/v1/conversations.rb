@@ -122,7 +122,7 @@ module V1
       error!("You can only delete messages you sent.", 401) unless msg.user == current_user
       conv = msg.conversation
       msg.destroy!
-      present conv, with: Entities::ConversationData::AsDeep, is_read: find_is_read(@conv.id)
+      present conv, with: Entities::ConversationData::AsDeep, is_read: find_is_read(conv.id)
     end
   end
 end
