@@ -130,13 +130,13 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('inbox', {
+		.state('conversation_list', {
 			parent: 'site',
-			url: '/inbox',
+			url: '/conversations',
 			views: {
 				'content@': { 
-					templateUrl: 'messaging/list_message.html',
-					controller: 'MessageController',
+					templateUrl: 'conversations/list_conversation.html',
+					controller: 'ListConversationController',
 				}
 			},
 			data: {
