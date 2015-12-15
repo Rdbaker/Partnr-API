@@ -10,6 +10,10 @@ module V1
         error!("Conversation with id #{param[:id]} was not found", 404) if @conv.nil?
         error!("User is not involved in the conversation", 401) unless @conv.users.include? current_user
       end
+
+      def find_is_read(conv_id)
+        current_user.user_conversations.find_by(conversation_id: conv_id).is_read || false
+      end
     end
 
     desc "Retrieve all conversations for the logged in user", entity: Entities::ConversationData::AsShallow
@@ -23,9 +27,9 @@ module V1
         error!("The project with id #{params[:project]} was not found", 404) if proj.nil?
         error!("You are not a part of this project", 401) unless proj.belongs_to_project current_user
         return {} if proj.conversation.nil?
-        present proj.conversation, with: Entities::ConversationData::AsDeep
+        present proj.conversation, with: Entities::ConversationData::AsDeep, is_read: find_is_read(proj.conversation.id)
       else
-        present current_user.conversations, with: Entities::ConversationData::AsSearch
+        present current_user.conversations, with: Entities::ConversationData::AsSearch, user_convs: current_user.user_conversations
       end
     end
 
@@ -36,7 +40,7 @@ module V1
     end
     get ":id" do
       find_conv
-      present @conv, with: Entities::ConversationData::AsDeep
+      present @conv, with: Entities::ConversationData::AsDeep, is_read: find_is_read(@conv.id)
     end
 
 
@@ -47,7 +51,7 @@ module V1
     end
     post do
       authenticated_user
-      users = User.where(id: params[:users]) + [current_user]
+      users = Set.new(User.where(id: params[:users]) + [current_user])
       if users.length <= 1
         error!("You can't start a conversation between less than 2 users!", 400)
       end
@@ -56,6 +60,7 @@ module V1
       if not intersection.empty?
         c = intersection[0]
       else
+        users = users.to_a
         c = Conversation.new(users: users)
         c.save!
       end
@@ -67,24 +72,42 @@ module V1
         })
         m.save!
       end
-      present c, with: Entities::ConversationData::AsDeep
+      present c, with: Entities::ConversationData::AsDeep, is_read: find_is_read(c.id)
     end
 
 
     desc "Sends a message to an existing conversation", entity: Entities::ConversationData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The ID of the conversation."
-      requires :message, type: String, allow_blank: false, desc: "The message to add to the conversation."
+      optional :message, type: String, allow_blank: false, desc: "The message to add to the conversation."
+      optional :is_read, type: Boolean
     end
     put ":id" do
       find_conv
-      # add a new message to the conversation
-      Message.create!({
-        user: current_user,
-        body: params[:message],
-        conversation: @conv
-      })
-      present @conv, with: Entities::ConversationData::AsDeep
+
+      if params.has_key? :is_read
+        ucon = @conv.user_conversations.find_by(user_id: current_user.id)
+        ucon.is_read = params[:is_read]
+        ucon.save!
+      end
+
+      if params.has_key? :message
+        # add a new message to the conversation
+        Message.create!({
+          user: current_user,
+          body: params[:message],
+          conversation: @conv
+        })
+        @conv.user_conversations.each do |uconv|
+          if uconv.user_id == current_user.id
+            uconv.is_read = true
+          else
+            uconv.is_read = false
+          end
+          uconv.save!
+        end
+      end
+      present @conv, with: Entities::ConversationData::AsDeep, is_read: find_is_read(@conv.id)
     end
 
 
@@ -99,7 +122,7 @@ module V1
       error!("You can only delete messages you sent.", 401) unless msg.user == current_user
       conv = msg.conversation
       msg.destroy!
-      present conv, with: Entities::ConversationData::AsDeep
+      present conv, with: Entities::ConversationData::AsDeep, is_read: find_is_read(@conv.id)
     end
   end
 end

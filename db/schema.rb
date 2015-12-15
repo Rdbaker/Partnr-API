@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151208184252) do
+ActiveRecord::Schema.define(version: 20151214224228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,14 +57,8 @@ ActiveRecord::Schema.define(version: 20151208184252) do
   create_table "conversations", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "project_id"
   end
-
-  create_table "conversations_users", force: :cascade do |t|
-    t.integer "conversation_id"
-    t.integer "user_id"
-  end
-
-  add_index "conversations_users", ["conversation_id", "user_id"], name: "index_conversations_users_on_conversation_id_and_user_id", using: :btree
 
   create_table "interests", force: :cascade do |t|
     t.string   "title",      null: false
@@ -240,6 +234,18 @@ ActiveRecord::Schema.define(version: 20151208184252) do
 
   add_index "skills", ["profile_id"], name: "index_skills_on_profile_id", using: :btree
 
+  create_table "user_conversations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "conversation_id"
+    t.boolean  "is_read"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "user_conversations", ["conversation_id", "user_id"], name: "index_user_conversations_on_conversation_id_and_user_id", using: :btree
+  add_index "user_conversations", ["conversation_id"], name: "index_user_conversations_on_conversation_id", using: :btree
+  add_index "user_conversations", ["user_id"], name: "index_user_conversations_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -277,6 +283,7 @@ ActiveRecord::Schema.define(version: 20151208184252) do
   add_index "users_projects", ["project_id"], name: "index_users_projects_on_project_id", using: :btree
   add_index "users_projects", ["user_id"], name: "index_users_projects_on_user_id", using: :btree
 
+  add_foreign_key "conversations", "projects"
   add_foreign_key "interests", "profiles"
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
   add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
@@ -287,5 +294,7 @@ ActiveRecord::Schema.define(version: 20151208184252) do
   add_foreign_key "posts", "bmarks"
   add_foreign_key "projects", "conversations"
   add_foreign_key "skills", "profiles"
+  add_foreign_key "user_conversations", "conversations"
+  add_foreign_key "user_conversations", "users"
   add_foreign_key "users", "notifications"
 end
