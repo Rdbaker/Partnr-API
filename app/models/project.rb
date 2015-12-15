@@ -7,7 +7,11 @@ class Project < Notifier
   has_many :applications, through: :roles
   has_many :users, through: :roles
   has_many :comments, :dependent => :destroy
-  has_one :conversation
+  has_one :conversation, :dependent => :destroy
+
+  after_create :make_conversation
+  after_update :update_conversation
+  after_save :update_conversation
 
   validates :title, :owner, :creator, :status, presence: true
   skip_callback :destroy, :before, :destroy_notification
@@ -42,5 +46,20 @@ class Project < Notifier
 
   def self_link
     "/api/v1/projects/#{id}"
+  end
+
+  def update_conversation
+    make_conversation
+    self.conversation.users = Set.new(self.users + [User.find(owner)]).to_a
+    self.conversation.save!
+  end
+
+  private
+
+  def make_conversation
+    if !self.conversation
+      self.conversation = Conversation.new({users: users})
+      self.conversation.save!
+    end
   end
 end

@@ -3,6 +3,9 @@ module V1::Entities
     class AsNested < Grape::Entity
       expose :id, documentation: { type: "Integer", desc: "The ID of the conversation." }
       expose :users, documentation: { type: "UserData (AsNested)", dest: "The users in the conversation", is_array: true }, using: UserData::AsNested
+      expose :is_read do |instance, options|
+        options[:is_read]
+      end
     end
 
     class AsShallow < AsNested
@@ -13,6 +16,9 @@ module V1::Entities
     end
 
     class AsSearch < AsNested
+      expose :is_read do |instance, options|
+        options[:user_convs].find_by(conversation_id: instance.id).is_read || false
+      end
     end
 
     class AsFull < AsSearch

@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
   has_many :bmarks, :dependent => :nullify
   has_many :projects, through: :roles
   has_many :applications, :dependent => :destroy
-  has_and_belongs_to_many :conversations
+  has_many :conversations, through: :user_conversations
+  has_many :user_conversations, :dependent => :destroy
   has_one :profile, :dependent => :destroy
 
   before_save :ensure_authenticaion_token
