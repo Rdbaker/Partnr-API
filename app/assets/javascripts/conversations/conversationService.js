@@ -19,8 +19,20 @@ angular.module('partnr.messaging').factory('conversations', function($rootScope,
 			});
 		},
 
+		getByProject : function(id) {
+			$log.debug('[CONVERSATION] Sending get request based on project ' + id);
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'conversations',
+				params: {
+					'project' : id
+				},
+				headers: principal.getHeaders()
+			})
+		},
+
 		create : function(conversation) {
-			$log.debug("[CONVERSATION] Sending create request");
+			$log.debug('[CONVERSATION] Sending create request');
 			$log.debug(conversation);
 
 			return $http({
@@ -32,7 +44,17 @@ angular.module('partnr.messaging').factory('conversations', function($rootScope,
 		},
 
 		addMessage : function(id, message) {
-			
+			$log.debug('[CONVERSATION] Sending add message request');
+			$log.debug(message);
+
+			return $http({
+				method: 'PUT',
+				url: $rootScope.apiRoute + 'conversations/' + id,
+				headers: principal.getHeaders(),
+				data: {
+					'message': message
+				}
+			});
 		}
 	};
 });

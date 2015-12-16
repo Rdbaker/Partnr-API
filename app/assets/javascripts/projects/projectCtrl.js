@@ -9,6 +9,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 	$scope.isCommentSubmitting = false;
 	$scope.canApply = true;
 	$scope.isOwner = false;
+	$scope.isMember = false;
 	$scope.loadComplete = false;
 	var loadSteps = 2;
 	var loadStepsAchieved = 0;
@@ -46,6 +47,8 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 				$scope.project.comments.push(result.data);
 				$scope.isCommentSubmitting = false;
 			});
+		} else {
+			$scope.isCommentSubmitting = false;
 		}
 	};
 
@@ -62,6 +65,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		$scope.project = result.data;
 		if (result.data.owner.id === principal.getUser().id) {
 			$scope.isOwner = true;
+			$scope.isMember = true;
 			$scope.canApply = false;
 		}
 
@@ -69,6 +73,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 			if (result.data.roles[i].user != null) {
 				if (result.data.roles[i].user.id === principal.getUser().id) {
 					$scope.canApply = false;
+					$scope.isMember = true;
 					break;
 				}
 			}

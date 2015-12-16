@@ -250,6 +250,21 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
+		.state('project_conversation', {
+			parent: 'site',
+			url: '/projects/{project_id:int}/messages',
+			views: {
+				'content@': {
+					templateUrl: 'conversations/project_conversation.html',
+					controller: 'ProjectConversationController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: ['conversation']
+			}
+		})
+
 		.state('application_list', {
 			parent: 'site',
 			url: '/projects/{project_id:int}/applications',
