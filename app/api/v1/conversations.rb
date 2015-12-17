@@ -44,7 +44,7 @@ module V1
     end
 
 
-    desc "Sends a message in the conversation or posts a new one if a conversation doesn't exist", entity: Entities::ConversationData::AsDeep
+    desc "Sends a message in the conversation or posts a new one if a conversation doesn't exist", entity: Entities::MessageData::AsShallow
     params do
       requires :users, type: Array[Integer], allow_blank: false, desc: "The list of user IDs to send the message to.", documentation: { example: "42,87,17,6" }
       optional :message, type: String, allow_blank: false, desc: "The message to add to the conversation."
@@ -72,11 +72,11 @@ module V1
         })
         m.save!
       end
-      present c, with: Entities::ConversationData::AsDeep, is_read: find_is_read(c.id)
+      present m, with: Entities::MessageData::AsNested
     end
 
 
-    desc "Sends a message to an existing conversation", entity: Entities::ConversationData::AsFull
+    desc "Sends a message to an existing conversation", entity: Entities::MessageData::AsNested
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The ID of the conversation."
       optional :message, type: String, allow_blank: false, desc: "The message to add to the conversation."
@@ -93,7 +93,7 @@ module V1
 
       if params.has_key? :message
         # add a new message to the conversation
-        Message.create!({
+        m = Message.create!({
           user: current_user,
           body: params[:message],
           conversation: @conv
@@ -107,7 +107,7 @@ module V1
           uconv.save!
         end
       end
-      present @conv, with: Entities::ConversationData::AsDeep, is_read: find_is_read(@conv.id)
+      present m, with: Entities::MessageData::AsNested
     end
 
 
