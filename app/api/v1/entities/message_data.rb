@@ -6,5 +6,8 @@ module V1::Entities
       expose :created_at, documentation: { type: "Time", desc: "The date and time the message was created." }, as: :sent_at
       expose :user, documentation: { type: "UserData (nested)", desc: "The user that sent the message." }, using: UserData::AsNested
     end
+
+    class AsShallow < AsNested
+    end
   end
 end
