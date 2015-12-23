@@ -35,6 +35,6 @@ class Notification < ActiveRecord::Base
   end
 
   def notifier_link
-    notifier.self_link
+    notifier.self_link unless notifier.nil?
   end
 end

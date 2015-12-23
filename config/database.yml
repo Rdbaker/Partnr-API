@@ -2,10 +2,15 @@ default: &default
   adapter: postgresql
   pool: 5
   timeout: 5000
+  port: 5432
+  encoding: unicode
 
 development:
   <<: *default
   database: partnr_dev
+  username: partnr_db_user
+  password: 303527a42cc2bd89f4918bb57920a411fff3019e3255d444a06e7193211aadce
+  host: dev-partnr-db.partnr.org
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -17,5 +22,6 @@ test:
 production:
   <<: *default
   database: partnr_production
-  username: <%= ENV['db_username'] %>
-  password: <%= ENV['db_password'] %>
+  username: partnr_db_user
+  password: 303527a42cc2bd89f4918bb57920a411fff3019e3255d444a06e7193211aadce
+  host: prd-partnr-db.partnr.org
