@@ -14,6 +14,7 @@ angular.module('partnr.core', ['ui.router',
    $rootScope.apiVersion = "v1";
    $rootScope.apiRoute  = '/api/' + $rootScope.apiVersion + '/';
    $rootScope.version   = '0.3.8';
+   $rootScope.pollDuration = 10000;
    var bypassAuthCheck = false;
 
    $rootScope.isLoggedIn = function() {

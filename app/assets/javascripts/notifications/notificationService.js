@@ -14,7 +14,7 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 				if (polling) {
 					$timeout(function() {
 						poller(callback);
-					}, 10000);
+					}, $rootScope.pollDuration);
 				}
 			});
 		}
