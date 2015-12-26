@@ -54,9 +54,7 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 			}
 
 			for (var i = 0; i < this.toDelete.length; i++) {
-				if (profiles.isValidItem(this.toDelete[i], this.type)) {
-					requests.push(profiles.deleteItem(this.toDelete[i].id, this.type));
-				}
+				requests.push(profiles.deleteItem(this.toDelete[i].id, this.type));
 			}
 
 			return $q.all(requests);
@@ -84,11 +82,15 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 	users.get(principal.getUser().id).then(function(result) {
 		$log.debug(result.data);
 		$scope.user = result.data;
-		$scope.location = $scope.user.profile.location.geo_string;
-		$scope.schools.all = $scope.user.profile.school_infos;
-		$scope.skills.all = $scope.user.profile.skills;
-		$scope.positions.all = $scope.user.profile.positions;
-		$scope.interests.all = $scope.user.profile.interests;
+		if ($scope.user.profile) {
+			if ($scope.user.profile.location) {
+				$scope.location = $scope.user.profile.location.geo_string;
+			}
+			$scope.schools.all = $scope.user.profile.school_infos;
+			$scope.skills.all = $scope.user.profile.skills;
+			$scope.positions.all = $scope.user.profile.positions;
+			$scope.interests.all = $scope.user.profile.interests;
+		}
 		$scope.loadComplete = true;
 	});
 
