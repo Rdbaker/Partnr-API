@@ -23,32 +23,44 @@ module V1
       end
     end
 
-    desc "Retrieve all posts for a given benchmark.", entity: Entities::PostData::AsShallow
+    desc "Search from all posts.", entity: Entities::PostData::AsSearch
     params do
-      requires :benchmark, type: Integer, allow_blank: false, desc: "The benchmark id to which the post was posted."
+      optional :benchmark, type: Integer, allow_blank: false, desc: "The benchmark id to which the post was posted."
       optional :user, type: Integer, allow_blank: false, desc: "The author's User ID for the posts to retrieve."
       optional :title, type: String, desc: "The title of the post to retrieve."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of posts per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the posts."
     end
     get do
-      present Post.where(permitted_params params)
+      if params.has_key? :title
+        like_hash = { :title => "%#{params[:title]}%"}
+        params.delete :title
+      else
+        like_hash = { :title => "%%" }
+      end
+
+      if params[:benchmark]
+        params[:bmark] = params[:benchmark]
+        params.delete :benchmark
+      end
+
+      present Post.where(permitted_params params).where("posts.title LIKE :title", like_hash)
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::PostData::AsShallow
+        .per(params[:per_page]), with: Entities::PostData::AsSearch
     end
 
 
-    desc "Get a single post based on its ID.", entity: Entities::PostData::AsDeep
+    desc "Get a single post based on its ID.", entity: Entities::PostData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The post ID."
     end
     get ":id" do
       post = get_record(Post, params[:id])
-      present post, with: Entities::PostData::AsDeep
+      present post, with: Entities::PostData::AsFull
     end
 
 
-    desc "Create a new post for a benchmark in a project.", entity: Entities::PostData::AsShallow
+    desc "Create a new post for a benchmark in a project.", entity: Entities::PostData::AsFull
     params do
       requires :title, type: String, allow_blank: false, desc: "The post title."
       requires :content, type: String, allow_blank: false, desc: "The post content."
@@ -58,17 +70,19 @@ module V1
       authenticated_user
       benchmark = get_record(Bmark, params[:benchmark])
       post_create_permissions(benchmark.project_id)
-      post = Post.create!({
+      p = Post.new
+      p.user_notifier = current_user
+      p.update!({
         title: params[:title],
         content: params[:content],
         bmark: benchmark,
         user: current_user
       })
-      present post, with: Entities::PostData::AsDeep
+      present p, with: Entities::PostData::AsFull
     end
 
 
-    desc "Update a specific post in a benchmark.", entity: Entities::PostData::AsDeep
+    desc "Update a specific post in a benchmark.", entity: Entities::PostData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The post ID."
       optional :title, type: String, allow_blank: false, desc: "The post title."
@@ -77,17 +91,12 @@ module V1
     end
     put ":id" do
       post_put_permissions(params[:id])
-
-      if !!params[:content]
-        @post.content = params[:content]
-      end
-
-      if !!params[:title]
-        @post.title = params[:title]
-      end
-
-      @post.save
-      present @post, with: Entities::PostData::AsDeep
+      @post.user_notifier = current_user
+      @post.update!({
+        title: params[:title] || @post.title,
+        content: params[:content] || @post.content
+      })
+      present @post, with: Entities::PostData::AsFull
     end
 
 
@@ -97,6 +106,7 @@ module V1
     end
     delete ":id" do
       post_destroy_permissions(params[:id])
+      @post.user_notifier = current_user
       @post.destroy
       status 204
     end

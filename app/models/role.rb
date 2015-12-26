@@ -1,9 +1,10 @@
-class Role < ActiveRecord::Base
-  has_many :applications, :dependent => :delete_all
+class Role < Notifier
+  has_many :applications, :dependent => :destroy
   belongs_to :project
   belongs_to :user
 
   validates :title, :project, presence: true
+  skip_callback :destroy, :before, :destroy_notification
 
   attr_readonly :project
 
@@ -17,4 +18,11 @@ class Role < ActiveRecord::Base
       self.project.has_admin_permissions(user)
   end
 
+  def followers
+    project.followers
+  end
+
+  def self_link
+    "/api/v1/roles/#{id}"
+  end
 end

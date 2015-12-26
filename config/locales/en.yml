@@ -4,11 +4,11 @@
 #
 # To use the locales, use `I18n.t`:
 #
-#     I18n.t 'hello'
+#     I18n.t 'notification.Application.created'
 #
 # In views, this is aliased to just `t`:
 #
-#     <%= t('hello') %>
+#     <%= t('notification.Application.created') %>
 #
 # To use a different locale, set it with `I18n.locale`:
 #
@@ -20,4 +20,28 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  notification:
+    Application:
+      created: "applied to the role {role} on the project {project}"
+      updated: "updated the application for the role {role} on the project {project}"
+      deleted: "rejected the application for the role {role} on the project {project}"
+    Bmark:
+      created: "created the benchmark {benchmark} for the project {project}"
+      updated: "updated the benchmark {benchmark} for the project {project}"
+      deleted: "deleted the benchmark {benchmark} for the project {project}"
+    Comment:
+      created: "commented on the project {project}"
+      updated: "edited their comment on the project {project}"
+      deleted: "deleted their comment from the project {project}"
+    Post:
+      created: "posted {post} to the benchmark {benchmark}"
+      updated: "edited their post {post} on the benchmark {benchmark}"
+      deleted: "deleted their post {post} from the benchmark {benchmark}"
+    Project:
+      created: "created the project {project}"
+      updated: "edited their project {project}"
+      deleted: "deleted their project {project}"
+    Role:
+      created: "created the role {role} the project {project}"
+      updated: "edited the role {role} the project {project}"
+      deleted: "deleted the role {role} their project {project}"

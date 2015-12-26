@@ -61,7 +61,7 @@ RSpec.describe "Benchmarks", :type => :request do
       end
 
       it "returns a JSON Schema conforming benchmark" do
-        expect(@res).to match_json_schema(:shallow_benchmark)
+        expect(@res).to match_json_schema(:full_benchmark)
       end
     end
 

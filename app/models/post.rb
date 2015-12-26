@@ -1,8 +1,9 @@
-class Post < ActiveRecord::Base
+class Post < Notifier
   belongs_to :user
   belongs_to :bmark
 
   validates :title, :content, :user, presence: true
+  skip_callback :destroy, :before, :destroy_notification
 
   def has_destroy_permissions(user)
     user.class == User &&
@@ -16,5 +17,13 @@ class Post < ActiveRecord::Base
     # for now, anybody who can delete should be
     # able to update the post as well
     has_destroy_permissions user
+  end
+
+  def followers
+    bmark.followers
+  end
+
+  def self_link
+    "/api/v1/posts/#{id}"
   end
 end

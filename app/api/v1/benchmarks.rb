@@ -18,7 +18,7 @@ module V1
     end
 
 
-    desc "Retrieve all benchmarks for a project", entity: Entities::BenchmarkData::AsShallow
+    desc "Retrieve all benchmarks for a project", entity: Entities::BmarkData::AsSearch
     params do
       requires :project, type: Integer, allow_blank: false, desc: "The Project ID for the benchmarks to retreive."
       optional :title, type: String, desc: "The title of the project benchmark to retrieve."
@@ -28,21 +28,21 @@ module V1
     get do
       present Bmark.where(permitted_params params)
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::BenchmarkData::AsShallow
+        .per(params[:per_page]), with: Entities::BmarkData::AsSearch
     end
 
 
-    desc "Get a single benchmark based on its ID.", entity: Entities::BenchmarkData::AsDeep
+    desc "Get a single benchmark based on its ID.", entity: Entities::BmarkData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The benchmark ID."
     end
     get ":id" do
       benchmark = get_record(Bmark, params[:id])
-      present benchmark, with: Entities::BenchmarkData::AsDeep
+      present benchmark, with: Entities::BmarkData::AsFull
     end
 
 
-    desc "Create a new benchmark for a project.", entity: Entities::BenchmarkData::AsShallow
+    desc "Create a new benchmark for a project.", entity: Entities::BmarkData::AsFull
     params do
       requires :title, type: String, allow_blank: false, desc: "The title of the benchmark for the project."
       requires :project, type: Integer, allow_blank: false, desc: "The project ID to which the benchmark will belong."
@@ -52,20 +52,22 @@ module V1
       authenticated_user
       proj = get_record(Project, params[:project])
       if proj.has_create_benchmark_permissions current_user
-        benchmark = Bmark.create!({
+        b = Bmark.new
+        b.user_notifier = current_user
+        b.update!({
           title: params[:title],
           project: proj,
           due_date: params[:due_date],
           user: current_user
         })
-        present benchmark, with: Entities::BenchmarkData::AsShallow
+        present b, with: Entities::BmarkData::AsFull
       else
         error!("401 Unauthorized", 401)
       end
     end
 
 
-    desc "Update a specific benchmark for a project.", entity: Entities::RoleData::AsShallow
+    desc "Update a specific benchmark for a project.", entity: Entities::RoleData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The benchmark ID."
       optional :title, type: String, allow_blank: false, desc: "The benchmark title."
@@ -77,21 +79,13 @@ module V1
     end
     put ":id" do
       benchmark_put_permissions(params[:id])
-
-      if !!params[:title]
-        @benchmark.title = params[:title]
-      end
-
-      if !!params[:complete]
-        @benchmark.complete = params[:complete]
-      end
-
-      if !!params[:due_date]
-        @benchmark.due_date = params[:due_date]
-      end
-
-      @benchmark.save
-      present @benchmark, with: Entities::BenchmarkData::AsShallow
+      @benchmark.user_notifier = current_user
+      @benchmark.update!({
+        title: params[:title] || @benchmark.title,
+        complete: params[:complete] || @benchmark.complete,
+        due_date: params[:due_date] || @benchmark.due_date
+      })
+      present @benchmark, with: Entities::BmarkData::AsFull
     end
 
 
@@ -101,6 +95,7 @@ module V1
     end
     delete ":id" do
       benchmark_destroy_permissions(params[:id])
+      @benchmark.user_notifier = current_user
       @benchmark.destroy
       status 204
     end

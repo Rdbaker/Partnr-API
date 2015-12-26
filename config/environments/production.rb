@@ -13,7 +13,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_assets = false
+  config.serve_static_files = false
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -41,6 +41,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  Rails.application.config.host = 'http://partnr.org'
   config.action_mailer.default_url_options = { :host => 'partnr.org' }
   config.action_mailer.smtp_settings = {
     :user_name => 'partnremailer',

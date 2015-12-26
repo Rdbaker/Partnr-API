@@ -49,7 +49,7 @@ RSpec.describe "Posts", :type => :request do
       end
 
       it "returns a JSON Schema conforming post" do
-        expect(@res).to match_json_schema(:shallow_post)
+        expect(@res).to match_json_schema(:full_post)
       end
     end
 
@@ -112,7 +112,7 @@ RSpec.describe "Posts", :type => :request do
       end
 
       it "returns a JSON Schema conforming post" do
-        expect(@res).to match_json_schema(:shallow_post)
+        expect(@res).to match_json_schema(:full_post)
       end
     end
 

@@ -1,4 +1,4 @@
-angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
+angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider) {
 	
 	$stateProvider
 		.state('site', {
@@ -20,7 +20,8 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: []
 			}
 		})
 
@@ -34,7 +35,8 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: []
+				roles: [],
+				entities: []
 			}
 		})
 
@@ -48,21 +50,98 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: []
+				roles: [],
+				entities: []
 			}
 		})
 
-		.state('inbox', {
+		.state('account_forgot_password', {
 			parent: 'site',
-			url: '/inbox',
+			url: '/account/forgot_password',
 			views: {
-				'content@': { 
-					templateUrl: 'messaging/list_message.html',
-					controller: 'MessageController',
+				'content@': {
+					templateUrl: 'user/forgot_password.html',
+					controller: 'ForgotPasswordController'
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: [],
+				entities: []
+			}
+		})
+
+		.state('account_reset_password', {
+			parent: 'site',
+			url: '/account/reset_password?reset_password_token',
+			views: {
+				'content@': {
+					templateUrl: 'user/reset_password.html',
+					controller: 'ResetPasswordController'
+				}
+			},
+			data: {
+				roles: [],
+				entities: []
+			}
+		})
+
+		.state('profile', {
+			parent: 'site',
+			url: '/profile/{id:int}',
+			views: {
+				'content@': {
+					templateUrl: 'user/profile/profile.html',
+					controller: 'ProfileController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: []
+			}
+		})
+
+		.state('profile_create', {
+			parent: 'site',
+			url: '/profile/create',
+			views: {
+				'content@': {
+					templateUrl: 'user/profile/create_profile.html',
+					controller: 'CreateProfileController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: []
+			}
+		})
+
+		.state('profile_edit', {
+			parent: 'site',
+			url: '/profile/edit',
+			views: {
+				'content@': {
+					templateUrl: 'user/profile/edit_profile.html',
+					controller: 'EditProfileController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: []
+			}
+		})
+
+		.state('conversation_list', {
+			parent: 'site',
+			url: '/conversations',
+			views: {
+				'content@': { 
+					templateUrl: 'conversations/list_conversation.html',
+					controller: 'ListConversationController',
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: []
 			}
 		})
 
@@ -76,7 +155,8 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: []
 			}
 		})
 
@@ -90,7 +170,8 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: []
 			}
 		})
 
@@ -104,7 +185,8 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['project']
 			}
 		})
 
@@ -118,7 +200,8 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['project']
 			}
 		})
 		
@@ -132,7 +215,8 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['project']
 			}
 		})
 
@@ -146,7 +230,8 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['project', 'comment', 'role', 'benchmark']
 			}
 		})
 
@@ -160,11 +245,27 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['project']
 			}
 		})
 
-		.state('project_applications', {
+		.state('project_conversation', {
+			parent: 'site',
+			url: '/projects/{project_id:int}/messages',
+			views: {
+				'content@': {
+					templateUrl: 'conversations/project_conversation.html',
+					controller: 'ProjectConversationController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: ['conversation']
+			}
+		})
+
+		.state('application_list', {
 			parent: 'site',
 			url: '/projects/{project_id:int}/applications',
 			views: {
@@ -174,7 +275,23 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: ['application']
+			}
+		})
+
+		.state('notification_list', {
+			parent: 'site',
+			url: '/notifications',
+			views: {
+				'content@': {
+					templateUrl: 'notifications/list_notifications.html',
+					controller: 'ListNotificationsController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: ['notification']
 			}
 		})
 
@@ -188,7 +305,8 @@ angular.module('partnr').config(function($stateProvider, $urlRouterProvider) {
 				}
 			},
 			data: {
-				roles: ['Admin']
+				roles: ['Admin'],
+				entities: []
 			}
 		});
 

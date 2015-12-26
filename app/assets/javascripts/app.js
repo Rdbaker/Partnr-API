@@ -2,18 +2,19 @@ angular.module('partnr.auth', []);
 angular.module('partnr.users', []);
 angular.module('partnr.messaging', []);
 angular.module('partnr.notify', []);
+angular.module('partnr.search', []);
 angular.module('partnr.users.assets', []);
-angular.module('partnr', ['ui.router',
+angular.module('partnr.core', ['ui.router',
   'ui.bootstrap', 'templates',
   'partnr.auth', 'partnr.users', 'partnr.messaging',
-  'partnr.notify', 'partnr.users.assets'
+  'partnr.notify', 'partnr.search', 'partnr.users.assets'
   ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization) {
-   // run initial csrf fetch
-   principal.getCsrf();
-
+   principal.fetchCsrf();
    $rootScope.$state = $state; // application state
-   $rootScope.apiRoute  = '/api/v1/';
-   $rootScope.version   = '0.3.8';
+   $rootScope.apiVersion = "v1";
+   $rootScope.apiRoute  = '/api/' + $rootScope.apiVersion + '/';
+   $rootScope.version   = '1.0.0';
+   $rootScope.pollDuration = 10000;
    var bypassAuthCheck = false;
 
    $rootScope.isLoggedIn = function() {
@@ -53,7 +54,6 @@ angular.module('partnr', ['ui.router',
     if (!$window.ga)
       return;
 
-    $log.debug($window.ga);
     $window.ga('send', 'pageview', { page: $location.url() });
    });
 });

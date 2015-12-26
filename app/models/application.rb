@@ -1,14 +1,17 @@
-class Application < ActiveRecord::Base
+class Application < Notifier
   belongs_to :user
   belongs_to :role
   belongs_to :project
 
   validate :project_and_role_align
   validates :status, :role, :project, :user, presence: true
-  validates :user, uniqueness: { scope: :role,
-                                 message: "A user can only apply to a role once." }
 
-  enum status: { pending: 0, accepted: 1 }
+  before_update :destroy_notification, if: :status_rejected?
+  before_update :update_role, if: :status_accepted?
+  skip_callback :update, :after, :update_notification
+  skip_callback :destroy, :before, :destroy_notification
+
+  enum status: { pending: 0, accepted: 1, rejected: 2 }
 
   def has_update_permissions(user)
     user.class == User && self.user.id == user.id
@@ -30,5 +33,23 @@ class Application < ActiveRecord::Base
     if self.project.id != self.role.project.id
       errors.add(:project, "The application and role must belong to the same project")
     end
+  end
+
+  def followers
+    project.followers
+  end
+
+  def self_link
+    "/api/v1/applications/#{id}"
+  end
+
+  private
+
+  def status_accepted?
+    self.changes[:status].present? && self.changes[:status][1] == 'acccepted'
+  end
+
+  def status_rejected?
+    self.changes[:status].present? && self.changes[:status][1] == 'rejected'
   end
 end

@@ -1,8 +1,9 @@
-class Comment < ActiveRecord::Base
+class Comment < Notifier
   belongs_to :user
   belongs_to :project
 
   validates :content, :user, :project, presence: true
+  skip_callback :destroy, :before, :destroy_notification
 
   attr_readonly :user, :project
 
@@ -16,5 +17,13 @@ class Comment < ActiveRecord::Base
         has_put_permissions(user) ||
         self.project.has_admin_permissions(user)
       )
+  end
+
+  def followers
+    project.followers
+  end
+
+  def self_link
+    "/api/v1/comments/#{id}"
   end
 end

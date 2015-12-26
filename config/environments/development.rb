@@ -37,9 +37,11 @@ Rails.application.configure do
   # set things up for local email forwarding
   config.action_mailer.delivery_method = :smtp
   if ENV['local'] == 'true'
+    Rails.application.config.host = 'http://localhost:3000'
     config.action_mailer.default_url_options = { :host => 'localhost:3000' }
     config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
   else
+    Rails.application.config.host = 'http://dev.partnr.org'
     config.action_mailer.default_url_options = { :host => 'dev.partnr.org' }
     config.action_mailer.smtp_settings = {
       :user_name => 'partnremailer',

@@ -1,14 +1,16 @@
 module V1
   class Mounter < Grape::API
 
-    mount Projects     => '/projects'
-    mount Users        => '/users'
-    mount Messages     => '/messages'
-    mount Roles        => '/roles'
-    mount Applications => '/applications'
-    mount Benchmarks   => '/benchmarks'
-    mount Posts        => '/posts'
-    mount Comments     => '/comments'
+    mount Projects      => '/projects'
+    mount Users         => '/users'
+    mount Roles         => '/roles'
+    mount Applications  => '/applications'
+    mount Benchmarks    => '/benchmarks'
+    mount Posts         => '/posts'
+    mount Comments      => '/comments'
+    mount Notifications => '/notifications'
+    mount Profiles      => '/profiles'
+    mount Conversations => '/conversations'
 
     add_swagger_documentation(
       base_path: '/api/v1',
