@@ -1,8 +1,23 @@
-angular.module('partnr.messaging').controller('ProjectConversationController', function($scope, $stateParams, $log, toaster, conversations) {
+angular.module('partnr.messaging').controller('ProjectConversationController', function($rootScope, $scope, $stateParams, $log, $interval, toaster, conversations) {
 	$scope.conversation = {};
 	$scope.isMessageSubmitting = false;
 	$scope.newMessage = "";
 	$scope.loadComplete = false;
+
+
+	var poll = $interval(function(callback) {
+		conversations.getByProject($stateParams.project_id).then(function(result) {
+			$log.debug(result.data);
+			if (result.data.id) {
+				$scope.conversation = result.data;
+			}
+		});
+	}, $rootScope.pollDuration);
+
+	$scope.$on('$destroy', function() {
+		$log.debug("Cancelling message update requests");
+		$interval.cancel(poll);
+	});
 
 	conversations.getByProject($stateParams.project_id).then(function(result) {
 		$log.debug(result.data);

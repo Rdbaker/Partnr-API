@@ -1,5 +1,6 @@
 angular.module('partnr.messaging').factory('conversations', function($rootScope, $http, $log, principal) {
 	return {
+
 		list : function() {
 			$log.debug('[CONVERSATION] Sending list request');
 
@@ -28,7 +29,7 @@ angular.module('partnr.messaging').factory('conversations', function($rootScope,
 					'project' : id
 				},
 				headers: principal.getHeaders()
-			})
+			});
 		},
 
 		create : function(conversation) {
