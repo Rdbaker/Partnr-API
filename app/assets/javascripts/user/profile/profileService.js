@@ -142,7 +142,7 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 
 		isValidSchool : function(school) {
 			return (school.school_name.length > 0 && 
-				school.grad_year.length > 0 && 
+				school.grad_year.length >= 0 && 
 				school.grad_year.length <= 4);
 		},
 

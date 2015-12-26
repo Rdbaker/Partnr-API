@@ -9,9 +9,9 @@ Bundler.require(*Rails.groups)
 
 module Partnr
   class Application < Rails::Application
-    @@MAJOR_VERSION = '0'
-    @@MINOR_VERSION = '3'
-    @@PATCH_VERSION = '8'
+    @@MAJOR_VERSION = '1'
+    @@MINOR_VERSION = '0'
+    @@PATCH_VERSION = '0'
 
     # use rspec for testing
     config.generators do |g|

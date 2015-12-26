@@ -6,8 +6,8 @@ RSpec.describe Partnr::Application, 'configuration' do
       expect(subject.version().class).to eq(String)
     end
 
-    it "is v0.3.8" do
-      expect(subject.version).to eq("0.3.8")
+    it "is v1.0.0" do
+      expect(subject.version).to eq("1.0.0")
     end
   end
 end
