@@ -1,0 +1,19 @@
+<toasts></toasts>
+<div ng-show="loadComplete" class="content-container">
+	<h2>Project Chat</h2>
+	<div>
+	  <div class="internal-container comment" ng-repeat="message in conversation.messages">
+	    <span class="c-header"><strong>{{ message.user.name }}</strong> on {{ message.sent_at | date: 'mediumDate' }}:</span>
+	    <p>{{ message.body }}</p>
+	  </div>
+	  <div class="form-group">
+	    <textarea name="new-message" class="form-control" ng-model="newMessage" ng-disabled="isMessageSubmitting" /></textarea>
+	    <button class="btn btn-primary" ng-click="sendMessage()" ng-disabled="isMessageSubmitting">Send</button>
+	  </div>
+	</div>
+</div>
+<div ng-hide="loadComplete" class="content-container">
+  <div class="text-center loading">
+    <img src="/assets/ajax-loader.gif">
+  </div>
+</div>

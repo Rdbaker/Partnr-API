@@ -130,13 +130,13 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('inbox', {
+		.state('conversation_list', {
 			parent: 'site',
-			url: '/inbox',
+			url: '/conversations',
 			views: {
 				'content@': { 
-					templateUrl: 'messaging/list_message.html',
-					controller: 'MessageController',
+					templateUrl: 'conversations/list_conversation.html',
+					controller: 'ListConversationController',
 				}
 			},
 			data: {
@@ -247,6 +247,21 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			data: {
 				roles: ['Admin'],
 				entities: ['project']
+			}
+		})
+
+		.state('project_conversation', {
+			parent: 'site',
+			url: '/projects/{project_id:int}/messages',
+			views: {
+				'content@': {
+					templateUrl: 'conversations/project_conversation.html',
+					controller: 'ProjectConversationController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: ['conversation']
 			}
 		})
 
