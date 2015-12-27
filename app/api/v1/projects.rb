@@ -38,7 +38,7 @@ module V1
         like_hash = { :title => "%%" }
       end
 
-      present Project.where(permitted_params params).where("projects.title LIKE :title", like_hash)
+      present Project.where(permitted_params params).where("LOWER( projects.title ) LIKE :title", like_hash)
         .page(params[:page])
         .per(params[:per_page]), with: Entities::ProjectData::AsSearch
     end

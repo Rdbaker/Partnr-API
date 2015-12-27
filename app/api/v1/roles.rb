@@ -49,7 +49,7 @@ module V1
         like_hash = { :title => "%%" }
       end
 
-      present Role.where(permitted_params params).where("roles.title LIKE :title", like_hash)
+      present Role.where(permitted_params params).where("LOWER(roles.title) LIKE :title", like_hash)
         .page(params[:page])
         .per(params[:per_page]), with: Entities::RoleData::AsSearch
     end
