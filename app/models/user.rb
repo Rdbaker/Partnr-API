@@ -20,12 +20,10 @@ class User < ActiveRecord::Base
   before_save :ensure_authenticaion_token
 
   def is_a_pre_approved_user
-    # if it's not prod, you need to be a
+    # during beta, you need to be a
     # pre-approved user
-    unless Rails.env.production?
-      if Rails.application.config.approved_users.find_index(email.downcase).nil?
-        errors.add(:email, "You must be a pre-approved user to access this website")
-      end
+    if Rails.application.config.approved_users.find_index(email.downcase).nil?
+      errors.add(:email, "You must be a pre-approved user to access this website")
     end
   end
 
