@@ -2,9 +2,9 @@
   "name": "partnr",
   "version": "0.3.x",
   "dependencies": {
-    "angular" : "latest",
-    "angular-ui-router" : "latest",
+    "angular" : "1.4.8",
+    "angular-ui-router" : "0.2.15",
     "angular-ui-utils" : "0.2.3",
-    "angular-ui-bootstrap-bower" : "latest"
+    "angular-ui-bootstrap-bower" : "0.14.3"
   }
 }
