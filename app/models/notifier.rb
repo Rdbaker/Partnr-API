@@ -14,7 +14,8 @@ class Notifier < ActiveRecord::Base
   end
 
   def destroy_notification
-    notify 2
+    # notify 2
+    0
   end
 
 protected
