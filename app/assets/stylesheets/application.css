@@ -1,3 +1,7 @@
 /*
  *= require _bootstrap
  */
+
+footer span.version a {
+  color: #bbb;
+}
