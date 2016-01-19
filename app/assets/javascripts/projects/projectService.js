@@ -21,7 +21,7 @@ angular.module('partnr.users.assets').factory('projects', function($rootScope, $
 			});
 		},
 
-    listByUser : function(id) {
+		listByUser : function(id) {
 			$log.debug('[PROJECT] Sending list for user');
 			$log.debug(id);
 
