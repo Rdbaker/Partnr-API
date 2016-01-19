@@ -21,6 +21,18 @@ angular.module('partnr.users.assets').factory('projects', function($rootScope, $
 			});
 		},
 
+    listByUser : function(id) {
+			$log.debug('[PROJECT] Sending list for user');
+			$log.debug(id);
+
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'projects',
+				headers: principal.getHeaders(),
+				params: { user: id }
+			});
+		},
+
 		list : function() {
 			$log.debug('[PROJECT] Sending list request');
 
