@@ -1,5 +1,6 @@
 require_relative './validators/valid_user'
 require_relative './validators/valid_pagination'
+require_relative './validators/length'
 
 module V1
   class Posts < Grape::API
@@ -62,8 +63,8 @@ module V1
 
     desc "Create a new post for a benchmark in a project.", entity: Entities::PostData::AsFull
     params do
-      requires :title, type: String, allow_blank: false, desc: "The post title."
-      requires :content, type: String, allow_blank: false, desc: "The post content."
+      requires :title, type: String, length: 1000, allow_blank: false, desc: "The post title."
+      requires :content, type: String, length: 1000, allow_blank: false, desc: "The post content."
       requires :benchmark, type: Integer, allow_blank: false, desc: "The benchmark to which the post will belong."
     end
     post do
@@ -85,8 +86,8 @@ module V1
     desc "Update a specific post in a benchmark.", entity: Entities::PostData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The post ID."
-      optional :title, type: String, allow_blank: false, desc: "The post title."
-      optional :content, type: String, allow_blank: false, desc: "The content of the post."
+      optional :title, type: String, length: 1000, allow_blank: false, desc: "The post title."
+      optional :content, type: String, length: 1000, allow_blank: false, desc: "The content of the post."
       at_least_one_of :title, :content
     end
     put ":id" do

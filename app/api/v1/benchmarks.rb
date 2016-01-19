@@ -1,5 +1,6 @@
 require_relative './validators/valid_user'
 require_relative './validators/valid_pagination'
+require_relative './validators/length'
 
 module V1
   class Benchmarks < Grape::API
@@ -44,7 +45,7 @@ module V1
 
     desc "Create a new benchmark for a project.", entity: Entities::BmarkData::AsFull
     params do
-      requires :title, type: String, allow_blank: false, desc: "The title of the benchmark for the project."
+      requires :title, type: String, length: 1000, allow_blank: false, desc: "The title of the benchmark for the project."
       requires :project, type: Integer, allow_blank: false, desc: "The project ID to which the benchmark will belong."
       optional :due_date, type: DateTime, allow_blank: false, desc: "The benchmark's due date."
     end
@@ -70,7 +71,7 @@ module V1
     desc "Update a specific benchmark for a project.", entity: Entities::RoleData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The benchmark ID."
-      optional :title, type: String, allow_blank: false, desc: "The benchmark title."
+      optional :title, type: String, length: 1000, allow_blank: false, desc: "The benchmark title."
       optional :complete, type: Boolean, allow_blank: false, desc: "The benchmark's completeness."
       # this needs to be in iso8601 format:
       # https://en.wikipedia.org/wiki/ISO_8601

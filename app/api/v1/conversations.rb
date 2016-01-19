@@ -1,5 +1,6 @@
 require_relative './validators/valid_user'
 require_relative './validators/valid_pagination'
+require_relative './validators/length'
 
 module V1
   class Conversations < Grape::API
@@ -47,7 +48,7 @@ module V1
     desc "Sends a message in the conversation or posts a new one if a conversation doesn't exist", entity: Entities::MessageData::AsShallow
     params do
       requires :users, type: Array[Integer], allow_blank: false, desc: "The list of user IDs to send the message to.", documentation: { example: "42,87,17,6" }
-      optional :message, type: String, allow_blank: false, desc: "The message to add to the conversation."
+      optional :message, type: String, length: 1000, allow_blank: false, desc: "The message to add to the conversation."
     end
     post do
       authenticated_user
@@ -79,7 +80,7 @@ module V1
     desc "Sends a message to an existing conversation", entity: Entities::MessageData::AsNested
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The ID of the conversation."
-      optional :message, type: String, allow_blank: false, desc: "The message to add to the conversation."
+      optional :message, type: String, length: 1000, allow_blank: false, desc: "The message to add to the conversation."
       optional :is_read, type: Boolean
     end
     put ":id" do

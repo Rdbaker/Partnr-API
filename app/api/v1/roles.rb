@@ -1,5 +1,6 @@
 require_relative './validators/valid_user'
 require_relative './validators/valid_pagination'
+require_relative './validators/length'
 
 module V1
   class Roles < Grape::API
@@ -67,7 +68,7 @@ module V1
 
     desc "Create a new role for a project.", entity: Entities::RoleData::AsFull
     params do
-      requires :title, type: String, allow_blank: false, desc: "The role title."
+      requires :title, type: String, length: 1000, allow_blank: false, desc: "The role title."
       requires :project, type: Integer, allow_blank: false, desc: "The project to which the role will belong."
     end
     post do
@@ -87,7 +88,7 @@ module V1
     desc "Update a specific role for a project.", entity: Entities::RoleData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The role ID."
-      optional :title, type: String, allow_blank: false, desc: "The role title."
+      optional :title, type: String, length: 1000, allow_blank: false, desc: "The role title."
       optional :user, type: Integer, allow_blank: false, desc: "The user ID assigned to the role."
       at_least_one_of :title, :user
     end

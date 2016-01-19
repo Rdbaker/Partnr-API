@@ -1,5 +1,6 @@
 require_relative './validators/valid_user'
 require_relative './validators/valid_pagination'
+require_relative './validators/length'
 
 module V1
   class Applications < Grape::API

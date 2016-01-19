@@ -1,5 +1,6 @@
 require_relative './validators/valid_user'
 require_relative './validators/valid_pagination'
+require_relative './validators/length'
 
 module V1
   class Projects < Grape::API
@@ -22,7 +23,7 @@ module V1
     params do
       optional :owner, type: Integer, allow_blank: false, desc: "The User ID for the projects to retrieve."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The project's status."
-      optional :title, type: String, allow_blank: false, desc: "The title of the project."
+      optional :title, type: String, length: 1000, allow_blank: false, desc: "The title of the project."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of projects per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of projects."
     end
@@ -56,8 +57,8 @@ module V1
 
     desc "Create a project.", entity: Entities::ProjectData::AsFull
     params do
-      requires :title, type: String, allow_blank: false, desc: "The Project's title."
-      optional :description, type: String, allow_blank: false, desc: "The Project's description."
+      requires :title, type: String, length: 1000, allow_blank: false, desc: "The Project's title."
+      optional :description, type: String, length: 1000, allow_blank: false, desc: "The Project's description."
     end
     post do
       authenticated_user
@@ -76,8 +77,8 @@ module V1
     desc "Update a project.", entity: Entities::ProjectData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The Project ID."
-      optional :title, type: String, allow_blank: false, desc: "The Project's title."
-      optional :description, type: String, allow_blank: false, desc: "The Project's description."
+      optional :title, type: String, length: 1000, allow_blank: false, desc: "The Project's title."
+      optional :description, type: String, length: 1000, allow_blank: false, desc: "The Project's description."
       optional :owner, type: Integer, allow_blank: false, valid_user: true, desc: "The Project's owner's ID."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The project's status."
       at_least_one_of :title, :description, :owner, :status
