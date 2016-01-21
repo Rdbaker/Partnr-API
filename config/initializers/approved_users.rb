@@ -28,5 +28,11 @@ Rails.application.config.approved_users = [
   'kycayabyab@gmail.com',
   'dkknutson@gmail.com',
   'kacarlson@wpi.edu',
-  'dkelley7@villanova.edu'
+  'dkelley7@villanova.edu',
+  'pjdanaher94@gmail.com',
+  'janineelewis@gmail.com',
+  'dlmadeiros@wpi.edu ',
+  'services.tim.marschall@outlook.com',
+  '22.mbeaulieu@gmail.com',
+  'rambrose@umass.edu'
 ]
