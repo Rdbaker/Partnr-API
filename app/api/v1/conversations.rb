@@ -8,7 +8,7 @@ module V1
       def find_conv
         authenticated_user
         @conv = Conversation.find_by(id: params[:id])
-        error!("Conversation with id #{param[:id]} was not found", 404) if @conv.nil?
+        error!("Conversation with id #{params[:id]} was not found", 404) if @conv.nil?
         error!("User is not involved in the conversation", 401) unless @conv.users.include? current_user
       end
 

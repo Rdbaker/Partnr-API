@@ -21,7 +21,8 @@ module V1
 
     desc "Retrieve all the projects or the projects of the user with the ID given.", entity: Entities::ProjectData::AsSearch
     params do
-      optional :owner, type: Integer, allow_blank: false, desc: "The User ID for the projects to retrieve."
+      optional :owner, type: Integer, allow_blank: false, desc: "The User ID for the projects to retrieve, where the user is the owner."
+      optional :user, type: Integer, allow_blank: false, desc: "The User ID for the projects to retrieve, where the user has a role on the project."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The project's status."
       optional :title, type: String, length: 1000, allow_blank: false, desc: "The title of the project."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of projects per page."
@@ -39,7 +40,14 @@ module V1
         like_hash = { :title => "%%" }
       end
 
-      present Project.where(permitted_params params).where("LOWER( projects.title ) LIKE :title", like_hash)
+      if params.has_key? :user
+        projects = get_record(User, params[:user]).projects
+        params.delete :user
+      else
+        projects = Project
+      end
+
+      present projects.where(permitted_params params).where("LOWER( projects.title ) LIKE :title", like_hash)
         .page(params[:page])
         .per(params[:per_page]), with: Entities::ProjectData::AsSearch
     end
