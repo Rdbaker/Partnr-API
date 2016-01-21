@@ -1,1 +1,12 @@
-<footer><span class="version">Copyright © 2015 Partnr LLC • v<%= Rails.application.version %> • <%= link_to("Feedback", "http://goo.gl/forms/SmjE8XHUVy", :target => "_blank") %></span></footer>
+<footer>
+  <span class="version">
+    Copyright © 2015 Partnr LLC •
+    <%= link_to("v#{Rails.application.version}",
+                 "https://docs.google.com/document/d/1c22uv8qhnh3_tm-OnOguPjzUyJgazfpStIFXalrJfW4/edit?usp=sharing",
+                 :target => "_blank") %> •
+    <%= link_to("Feedback", "http://goo.gl/forms/SmjE8XHUVy", :target => "_blank") %> •
+    <%= link_to("Release Notes",
+                "https://docs.google.com/document/d/1c22uv8qhnh3_tm-OnOguPjzUyJgazfpStIFXalrJfW4/edit?usp=sharing",
+                :target => "_blank") %>
+  </span>
+</footer>
