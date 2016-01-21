@@ -175,7 +175,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('user_list_project', {
+		.state('user_project_list', {
 			parent: 'site',
 			url: '/projects/me',
 			views: {
