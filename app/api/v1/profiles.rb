@@ -1,4 +1,5 @@
 require_relative './validators/valid_user'
+require_relative './validators/length'
 
 module V1
   class Profiles < Grape::API
@@ -35,7 +36,7 @@ module V1
     namespace :interests do
       desc "Creates a new interest for a profile.", entity: Entities::Profile::InterestData::AsNested
       params do
-        requires :title, type: String, allow_blank: false, desc: "The title of a new interest."
+        requires :title, type: String, length: 1000, allow_blank: false, desc: "The title of a new interest."
       end
       post do
         profile_create
@@ -47,7 +48,7 @@ module V1
       desc "Updates an existing interest.", entity: Entities::Profile::InterestData::AsNested
       params do
         requires :id, type: Integer, allow_blank: false, desc: "The ID of the interest."
-        requires :title, type: String, allow_blank: false, desc: "The new title of the interest."
+        requires :title, type: String, length: 1000, allow_blank: false, desc: "The new title of the interest."
       end
       put ":id" do
         profile_update_permissions
@@ -76,7 +77,7 @@ module V1
     namespace :location do
       desc "Creates a new location for a profile.", entity: Entities::Profile::LocationData::AsNested
       params do
-        requires :geo_string, type: String, allow_blank: false, desc: "The location string for a location."
+        requires :geo_string, type: String, length: 1000, allow_blank: false, desc: "The location string for a location."
       end
       post do
         profile_create
@@ -90,7 +91,7 @@ module V1
       desc "Updates an existing location.", entity: Entities::Profile::LocationData::AsNested
       params do
         requires :id, type: Integer, allow_blank: false, desc: "The ID of the location."
-        requires :geo_string, type: String, allow_blank: false, desc: "The new location string of the location."
+        requires :geo_string, type: String, length: 1000, allow_blank: false, desc: "The new location string of the location."
       end
       put ":id" do
         profile_update_permissions
@@ -117,8 +118,8 @@ module V1
     namespace :position do
       desc "Creates a new position for a profile.", entity: Entities::Profile::PositionData::AsNested
       params do
-        requires :title, type: String, allow_blank: false, desc: "The title of a new position."
-        requires :company, type: String, allow_blank: false, desc: "The company of a new position."
+        requires :title, type: String, length: 1000, allow_blank: false, desc: "The title of a new position."
+        requires :company, type: String, length: 1000, allow_blank: false, desc: "The company of a new position."
       end
       post do
         profile_create
@@ -130,7 +131,7 @@ module V1
       desc "Updates an existing position.", entity: Entities::Profile::PositionData::AsNested
       params do
         requires :id, type: Integer, allow_blank: false, desc: "The ID of the position."
-        requires :title, type: String, allow_blank: false, desc: "The new title of the position."
+        requires :title, type: String, length: 1000, allow_blank: false, desc: "The new title of the position."
       end
       put ":id" do
         profile_update_permissions
@@ -159,9 +160,9 @@ module V1
     namespace :school do
       desc "Creates a new school info for a profile.", entity: Entities::Profile::SchoolInfoData::AsNested
       params do
-        requires :school_name, type: String, allow_blank: false, desc: "The school name of a new school info."
-        requires :grad_year, type: String, allow_blank: false, desc: "The graduation year of a new school info."
-        optional :field, type: String, allow_blank: false, desc: "The field of study of a new school info."
+        requires :school_name, type: String, length: 1000, allow_blank: false, desc: "The school name of a new school info."
+        requires :grad_year, type: String, length: 1000, allow_blank: false, desc: "The graduation year of a new school info."
+        optional :field, type: String, length: 1000, allow_blank: false, desc: "The field of study of a new school info."
       end
       post do
         profile_create
@@ -173,9 +174,9 @@ module V1
       desc "Updates an existing school info.", entity: Entities::Profile::SchoolInfoData::AsNested
       params do
         requires :id, type: Integer, allow_blank: false, desc: "The ID of the position."
-        optional :school_name, type: String, allow_blank: false, desc: "The school name of a school info."
-        optional :grad_year, type: String, allow_blank: false, desc: "The graduation year of a school info."
-        optional :field, type: String, allow_blank: false, desc: "The field of study of a school info."
+        optional :school_name, type: String, length: 1000, allow_blank: false, desc: "The school name of a school info."
+        optional :grad_year, type: String, length: 1000, allow_blank: false, desc: "The graduation year of a school info."
+        optional :field, type: String, length: 1000, allow_blank: false, desc: "The field of study of a school info."
         at_least_one_of :school_name, :grad_year, :field
       end
       put ":id" do
@@ -208,7 +209,7 @@ module V1
     namespace :skill do
       desc "Creates a new skill for a profile.", entity: Entities::Profile::SkillData::AsNested
       params do
-        requires :title, type: String, allow_blank: false, desc: "The title of a new skill."
+        requires :title, type: String, length: 1000, allow_blank: false, desc: "The title of a new skill."
       end
       post do
         profile_create
@@ -220,7 +221,7 @@ module V1
       desc "Updates an existing skill.", entity: Entities::Profile::SkillData::AsNested
       params do
         requires :id, type: Integer, allow_blank: false, desc: "The ID of the skill."
-        requires :title, type: String, allow_blank: false, desc: "The new title of the skill."
+        requires :title, type: String, length: 1000, allow_blank: false, desc: "The new title of the skill."
       end
       put ":id" do
         profile_update_permissions
@@ -248,14 +249,14 @@ module V1
 
     desc "Create a new profile or subentity for a user.", entity: Entities::ProfileData::AsFull
     params do
-      optional :interest_title, type: String, allow_blank: false, desc: "The title of a new interest."
-      optional :location_string, type: String, allow_blank: false, desc: "The location string of a new location."
-      optional :position_title, type: String, allow_blank: false, desc: "The title of a new position."
-      optional :position_company, type: String, allow_blank: false, desc: "The company of a new position."
-      optional :school_info_school_name, type: String, allow_blank: false, desc: "The school name of a new school info."
-      optional :school_info_grad_year, type: String, allow_blank: false, desc: "The grad year of a new school info."
-      optional :school_info_field, type: String, allow_blank: false, desc: "The field of a new school info."
-      optional :skill_title, type: String, allow_blank: false, desc: "The title of a new skill."
+      optional :interest_title, type: String, length: 1000, allow_blank: false, desc: "The title of a new interest."
+      optional :location_string, type: String, length: 1000, allow_blank: false, desc: "The location string of a new location."
+      optional :position_title, type: String, length: 1000, allow_blank: false, desc: "The title of a new position."
+      optional :position_company, type: String, length: 1000, allow_blank: false, desc: "The company of a new position."
+      optional :school_info_school_name, type: String, length: 1000, allow_blank: false, desc: "The school name of a new school info."
+      optional :school_info_grad_year, type: String, length: 1000, allow_blank: false, desc: "The grad year of a new school info."
+      optional :school_info_field, type: String, length: 1000, allow_blank: false, desc: "The field of a new school info."
+      optional :skill_title, type: String, length: 1000, allow_blank: false, desc: "The title of a new skill."
       all_or_none_of :position_title, :position_company
       all_or_none_of :school_info_school_name, :school_info_grad_year
     end

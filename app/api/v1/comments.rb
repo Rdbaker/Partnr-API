@@ -1,5 +1,6 @@
 require_relative './validators/valid_user'
 require_relative './validators/valid_pagination'
+require_relative './validators/length'
 
 module V1
   class Comments < Grape::API
@@ -44,7 +45,7 @@ module V1
 
     desc "Create a new comment on a project.", entity: Entities::CommentData::AsFull
     params do
-      requires :content, type: String, allow_blank: false, desc: "The comment content."
+      requires :content, type: String, allow_blank: false, length: 1000, desc: "The comment content."
       requires :project, type: Integer, allow_blank: false, desc: "The project ID for the comment."
     end
     post do
@@ -64,7 +65,7 @@ module V1
     desc "Update a comment on a project.", entity: Entities::CommentData::AsFull
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The comment ID."
-      requires :content, type: String, allow_blank: false, desc: "The new content for the comment."
+      requires :content, type: String, allow_blank: false, length: 1000, desc: "The new content for the comment."
     end
     put ":id" do
       comment_put_permissions(params[:id])

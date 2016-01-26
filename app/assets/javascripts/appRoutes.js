@@ -175,13 +175,13 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('owner_project_list', {
+		.state('user_project_list', {
 			parent: 'site',
 			url: '/projects/me',
 			views: {
 				'content@': {
-					templateUrl: 'projects/owner_list_project.html',
-					controller: 'OwnerListProjectController'
+					templateUrl: 'projects/user_list_project.html',
+					controller: 'UserListProjectController'
 				}
 			},
 			data: {
