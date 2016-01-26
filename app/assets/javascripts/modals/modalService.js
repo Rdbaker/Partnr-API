@@ -1,10 +1,10 @@
-angular.module('partnr.notify').service('modals', function($modal, $location) {
+angular.module('partnr.notify').service('modals', function($uibModal, $location) {
     return {
         // modals
 
         // alert modal
         alert : function(title, message) {
-            var modal = $modal.open({
+            var modal = $uibModal.open({
                 templateUrl: 'modals/alert_modal.html',
                 controller: 'AlertModalController',
                 resolve: {
@@ -17,7 +17,7 @@ angular.module('partnr.notify').service('modals', function($modal, $location) {
 
         // confirm modal
         confirm : function(message, callback) {
-            var modal = $modal.open({
+            var modal = $uibModal.open({
                 templateUrl: 'modals/confirm_modal.html',
                 controller: 'ConfirmModalController',
                 resolve: {
