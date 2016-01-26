@@ -1,3 +1,10 @@
+// Navbar
+// --------------------------------------------------
+
+.navbar {
+	margin-bottom: 0;
+}
+
 // Logo
 // --------------------------------------------------
 
@@ -14,7 +21,6 @@
 	display: inline-block;
 }
 
-
 // Notification Dropdown
 // --------------------------------------------------
 
@@ -24,4 +30,30 @@
   padding: 5px;
   top: 55px;
   z-index: 1000;
+}
+
+// Page Header
+// -------------------------------------------------
+
+.partnr-page-header {
+	border-radius: 0 0 3px 3px;
+	box-shadow: $default-box-shadow;
+    padding: 40px 15px 20px;
+    background: #025160;
+    margin-bottom: 15px;
+
+    h1, h2, h3 {
+    	color: white;
+    }
+
+    .form-control {
+    	color: white;
+    	background-color: #013F4A;
+    	border: 1px solid #00282F;
+
+    	&:focus {
+    		border-color: #00282F;
+    		box-shadow: inherit;
+    	}
+    }
 }
