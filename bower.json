@@ -4,9 +4,9 @@
   "dependencies": {
     "angular": "1.4.8",
     "angular-masonry": "~0.15.0",
-    "angular-ui-bootstrap-bower": "latest",
+    "angular-ui-bootstrap-bower": "1.0.3",
     "angular-ui-router": "0.2.15",
     "angular-ui-utils": "0.2.3",
-    "fontawesome": "latest"
+    "fontawesome": "4.5.0"
   }
 }
