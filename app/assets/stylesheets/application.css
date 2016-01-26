@@ -1,5 +1,6 @@
 /*
  *= require _bootstrap
+ *= require fontawesome/css/font-awesome.min
  */
 
 footer span.version a {

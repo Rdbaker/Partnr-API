@@ -5,7 +5,7 @@ angular.module('partnr.notify', []);
 angular.module('partnr.search', []);
 angular.module('partnr.users.assets', []);
 angular.module('partnr.core', ['ui.router',
-  'ui.bootstrap', 'templates',
+  'ui.bootstrap', 'templates', 'wu.masonry',
   'partnr.auth', 'partnr.users', 'partnr.messaging',
   'partnr.notify', 'partnr.search', 'partnr.users.assets'
   ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization) {

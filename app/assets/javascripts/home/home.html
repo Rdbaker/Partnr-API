@@ -1,5 +1,12 @@
 <toasts></toasts>
-<h1>Welcome, {{ user.first_name }}</h1>
+<div class="partnr-page-header">
+	<h1>Welcome, {{ user.first_name }}</h1>
+	<div>
+		<h3>Find something new</h3>
+		<input type="text" class="form-control col-md-9" ng-model="search.keywords">
+		<button type="button" class="btn btn-primary" ng-click="doSearch()">Search</button>
+	</div>
+</div>
 <div class="content-container">
 	<div class="btn-group" dropdown>
 		<button id="split-button" type="button" class="btn btn-default" ng-click="$state.go('user_project_list')">My Projects</button>
@@ -15,13 +22,8 @@
 	<button class="btn btn-default" ng-click="$state.go('profile', { id : user.id })">View Profile</button>
 	<button class="btn btn-primary" ng-click="doLogout()">Log out</button>
 </div>
-<div class="content-container">
-	<div>
-		<h3>Find something new</h3>
-		<input type="text" class="form-control" ng-model="search.keywords">
-		<button type="button" class="btn btn-primary" ng-click="doSearch()">Search</button>
-	</div>
-	<div class="results" ng-show="search.queried">
+<div class="content-container" ng-show="search.queried">
+	<div class="results">
 		<div ng-show="search.result.projects.length > 0">
 			<h4>Projects</h4>
 			<span ng-repeat="p in search.result.projects">
@@ -37,5 +39,39 @@
 		<div ng-show="search.result.roles.length === 0 && search.result.projects.length === 0">
 			No Results
 		</div>
+	</div>
+</div>
+<div masonry ng-show="loadComplete">
+	<div ng-repeat="p in projects" class="masonry-brick col-md-4">
+		<div class="content-container no-padding project-tile">
+			<div class="ptile-img-placeholder">
+				<div class="ptile-partnrs-wrapper">
+					<div class="ptile-partnrs">
+						<span class="ptile-img-partnr">&nbsp;</span>
+						<span class="ptile-img-partnr">&nbsp;</span>
+						<span class="ptile-img-partnr">&nbsp;</span>
+						<span class="ptile-img-partnr">&nbsp;</span>
+					</div>
+				</div>
+			</div>
+			<div class="ptile-info">
+				<h3>{{ p.title }}</h3>
+				<h5>{{ getProjectStatus(p.status) }}</h5>
+				<p>{{ p.description }}</p>
+				<div class="clearfix">
+					<div class="col-xs-4">
+						<a ui-sref="#" class="ptile-detail-nugget"><i class="fa fa-comment"></i><span>0</span></a>
+					</div>
+					<div class="col-xs-8 buttons-right">
+						<button class="btn btn-primary" ng-click="$state.go('project', { id: p.id })">check it out</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="loading-wrapper" ng-hide="loadComplete">
+	<div class="text-center loading-container">
+		<img src="/assets/ajax-loader.gif">
 	</div>
 </div>
