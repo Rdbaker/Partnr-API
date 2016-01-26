@@ -1,10 +1,34 @@
 <toasts></toasts>
 <h1>My Projects</h1>
-<div class="content-container">
-	<div ng-show="loadComplete" ng-repeat="p in projects">
-		<a ui-sref="project({ id: p.id })">{{ p.title }}</a>
+<div masonry ng-show="loadComplete">
+	<div ng-repeat="p in projects" class="masonry-brick col-md-4">
+		<div class="content-container no-padding project-tile">
+			<div class="ptile-img-placeholder">
+				<div class="ptile-partnrs-wrapper">
+					<div class="ptile-partnrs">
+						<span class="ptile-img-partnr">&nbsp;</span>
+						<span class="ptile-img-partnr">&nbsp;</span>
+						<span class="ptile-img-partnr">&nbsp;</span>
+						<span class="ptile-img-partnr">&nbsp;</span>
+					</div>
+				</div>
+			</div>
+			<div class="ptile-info">
+				<h3>{{ p.title }}</h3>
+				<h5>{{ getProjectStatus(p.status) }}</h5>
+				<p>{{ p.description }}</p>
+				<div class="clearfix">
+					<div class="col-xs-4">
+						<a ui-sref="#" class="ptile-detail-nugget"><i class="fa fa-comment"></i><span>0</span></a>
+					</div>
+					<div class="col-xs-8 buttons-right">
+						<button class="btn btn-primary" ng-click="$state.go('project', { id: p.id })">check it out</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div ng-hide="loadComplete" class="text-center loading">
-		<img src="/assets/ajax-loader.gif">
-	</div>
+</div>
+<div ng-hide="loadComplete" class="loading-wrapper">
+	<img src="/assets/ajax-loader.gif">
 </div>
