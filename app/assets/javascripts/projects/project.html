@@ -14,7 +14,7 @@
     <div class="col-md-3" ng-repeat="role in project.roles">
       <div class="internal-container">
       	<span class="title">{{role.title}}</span>
-      	<span class="subtitle" ng-show="role.user">{{role.user.first_name}} {{role.user.last_name}}</span><span class="subtitle" ng-hide="role.user"><em>None</em></span>
+      	<a href class="subtitle" ng-show="role.user" ui-sref="profile({ id: role.user.id })">{{role.user.first_name}} {{role.user.last_name}}</a><span class="subtitle" ng-hide="role.user"><em>None</em></span>
         <div class="buttons-right">
         	<button type="button" class="btn btn-primary" ng-if="!role.user && canApply" ng-click="doApply(role.id)">Apply</button>
         </div>
@@ -24,7 +24,7 @@
   <h3>Comments</h3>
   <div>
     <div class="internal-container comment" ng-repeat="comment in project.comments">
-      <span class="c-header"><strong>{{ comment.user.name }}</strong> on {{ comment.created_at | date: 'mediumDate' }}:</span>
+      <span class="c-header"><strong ui-sref="profile({ id: comment.user.id })"><a href>{{ comment.user.name }}</a></strong> on {{ comment.created_at | date: 'mediumDate' }}:</span>
       <p>{{ comment.content }}</p>
       <button class="btn btn-danger" ng-if="isOwner || comment.user.id === principal.getUser().id" ng-click="deleteComment(comment)">Delete</button>
     </div>
