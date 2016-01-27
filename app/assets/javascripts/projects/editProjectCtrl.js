@@ -45,7 +45,7 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 		modals.confirm("Are you sure you want to delete this project? It cannot be undone.", function(result) {
 			if (result) {
 				projects.delete($scope.project.id).then(function(result) {
-					$state.go('owner_project_list');
+					$state.go('user_project_list');
 					toaster.success('Project deleted');
 				});
 			}
