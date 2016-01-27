@@ -35,41 +35,92 @@
 // Page Header
 // -------------------------------------------------
 
+.partnr-header-wrapper {
+  .content-container {
+    border-radius: 0 0 3px 3px;
+    border-top: 0;
+    background: #aee3ed;
+  }
+}
+
 .partnr-page-header {
 	border-radius: 0 0 3px 3px;
 	box-shadow: $default-box-shadow;
-    padding: 40px 15px 20px;
-    background: #04859d;
-    margin-bottom: 15px;
+  padding: 40px 15px 20px;
+  background: #04859d;
+  margin-bottom: 15px;
 
-    h1 {
-      font-size: 45px;
-      padding-bottom: 45px;
+  h1 {
+    font-size: 45px;
+    padding-bottom: 45px;
+  }
+
+  h1, h2, h3 {
+  	color: white;
+  }
+
+  input::-webkit-input-placeholder{
+    color: #4f95a2 !important;
+  }
+
+  input:-moz-placeholder{
+    color: #4E96A3 !important;
+  }
+
+  input::-moz-placeholder{
+    color: #4E96A3 !important;
+  }
+
+  input:-ms-input-placeholder {
+    color: #4E96A3 !important;
+  }
+
+  &.with-button-pane {
+    margin-bottom: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #03677a;
+  }
+
+  .impact-title {
+    padding-top: 50px;
+  }
+
+  .impact-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .impact-container {
+    padding: 20px;
+    border: 1px solid #03677a;
+    box-shadow: 0 0 1px;
+    background: #2791a5;
+
+    h2 {
+      margin-bottom: 20px;
+    }
+  }
+
+  .form-control {
+  	color: white;
+  	background-color: #03677A;
+  	border: 1px solid #025160;
+
+  	&:focus {
+  		border-color: #025160;
+  		box-shadow: inherit;
+  	}
+  }
+
+  .input-group {
+    input[type="text"] {
+      font-size: 20px;
+      height: 42px;
     }
 
-    h1, h2, h3 {
-    	color: white;
+    button {
+      font-size: 20px;
     }
-
-    .form-control {
-    	color: white;
-    	background-color: #03677A;
-    	border: 1px solid #025160;
-
-    	&:focus {
-    		border-color: #025160;
-    		box-shadow: inherit;
-    	}
-    }
-
-    .input-group {
-      input[type="text"] {
-        font-size: 20px;
-        height: 42px;
-      }
-
-      button {
-        font-size: 20px;
-      }
-    }
+  }
 }
