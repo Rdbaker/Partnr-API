@@ -50,6 +50,16 @@
   background: #04859d;
   margin-bottom: 15px;
 
+  &.light {
+    background: #0ea1bc; /* Old browsers */
+    background: -moz-linear-gradient(-45deg, #0ea1bc 0%, #58bfd2 50%, #58bfd2 50%, #0ea1bc 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg, #0ea1bc 0%,#58bfd2 50%,#58bfd2 50%,#0ea1bc 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg, #0ea1bc 0%,#58bfd2 50%,#58bfd2 50%,#0ea1bc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+    .impact-container {
+      background: #0EA1BC
+    }
+  }
   h1 {
     font-size: 45px;
     padding-bottom: 45px;
@@ -94,7 +104,7 @@
   .impact-container {
     padding: 20px;
     border: 1px solid #03677a;
-    box-shadow: 0 0 1px;
+    box-shadow: 0 0 1px #03677a;
     background: #2791a5;
 
     h2 {
