@@ -3,7 +3,7 @@
 	<h2>Project Chat</h2>
 	<div>
 	  <div class="internal-container comment" ng-repeat="message in conversation.messages">
-	    <span class="c-header"><strong>{{ message.user.name }}</strong> on {{ message.sent_at | date: 'mediumDate' }}:</span>
+	    <span class="c-header"><strong><a href ui-sref="profile({ id: message.user.id })">{{ message.user.name }}</a></strong> on {{ message.sent_at | date: 'mediumDate' }}:</span>
 	    <p>{{ message.body }}</p>
 	  </div>
 	  <div class="form-group">
