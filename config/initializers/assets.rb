@@ -11,3 +11,5 @@ Rails.application.config.assets.precompile += %w( loggedin.css )
 Rails.application.config.assets.precompile += %w( messages.js )
 Rails.application.config.assets.precompile += %w( messages.css )
 Rails.application.config.assets.precompile += %w( teaspoon-teaspoon.js )
+
+Rails.application.config.assets.initialize_on_precompile = true
