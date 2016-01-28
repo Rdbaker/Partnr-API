@@ -210,10 +210,12 @@ module V1
       desc "Creates a new skill for a profile.", entity: Entities::Profile::SkillData::AsNested
       params do
         requires :title, type: String, length: 1000, allow_blank: false, desc: "The title of a new skill."
+        requires :category, type: Integer, allow_blank: false, desc: "The ID of the category to which the skill belongs."
       end
       post do
         profile_create
-        ent = create_entity(Skill, {title: params[:title]})
+        cat = get_record(Category, params[:category])
+        ent = create_entity(Skill, {title: params[:title], category: cat})
         @profile.save!
         present ent, with: Entities::Profile::SkillData::AsNested
       end
@@ -221,13 +223,19 @@ module V1
       desc "Updates an existing skill.", entity: Entities::Profile::SkillData::AsNested
       params do
         requires :id, type: Integer, allow_blank: false, desc: "The ID of the skill."
-        requires :title, type: String, length: 1000, allow_blank: false, desc: "The new title of the skill."
+        optional :title, type: String, length: 1000, allow_blank: false, desc: "The new title of the skill."
+        optional :category, type: Integer, allow_blank: false, desc: "The ID of the category to which the skill belongs."
+        at_least_one_of :category, :title
       end
       put ":id" do
         profile_update_permissions
         skill = get_record(Skill, params[:id])
+        cat = Category.find_by(id: params[:category])
         entity_align(skill, @profile)
-        skill.title = params[:title]
+        skill.update!({
+          title: params[:title] || skill.title,
+          category: cat || skill.category
+        })
         @profile.save!
         skill.save!
         present skill, with: Entities::Profile::SkillData::AsNested
@@ -257,7 +265,9 @@ module V1
       optional :school_info_grad_year, type: String, length: 1000, allow_blank: false, desc: "The grad year of a new school info."
       optional :school_info_field, type: String, length: 1000, allow_blank: false, desc: "The field of a new school info."
       optional :skill_title, type: String, length: 1000, allow_blank: false, desc: "The title of a new skill."
+      optional :skill_category, type: Integer, allow_blank: false, desc: "The category of a new skill."
       all_or_none_of :position_title, :position_company
+      all_or_none_of :skill_title, :skill_category
       all_or_none_of :school_info_school_name, :school_info_grad_year
     end
     post do
@@ -285,7 +295,10 @@ module V1
       end
 
       if params[:skill_title]
-        create_entity(Skill, {title: params[:skill_title]})
+        cat = Category.find_by(id: params[:skill_category])
+        if not cat.nil?
+          create_entity(Skill, {title: params[:skill_title], category: cat})
+        end
       end
 
       if @profile.id.nil?

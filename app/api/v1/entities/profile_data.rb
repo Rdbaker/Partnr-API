@@ -16,6 +16,9 @@ module V1::Entities
       expose :skills, using: Profile::SkillData::AsNested, documentation: { type: "SkillData (nested)",
                                                                             desc: "The skills of the user",
                                                                             is_array: true }
+      expose :categories, using: CategoryData::AsNested, documentation: { type: "CategoryData (nested)",
+                                                                          desc: "The categories of the user's tasks and skills",
+                                                                          is_array: true }
     end
 
     class AsFull < AsNested

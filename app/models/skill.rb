@@ -1,5 +1,6 @@
 class Skill < ActiveRecord::Base
-  belongs_to :profile
+  has_many :profiles
+  belongs_to :category
 
-  validates :title, presence: true
+  validates :title, :category, presence: true
 end
