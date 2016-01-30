@@ -8,7 +8,14 @@
 			<ul class="nav navbar-nav">
 				<li ng-class="{'active': $state.includes('home')}"><a ui-sref="home">Home</a></li>
 				<li ng-class="{'active': $state.includes('project_list')}"><a ui-sref="project_list">Browse</a></li>
-				<li><a href ng-click="toggleNotificationsDropdown()">Me <span class="badge">{{ newNotifications.length }}</span></a></li>
+				<li uib-dropdown>
+					<a href id="notification-dropdown" uib-dropdown-toggle>Me <span class="badge">{{ newNotifications.length }}</span></a> <!-- ng-click="toggleNotificationsDropdown()" -->
+					<ul uib-dropdown-menu aria-labelledby="notification-dropdown">
+						<li class="notification-item" ng-repeat="n in allNotifications | limitTo:10">
+							<a href ng-click="resolveLink(n)"><span class="badge" ng-hide="n.read">new!</span> {{ n.actor.first_name }} {{ n.actor.last_name }} {{ n.parsedMessage }}</a>
+						</li>
+					</ul>
+				</li>
 				<!-- <li ng-class="{'active': $state.includes('inbox')}"><a ui-sref="inbox">Inbox</a></li>
 				<li ng-class="{'active': $state.includes('partners')}"><a ui-sref="partners">Partners</a></li>
 				<li ng-class="{'active': $state.includes('portfolio')}"><a ui-sref="portfolio">Portfolio</a></li>
