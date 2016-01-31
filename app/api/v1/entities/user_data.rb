@@ -7,6 +7,7 @@ module V1::Entities
       expose :id, documentation: { type: "Integer", desc: "The user's id." }
       expose :links do
         expose :self_link, documentation: { type: "URI", desc: "The link for the full user entity." }, as: :self
+        expose :gravatar_link, documentation: { type: "URI", desc: "The link for the user's gravatar if they have one" }, as: :gravatar
       end
     end
 
