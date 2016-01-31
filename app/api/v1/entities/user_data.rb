@@ -24,6 +24,9 @@ module V1::Entities
       expose :comments, using: CommentData::AsNested, documentation: { type: "CommentData (nested)",
                                                                         desc: "The comments user has made.",
                                                                         is_array: true }
+      expose :tasks, using: TaskData::AsNested, documentation: { type: "TaskData (nested)",
+                                                                        desc: "The tasks to which the user is assigned.",
+                                                                        is_array: true }
       expose :profile, using: ProfileData::AsNested, documentation: { type: "ProfileData (nested)",
                                                                       desc: "The profile of the user"}
     end

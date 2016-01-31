@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   end
 
   def gravatar_link
-    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.strip.downcase)}"
+    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.strip.downcase)}?d=404"
   end
 
   # return the full name of the user
