@@ -8,7 +8,7 @@
 			<ul class="nav navbar-nav">
 				<li ng-class="{'active': $state.includes('home')}"><a ui-sref="home">Home</a></li>
 				<li ng-class="{'active': $state.includes('project_list')}"><a ui-sref="project_list">Browse</a></li>
-				<li uib-dropdown>
+				<li uib-dropdown on-toggle="setRead(open)">
 					<a href id="notification-dropdown" uib-dropdown-toggle><i class="fa fa-flag"></i><span ng-if="newNotifications.length > 0" class="badge">{{ newNotifications.length }}</span></a> <!-- ng-click="toggleNotificationsDropdown()" -->
 					<ul uib-dropdown-menu class="notification-dropdown-menu header-dropdown" aria-labelledby="notification-dropdown">
 						<li class="notification-item" ng-repeat="n in allNotifications | limitTo:10">
