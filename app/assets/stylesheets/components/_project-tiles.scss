@@ -1,3 +1,7 @@
+.masonry-brick {
+	width: 33%;
+}
+
 .project-tile {
 	.ptile-img-placeholder {
 		height: 200px;
@@ -13,9 +17,6 @@
 
 		p {
 			font-size: 12px;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
 		}
 
 		[class^="col-xs-"], [class*="col-xs-"] {
