@@ -19,7 +19,8 @@ module V1::Entities
       expose :user, documentation: { type: "UserData (nested)", desc: "The project owner." }, using: UserData::AsNested, as: :owner
       expose :applications, documentation: { type: "ApplicationData (nested)", desc: "The applications for all roles on the project." }, using: ApplicationData::AsNested
       expose :roles, documentation: { type: "RoleData (nested)", desc: "The roles for the project." }, using: RoleData::AsChild
-      expose :bmarks, documentation: { type: "BenchmarkData (nested)", desc: "The benchmarks for the project." }, using: BmarkData::AsNested, as: :benchmarks
+      expose :tasks, documentation: { type: "TaskData (child)", desc: "The tasks for the project." }, using: TaskData::AsChild
+      expose :bmarks, documentation: { type: "MilestoneData (nested)", desc: "The milestones for the project." }, using: BmarkData::AsNested, as: :milestones
       expose :creator, documentation: { type: "Integer", desc: "The project creator's id." }
     end
 
