@@ -20,7 +20,7 @@ class Notification < ActiveRecord::Base
   def message
     m = I18n.t "notification.#{notifier.class}.#{action}"
     if m.start_with? "translation missing: en.notification."
-      "Somebody deleted something somewhere."
+      "#{action} a #{notifier.class}"
     else
       m
     end
