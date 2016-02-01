@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151214224228) do
+ActiveRecord::Schema.define(version: 20160131152644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,15 @@ ActiveRecord::Schema.define(version: 20151214224228) do
 
   add_index "bmarks", ["project_id"], name: "index_bmarks_on_project_id", using: :btree
   add_index "bmarks", ["user_id"], name: "index_bmarks_on_user_id", using: :btree
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "color_hex"
+    t.string   "icon_class"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "comments", force: :cascade do |t|
     t.text     "content",    null: false
@@ -173,13 +182,35 @@ ActiveRecord::Schema.define(version: 20151214224228) do
   end
 
   create_table "skills", force: :cascade do |t|
-    t.string   "title",      null: false
+    t.string   "title",       null: false
     t.integer  "profile_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "category_id"
   end
 
+  add_index "skills", ["category_id"], name: "index_skills_on_category_id", using: :btree
   add_index "skills", ["profile_id"], name: "index_skills_on_profile_id", using: :btree
+
+  create_table "tasks", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.integer  "status",      default: 0
+    t.integer  "project_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "bmark_id"
+  end
+
+  add_index "tasks", ["bmark_id"], name: "index_tasks_on_bmark_id", using: :btree
+  add_index "tasks", ["project_id"], name: "index_tasks_on_project_id", using: :btree
+
+  create_table "tasks_users", id: false, force: :cascade do |t|
+    t.integer "task_id"
+    t.integer "user_id"
+  end
+
+  add_index "tasks_users", ["task_id", "user_id"], name: "index_tasks_users_on_task_id_and_user_id", using: :btree
 
   create_table "user_conversations", force: :cascade do |t|
     t.integer  "user_id"
@@ -237,7 +268,10 @@ ActiveRecord::Schema.define(version: 20151214224228) do
   add_foreign_key "positions", "profiles"
   add_foreign_key "posts", "bmarks"
   add_foreign_key "projects", "conversations"
+  add_foreign_key "skills", "categories"
   add_foreign_key "skills", "profiles"
+  add_foreign_key "tasks", "bmarks"
+  add_foreign_key "tasks", "projects"
   add_foreign_key "user_conversations", "conversations"
   add_foreign_key "user_conversations", "users"
   add_foreign_key "users", "notifications"

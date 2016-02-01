@@ -6,6 +6,7 @@ class Project < Notifier
   has_many :bmarks, :dependent => :destroy
   has_many :applications, through: :roles
   has_many :users, through: :roles
+  has_many :tasks, :dependent => :destroy
   has_many :comments, :dependent => :destroy
   has_one :conversation, :dependent => :destroy
 
@@ -32,12 +33,20 @@ class Project < Notifier
     has_admin_permissions user
   end
 
+  def has_create_task_permissions(user)
+    belongs_to_project user
+  end
+
   def has_status_permissions(user)
     has_admin_permissions user
   end
 
   def belongs_to_project(user)
     (roles.any? { |role| role.user == user }) || user.id == owner
+  end
+
+  def users_on_proj
+    Set.new(users + [User.find(owner)]).to_a
   end
 
   def followers

@@ -2,6 +2,7 @@ class Bmark < Notifier
   belongs_to :project
   belongs_to :user
   has_many :posts, :dependent => :destroy
+  has_many :tasks, :dependent => :nullify
 
   validates :title, :project, :user, presence: true
   skip_callback :destroy, :before, :destroy_notification
@@ -21,6 +22,6 @@ class Bmark < Notifier
   end
 
   def self_link
-    "/api/v1/benchmarks/#{id}"
+    "/api/v1/milestones/#{id}"
   end
 end

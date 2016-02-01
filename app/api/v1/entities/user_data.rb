@@ -7,6 +7,7 @@ module V1::Entities
       expose :id, documentation: { type: "Integer", desc: "The user's id." }
       expose :links do
         expose :self_link, documentation: { type: "URI", desc: "The link for the full user entity." }, as: :self
+        expose :gravatar_link, documentation: { type: "URI", desc: "The link for the user's gravatar if they have one" }, as: :gravatar
       end
     end
 
@@ -22,6 +23,9 @@ module V1::Entities
     class AsPublic < AsSearch
       expose :comments, using: CommentData::AsNested, documentation: { type: "CommentData (nested)",
                                                                         desc: "The comments user has made.",
+                                                                        is_array: true }
+      expose :tasks, using: TaskData::AsNested, documentation: { type: "TaskData (nested)",
+                                                                        desc: "The tasks to which the user is assigned.",
                                                                         is_array: true }
       expose :profile, using: ProfileData::AsNested, documentation: { type: "ProfileData (nested)",
                                                                       desc: "The profile of the user"}
