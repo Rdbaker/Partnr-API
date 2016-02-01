@@ -1,14 +1,23 @@
-angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications, routeUtils) {
-	$scope.newNotifications = {};
+angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications, routeUtils, principal) {
+    $scope.newNotifications = {};
 	$scope.allNotifications = {};
-    $scope.notificationsDropdownVisible = false;
 
     $scope.$on('notifications', function(event, updatedNotifications) {
-    	$scope.allNotifications = updatedNotifications;
+        $scope.allNotifications = updatedNotifications;
         $scope.newNotifications = notifications.getNew();
     });
 
-    $scope.toggleNotificationsDropdown = function() {
-        $scope.notificationsDropdownVisible = !($scope.notificationsDropdownVisible);
+    $scope.doLogout = function() {
+        principal.logout().then(function() {
+            $state.go('login');
+        });
+    };
+
+    $scope.doViewProfile = function() {
+        $state.go('profile', { id : principal.getUser().id });
+    };
+
+     $scope.resolveLink = function(n) {
+        routeUtils.resolveEntityLinkAndGo(n.links.notifier, n, notifications.linkParamResolveStrategy);
     };
 });

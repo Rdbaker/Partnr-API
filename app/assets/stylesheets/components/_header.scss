@@ -5,6 +5,15 @@
 	margin-bottom: 0;
 }
 
+nav .badge {
+  font-size: 10px;
+  padding: 2px 3px;
+  background: #ff9a39;
+  position: relative;
+  left: -5px;
+  top: 4px;
+}
+
 // Logo
 // --------------------------------------------------
 
@@ -21,15 +30,30 @@
 	display: inline-block;
 }
 
-// Notification Dropdown
+
+// Header Dropdowns
 // --------------------------------------------------
 
-.notifications-dropdown {
-  position: absolute;
+#user-dropdown {
+  padding: 7px;
+
+  img {
+    width: 35px;
+  }
+}
+
+.notification-dropdown-menu {
   width: 300px;
-  padding: 5px;
-  top: 55px;
-  z-index: 1000;
+}
+
+.dropdown-menu.header-dropdown {
+  right: 0;
+  left: inherit;
+
+  & > li > a {
+    white-space: normal;
+    word-break: break-word;
+  }
 }
 
 // Page Header
