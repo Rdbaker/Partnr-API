@@ -34,5 +34,6 @@ Rails.application.config.approved_users = [
   'dlmadeiros@wpi.edu ',
   'services.tim.marschall@outlook.com',
   '22.mbeaulieu@gmail.com',
-  'rambrose@umass.edu'
+  'rambrose@umass.edu',
+  'nswong@wpi.edu'
 ]
