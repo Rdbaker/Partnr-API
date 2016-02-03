@@ -10,7 +10,12 @@
 	</div>
 	<div class="ptile-info">
 		<h3>{{ project.title | limitLength:255 }}</h3>
-		<h5>{{ getProjectStatus(project.status) }}</h5>
+		<h5>
+			<i ng-if="project.status === 'not_started'" class="fa fa-circle-o"></i>
+			<i ng-if="project.status === 'in_progress'" class="fa fa-arrow-circle-right"></i>
+			<i ng-if="project.status === 'complete'" class="fa fa-check-circle"></i>
+			{{ getProjectStatus(project.status) }}
+		</h5>
 		<p>{{ project.description | limitLength:255 }}</p>
 		<div class="clearfix">
 			<div class="col-xs-4">

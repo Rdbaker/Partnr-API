@@ -7,6 +7,7 @@ angular.module('partnr.users.assets').directive('projectTile', function($rootSco
         },
         link: function($scope, elem, attr, ctrl) {
             $scope.$state = $state;
+            console.log($scope.project);
             $scope.getProjectStatus = function(status) {
                 if (status === 'not_started') {
                     return "Not Started";
