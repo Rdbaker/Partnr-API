@@ -1,0 +1,24 @@
+<div class="content-container no-padding project-tile">
+	<div class="ptile-img-placeholder">
+		<div class="ptile-partnrs-wrapper">
+			<div class="ptile-partnrs">
+				<a href ui-sref="profile({ id: user.id })" uib-tooltip="{{ user.name }}" class="ptile-img-partnr" ng-repeat="user in project.users | limitTo:5">
+					<img src="/img/user.png" />
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="ptile-info">
+		<h3>{{ project.title | limitLength:255 }}</h3>
+		<h5>{{ getProjectStatus(project.status) }}</h5>
+		<p>{{ project.description | limitLength:255 }}</p>
+		<div class="clearfix">
+			<div class="col-xs-4">
+				<a ui-sref="project({ id: project.id })" class="ptile-detail-nugget"><i class="fa fa-comment"></i><span>{{ project.comments.length }}</span></a>
+			</div>
+			<div class="col-xs-8 buttons-right">
+				<button class="btn btn-primary" ng-click="$state.go('project', { id: project.id })">check it out</button>
+			</div>
+		</div>
+	</div>
+</div>
