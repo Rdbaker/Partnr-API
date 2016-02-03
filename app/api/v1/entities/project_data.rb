@@ -12,10 +12,11 @@ module V1::Entities
 
     class AsSearch < AsNested
       expose :comments, documentation: { type: "CommentData (nested)", desc: "The comments on the project." }, using: CommentData::AsNested
-      expose :users, documentation: { type: "UserData (nested)", desc: "The users working on the project." }, using: UserData::AsNested
+      expose :roles, documentation: { type: "RoleData (nested)", desc: "The roles for the project." }, using: RoleData::AsChild
     end
 
     class AsFull < AsSearch
+      expose :users, documentation: { type: "UserData (nested)", desc: "The users working on the project." }, using: UserData::AsNested
       expose :user, documentation: { type: "UserData (nested)", desc: "The project owner." }, using: UserData::AsNested, as: :owner
       expose :applications, documentation: { type: "ApplicationData (nested)", desc: "The applications for all roles on the project." }, using: ApplicationData::AsNested
       expose :roles, documentation: { type: "RoleData (nested)", desc: "The roles for the project." }, using: RoleData::AsChild
