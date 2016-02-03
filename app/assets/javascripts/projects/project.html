@@ -1,10 +1,15 @@
-<toasts></toasts>
-<div class="content-container" ng-if="isMember">
-  <button class="btn btn-primary" ng-if="isOwner" ng-click="$state.go('project_edit', {'project_id' : project.id})">Edit</button>
-  <button class="btn btn-default" ng-click="$state.go('application_list', {'project_id' : project.id})">View Applications</button>
-  <button class="btn btn-default" ng-click="$state.go('project_conversation', {'project_id' : project.id})">Messages</button>
+<div class="partnr-header-wrapper">
+  <div class="partnr-page-header light clearfix" ng-class="(isMember ? 'with-button-pane' : '')">
+    <h1 class="text-center impact-title">{{ project.title }}</h1>
+  </div>
+  <div class="impact-container content-container" ng-if="isMember">
+    <button class="btn btn-primary" ng-if="isOwner" ng-click="$state.go('project_edit', {'project_id' : project.id})">Edit</button>
+    <button class="btn btn-default" ng-click="$state.go('application_list', {'project_id' : project.id})">View Applications</button>
+    <button class="btn btn-default" ng-click="$state.go('project_conversation', {'project_id' : project.id})">Messages</button>
+  </div>
 </div>
-<div class="content-container" ng-show="loadComplete">
+<toasts></toasts>
+<div class="content-container">
 	<h2>{{ project.title }}</h2>
   <span>{{ getStatus() }}</span>
   <h3>Description</h3>
@@ -32,10 +37,5 @@
       <textarea name="new-comment" class="form-control" ng-model="newComment.content" ng-disabled="isCommentSubmitting" /></textarea>
       <button class="btn btn-primary" ng-click="addComment()" ng-disabled="isCommentSubmitting">Post</button>
     </div>
-  </div>
-</div>
-<div class="content-container" ng-hide="loadComplete">
-  <div class="text-center loading">
-    <img src="/assets/ajax-loader.gif">
   </div>
 </div>

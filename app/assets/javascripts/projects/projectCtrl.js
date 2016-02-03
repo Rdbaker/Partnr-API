@@ -67,6 +67,9 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 			$scope.isOwner = true;
 			$scope.isMember = true;
 			$scope.canApply = false;
+
+			$scope.$parent.setAsMember();
+			$scope.$parent.setAsOwner();
 		}
 
 		for (var i = 0; i < result.data.roles.length; i++) {
@@ -74,6 +77,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 				if (result.data.roles[i].user.id === principal.getUser().id) {
 					$scope.canApply = false;
 					$scope.isMember = true;
+					$scope.$parent.setAsMember();
 					break;
 				}
 			}
@@ -95,6 +99,8 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		loadStepsAchieved += 1;
 		if (loadStepsAchieved === loadSteps) {
 			$scope.loadComplete = true;
+			console.log($scope.$parent);
+			$scope.$parent.setLoadComplete(true);
 		}
 	};
 });

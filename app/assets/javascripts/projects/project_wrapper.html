@@ -1,0 +1,15 @@
+<div ng-if="isMember" class="content-container no-padding col-md-3">
+  <span class="sidebar-header">Manage Project</span>
+  <ul class="sidebar-content nav nav-pills nav-stacked">
+    <li role="presentation" ng-class="( $state.current.name === 'project' ? 'active' : '')"><a href ui-sref="project({ id: projectId })">View Project</a></li>
+    <li role="presentation" ng-class="( $state.current.name === 'project_edit' ? 'active' : '')"><a href ui-sref="project_edit({ id: projectId })">Edit Project</a></li>
+    <li role="presentation" ng-class="( $state.current.name === 'application_list' ? 'active' : '')"><a href ui-sref="application_list({ id: projectId })">Role Applications</a></li>
+    <li role="presentation" ng-class="( $state.current.name === 'project_conversation' ? 'active' : '')"><a href ui-sref="project_conversation({ id: projectId })">Group Message</a></li>
+  </ul>
+</div>
+<div ng-class="(isMember ? 'col-md-9' : '')" ng-show="loadComplete" ui-view="projectinfo"></div>
+<div class="content-container" ng-class="(isMember ? 'col-md-9' : '')" ng-hide="loadComplete">
+  <div class="text-center loading">
+    <img src="/assets/ajax-loader.gif">
+  </div>
+</div>

@@ -67,6 +67,19 @@ nav .badge {
   }
 }
 
+.sidebar-header {
+  padding: 10px;
+  display: block;
+  text-align: left;
+  font-size: 18px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #ddd;
+}
+
+.sidebar-content {
+  margin: 10px;
+}
+
 .partnr-page-header {
 	border-radius: 0 0 3px 3px;
 	box-shadow: $default-box-shadow;

@@ -14,9 +14,11 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 
 		if (result.data.owner.id === principal.getUser().id) {
 			$scope.isOwner = true;
+			$scope.$parent.setAsOwner();
 		}
 
 		$scope.loadComplete = true;
+		$scope.$parent.setLoadComplete(true);
 	});
 
 	$scope.addRole = function() {

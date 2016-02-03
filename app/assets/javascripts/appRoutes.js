@@ -225,6 +225,10 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			url: '/projects/{id:int}',
 			views: {
 				'content@': {
+					templateUrl: 'projects/project_wrapper.html',
+					controller: 'ProjectWrapperController'
+				},
+				'projectinfo@project': {
 					templateUrl: 'projects/project.html',
 					controller: 'ProjectController'
 				}
@@ -240,6 +244,10 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			url: '/projects/{project_id:int}/edit',
 			views: {
 				'content@': {
+					templateUrl: 'projects/project_wrapper.html',
+					controller: 'ProjectWrapperController'
+				},
+				'projectinfo@project_edit': {
 					templateUrl: 'projects/edit_project.html',
 					controller: 'EditProjectController'
 				}
