@@ -5,6 +5,12 @@ require_relative './validators/length'
 module V1
   class Applications < Grape::API
     helpers do
+      def application_view_permissions(proj_id)
+        authenticated_user
+        @project ||= get_record(Project, proj_id)
+        error!("You can't view the applications on this project", 401) unless @project.belongs_to_project current_user
+      end
+
       def application_destroy_permissions(id)
         authenticated_user
         @application ||= get_record(Application, params[:id])
@@ -27,13 +33,15 @@ module V1
     desc "Retrieve all applications.", entity: Entities::ApplicationData::AsSearch
     params do
       optional :user, type: Integer, allow_blank: false, desc: "The applicant's ID."
-      optional :project, type: Integer, allow_blank: false, desc: "The application's project's ID."
+      requires :project, type: Integer, allow_blank: false, desc: "The application's project's ID."
       optional :show_rejected, type: Boolean, allow_blank: false, default: false, desc: "The application's project's ID."
       optional :role, type: Integer, allow_blank: false, desc: "The application's role's ID."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."
     end
     get do
+      application_view_permissions params[:project]
+
       if not params[:show_rejected]
         not_params = { :status => 2 }
       else
@@ -52,6 +60,7 @@ module V1
     end
     get ":id" do
       application = get_record(Application, params[:id])
+      application_view_permissions application.project.id
       present application, with: Entities::ApplicationData::AsFull
     end
 

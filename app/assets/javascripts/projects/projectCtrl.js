@@ -11,7 +11,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 	$scope.isOwner = false;
 	$scope.isMember = false;
 	$scope.loadComplete = false;
-	var loadSteps = 2;
+	var loadSteps = 1;
 	var loadStepsAchieved = 0;
 
 	$scope.doApply = function(role) {
@@ -77,15 +77,6 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 					break;
 				}
 			}
-		}
-
-		doLoadStep();
-	});
-
-	applications.list({'project' : $stateParams.id, 'user' : principal.getUser().id}).then(function(result) {
-		$log.debug(result.data);
-		if (result.data.length > 0) {
-			$scope.canApply = false;
 		}
 
 		doLoadStep();
