@@ -47,10 +47,6 @@ class User < ActiveRecord::Base
     first_name + " " + last_name
   end
 
-  def mailboxer_email(obj)
-    email
-  end
-
   def ensure_authenticaion_token
     self.authentication_token ||= generate_authentication_token
   end
