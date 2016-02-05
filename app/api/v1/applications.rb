@@ -33,14 +33,17 @@ module V1
     desc "Retrieve all applications.", entity: Entities::ApplicationData::AsSearch
     params do
       optional :user, type: Integer, allow_blank: false, desc: "The applicant's ID."
-      requires :project, type: Integer, allow_blank: false, desc: "The application's project's ID."
+      optional :project, type: Integer, allow_blank: false, desc: "The application's project's ID."
       optional :show_rejected, type: Boolean, allow_blank: false, default: false, desc: "The application's project's ID."
       optional :role, type: Integer, allow_blank: false, desc: "The application's role's ID."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."
+      at_least_one_of :user, :project
     end
     get do
-      application_view_permissions params[:project]
+      if params.has_key?(:project) && !params.has_key?(:user)
+        application_view_permissions params[:project]
+      end
 
       if not params[:show_rejected]
         not_params = { :status => 2 }
