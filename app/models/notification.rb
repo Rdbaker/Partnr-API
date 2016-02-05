@@ -1,7 +1,7 @@
 class Notification < ActiveRecord::Base
   belongs_to :actor, :class_name => "User", :foreign_key => "actor_id"
   belongs_to :notify, :class_name => "User", :foreign_key => "notify_id"
-  belongs_to :notifier, polymorphic: true
+  belongs_to :notifier, polymorphic: true, dependent: :delete
 
   validates :actor, :notify, :notifier, :action, presence: true
 
@@ -20,7 +20,7 @@ class Notification < ActiveRecord::Base
   def message
     m = I18n.t "notification.#{notifier.class}.#{action}"
     if m.start_with? "translation missing: en.notification."
-      "Somebody deleted something somewhere."
+      "#{action} a #{notifier.class}"
     else
       m
     end

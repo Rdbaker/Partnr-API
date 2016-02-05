@@ -5,13 +5,14 @@ module V1
     mount Users         => '/users'
     mount Roles         => '/roles'
     mount Applications  => '/applications'
-    mount Benchmarks    => '/benchmarks'
+    mount Benchmarks    => '/milestones'
     mount Posts         => '/posts'
     mount Comments      => '/comments'
     mount Notifications => '/notifications'
     mount Profiles      => '/profiles'
     mount Conversations => '/conversations'
     mount Categories    => '/categories'
+    mount Tasks         => '/tasks'
 
     add_swagger_documentation(
       base_path: '/api/v1',

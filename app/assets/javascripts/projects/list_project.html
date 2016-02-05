@@ -14,12 +14,12 @@
 				</div>
 			</div>
 			<div class="ptile-info">
-				<h3>{{ p.title }}</h3>
+				<h3>{{ p.title | limitLength:255 }}</h3>
 				<h5>{{ getProjectStatus(p.status) }}</h5>
-				<p>{{ p.description }}</p>
+				<p>{{ p.description | limitLength:255 }}</p>
 				<div class="clearfix">
 					<div class="col-xs-4">
-						<a ui-sref="#" class="ptile-detail-nugget"><i class="fa fa-comment"></i><span>0</span></a>
+						<a ui-sref="project({ id: p.id })" class="ptile-detail-nugget"><i class="fa fa-comment"></i><span>{{ p.comments.length }}</span></a>
 					</div>
 					<div class="col-xs-8 buttons-right">
 						<button class="btn btn-primary" ng-click="$state.go('project', { id: p.id })">check it out</button>

@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :roles, :dependent => :nullify
   has_many :comments, :dependent => :nullify
   has_many :bmarks, :dependent => :nullify
+  has_and_belongs_to_many :tasks, :dependent => :nullify
   has_many :projects, through: :roles
   has_many :applications, :dependent => :destroy
   has_many :conversations, through: :user_conversations
@@ -37,13 +38,13 @@ class User < ActiveRecord::Base
     "/api/v1/users/#{id}"
   end
 
+  def gravatar_link
+    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.strip.downcase)}?d=404"
+  end
+
   # return the full name of the user
   def name
     first_name + " " + last_name
-  end
-
-  def mailboxer_email(obj)
-    email
   end
 
   def ensure_authenticaion_token

@@ -59,9 +59,6 @@ gem 'foreman'
 # use puma as the http server
 gem 'puma'
 
-# use mailboxer as the mailing system
-gem 'mailboxer'
-
 # use kaminari to paginate the models
 gem 'kaminari'
 

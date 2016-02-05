@@ -2,7 +2,6 @@
 //= require masonry/dist/masonry.pkgd.min
 //= require jquery-bridget/jquery-bridget
 //= require ev-emitter/ev-emitter
-//= require matches-selector/matches-selector
 //= require fizzy-ui-utils/utils
 //= require outlayer/outlayer
 //= require outlayer/item

@@ -19,12 +19,12 @@ module V1
     end
 
 
-    desc "Retrieve all benchmarks for a project", entity: Entities::BmarkData::AsSearch
+    desc "Retrieve all milestones for a project", entity: Entities::BmarkData::AsSearch
     params do
-      requires :project, type: Integer, allow_blank: false, desc: "The Project ID for the benchmarks to retreive."
-      optional :title, type: String, desc: "The title of the project benchmark to retrieve."
-      optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of benchmarks per page."
-      optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the benchmarks."
+      requires :project, type: Integer, allow_blank: false, desc: "The Project ID for the milestones to retreive."
+      optional :title, type: String, desc: "The title of the project milestone to retrieve."
+      optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of milestones per page."
+      optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the milestones."
     end
     get do
       present Bmark.where(permitted_params params)
@@ -33,9 +33,9 @@ module V1
     end
 
 
-    desc "Get a single benchmark based on its ID.", entity: Entities::BmarkData::AsFull
+    desc "Get a single milestone based on its ID.", entity: Entities::BmarkData::AsFull
     params do
-      requires :id, type: Integer, allow_blank: false, desc: "The benchmark ID."
+      requires :id, type: Integer, allow_blank: false, desc: "The milestone ID."
     end
     get ":id" do
       benchmark = get_record(Bmark, params[:id])
@@ -43,11 +43,11 @@ module V1
     end
 
 
-    desc "Create a new benchmark for a project.", entity: Entities::BmarkData::AsFull
+    desc "Create a new milestone for a project.", entity: Entities::BmarkData::AsFull
     params do
-      requires :title, type: String, length: 1000, allow_blank: false, desc: "The title of the benchmark for the project."
-      requires :project, type: Integer, allow_blank: false, desc: "The project ID to which the benchmark will belong."
-      optional :due_date, type: DateTime, allow_blank: false, desc: "The benchmark's due date."
+      requires :title, type: String, length: 1000, allow_blank: false, desc: "The title of the milestone for the project."
+      requires :project, type: Integer, allow_blank: false, desc: "The project ID to which the milestone will belong."
+      optional :due_date, type: DateTime, allow_blank: false, desc: "The milestone's due date."
     end
     post do
       authenticated_user
@@ -68,14 +68,14 @@ module V1
     end
 
 
-    desc "Update a specific benchmark for a project.", entity: Entities::RoleData::AsFull
+    desc "Update a specific milestone for a project.", entity: Entities::BmarkData::AsFull
     params do
-      requires :id, type: Integer, allow_blank: false, desc: "The benchmark ID."
-      optional :title, type: String, length: 1000, allow_blank: false, desc: "The benchmark title."
-      optional :complete, type: Boolean, allow_blank: false, desc: "The benchmark's completeness."
+      requires :id, type: Integer, allow_blank: false, desc: "The milestone ID."
+      optional :title, type: String, length: 1000, allow_blank: false, desc: "The milestone title."
+      optional :complete, type: Boolean, allow_blank: false, desc: "The milestone's completeness."
       # this needs to be in iso8601 format:
       # https://en.wikipedia.org/wiki/ISO_8601
-      optional :due_date, type: DateTime, allow_blank: false, desc: "The benchmark's due date."
+      optional :due_date, type: DateTime, allow_blank: false, desc: "The milestone's due date."
       at_least_one_of :title, :complete, :due_date
     end
     put ":id" do
@@ -90,9 +90,9 @@ module V1
     end
 
 
-    desc "Delete a benchmark from a project."
+    desc "Delete a milestone from a project."
     params do
-      requires :id, type: Integer, allow_blank: false, desc: "The benchmark's ID."
+      requires :id, type: Integer, allow_blank: false, desc: "The milestone's ID."
     end
     delete ":id" do
       benchmark_destroy_permissions(params[:id])

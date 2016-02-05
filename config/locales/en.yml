@@ -24,24 +24,21 @@ en:
     Application:
       created: "applied to the role {role} on the project {project}"
       updated: "updated the application for the role {role} on the project {project}"
-      deleted: "rejected the application for the role {role} on the project {project}"
     Bmark:
-      created: "created the benchmark {benchmark} for the project {project}"
-      updated: "updated the benchmark {benchmark} for the project {project}"
-      deleted: "deleted the benchmark {benchmark} for the project {project}"
+      created: "created the milestone {benchmark} for the project {project}"
+      updated: "updated the milestone {benchmark} for the project {project}"
     Comment:
       created: "commented on the project {project}"
       updated: "edited their comment on the project {project}"
-      deleted: "deleted their comment from the project {project}"
     Post:
       created: "posted {post} to the benchmark {benchmark}"
       updated: "edited their post {post} on the benchmark {benchmark}"
-      deleted: "deleted their post {post} from the benchmark {benchmark}"
     Project:
       created: "created the project {project}"
       updated: "edited their project {project}"
-      deleted: "deleted their project {project}"
     Role:
-      created: "created the role {role} the project {project}"
-      updated: "edited the role {role} the project {project}"
-      deleted: "deleted the role {role} their project {project}"
+      created: "created the role {role} for the project {project}"
+      updated: "edited the role {role} for the project {project}"
+    Task:
+      created: "created the task {task} for the project {project}"
+      updated: "updated the task {task} for the project {project}"

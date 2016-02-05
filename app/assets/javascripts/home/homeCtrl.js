@@ -20,12 +20,6 @@ angular.module('partnr.core').controller('HomeController', function($scope, $sta
 		$scope.loadComplete = true;
 	});
 
-	$scope.doLogout = function() {
-		principal.logout().then(function() {
-			$state.go('login');
-		});
-	};
-
 	$scope.doSearch = function() {
 		$q.all([
 			search.queryProjects($scope.search.keywords),
