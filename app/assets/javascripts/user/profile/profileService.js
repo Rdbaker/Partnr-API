@@ -85,18 +85,6 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 			});
 		},
 
-		addSkill : function(skill) {
-			$log.debug("[PROFILE] Sending skill create request");
-			$log.debug(skill);
-
-			return $http({
-				method: 'POST',
-				url: $rootScope.apiRoute + 'profiles/skill',
-				headers: principal.getHeaders(),
-				data: skill
-			});
-		},
-
 		addPosition : function(position) {
 			$log.debug("[PROFILE] Sending position create request");
 			$log.debug(position);
@@ -127,8 +115,6 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 					return this.isValidLocation(item);
 				case "school":
 					return this.isValidSchool(item);
-				case "skill":
-					return this.isValidSkill(item);
 				case "position":
 					return this.isValidPosition(item);
 				case "interest":
@@ -144,10 +130,6 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 			return (school.school_name.length > 0 && 
 				school.grad_year.length >= 0 && 
 				school.grad_year.length <= 4);
-		},
-
-		isValidSkill : function(skill) {
-			return (skill.title.length > 0);
 		},
 
 		isValidPosition : function(position) {

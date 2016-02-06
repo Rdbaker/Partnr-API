@@ -13,9 +13,6 @@ module V1::Entities
       expose :interests, using: Profile::InterestData::AsNested, documentation: { type: "InterestData (nested)",
                                                                                   desc: "The interests of the user",
                                                                                   is_array: true }
-      expose :skills, using: Profile::SkillData::AsNested, documentation: { type: "SkillData (nested)",
-                                                                            desc: "The skills of the user",
-                                                                            is_array: true }
       expose :categories, using: CategoryData::AsNested, documentation: { type: "CategoryData (nested)",
                                                                           desc: "The categories of the user's tasks and skills",
                                                                           is_array: true }
