@@ -34,7 +34,7 @@ module V1
     post do
       cat = get_record(Category, params[:category])
       create_skill params[:title], cat
-      present @skill, with: Entities::Profile::SkillData::AsNested
+      present @skill, with: Entities::SkillData::AsFull
     end
   end
 end
