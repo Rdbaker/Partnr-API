@@ -74,6 +74,7 @@ module V1
     get ":id" do
       application = get_record(Application, params[:id])
       params[:project] = application.project.id
+      params[:user] = application.user.id
       application_view_permissions
       present application, with: Entities::ApplicationData::AsFull
     end
