@@ -5,4 +5,5 @@ class Profile < ActiveRecord::Base
   has_many :positions, :dependent => :destroy
   has_many :interests, :dependent => :destroy
   has_many :skills, :dependent => :destroy
+  has_many :categories, through: :skills
 end

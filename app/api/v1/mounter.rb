@@ -11,6 +11,7 @@ module V1
     mount Notifications => '/notifications'
     mount Profiles      => '/profiles'
     mount Conversations => '/conversations'
+    mount Categories    => '/categories'
     mount Tasks         => '/tasks'
 
     add_swagger_documentation(
