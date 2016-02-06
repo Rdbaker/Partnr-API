@@ -1,6 +1,7 @@
 angular.module('partnr.users.assets').controller('ListApplicationsController', function($scope, $state, $stateParams, $log, $q, projects, applications, principal, toaster) {
 	$scope.project = {};
 	$scope.applications = [];
+	$scope.isOwner = false;
 
 	$scope.loadComplete = false;
 	var loadSteps = 2;
@@ -13,6 +14,7 @@ angular.module('partnr.users.assets').controller('ListApplicationsController', f
 
 	projects.get($stateParams.project_id).then(function(result) {
 		$scope.project = result.data;
+		$scope.isOwner = result.data.owner.id === principal.getUser().id;
 		doLoadStep();
 	});
 
