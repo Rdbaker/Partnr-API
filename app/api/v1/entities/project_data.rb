@@ -18,11 +18,14 @@ module V1::Entities
     class AsFull < AsSearch
       expose :users, documentation: { type: "UserData (nested)", desc: "The users working on the project." }, using: UserData::AsNested
       expose :user, documentation: { type: "UserData (nested)", desc: "The project owner." }, using: UserData::AsNested, as: :owner
-      expose :applications, documentation: { type: "ApplicationData (nested)", desc: "The applications for all roles on the project." }, using: ApplicationData::AsNested
       expose :roles, documentation: { type: "RoleData (nested)", desc: "The roles for the project." }, using: RoleData::AsChild
       expose :tasks, documentation: { type: "TaskData (child)", desc: "The tasks for the project." }, using: TaskData::AsChild
       expose :bmarks, documentation: { type: "MilestoneData (nested)", desc: "The milestones for the project." }, using: BmarkData::AsNested, as: :milestones
       expose :creator, documentation: { type: "Integer", desc: "The project creator's id." }
+    end
+
+    class FullAsMember < AsFull
+      expose :applications, documentation: { type: "ApplicationData (nested)", desc: "The applications for all roles on the project." }, using: ApplicationData::AsNested
     end
 
     class AsNotification < Grape::Entity
