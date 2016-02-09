@@ -68,9 +68,6 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 		grad_year: "",
 		field: ""
 	});
-	$scope.skills = new editableAttributeList("skill", {
-		title: ""
-	});
 	$scope.positions = new editableAttributeList("position", {
 		title: "", 
 		company: ""
@@ -87,7 +84,6 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 				$scope.location = $scope.user.profile.location.geo_string;
 			}
 			$scope.schools.all = $scope.user.profile.school_infos;
-			$scope.skills.all = $scope.user.profile.skills;
 			$scope.positions.all = $scope.user.profile.positions;
 			$scope.interests.all = $scope.user.profile.interests;
 		}
@@ -104,7 +100,6 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 		}
 
 		requests.push($scope.schools.save());
-		requests.push($scope.skills.save());
 		requests.push($scope.positions.save());
 		requests.push($scope.interests.save());
 

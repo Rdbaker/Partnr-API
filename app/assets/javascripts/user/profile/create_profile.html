@@ -25,19 +25,6 @@
     </div>
   </div>
 
-  <h3 class="inline">Skills <button class="btn btn-primary" ng-click="addSkill()">+</button></h3>
-  <div class="clearfix">
-    <div class="col-md-3" ng-repeat="skill in skills track by $index">
-      <div class="internal-container">
-        <label for="skill_title">Skill Name</label>
-        <input type="text" name="skill_title" class="form-control" ng-model="skill.title"/>
-        <div class="buttons-right">
-          <button type="button" class="btn btn-danger" ng-click="deleteSkill($index)">Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <h3 class="inline">Positions <button class="btn btn-primary" ng-click="addPosition()">+</button></h3>
   <div class="clearfix">
     <div class="col-md-3" ng-repeat="position in positions track by $index">
