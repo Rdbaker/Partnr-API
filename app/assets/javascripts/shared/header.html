@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand logo-container" ui-sref="home"><img class="partnr-logo" src="/assets/partnr-logo.png"></a>
+			<a class="navbar-brand logo-container" ui-sref="home"><img class="partnr-logo" src="/assets/partnr-logo.png" /></a>
 		</div>
 
 		<div ng-if="isLoggedIn()" class="collapse navbar-collapse pull-right">
@@ -21,7 +21,7 @@
 					</ul>
 				</li>
 				<li uib-dropdown>
-					<a href id="user-dropdown" uib-dropdown-toggle><img src="/img/user.png"></a>
+					<a href id="user-dropdown" uib-dropdown-toggle><img src="/img/user.png" /></a>
 					<ul uib-dropdown-menu class="header-dropdown" aria-labelledby="user-dropdown">
 						<li><a href ng-click="$state.go('user_project_list')">My Projects</a></li>
 						<li><a href ng-click="$state.go('project_create')">Create Project</a></li>
