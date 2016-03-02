@@ -11,7 +11,9 @@ module V1
     mount Notifications => '/notifications'
     mount Profiles      => '/profiles'
     mount Conversations => '/conversations'
+    mount Categories    => '/categories'
     mount Tasks         => '/tasks'
+    mount Skills        => '/skills'
 
     add_swagger_documentation(
       base_path: '/api/v1',

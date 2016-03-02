@@ -5,6 +5,24 @@ require_relative './validators/length'
 module V1
   class Applications < Grape::API
     helpers do
+      def application_view_permissions
+        authenticated_user
+        if params.has_key? :project
+          @project ||= get_record(Project, params[:project])
+
+          if params.has_key? :user
+            # you need to be the requested user or be on the project to see the applications
+            error!("You can't view the applications on this project", 401) unless (params[:user] == current_user.id ||
+                                                                                   @project.belongs_to_project(current_user))
+          else
+            # you need to be on the project if you want to see its applications
+            error!("You can't view the applications on this project", 401) unless @project.belongs_to_project current_user
+          end
+        else
+          error!("You can't view this user's applications", 401) unless params[:user] == current_user.id
+        end
+      end
+
       def application_destroy_permissions(id)
         authenticated_user
         @application ||= get_record(Application, params[:id])
@@ -32,8 +50,11 @@ module V1
       optional :role, type: Integer, allow_blank: false, desc: "The application's role's ID."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."
+      at_least_one_of :user, :project
     end
     get do
+      application_view_permissions
+
       if not params[:show_rejected]
         not_params = { :status => 2 }
       else
@@ -52,6 +73,9 @@ module V1
     end
     get ":id" do
       application = get_record(Application, params[:id])
+      params[:project] = application.project.id
+      params[:user] = application.user.id
+      application_view_permissions
       present application, with: Entities::ApplicationData::AsFull
     end
 

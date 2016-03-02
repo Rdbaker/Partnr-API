@@ -3,7 +3,6 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 
 	$scope.location = "";
 	$scope.schools = [];
-	$scope.skills = [];
 	$scope.positions = [];
 	$scope.interests = [];
 
@@ -17,16 +16,6 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 
 	$scope.deleteSchool = function(index) {
 		$scope.schools.splice(index, 1);
-	};
-
-	$scope.addSkill = function() {
-		$scope.skills.push({ 
-			title: ""
-		});
-	};
-
-	$scope.deleteSkill = function(index) {
-		$scope.skills.splice(index, 1);
 	};
 
 	$scope.addPosition = function() {
@@ -62,12 +51,6 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 		for (var i = 0; i < $scope.schools.length; i++) {
 			if (profiles.isValidSchool($scope.schools[i])) {
 				requests.push(profiles.addSchool($scope.schools[i]).$promise);
-			}
-		}
-
-		for (var i = 0; i < $scope.skills.length; i++) {
-			if (profiles.isValidSkill($scope.skills[i])) {
-				requests.push(profiles.addSkill($scope.skills[i]).$promise);
 			}
 		}
 

@@ -4,5 +4,4 @@ class Profile < ActiveRecord::Base
   has_many :school_infos, :dependent => :destroy
   has_many :positions, :dependent => :destroy
   has_many :interests, :dependent => :destroy
-  has_many :skills, :dependent => :destroy
 end
