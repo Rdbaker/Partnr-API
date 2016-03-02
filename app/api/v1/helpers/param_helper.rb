@@ -11,4 +11,8 @@ module V1::Helpers::ParamHelper
     error!("404 Not Found", 404) if record.nil?
     record
   end
+
+  def get_collection(cls, ids)
+    ids.collect { |id| get_record(cls, id) }
+  end
 end

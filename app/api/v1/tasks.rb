@@ -64,6 +64,8 @@ module V1
       optional :milestone, type: Integer, allow_blank: false, desc: "The milestone ID to create the task under."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The task's status."
       optional :users, type: Array[Integer], allow_blank: false, desc: "The list of user IDs to assign the task to."
+      optional :skills, type: Array[Integer], allow_blank: false, desc: "The list of skill IDs to give to this task."
+      optional :categories, type: Array[Integer], length: 3, allow_blank: false, desc: "The list of category IDs to give to this task."
     end
     post do
       task_create_permissions
@@ -77,6 +79,7 @@ module V1
         params[:status] = { "not_started" => 0, "in_progress" => 1, "complete" => 2 }[params[:status]]
       end
 
+      byebug
       t = Task.create!({
         title: params[:title],
         description: params[:description],
@@ -84,6 +87,8 @@ module V1
         users: @users || [],
         bmark: params[:milestone],
         user_notifier: current_user,
+        categories: get_collection(Category, params[:categories]),
+        skills: get_collection(Skill, params[:skills]),
         status: params[:status] || 0
       })
 

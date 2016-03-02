@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160206135809) do
+ActiveRecord::Schema.define(version: 20160225232429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -204,11 +204,12 @@ ActiveRecord::Schema.define(version: 20160206135809) do
   add_index "tasks", ["project_id"], name: "index_tasks_on_project_id", using: :btree
 
   create_table "tasks_users", id: false, force: :cascade do |t|
-    t.integer "task_id"
-    t.integer "user_id"
+    t.integer "task_id", null: false
+    t.integer "user_id", null: false
   end
 
   add_index "tasks_users", ["task_id", "user_id"], name: "index_tasks_users_on_task_id_and_user_id", using: :btree
+  add_index "tasks_users", ["user_id", "task_id"], name: "index_tasks_users_on_user_id_and_task_id", using: :btree
 
   create_table "user_conversations", force: :cascade do |t|
     t.integer  "user_id"
