@@ -22,7 +22,7 @@ class Project < Notifier
   attr_readonly :creator
 
   def has_admin_permissions(user)
-    user.class == User && self.owner == user.id
+    user.class == User && owner == user.id
   end
 
   def has_create_post_permissions(user)

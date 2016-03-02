@@ -13,7 +13,7 @@ module V1::Helpers::ValidationHelper
   end
 
   def authenticated_user
-    error!("401 Unauthorized", 401) unless authenticated
+    error!("You need to be logged in to do that", 401) unless authenticated
   end
 
   def current_user
