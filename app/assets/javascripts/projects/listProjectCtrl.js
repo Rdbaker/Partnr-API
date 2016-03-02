@@ -5,5 +5,6 @@ angular.module('partnr.users.assets').controller('ListProjectController', functi
 	projects.list().then(function(result) {
 		$scope.projects = result.data;
 		$scope.loadComplete = true;
+		$log.debug($scope.projects);
 	});
 });
