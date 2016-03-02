@@ -7,18 +7,12 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 	$scope.loadComplete = false;
 	$scope.newRoles = [];
 	$scope.rolesToDelete = [];
-	
-	projects.get($stateParams.project_id).then(function(result) {
-		$log.debug(result.data);
-		$scope.project = result.data;
 
-		if (result.data.owner.id === principal.getUser().id) {
-			$scope.isOwner = true;
-			$scope.$parent.setAsOwner();
-		}
-
+	$scope.$parent.getProjectWrapperInfo().then(function(result) {
+		$log.debug(result);
+		$scope.project = result.project;
+		$scope.isOwner = result.isOwner;
 		$scope.loadComplete = true;
-		$scope.$parent.setLoadComplete(true);
 	});
 
 	$scope.addRole = function() {

@@ -60,29 +60,12 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		});
 	};
 	
-	projects.get($stateParams.id).then(function(result) {
-		$log.debug(result.data);
-		$scope.project = result.data;
-		if (result.data.owner.id === principal.getUser().id) {
-			$scope.isOwner = true;
-			$scope.isMember = true;
-			$scope.canApply = false;
-
-			$scope.$parent.setAsMember();
-			$scope.$parent.setAsOwner();
-		}
-
-		for (var i = 0; i < result.data.roles.length; i++) {
-			if (result.data.roles[i].user != null) {
-				if (result.data.roles[i].user.id === principal.getUser().id) {
-					$scope.canApply = false;
-					$scope.isMember = true;
-					$scope.$parent.setAsMember();
-					break;
-				}
-			}
-		}
-
+	$scope.$parent.getProjectWrapperInfo().then(function(result) {
+		$log.debug(result);
+		$scope.project = result.project;
+		$scope.isOwner = result.isOwner;
+		$scope.isMember = result.isMember;
+		$scope.canApply = result.canApply;
 		doLoadStep();
 	});
 
@@ -99,8 +82,6 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		loadStepsAchieved += 1;
 		if (loadStepsAchieved === loadSteps) {
 			$scope.loadComplete = true;
-			console.log($scope.$parent);
-			$scope.$parent.setLoadComplete(true);
 		}
 	};
 });

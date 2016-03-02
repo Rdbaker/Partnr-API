@@ -220,15 +220,23 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('project', {
+		.state('project_wrapper', {
 			parent: 'site',
-			url: '/projects/{id:int}',
+			url: '/projects/{project_id:int}',
+			abstract: true,
 			views: {
 				'content@': {
 					templateUrl: 'projects/project_wrapper.html',
 					controller: 'ProjectWrapperController'
-				},
-				'projectinfo@project': {
+				}
+			}
+		})
+
+		.state('project', {
+			parent: 'project_wrapper',
+			url: '',
+			views: {
+				'projectinfo': {
 					templateUrl: 'projects/project.html',
 					controller: 'ProjectController'
 				}
@@ -240,14 +248,10 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 		})
 
 		.state('project_edit', {
-			parent: 'site',
-			url: '/projects/{project_id:int}/edit',
+			parent: 'project_wrapper',
+			url: '/edit',
 			views: {
-				'content@': {
-					templateUrl: 'projects/project_wrapper.html',
-					controller: 'ProjectWrapperController'
-				},
-				'projectinfo@project_edit': {
+				'projectinfo': {
 					templateUrl: 'projects/edit_project.html',
 					controller: 'EditProjectController'
 				}
@@ -259,10 +263,10 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 		})
 
 		.state('project_conversation', {
-			parent: 'site',
-			url: '/projects/{project_id:int}/messages',
+			parent: 'project_wrapper',
+			url: '/messages',
 			views: {
-				'content@': {
+				'projectinfo': {
 					templateUrl: 'conversations/project_conversation.html',
 					controller: 'ProjectConversationController'
 				}
@@ -274,10 +278,10 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 		})
 
 		.state('application_list', {
-			parent: 'site',
-			url: '/projects/{project_id:int}/applications',
+			parent: 'project_wrapper',
+			url: '/applications',
 			views: {
-				'content@': {
+				'projectinfo': {
 					templateUrl: 'projects/applications/list_applications.html',
 					controller: 'ListApplicationsController'
 				}

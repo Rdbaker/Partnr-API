@@ -1,14 +1,15 @@
-<div ng-if="isMember" class="content-container no-padding col-md-3">
-  <span class="sidebar-header">Manage Project</span>
-  <ul class="sidebar-content nav nav-pills nav-stacked">
-    <li role="presentation" ng-class="( $state.current.name === 'project' ? 'active' : '')"><a href ui-sref="project({ id: projectId })">View Project</a></li>
-    <li role="presentation" ng-class="( $state.current.name === 'project_edit' ? 'active' : '')"><a href ui-sref="project_edit({ id: projectId })">Edit Project</a></li>
-    <li role="presentation" ng-class="( $state.current.name === 'application_list' ? 'active' : '')"><a href ui-sref="application_list({ id: projectId })">Role Applications</a></li>
-    <li role="presentation" ng-class="( $state.current.name === 'project_conversation' ? 'active' : '')"><a href ui-sref="project_conversation({ id: projectId })">Group Message</a></li>
-  </ul>
+<div class="partnr-header-wrapper" ng-show="loadComplete">
+  <div class="partnr-page-header light clearfix" ng-class="(isMember ? 'with-button-pane' : '')">
+    <h1 class="text-center impact-title">{{ project.title }}</h1>
+  </div>
+  <div class="impact-container content-container" ng-if="isMember">
+    <button class="btn btn-primary" ng-if="isOwner" ng-click="$state.go('project_edit', {'project_id' : project.id})">Edit</button>
+    <button class="btn btn-default" ng-click="$state.go('application_list', {'project_id' : project.id})">View Applications</button>
+    <button class="btn btn-default" ng-click="$state.go('project_conversation', {'project_id' : project.id})">Messages</button>
+  </div>
 </div>
-<div ng-class="(isMember ? 'col-md-9' : '')" ng-show="loadComplete" ui-view="projectinfo"></div>
-<div class="content-container" ng-class="(isMember ? 'col-md-9' : '')" ng-hide="loadComplete">
+<div ui-view="projectinfo" ng-show="$parent.loadComplete"></div>
+<div class="content-container" ng-hide="loadComplete">
   <div class="text-center loading">
     <img src="/assets/ajax-loader.gif">
   </div>
