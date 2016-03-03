@@ -1,10 +1,9 @@
-<toasts></toasts>
-<div class="content-container">
+<div class="content-container with-tabs">
 	<div ng-show="loadComplete">
-		<h3>Applications for {{ project.title }}</h3>
+		<h2>Applications</h2>
 		<div class="internal-container" ng-repeat="a in applications track by $index">
-      <span class="title"><a href ui-sref="profile({ id: a.user.id })">{{ a.user.first_name }} {{ a.user.last_name }}</a></span>
-      <span class="subtitle">For Role: {{ a.role.title }} (<em>{{ a.status }}</em>)</span>
+        	<span class="title"><a href ui-sref="profile({ id: a.user.id })">{{ a.user.first_name }} {{ a.user.last_name }}</a></span>
+        	<span class="subtitle">For Role: {{ a.role.title }} (<em>{{ a.status }}</em>)</span>
 			<div class="buttons-right" ng-if="a.status === 'pending' && isOwner">
 				<button type="button" class="btn btn-default" ng-click="doAccept(a)">Accept</button>
 				<button type="button" class="btn btn-danger" ng-click="doReject(a)">Reject</button>

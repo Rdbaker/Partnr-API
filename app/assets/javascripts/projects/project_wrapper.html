@@ -1,13 +1,15 @@
 <div class="partnr-header-wrapper" ng-show="loadComplete">
-  <div class="partnr-page-header light clearfix" ng-class="(isMember ? 'with-button-pane' : '')">
+  <div class="partnr-page-header light clearfix">
     <h1 class="text-center impact-title">{{ project.title }}</h1>
   </div>
-  <div class="impact-container content-container" ng-if="isMember">
-    <button class="btn btn-primary" ng-if="isOwner" ng-click="$state.go('project_edit', {'project_id' : project.id})">Edit</button>
-    <button class="btn btn-default" ng-click="$state.go('application_list', {'project_id' : project.id})">View Applications</button>
-    <button class="btn btn-default" ng-click="$state.go('project_conversation', {'project_id' : project.id})">Messages</button>
-  </div>
 </div>
+<toasts></toasts>
+<ul class="content-container-tabs nav nav-tabs" ng-show="loadComplete" role="tablist">
+  <li role="presentation" ng-class="{'active': $state.current.name === 'project'}"><a href ui-sref="project({'project_id' : project.id})" role="tab">Project</a></li>
+  <li ng-if="isOwner" role="presentation" ng-class="{'active': $state.current.name === 'project_edit'}"><a href ui-sref="project_edit({'project_id' : project.id})" role="tab"><i class="fa fa-unlock"></i> Edit Project</a></li>
+  <li ng-if="isOwner" role="presentation" ng-class="{'active': $state.current.name === 'application_list'}"><a href ui-sref="application_list({'project_id' : project.id})" role="tab"><i class="fa fa-unlock"></i> Applications</a></li>
+  <li ng-if="isMember" role="presentation" ng-class="{'active': $state.current.name === 'project_conversation'}"><a href ui-sref="project_conversation({'project_id' : project.id})" role="tab"><i class="fa fa-unlock"></i> Messages</a></li>
+</ul>
 <div ui-view="projectinfo" ng-show="$parent.loadComplete"></div>
 <div class="content-container" ng-hide="loadComplete">
   <div class="text-center loading">

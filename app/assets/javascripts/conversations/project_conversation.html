@@ -1,6 +1,5 @@
-<toasts></toasts>
-<div ng-show="loadComplete" class="content-container">
-	<h2>Project Chat</h2>
+<div ng-show="loadComplete" class="content-container with-tabs">
+	<h2>Messages</h2>
 	<div>
 	  <div class="internal-container comment" ng-repeat="message in conversation.messages">
 	    <span class="c-header"><strong><a href ui-sref="profile({ id: message.user.id })">{{ message.user.name }}</a></strong> on {{ message.sent_at | date: 'mediumDate' }}:</span>
@@ -12,7 +11,7 @@
 	  </div>
 	</div>
 </div>
-<div ng-hide="loadComplete" class="content-container">
+<div ng-hide="loadComplete" class="content-container with-tabs">
   <div class="text-center loading">
     <img src="/assets/ajax-loader.gif">
   </div>

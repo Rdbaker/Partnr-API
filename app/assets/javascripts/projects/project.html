@@ -1,6 +1,4 @@
-<toasts></toasts>
-<div class="content-container" ng-show="loadComplete">
-	<h2>{{ project.title }}</h2>
+<div class="content-container with-tabs" ng-show="loadComplete">
   <span>{{ getStatus() }}</span>
   <h3>Description</h3>
   <p>{{project.description}}</p>
@@ -29,7 +27,7 @@
     </div>
   </div>
 </div>
-<div ng-hide="loadComplete" class="content-container">
+<div ng-hide="loadComplete" class="content-container with-tabs">
   <div class="text-center loading">
     <img src="/assets/ajax-loader.gif">
   </div>

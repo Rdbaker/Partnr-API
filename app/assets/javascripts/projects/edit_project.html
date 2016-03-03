@@ -1,10 +1,5 @@
-<toasts></toasts>
-<div ng-if="isOwner" class="content-container">
-  <button class="btn btn-primary" ng-click="doSave()">Save</button>
-  <button class="btn btn-default" ng-click="addRole()">Add a Role</button>
-  <button class="btn btn-danger" ng-click="deleteProject()">Delete Project</button>
-</div>
-<div ng-if="isOwner" class="content-container" ng-show="loadComplete">
+<div ng-if="isOwner" class="content-container with-tabs" ng-show="loadComplete">
+  <h2>Edit</h2>
   <h3>Name</h3>
   <input type="text" name="name" class="form-control" ng-model="project.title" />
   <h3>Status</h3>
@@ -36,8 +31,12 @@
       </div>
     </div>
   </div>
+
+  <button class="btn btn-primary" ng-click="doSave()">Save</button>
+  <button class="btn btn-default" ng-click="addRole()">Add a Role</button>
+  <button class="btn btn-danger" ng-click="deleteProject()">Delete Project</button>
 </div>
-<div ng-hide="loadComplete" class="content-container">
+<div ng-hide="loadComplete" class="content-container with-tabs">
   <div class="text-center loading">
     <img src="/assets/ajax-loader.gif">
   </div>

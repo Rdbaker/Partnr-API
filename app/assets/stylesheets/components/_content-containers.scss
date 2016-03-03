@@ -21,6 +21,11 @@
   &.no-padding {
     padding: 0;
   }
+
+  &.with-tabs {
+    border-radius: 0 0 3px 3px;
+    border-top: 0;
+  }
 }
 
 .loading-wrapper {

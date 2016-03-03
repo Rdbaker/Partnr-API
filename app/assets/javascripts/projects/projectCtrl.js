@@ -1,6 +1,5 @@
 angular.module('partnr.users.assets').controller('ProjectController', function($scope, $state, $stateParams, $log, $q, projects, 
 	applications, comments, principal, toaster) {
-	
 	$scope.project = {};
 	$scope.newComment = {
 		content: "",
@@ -65,7 +64,6 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		$scope.project = result.project;
 		$scope.isOwner = result.isOwner;
 		$scope.isMember = result.isMember;
-		$scope.canApply = result.canApply;
 		doLoadStep();
 	});
 
@@ -84,4 +82,5 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 			$scope.loadComplete = true;
 		}
 	};
+
 });
