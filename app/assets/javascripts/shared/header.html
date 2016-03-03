@@ -38,5 +38,12 @@
 			</ul>
 			<notifications-dropdown visible="notificationsDropdownVisible" do-dropdown-change="toggleNotificationsDropdown()"></notifications-dropdown>
 		</div>
+		<div ng-if="!(isLoggedIn())" class="collapse navbar-collapse pull-right">
+			<ul class="nav navbar-nav">
+				<li><a ui-sref="login">Log In</a></li>
+				<li><a ui-sref="account_create">Sign Up</a></li>
+			</ul>
+		</div>
 	</div>
+
 </nav>
