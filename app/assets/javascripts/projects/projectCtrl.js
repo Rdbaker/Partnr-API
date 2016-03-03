@@ -11,6 +11,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 	$scope.isOwner = false;
 	$scope.isMember = false;
 	$scope.loadComplete = false;
+	$scope.user = principal.getUser();
 	var loadSteps = 2;
 	var loadStepsAchieved = 0;
 
@@ -82,14 +83,16 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		doLoadStep();
 	});
 
-	applications.list({'project' : $stateParams.id, 'user' : principal.getUser().id}).then(function(result) {
-		$log.debug(result.data);
-		if (result.data.length > 0) {
-			$scope.canApply = false;
-		}
+	if ($scope.user) {		
+		applications.list({'project' : $stateParams.id, 'user' : $scope.user.id}).then(function(result) {
+			$log.debug(result.data);
+			if (result.data.length > 0) {
+				$scope.canApply = false;
+			}
 
-		doLoadStep();
-	});
+			doLoadStep();
+		});
+	}
 
 	var doLoadStep = function() {
 		loadStepsAchieved += 1;

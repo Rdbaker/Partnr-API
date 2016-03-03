@@ -1,7 +1,8 @@
 <toasts></toasts>
 <div class="partnr-header-wrapper">
 	<div class="partnr-page-header light clearfix">
-		<h1 class="text-center impact-title">{{ user.first_name }}, discover something new.</h1>
+		<h1 class="text-center impact-title" ng-show="user">{{ user.first_name }}, discover something new.</h1>
+		<h1 class="text-center impact-title" ng-hide="user">Discover something new.</h1>
 		<div class="impact-group">
 			<div class="impact-container text-center col-md-5">
 				<h2>Join something.</h2>

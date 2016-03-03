@@ -20,7 +20,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin'],
+				roles: [],
 				entities: []
 			}
 		})
@@ -95,7 +95,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin'],
+				roles: [],
 				entities: []
 			}
 		})
@@ -200,7 +200,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin'],
+				roles: [],
 				entities: ['project']
 			}
 		})
@@ -230,7 +230,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin'],
+				roles: [],
 				entities: ['project', 'comment', 'role', 'benchmark']
 			}
 		})
