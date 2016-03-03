@@ -2,7 +2,7 @@
 	<div class="ptile-img-placeholder">
 		<div class="ptile-partnrs-wrapper">
 			<div class="ptile-partnrs">
-				<a href ui-sref="profile({ id: user.id })" uib-tooltip="{{ user.name }}" class="ptile-img-partnr" ng-repeat="user in project.users | limitTo:5">
+				<a href ui-sref="profile({ id: role.user.id })" uib-tooltip="{{ role.user.name }}" class="ptile-img-partnr" ng-repeat="role in project.roles | limitTo:5">
 					<img src="/img/user.png" />
 				</a>
 			</div>
