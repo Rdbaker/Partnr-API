@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160206135809) do
+ActiveRecord::Schema.define(version: 20160302060919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20160206135809) do
     t.string   "icon_class"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "task_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -186,6 +187,7 @@ ActiveRecord::Schema.define(version: 20160206135809) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "category_id"
+    t.integer  "task_id"
   end
 
   add_index "skills", ["category_id"], name: "index_skills_on_category_id", using: :btree
@@ -204,11 +206,12 @@ ActiveRecord::Schema.define(version: 20160206135809) do
   add_index "tasks", ["project_id"], name: "index_tasks_on_project_id", using: :btree
 
   create_table "tasks_users", id: false, force: :cascade do |t|
-    t.integer "task_id"
-    t.integer "user_id"
+    t.integer "task_id", null: false
+    t.integer "user_id", null: false
   end
 
   add_index "tasks_users", ["task_id", "user_id"], name: "index_tasks_users_on_task_id_and_user_id", using: :btree
+  add_index "tasks_users", ["user_id", "task_id"], name: "index_tasks_users_on_user_id_and_task_id", using: :btree
 
   create_table "user_conversations", force: :cascade do |t|
     t.integer  "user_id"
@@ -259,6 +262,7 @@ ActiveRecord::Schema.define(version: 20160206135809) do
   add_index "users_projects", ["project_id"], name: "index_users_projects_on_project_id", using: :btree
   add_index "users_projects", ["user_id"], name: "index_users_projects_on_user_id", using: :btree
 
+  add_foreign_key "categories", "tasks"
   add_foreign_key "conversations", "projects"
   add_foreign_key "interests", "profiles"
   add_foreign_key "messages", "conversations"
@@ -267,6 +271,7 @@ ActiveRecord::Schema.define(version: 20160206135809) do
   add_foreign_key "posts", "bmarks"
   add_foreign_key "projects", "conversations"
   add_foreign_key "skills", "categories"
+  add_foreign_key "skills", "tasks"
   add_foreign_key "tasks", "bmarks"
   add_foreign_key "tasks", "projects"
   add_foreign_key "user_conversations", "conversations"
