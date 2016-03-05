@@ -36,7 +36,7 @@ class Application < Notifier
   end
 
   def followers
-    project.followers
+    project.users_on_proj
   end
 
   def self_link
