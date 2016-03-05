@@ -3,6 +3,10 @@ angular.module('partnr.users.assets').controller('ListNotificationsController', 
 	$scope.notifications = notifications;
 	$scope.allNotifications = notifications.get();
 
+  $scope.resolveLink = function(n) {
+      routeUtils.resolveEntityLinkAndGo(n.links.notifier, n, notifications.linkParamResolveStrategy);
+  };
+
 	$scope.$on("notifications", function(event, notificationList) {
 		$log.debug(notificationList);
 
