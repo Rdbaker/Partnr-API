@@ -13,7 +13,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 		var states = $state.get();
 
 		if (exact) {
-			// if it's an exact search, only look 
+			// if it's an exact search, only look
 			// at the state name and match it to
 			// the search parameter
 			return states.filter(function(el) {
@@ -36,7 +36,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 			});
 		}
 	};
- 
+
 	var extractParams = function(url) {
 		// looks at the url and extracts any url parameters
 
@@ -99,7 +99,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 							var dependencyName = matches[1];
 							var dependencyAttr = matches[2];
 
-							// grab the parameter value from the object. if it doesn't 
+							// grab the parameter value from the object. if it doesn't
 							// exist in the object, this will fail
 							var attrValue = result.data[dependencyName][dependencyAttr];
 							route.params[key] = attrValue;
@@ -108,7 +108,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 						}
 					} else {
 						// it's not nested, so something like id
-						
+
 						// in this case, we need to see if the state corresponds
 						// directly to the entity or indirectly. for example:
 						// the 'project' state contains the 'role' entity, so the
@@ -118,7 +118,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 						// i.e. application_list -> application
 						var pattern = new RegExp("^(\\w+)_?")
 						var matches = pattern.exec(route.name);
-						
+
 						if (matches != null) {
 							var parentEntity = matches[1];
 
@@ -129,7 +129,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 								route.params[key] = result.data[key];
 							} else {
 								// if the api does not contain the name of the entity,
-								// that means we have a sub-entity. first, search for 
+								// that means we have a sub-entity. first, search for
 								// the entity name in the object and then use the key
 								route.params[key] = result.data[parentEntity][key];
 							}
@@ -166,7 +166,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 		// entityname        - detailed entity information
 		// entityname_list   - for a list of valid entities
 		// entityname_action - to perform an action on entity. we don't
-		//					   really want that state for our use case here 
+		//					   really want that state for our use case here
 
 		// converts the plural entity to singluar, i.e. projects -> project
 		// because states follow the singular notation
@@ -201,7 +201,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 		// pattern for /api/v1/{entity}/{entityId}
 		var pattern = new RegExp("^\/api\/" + $rootScope.apiVersion + "\/(\\w+)\/(\\d+)");
 		var matches = pattern.exec(apiLink);
-		
+
 		if (matches != null) {
 			var entity = matches[1];
 			var entityId = matches[2];
