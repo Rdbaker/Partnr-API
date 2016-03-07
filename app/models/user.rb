@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
   has_many :applications, :dependent => :destroy
   has_many :conversations, through: :user_conversations
   has_many :user_conversations, :dependent => :destroy
+  has_many :skills, through: :tasks
+  has_many :categories, through: :tasks
   has_one :profile, :dependent => :destroy
 
   before_save :ensure_authenticaion_token

@@ -2,6 +2,12 @@ class Task < Notifier
   belongs_to :project
   has_and_belongs_to_many :users
   belongs_to :bmark
+  has_many :skills, :dependent => :nullify
+  has_many :categories, :dependent => :nullify
+
+  validates_each :categories do |task, cat, val|
+    task.errors.add(cat, "A task can only have up to three categories") if task.categories.size > 3
+  end
 
   validates :title, :project, :status, presence: true
 

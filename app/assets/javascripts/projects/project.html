@@ -23,7 +23,7 @@
     </div>
     <div class="form-group">
       <textarea name="new-comment" class="form-control" ng-model="newComment.content" ng-disabled="isCommentSubmitting" /></textarea>
-      <button class="btn btn-primary" ng-click="addComment()" ng-disabled="isCommentSubmitting">Post</button>
+      <button class="btn btn-primary" ng-click="addComment()" ng-disabled="isCommentSubmitting || !canPost">Post</button>
     </div>
   </div>
 </div>

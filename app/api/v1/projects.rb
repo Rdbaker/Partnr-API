@@ -59,7 +59,7 @@ module V1
     end
     get ":id" do
       project = get_record(Project, params[:id])
-      exp = authenticated_user && project.belongs_to_project(current_user) ? Entities::ProjectData::FullAsMember : Entities::ProjectData::AsFull
+      exp = authenticated && project.belongs_to_project(current_user) ? Entities::ProjectData::FullAsMember : Entities::ProjectData::AsFull
       present project, with: exp
     end
 

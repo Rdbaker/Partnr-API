@@ -27,7 +27,7 @@ module V1::Entities
       expose :tasks, using: TaskData::AsNested, documentation: { type: "TaskData (nested)",
                                                                         desc: "The tasks to which the user is assigned.",
                                                                         is_array: true }
-      expose :profile, using: ProfileData::AsNested, documentation: { type: "ProfileData (nested)",
+      expose :profile, using: ProfileData::AsFull, documentation: { type: "ProfileData (nested)",
                                                                       desc: "The profile of the user"}
     end
 

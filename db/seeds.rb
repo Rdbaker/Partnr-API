@@ -86,7 +86,7 @@ categories = [
   },
   {
     :title => "Theatre",
-    :description => "The activity of acting i, producing, directing, or writing plays",
+    :description => "The activity of acting in, producing, directing, or writing plays",
     :color_hex => "#dddddd",
     :icon_class => "placeholder"
   },
