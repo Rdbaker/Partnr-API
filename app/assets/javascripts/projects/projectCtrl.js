@@ -6,12 +6,14 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		project: null
 	};
 	$scope.isCommentSubmitting = false;
-	$scope.canApply = true;
+	$scope.canApply = false;
 	$scope.isOwner = false;
 	$scope.isMember = false;
 	$scope.canPost = false;
 	$scope.loadComplete = false;
 	$scope.user = principal.getUser();
+	$log.debug('user');
+	console.log($scope.user);
 	var loadSteps = 2;
 	var loadStepsAchieved = 0;
 
@@ -79,7 +81,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 	});
 
 	if ($scope.user) {
-		console.log("here we are");
+		$log.debug('got user');
 		applications.list({'project' : $stateParams.id, 'user' : $scope.user.id}).then(function(result) {
 			$log.debug(result.data);
 			if (result.data.length > 0) {
@@ -89,6 +91,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 			doLoadStep();
 		});
 	} else {
+		$scope.canApply = false;
 		doLoadStep();
 	}
 });

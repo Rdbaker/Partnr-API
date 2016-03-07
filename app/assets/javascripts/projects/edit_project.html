@@ -13,7 +13,7 @@
   <h3 class="inline">Roles</h3>
   <div class="clearfix">
     <div class="col-md-3" ng-repeat="role in project.roles">
-      <div class="internal-container">
+      <div class="internal-container no-margin">
         <span class="title">{{role.title}}</span>
         <span class="subtitle" ng-show="role.user">{{role.user.first_name}} {{role.user.last_name}}</span><span class="subtitle" ng-hide="role.user"><em>None</em></span>
         <div class="buttons-right">
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="col-md-3" ng-repeat="role in newRoles track by $index">
-      <div class="internal-container">
+      <div class="internal-container no-margin">
         <input type="text" class="title form-control" ng-model="role.title"/>
         <span class="subtitle"><em>None</em></span>
         <div class="buttons-right">
@@ -30,11 +30,18 @@
         </div>
       </div>
     </div>
+    <div class="col-md-3">
+      <div class="internal-container no-margin text-center internal-container-link" ng-click="addRole()">
+        <h1>+</h1>
+        <h4>Add a Role</h4>
+      </div>
+    </div>
   </div>
 
-  <button class="btn btn-primary" ng-click="doSave()">Save</button>
-  <button class="btn btn-default" ng-click="addRole()">Add a Role</button>
-  <button class="btn btn-danger" ng-click="deleteProject()">Delete Project</button>
+  <div class="text-right button-group">
+    <button class="btn btn-danger" ng-click="deleteProject()">Delete Project</button>
+    <button class="btn btn-primary" ng-click="doSave()">Save</button>
+  </div>
 </div>
 <div ng-hide="loadComplete" class="content-container with-tabs">
   <div class="text-center loading">

@@ -4,6 +4,7 @@ angular.module('partnr.users.assets').controller('ProjectWrapperController', fun
 	$scope.isOwner = false;
 	$scope.canApply = false;
 	$scope.projectId = $stateParams.project_id;
+	$scope.user = principal.getUser();
 	$scope.project = null;
 
 	console.log($stateParams);
@@ -30,20 +31,27 @@ angular.module('partnr.users.assets').controller('ProjectWrapperController', fun
 		projects.get($stateParams.project_id).then(function(result) {
 			$log.debug(result.data);
 			$scope.project = result.data;
-			if (result.data.owner.id === principal.getUser().id) {
-				$scope.isOwner = true;
-				$scope.isMember = true;
-				$scope.canApply = false;
-			}
 
-			for (var i = 0; i < result.data.roles.length; i++) {
-				if (result.data.roles[i].user != null) {
-					if (result.data.roles[i].user.id === principal.getUser().id) {
-						$scope.canApply = false;
-						$scope.isMember = true;
-						break;
+			if ($scope.user) {
+				if (result.data.owner.id === principal.getUser().id) {
+					$scope.isOwner = true;
+					$scope.isMember = true;
+					$scope.canApply = false;
+				}
+
+				for (var i = 0; i < result.data.roles.length; i++) {
+					if (result.data.roles[i].user != null) {
+						if (result.data.roles[i].user.id === principal.getUser().id) {
+							$scope.canApply = false;
+							$scope.isMember = true;
+							break;
+						}
 					}
 				}
+			} else {
+				$scope.isOwner = false;
+				$scope.isMember = false;
+				$scope.canApply = false;
 			}
 
 			$scope.loadComplete = true;
@@ -73,6 +81,26 @@ angular.module('partnr.users.assets').controller('ProjectWrapperController', fun
 			});
 		}
 		return deferred.promise;
+	};
+
+	$scope.getStatus = function() {
+		var result = 'Not Started';
+
+		if ($scope.project) {
+			switch($scope.project.status) {
+				case 'not_started':
+					result = "Not Started";
+					break;
+				case 'in_progress':
+					result = "In Progress";
+					break;
+				case "complete":
+					result = "Completed";
+					break;
+			}
+		}
+		
+		return result;
 	};
 
 	$scope.initialize();
