@@ -166,7 +166,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 					},
 					url: '/api/users/sign_out'
 				}).success(function(data, status, headers, config) {
-					user = {};
+					user = undefined;
 					authenticated = false;
 					identityPrechecked = false;
 					fetchCsrf();

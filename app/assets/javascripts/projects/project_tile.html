@@ -19,10 +19,10 @@
 		<p>{{ project.description | limitLength:255 }}</p>
 		<div class="clearfix">
 			<div class="col-xs-4">
-				<a ui-sref="project({ id: project.id })" class="ptile-detail-nugget"><i class="fa fa-comment"></i><span>{{ project.comments.length }}</span></a>
+				<a ui-sref="project({ project_id: project.id })" class="ptile-detail-nugget"><i class="fa fa-comment"></i><span>{{ project.comments.length }}</span></a>
 			</div>
 			<div class="col-xs-8 buttons-right">
-				<button class="btn btn-primary" ng-click="$state.go('project', { id: project.id })">check it out</button>
+				<button class="btn btn-primary" ng-click="$state.go('project', { project_id: project.id })">check it out</button>
 			</div>
 		</div>
 	</div>

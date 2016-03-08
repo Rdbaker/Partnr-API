@@ -3,6 +3,10 @@
 	word-break: break-word;
 }
 
+h3 {
+	margin-top: 25px;
+}
+
 .loading {
 	padding: 50px;
 }
@@ -15,4 +19,15 @@
 	p {
 		margin: 10px;
 	}
+}
+
+.button-group {
+	margin-top: 10px;
+}
+
+.opaque-notify-message {
+	font-family: inherit;
+	font-size: 20px;
+	color: #cccccc;
+	margin: 25px 0;
 }

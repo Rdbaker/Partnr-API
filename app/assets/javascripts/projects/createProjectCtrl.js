@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('CreateProjectController', function($scope, $state, $log, $q, projects, roles, principal, toaster) {
+angular.module('partnr.users.assets').controller('CreateProjectController', function($scope, $state, $log, $q, $timeout, projects, roles, principal, toaster) {
 	$scope.step = 1;
 	$scope.project = {
 		title: '',
@@ -8,67 +8,114 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 	$scope.ownerRole = { title: '' };
 	$scope.roles = [{ title: '' }];
 	$scope.loading = false;
+	$scope.stepNames = [
+		"Basic Info",
+		"Your Role",
+		"More Roles",
+		"Finished"
+	];
+
+	$scope.rolePlaceholders = [
+		"Engineer",
+		"Project Manager",
+		"Botanist",
+		"Programmer",
+		"Designer",
+		"Electrician",
+		"Fabricator",
+		"CAD Specialist",
+		"Bounty Hunter"
+	];
 
 	$scope.validateProject = function() {
 		return ($scope.project.title.length > 0);
-	}
+	};
 
 	$scope.validateOwnerRole = function() {
 		return roles.isValid($scope.ownerRole);
-	}
+	};
 
 	$scope.validateRole = function(role) {
 		return roles.isValid(role);
-	}
+	};
+
+	var creationFailCallback = function() {
+		$scope.loading = false;
+		toaster.error("Project could not be created. Please try again.");
+	};
+
+	$scope.stepUp = function() {
+		$scope.step++;
+
+		if ($scope.step === 4) {
+			$scope.loading = true;
+			$scope.doProjectCreate().then(function() {
+				$scope.processOwnerRole().then(function() {
+					$scope.processAdditionalRoles().then(function() {
+						$scope.loading = false;
+					});
+				}, creationFailCallback);
+			}, creationFailCallback);
+		}
+	};
+
+	$scope.stepDown = function() {
+		$scope.step--;
+	};
 
 	$scope.doProjectCreate = function() {
+		var deferred = $q.defer();
+
 		if ($scope.validateProject()) {
-			$scope.loading = true;
 			projects.create($scope.project).then(function(result) {
-				$scope.loading = false;
 				$log.debug(result.data);
 				if (result.data.id) {
-					$scope.step += 1;
 					$scope.project = result.data;
+					deferred.resolve();
 				} else {
 					$log.debug("[PROJECT] Create error");
 					if (result.data.error) { $log.debug(result.data.error); }
-					toaster.error("Project could not be created. Please try again.");
+					deferred.reject();
 				}
 			});
 		} else {
-			toaster.error("Please enter a title.");
+			deferred.reject();
 		}
-	}
+
+		return deferred.promise;
+	};
 
 	$scope.processOwnerRole = function() {
+		var deferred = $q.defer();
+
 		if ($scope.validateOwnerRole()) {
-			$scope.loading = true;
 			$scope.ownerRole.project = $scope.project.id;
 			roles.create($scope.ownerRole).then(function(result) {
-				$scope.loading = false;
 				if (result.data.id) {
 					$scope.ownerRole = result.data;
 					$scope.ownerRole.user = principal.getUser().id;
-					roles.update($scope.ownerRole).success(function(result) {
-						$scope.step += 1;
+					roles.update($scope.ownerRole).then(function() {
+						deferred.resolve();
 					});
 				} else {
 					$log.debug("[PROJECT ROLE] Create error");
 					if (result.data.error) { $log.debug(result.data.error); }
-					toaster.error("Project role could not be created. Please try again.");
+					deferred.reject();
 				}
 			});
 		} else {
-			toaster.error("Please enter a title.");
+			deferred.reject();
 		}
-	}
+
+		return deferred.promise;
+	};
 
 	$scope.addRole = function() {
 		$scope.roles.push({ title : '' });
-	}
+	};
 
 	$scope.processAdditionalRoles = function() {
+		var deferred = $q.defer();
 		var cleanedRoles = [];
 		var rolesProcessed = 0;
 
@@ -81,21 +128,27 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		}
 
 		for (var i = 0; i < cleanedRoles.length; i++) {
-			$scope.loading = true;
 			roles.create(cleanedRoles[i]).then(function(result) {
 				rolesProcessed += 1;
 
 				if (rolesProcessed === cleanedRoles.length) {
-					$scope.loading = false;
-					$state.go('project_list');
-					toaster.success('Project created!');
+					deferred.resolve();
+					$timeout(function() {
+						$state.go('project_list');
+						toaster.success('Project created!');
+					}, 1000);
 				}
 			});
 		}
 
 		if (cleanedRoles.length === 0) {
-			$state.go('project_list');
-			toaster.success('Project created!');
+			deferred.resolve();
+			$timeout(function() {
+				$state.go('project_list');
+				toaster.success('Project created!');
+			}, 1000);
 		}
-	}
+
+		return deferred.promise;
+	};
 });

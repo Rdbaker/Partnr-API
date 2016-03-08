@@ -11,6 +11,11 @@
   margin: 0 auto;
 }
 
+.header-outside-container {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
 .content-container {
   background: $gray-bg;
   border-radius: $border-radius-container;
@@ -20,6 +25,11 @@
 
   &.no-padding {
     padding: 0;
+  }
+
+  &.with-tabs {
+    border-radius: 0 0 3px 3px;
+    border-top: 0;
   }
 }
 
@@ -50,10 +60,42 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 
+  &.no-margin {
+    margin: 0;
+  }
+
   .title {
     display: block;
     font-size: 18px;
     font-weight: bold;
     color: $brand-default-blue;
+  }
+}
+
+.internal-container-link {
+  cursor: pointer;
+  border: 2px dashed #dddddd;
+  box-shadow: none;
+  padding: 0;
+
+  h1 {
+    margin: 0;
+    font-size: 60px;
+  }
+
+  h4 {
+    margin-top: 0;
+  }
+
+  h1, h4 {
+    color: #999999;
+  }
+
+  &:hover {
+    border-color: #aaaaaa;
+
+    h1, h4 {
+      color: #666666;
+    }
   }
 }

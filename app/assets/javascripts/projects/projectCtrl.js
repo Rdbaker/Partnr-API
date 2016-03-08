@@ -1,18 +1,19 @@
 angular.module('partnr.users.assets').controller('ProjectController', function($scope, $state, $stateParams, $log, $q, projects, 
 	applications, comments, principal, toaster) {
-	
 	$scope.project = {};
 	$scope.newComment = {
 		content: "",
 		project: null
 	};
 	$scope.isCommentSubmitting = false;
-	$scope.canApply = true;
+	$scope.canApply = false;
 	$scope.isOwner = false;
 	$scope.isMember = false;
 	$scope.canPost = false;
 	$scope.loadComplete = false;
 	$scope.user = principal.getUser();
+	$log.debug('user');
+	console.log($scope.user);
 	var loadSteps = 2;
 	var loadStepsAchieved = 0;
 
@@ -69,40 +70,18 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		});
 	};
 	
-	projects.get($stateParams.id).then(function(result) {
-		$log.debug(result.data);
-		$scope.project = result.data;
+	$scope.$parent.getProjectWrapperInfo().then(function(result) {
+		$log.debug(result);
+		$scope.project = result.project;
+		$scope.isOwner = result.isOwner;
+		$scope.isMember = result.isMember;
+		$scope.canPost = ($scope.user ? true : false);
 		
-		if ($scope.user) {
-			if (result.data.owner.id === principal.getUser().id) {
-				$scope.isOwner = true;
-				$scope.isMember = true;
-				$scope.canApply = false;
-			}
-
-			for (var i = 0; i < result.data.roles.length; i++) {
-				if (result.data.roles[i].user != null) {
-					if (result.data.roles[i].user.id === principal.getUser().id) {
-						$scope.canApply = false;
-						$scope.isMember = true;
-						break;
-					}
-				}
-			}
-
-			$scope.canPost = true;
-		} else {
-			$scope.isOwner = false;
-			$scope.isMember = false;
-			$scope.canApply = false;
-			$scope.canPost = false;
-		}
-
 		doLoadStep();
 	});
 
 	if ($scope.user) {
-		console.log("here we are");
+		$log.debug('got user');
 		applications.list({'project' : $stateParams.id, 'user' : $scope.user.id}).then(function(result) {
 			$log.debug(result.data);
 			if (result.data.length > 0) {
@@ -112,6 +91,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 			doLoadStep();
 		});
 	} else {
+		$scope.canApply = false;
 		doLoadStep();
 	}
 });
