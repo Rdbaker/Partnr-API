@@ -1,0 +1,37 @@
+// Selectors related to project views
+
+.project-status span {
+	padding: 12px 15px;
+	font-size: 18px;
+	position: relative;
+	bottom: -30px;
+	background: #ff9a39;
+	color: #fcfcfc;
+	border: 1px solid #ff8d20;
+	border-radius: 25px;
+	box-shadow: 0 0 4px #888;
+}
+
+.partnr-page-header.project-header {
+	margin-bottom: 22px;
+}
+
+.create-project-process .progress {
+	height: 25px;
+
+	.progress-bar {
+		font-size: 14px;
+		line-height: 25px;
+		text-align: right;
+
+		span {
+			margin-right: 20px;
+		}
+	}
+}
+
+.fa-5 {
+	color: #002b33;
+	font-size: 70px !important;
+	margin-bottom: 15px;
+}
