@@ -74,4 +74,4 @@ gem 'hashie-forbidden_attributes'
 # let's do some location things
 gem 'geokit-rails'
 
-ruby '2.0.0'
+ruby '2.3.0'
