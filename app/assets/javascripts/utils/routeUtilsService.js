@@ -213,7 +213,12 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 			var route = new routeObject();
 
 			route.name = chosenState.name;
-			route.params = extractParams(chosenState.url);
+			route.params = {};
+
+			while(chosenState.parent !== undefined) {
+				route.params = $.merge(extractParams(chosenState.url), route.params);
+				chosenState = $state.get(chosenState.parent);
+			}
 
 			paramResolveStrategy(apiLink, route, searchData).then(function(resolvedParams) {
 				route.params = resolvedParams;
