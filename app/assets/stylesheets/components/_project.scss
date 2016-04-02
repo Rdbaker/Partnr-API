@@ -35,3 +35,11 @@
 	font-size: 70px !important;
 	margin-bottom: 15px;
 }
+
+.form-control.no-margin {
+	margin: 0;
+}
+
+.btn-toggle.active {
+	box-shadow: none;
+}

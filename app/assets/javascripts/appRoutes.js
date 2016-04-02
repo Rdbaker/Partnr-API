@@ -277,6 +277,21 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
+		.state('project_tasks', {
+			parent: 'project_wrapper',
+			url: '/tasks',
+			views: {
+				'projectinfo': {
+					templateUrl: 'projects/tasks/list_tasks.html',
+					controller: 'ListTasksController'
+				}
+			},
+			data: {
+				roles: [],
+				entities: ['task']
+			}
+		})
+
 		.state('application_list', {
 			parent: 'project_wrapper',
 			url: '/applications',

@@ -31,6 +31,10 @@
     border-radius: 0 0 3px 3px;
     border-top: 0;
   }
+
+  &.thin {
+    padding: 5px;
+  }
 }
 
 .loading-wrapper {
