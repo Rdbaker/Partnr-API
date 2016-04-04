@@ -9,17 +9,17 @@ angular.module('partnr.users.assets').factory('milestones', function($rootScope,
 			});
 		},
 
-		// listByUser : function(id) {
-		// 	$log.debug('[MILESTONE] Sending list for user');
-		// 	$log.debug(id);
+		listByProject : function(id) {
+			$log.debug('[MILESTONE] Getting list by project');
+			$log.debug(id);
 
-		// 	return $http({
-		// 		method: 'GET',
-		// 		url: $rootScope.apiRoute + 'milestones',
-		// 		headers: principal.getHeaders(),
-		// 		params: { user: id }
-		// 	});
-		// },
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'milestones',
+				headers: principal.getHeaders(),
+				params: { project: id }
+			});
+		},
 
 		list : function() {
 			$log.debug('[MILESTONE] Sending list request');

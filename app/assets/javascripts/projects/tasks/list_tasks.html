@@ -1,25 +1,30 @@
 <div class="content-container thin with-tabs clearfix">
-	<div class="form-group form-inline col-sm-6 no-margin">
+	<div class="form-group form-inline col-sm-6 less-margin-bottom">
 		<input class="form-control" placeholder="filter...">
 		<button class="btn btn-sm btn-toggle" ng-class="(viewingEntity === 'Milestones' ? 'btn-default' : 'btn-link')" ng-model="viewingEntity" uib-btn-radio="'Milestones'">Milestones</button>
 		<button class="btn btn-sm btn-toggle" ng-class="(viewingEntity === 'Tasks' ? 'btn-default' : 'btn-link')" ng-model="viewingEntity" uib-btn-radio="'Tasks'">Tasks</button>
 	</div>
-	<div class="form-group col-sm-6 text-right">
-		<button class="btn btn-primary btn-sm">New</button>
+	<div class="form-group col-sm-6 text-right less-margin-bottom">
+		<button ng-if="$parent.isMember || $parent.isOwner" class="btn btn-primary btn-sm">New</button>
 	</div>
 </div>
 
 <div ng-show="loadComplete">
-	<div ng-if="applications.length > 0" class="internal-container" ng-repeat="a in applications track by $index">
-    	<span class="title"><a href ui-sref="profile({ id: a.user.id })">{{ a.user.first_name }} {{ a.user.last_name }}</a></span>
-    	<span class="subtitle">For Role: {{ a.role.title }} (<em>{{ a.status }}</em>)</span>
-		<div class="buttons-right" ng-if="a.status === 'pending' && isOwner">
-			<button type="button" class="btn btn-default" ng-click="doAccept(a)">Accept</button>
-			<button type="button" class="btn btn-danger" ng-click="doReject(a)">Reject</button>
+	<div ng-if="viewingEntity === 'Milestones'">
+		<div ng-show="milestones.length > 0" class="internal-container" ng-repeat="milestone in milestones track by $index">
+	    	<span class="title"></span>
+		</div>
+		<div ng-show="milestones.length <= 0" class="text-center">
+			<h2 class="opaque-notify-message">There are currently no milestones.</h2>
 		</div>
 	</div>
-	<div ng-if="applications.length <= 0" class="text-center">
-		<h2 class="opaque-notify-message">There are currently no applications.</h2>
+	<div ng-if="viewingEntity === 'Tasks'">
+		<div ng-show="tasks.length > 0" class="internal-container" ng-repeat="task in tasks track by $index">
+	    	<span class="title"></span>
+		</div>
+		<div ng-show="tasks.length <= 0" class="text-center">
+			<h2 class="opaque-notify-message">There are currently no tasks.</h2>
+		</div>
 	</div>
 </div>
 <div ng-hide="loadComplete" class="text-center loading">

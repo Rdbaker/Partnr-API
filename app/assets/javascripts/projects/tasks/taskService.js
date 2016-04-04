@@ -9,17 +9,17 @@ angular.module('partnr.users.assets').factory('tasks', function($rootScope, $htt
 			});
 		},
 
-		// listByUser : function(id) {
-		// 	$log.debug('[TASK] Sending list for user');
-		// 	$log.debug(id);
+		listByProject : function(id) {
+			$log.debug('[TASK] Getting list by project');
+			$log.debug(id);
 
-		// 	return $http({
-		// 		method: 'GET',
-		// 		url: $rootScope.apiRoute + 'tasks',
-		// 		headers: principal.getHeaders(),
-		// 		params: { user: id }
-		// 	});
-		// },
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'tasks',
+				headers: principal.getHeaders(),
+				params: { project: id }
+			});
+		},
 
 		list : function() {
 			$log.debug('[TASK] Sending list request');
