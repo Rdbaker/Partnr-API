@@ -5,6 +5,8 @@
 //= require fizzy-ui-utils/utils
 //= require outlayer/outlayer
 //= require outlayer/item
+//= require get-size/get-size
+//= require matches-selector/matches-selector
 //= require imagesloaded/imagesloaded.pkgd.min
 //= require angular/angular.min
 //= require angular-rails-templates

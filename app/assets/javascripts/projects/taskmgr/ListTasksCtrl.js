@@ -1,8 +1,9 @@
 angular.module('partnr.users.assets').controller('ListTasksController', function($scope, $state, $stateParams, $log, $q, projects, milestones, tasks, principal, toaster) {
 	$scope.project = {};
+	$scope.searchText = '';
 	$scope.tasks = [];
 	$scope.milestones = [];
-	$scope.viewingEntity = 'Milestones';
+	$scope.viewingEntity = 'Milestone';
 
 	$scope.loadComplete = false;
 	var loadSteps = 2;
@@ -24,4 +25,10 @@ angular.module('partnr.users.assets').controller('ListTasksController', function
 			$scope.loadComplete = true;
 		}
 	};
+
+	$scope.newEntity = function() {
+		if ($scope.viewingEntity === 'Milestone') {
+			$state.go('project_milestone_create', { project_id : $stateParams.project_id });
+		}
+	}
 });

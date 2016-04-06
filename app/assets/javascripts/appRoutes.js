@@ -277,18 +277,33 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('project_tasks', {
+		.state('project_taskmgr', {
 			parent: 'project_wrapper',
-			url: '/tasks',
+			url: '/taskmgr',
 			views: {
 				'projectinfo': {
-					templateUrl: 'projects/tasks/list_tasks.html',
+					templateUrl: 'projects/taskmgr/list_tasks.html',
 					controller: 'ListTasksController'
 				}
 			},
 			data: {
 				roles: [],
 				entities: ['task']
+			}
+		})
+
+		.state('project_milestone_create', {
+			parent: 'project_wrapper',
+			url: '/milestones/create',
+			views: {
+				'projectinfo': {
+					templateUrl: 'projects/taskmgr/create_milestone.html',
+					controller: 'CreateMilestoneController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: ['Milestone']
 			}
 		})
 
