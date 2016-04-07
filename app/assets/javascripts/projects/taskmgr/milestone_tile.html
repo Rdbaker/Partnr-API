@@ -1,5 +1,12 @@
-<div class="content-container tile">
+<div class="content-container tile milestone-tile">
 	<h3>{{ milestone.title }}</h3>
-	<uib-progressbar value="55" type="success">0 of 4 tasks complete</uib-progressbar>
-	<span>Due: {{ milestone.due_date | date:medium }}</span>
+	<uib-progressbar value="milestone.tasksComplete" max="(milestone.tasksTotal === 0 ? 1 : milestone.tasksTotal)" type="success"></uib-progressbar>
+	<div class="clearfix row supporting-text">
+		<div class="col-md-6">
+			<span ng-show="milestone.due_date">Due: {{ milestone.due_date | date:medium }}</span>
+		</div>
+		<div class="col-md-6 text-right">
+			<span>{{ milestone.tasksComplete }}/{{ milestone.tasksTotal }} complete</span>
+		</div>
+	</div>
 </div>

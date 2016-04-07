@@ -15,4 +15,5 @@
 //= require angular-ui-router/release/angular-ui-router.min
 //= require angular-ui-utils/ui-utils.min
 //= require angular-masonry/angular-masonry
+//= require lodash/dist/lodash.min
 //= require_tree .

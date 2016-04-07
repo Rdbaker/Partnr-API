@@ -15,6 +15,10 @@ angular.module('partnr.users.assets').controller('CreateMilestoneController', fu
 	$scope.createMilestone = function() {
 		$scope.loading = true;
 
+		if ($scope.milestone.due_date === '') {
+			delete $scope.milestone.due_date;
+		}
+
 		milestones.create($scope.milestone).then(function(result) {
 			$scope.loading = false;
 

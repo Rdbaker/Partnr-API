@@ -279,7 +279,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 
 		.state('project_taskmgr', {
 			parent: 'project_wrapper',
-			url: '/taskmgr',
+			url: '/taskmgr?v',
 			views: {
 				'projectinfo': {
 					templateUrl: 'projects/taskmgr/list_tasks.html',
@@ -304,6 +304,21 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			data: {
 				roles: ['Admin'],
 				entities: ['Milestone']
+			}
+		})
+
+		.state('project_task_create', {
+			parent: 'project_wrapper',
+			url: '/tasks/create',
+			views: {
+				'projectinfo': {
+					templateUrl: 'projects/taskmgr/create_task.html',
+					controller: 'CreateTaskController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: ['Task']
 			}
 		})
 
