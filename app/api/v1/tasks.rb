@@ -79,15 +79,23 @@ module V1
         params[:status] = { "not_started" => 0, "in_progress" => 1, "complete" => 2 }[params[:status]]
       end
 
+      if params.has_key? :categories
+        cats = get_collection(Category, params[:categories])
+      end
+
+      if params.has_key? :skills
+        skills = get_collection(Skill, params[:skills])
+      end
+
       t = Task.create!({
         title: params[:title],
         description: params[:description],
         project: @project,
         users: @users || [],
-        bmark: params[:milestone],
+        bmark: @milestone,
         user_notifier: current_user,
-        categories: get_collection(Category, params[:categories]),
-        skills: get_collection(Skill, params[:skills]),
+        categories: cats || [],
+        skills: skills || [],
         status: params[:status] || 0
       })
 

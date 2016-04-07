@@ -25,3 +25,5 @@ coverage
 
 # ignore compiled assets
 public/assets
+
+node_modules
