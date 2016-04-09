@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('ProjectController', function($scope, $state, $stateParams, $log, $q, projects, 
+angular.module('partnr.users.assets').controller('ProjectController', function($scope, $state, $stateParams, $log, $q, projects,
 	applications, comments, principal, toaster) {
 	$scope.project = {};
 	$scope.newComment = {
@@ -69,23 +69,25 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 			$scope.project.comments.splice(commentIndex, 1);
 		});
 	};
-	
+
 	$scope.$parent.getProjectWrapperInfo().then(function(result) {
 		$log.debug(result);
 		$scope.project = result.project;
 		$scope.isOwner = result.isOwner;
 		$scope.isMember = result.isMember;
 		$scope.canPost = ($scope.user ? true : false);
-		
+
 		doLoadStep();
 	});
 
 	if ($scope.user) {
 		$log.debug('got user');
-		applications.list({'project' : $stateParams.id, 'user' : $scope.user.id}).then(function(result) {
+		applications.list({'project' : $stateParams.project_id, 'user' : $scope.user.id}).then(function(result) {
 			$log.debug(result.data);
 			if (result.data.length > 0) {
 				$scope.canApply = false;
+			} else {
+				$scope.canApply = true;
 			}
 
 			doLoadStep();
