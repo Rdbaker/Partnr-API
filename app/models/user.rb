@@ -20,6 +20,9 @@ class User < ActiveRecord::Base
   has_many :categories, through: :tasks
   has_one :profile, :dependent => :destroy
 
+  has_many :connections, :dependent => :destroy
+  has_many :connected_users, :through => :connections
+
   before_save :ensure_authenticaion_token
 
   def is_a_pre_approved_user
