@@ -15,6 +15,7 @@ module V1
     mount Tasks         => '/tasks'
     mount Skills        => '/skills'
     mount Connections   => '/connections'
+    mount Partners      => '/partners'
 
     add_swagger_documentation(
       base_path: '/api/v1',
