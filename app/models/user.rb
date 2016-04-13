@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable
 
+  validate :is_a_pre_approved_user
   validates :first_name, :last_name, presence: true
 
   has_many :roles, :dependent => :nullify
@@ -20,6 +21,14 @@ class User < ActiveRecord::Base
   has_one :profile, :dependent => :destroy
 
   before_save :ensure_authenticaion_token
+
+  def is_a_pre_approved_user
+    # during beta, you need to be a
+    # pre-approved user
+    if Rails.application.config.approved_users.find_index(email.downcase).nil?
+      errors.add(:email, "You must be a pre-approved user to access this website")
+    end
+  end
 
   # override devise's default behavior to queue up an email instead
   # of sending it immediately
