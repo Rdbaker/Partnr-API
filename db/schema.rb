@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302060919) do
+ActiveRecord::Schema.define(version: 20160414162654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,14 @@ ActiveRecord::Schema.define(version: 20160302060919) do
 
   add_index "comments", ["project_id"], name: "index_comments_on_project_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "connections", force: :cascade do |t|
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "status",        default: 0
+    t.integer  "user_id"
+    t.integer  "connection_id"
+  end
 
   create_table "conversations", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -200,10 +208,12 @@ ActiveRecord::Schema.define(version: 20160302060919) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.integer  "bmark_id"
+    t.integer  "user_id"
   end
 
   add_index "tasks", ["bmark_id"], name: "index_tasks_on_bmark_id", using: :btree
   add_index "tasks", ["project_id"], name: "index_tasks_on_project_id", using: :btree
+  add_index "tasks", ["user_id"], name: "index_tasks_on_user_id", using: :btree
 
   create_table "tasks_users", id: false, force: :cascade do |t|
     t.integer "task_id", null: false
@@ -274,6 +284,7 @@ ActiveRecord::Schema.define(version: 20160302060919) do
   add_foreign_key "skills", "tasks"
   add_foreign_key "tasks", "bmarks"
   add_foreign_key "tasks", "projects"
+  add_foreign_key "tasks", "users"
   add_foreign_key "user_conversations", "conversations"
   add_foreign_key "user_conversations", "users"
   add_foreign_key "users", "notifications"
