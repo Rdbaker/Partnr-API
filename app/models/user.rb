@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :roles, :dependent => :nullify
   has_many :comments, :dependent => :nullify
   has_many :bmarks, :dependent => :nullify
-  has_and_belongs_to_many :tasks, :dependent => :nullify
+  has_many :tasks, :dependent => :nullify
   has_many :projects, through: :roles
   has_many :applications, :dependent => :destroy
   has_many :conversations, through: :user_conversations
