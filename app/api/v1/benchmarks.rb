@@ -86,8 +86,6 @@ module V1
         complete: params[:complete].nil? ? @benchmark.complete : params[:complete],
         due_date: params[:due_date] || @benchmark.due_date
       })
-      p @benchmark.complete
-      p @benchmark.previous_changes
       if @benchmark.complete && @benchmark.previous_changes.has_key?("complete")
         @benchmark.create_activity key: 'activity.benchmark.complete', owner: current_user
       end
