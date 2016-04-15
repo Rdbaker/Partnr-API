@@ -79,6 +79,7 @@ module V1
         owner: current_user.id,
         creator: current_user.id
       })
+      p.create_activity key: 'activity.project.started', owner: current_user
       present p, with: Entities::ProjectData::AsFull
     end
 
@@ -102,6 +103,9 @@ module V1
         @project.user_notifier = current_user
         @project.status = params[:status]
         @project.save!
+      end
+      if @project.previous_changes.has_key?("status")
+        @project.create_activity key: 'activity.project.status_change', owner: current_user
       end
       present @project, with: Entities::ProjectData::AsFull
     end

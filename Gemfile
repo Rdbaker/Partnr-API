@@ -63,7 +63,7 @@ gem 'puma'
 gem 'kaminari'
 
 # gems for API building and documentation
-gem 'grape', '~> 0.11.0'
+gem 'grape', '~> 0.12.0'
 gem 'grape-entity', '~> 0.4.8'
 gem 'grape-swagger', '~> 0.9.0' # before upgrading this one, test it thoroughly, versions 0.8 and 0.10 both currently have bugs
 gem 'grape-swagger-rails', '~> 0.1.0'
@@ -73,5 +73,8 @@ gem 'hashie-forbidden_attributes'
 
 # let's do some location things
 gem 'geokit-rails'
+
+# public activity for the activity feed
+gem 'public_activity'
 
 ruby '2.3.0'
