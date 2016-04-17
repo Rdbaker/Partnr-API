@@ -1,6 +1,8 @@
 require 'set'
 
 class Project < Notifier
+  include PublicActivity::Common
+
   belongs_to :user, :foreign_key => 'owner'
   has_many :roles, :dependent => :destroy
   has_many :bmarks, :dependent => :destroy

@@ -95,6 +95,10 @@ module V1
       conn_put_permissions params[:id]
       @conn.status = params[:status]
       @conn.save!
+      # TODO: this is bad, we should only do one activity per connection acceptance
+      # and have the /activities endpoint do the heavy lifting; I feel bad about this, but it's really late
+      @conn.create_activity key: 'activity.connection.accepted', owner: @conn.user
+      @conn.create_activity key: 'activity.connection.accepted', owner: @conn.connection
       present @conn, with: Entities::ConnectionData::AsFull
     end
 

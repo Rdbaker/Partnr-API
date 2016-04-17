@@ -11,10 +11,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414162654) do
+ActiveRecord::Schema.define(version: 20160415015119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.integer  "trackable_id"
+    t.string   "trackable_type"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "key"
+    t.text     "parameters"
+    t.integer  "recipient_id"
+    t.string   "recipient_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activities", ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
+  add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
+  add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+
+  create_table "activity_feeds", force: :cascade do |t|
+    t.integer  "actor_id"
+    t.integer  "subject_id"
+    t.string   "subject_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "activity_feeds", ["actor_id"], name: "index_activity_feeds_on_actor_id", using: :btree
+  add_index "activity_feeds", ["subject_type", "subject_id"], name: "index_activity_feeds_on_subject_type_and_subject_id", using: :btree
 
   create_table "applications", force: :cascade do |t|
     t.integer  "status",     default: 0

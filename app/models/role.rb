@@ -1,4 +1,6 @@
 class Role < Notifier
+  include PublicActivity::Common
+
   has_many :applications, :dependent => :destroy
   belongs_to :project
   belongs_to :user

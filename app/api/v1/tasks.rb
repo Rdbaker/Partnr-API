@@ -99,6 +99,10 @@ module V1
         status: params[:status] || 0
       })
 
+      if t.complete?
+        t.create_activity key: 'activity.task.completed', owner: current_user
+      end
+
       present t, with: Entities::TaskData::AsFull
     end
 
@@ -145,6 +149,10 @@ module V1
         skills: skills,
         categories: categories
       })
+
+      if @task.complete? && @task.previous_changes.has_key?("status")
+        @task.create_activity key: 'activity.task.completed', owner: current_user
+      end
 
       present @task, with: Entities::TaskData::AsFull
     end

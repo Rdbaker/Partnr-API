@@ -118,6 +118,7 @@ module V1
           @role.user = @application.user
           @application.status = "accepted"
           @role.save!
+          @role.create_activity key: 'activity.role.accepted', owner: @application.user
           @application.project.update_conversation
         else
           error!("400 Bad Request: Role already has a user.", 400)

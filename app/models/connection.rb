@@ -1,4 +1,6 @@
 class Connection < ActiveRecord::Base
+  include PublicActivity::Common
+
   belongs_to :user
   belongs_to :connection, :class_name => "User"
 

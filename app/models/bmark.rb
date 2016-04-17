@@ -1,4 +1,6 @@
 class Bmark < Notifier
+  include PublicActivity::Common
+  
   belongs_to :project
   belongs_to :user
   has_many :posts, :dependent => :destroy
