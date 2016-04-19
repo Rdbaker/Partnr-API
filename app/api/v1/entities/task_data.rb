@@ -24,10 +24,10 @@ module V1::Entities
     end
 
     class AsNotification < Grape::Entity
+      expose :project, documentation: { type: "ProjectData (nested)", desc: "The project this task belongs to." }, using: ProjectData::AsNested
       expose :itself, as: :task do
         expose :title
         expose :id
-        expose :project, documentation: { type: "ProjectData (nested)", desc: "The project this task belongs to." }, using: ProjectData::AsNested
         expose :skills, documentation: { type: "SkillData (nested)", desc: "The skills this task has." }, using: SkillData::AsSearch
         expose :links do
           expose :self_link, documentation: { type: "URI", desc: "The link for the full task entity." }, as: :self
