@@ -17,12 +17,7 @@ module V1
       end
 
       @user = get_record(User, params[:user])
-
-      partners = @user.projects.collect { |proj| proj.users }
-      partners.flatten!
-      partners.delete(@user)
-
-      present partners, with: Entities::UserData::AsSearch
+      present @user.partners, with: Entities::UserData::AsSearch
     end
   end
 end

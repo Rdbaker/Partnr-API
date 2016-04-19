@@ -11,6 +11,7 @@ class Project < Notifier
   has_many :tasks, :dependent => :destroy
   has_many :comments, :dependent => :destroy
   has_one :conversation, :dependent => :destroy
+  has_many :follows, as: :followable, :dependent => :destroy
 
   after_create :make_conversation
   after_update :update_conversation

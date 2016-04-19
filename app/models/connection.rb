@@ -21,4 +21,8 @@ class Connection < ActiveRecord::Base
   def self_link
     "/api/v1/connections/#{id}"
   end
+
+  def other_user(usr)
+    usr == user ? connection : user
+  end
 end

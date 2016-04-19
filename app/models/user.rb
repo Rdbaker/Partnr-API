@@ -21,7 +21,6 @@ class User < ActiveRecord::Base
   has_one :profile, :dependent => :destroy
 
   has_many :connections, :dependent => :destroy
-  has_many :connected_users, :through => :connections
 
   before_save :ensure_authenticaion_token
 
@@ -56,6 +55,26 @@ class User < ActiveRecord::Base
     self.authentication_token ||= generate_authentication_token
   end
 
+  def feed
+    @feed ||= get_feed
+  end
+
+  def partners
+    @partners ||= get_partners
+  end
+
+  def connected_users
+    @connected_users ||= get_connected_users
+  end
+
+  def following
+    @following ||= get_following
+  end
+
+  def follows
+    @follows ||= get_follows
+  end
+
 protected
 
   def confirmation_required?
@@ -67,6 +86,38 @@ protected
   end
 
 private
+
+  def get_feed
+    PublicActivity::Activity.where(id: (owner_activity_query + subject_activity_query).map(&:id)).order("created_at desc")
+  end
+
+  def get_partners
+    partners = projects.collect { |proj| proj.users }
+    partners.flatten!
+    partners.delete(self)
+    partners.uniq
+  end
+
+  def get_connected_users
+    connections.map { |conn| conn.other_user self }
+  end
+
+  def get_following
+    follows.map { |f| f.followable }
+  end
+
+  def get_follows
+    Follow.where({ user: self })
+  end
+
+  def owner_activity_query
+    PublicActivity::Activity.where(["owner_id IN (?)", (partners + connected_users).uniq.map { |u| u.id }])
+  end
+
+  def subject_activity_query
+    tupleArray = follows.map { |f| [f.followable_type, f.followable_id] }
+    PublicActivity::Activity.where("(trackable_type, trackable_id) IN (#{(['(?)']*tupleArray.size).join(', ')})", *tupleArray)
+  end
 
   def generate_authentication_token
     loop do
