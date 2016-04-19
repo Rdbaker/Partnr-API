@@ -45,6 +45,19 @@ module V1
       end
     end
 
+    desc "Retrieve the follows for a single user", entity: Entities::FollowData::AsSearch
+    params do
+      requires :id, type: Integer, allow_blank: false, desc: "The users's ID."
+      optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of users per page."
+      optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page of the follows to get."
+    end
+    get ":id/follows" do
+      user = get_user(params[:id])
+      present Follow.where(user: user)
+        .page(params[:page])
+        .per(params[:per_page]), with: Entities::FollowData::AsSearch
+    end
+
     namespace :passwords do
       desc "Update the password for a user", entity: Entities::UserData::AsPrivate
       params do

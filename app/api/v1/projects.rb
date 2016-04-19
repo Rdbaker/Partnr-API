@@ -121,5 +121,35 @@ module V1
       @project.destroy
       status 204
     end
+
+
+    desc "Get the follows for a project.", entity: Entities::FollowData::AsSearch
+    params do
+      requires :id, type: Integer, allow_blank: false, desc: "The Project ID."
+    end
+    get ":id/follows" do
+      proj = get_record(Project, params[:id])
+      present Follow.project(proj), with: Entities::FollowData::AsSearch
+    end
+
+
+    desc "Follow the project.", entity: Entities::FollowData::AsFull
+    params do
+      requires :id, type: Integer, allow_blank: false, desc: "The Project ID."
+      optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of users per page."
+      optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page of the follows to get."
+    end
+    post ":id/follows" do
+      authenticated_user
+      proj = get_record(Project, params[:id])
+      f = Follow.find_or_create_by(
+        followable_id: proj.id,
+        followable_type: "Project",
+        user: current_user
+      )
+      present f
+        .page(params[:page])
+        .per(params[:per_page]), with: Entities::FollowData::AsFull
+    end
   end
 end

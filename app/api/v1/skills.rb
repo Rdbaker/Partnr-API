@@ -2,16 +2,6 @@ require_relative './validators/length'
 
 module V1
   class Skills < Grape::API
-    helpers do
-      def create_skill(title, cat)
-        @skill = Skill.find_by({ title: title.downcase, category: cat })
-        if @skill.nil?
-          @skill = Skill.create({ title: title.downcase, category: cat })
-        end
-      end
-    end
-
-
     desc "Search for skills.", entity: Entities::SkillData::AsSearch
     params do
       optional :title, type: String, allow_blank: false, desc: "The title of a skill."
@@ -33,7 +23,7 @@ module V1
     end
     post do
       cat = get_record(Category, params[:category])
-      create_skill params[:title], cat
+      @skill = Skill.find_or_create_by({ title: title.downcase, category: cat })
       present @skill, with: Entities::SkillData::AsFull
     end
   end
