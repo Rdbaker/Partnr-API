@@ -115,8 +115,12 @@ private
   end
 
   def subject_activity_query
-    tupleArray = follows.map { |f| [f.followable_type, f.followable_id] }
-    PublicActivity::Activity.where("(trackable_type, trackable_id) IN (#{(['(?)']*tupleArray.size).join(', ')})", *tupleArray)
+    unless follows.empty?
+      tupleArray = follows.map { |f| [f.followable_type, f.followable_id] }
+      PublicActivity::Activity.where("(trackable_type, trackable_id) IN (#{(['(?)']*tupleArray.size).join(', ')})", *tupleArray)
+    else
+      []
+    end
   end
 
   def generate_authentication_token
