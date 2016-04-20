@@ -4,7 +4,7 @@
 		<h1 class="text-center impact-title" ng-show="user">{{ user.first_name }}, discover something new.</h1>
 		<h1 class="text-center impact-title" ng-hide="user">Discover something new.</h1>
 		<div class="impact-group">
-			<div class="impact-container text-center col-md-5">
+			<div class="impact-container text-center col-md-5 col-xs-5">
 				<h2>Join something.</h2>
 				<div class="input-group">
 					<input type="text" class="form-control" ng-model="search.keywords" placeholder="search for a project or role">
@@ -13,10 +13,10 @@
 					</span>
 				</div>
 			</div>
-			<div class="col-md-1 text-center">
+			<div class="col-md-1 col-xs-1 text-center">
 				<h2><em>or</em></h2>
 			</div>
-			<div class="impact-container text-center col-md-5">
+			<div class="impact-container text-center col-md-5 col-xs-5">
 				<h2>Start something.</h2>
 				<button class="btn-lg btn-primary" ng-click="$state.go('project_create')">Create Project</button>
 			</div>
