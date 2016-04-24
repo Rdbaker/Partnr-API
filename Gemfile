@@ -77,4 +77,8 @@ gem 'geokit-rails'
 # public activity for the activity feed
 gem 'public_activity'
 
+# upload images
+gem "paperclip", "~> 5.0.0.beta1"
+gem 'aws-sdk'
+
 ruby '2.3.0'

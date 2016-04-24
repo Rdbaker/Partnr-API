@@ -175,7 +175,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 					$rootScope.$broadcast('auth', {
 				      status: 'logout_success'
 				    });
-					
+
 					deferred.resolve(true);
 				}).error(function(data, status, headers, config) {
 					$log.error('[AUTH] Log out error');
@@ -190,7 +190,7 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		hasUser : function() {
 			return angular.isDefined(user);
 		},
-		
+
 		getUser : function() {
 			return user;
 		},
