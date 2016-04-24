@@ -54,6 +54,8 @@ Rails.application.configure do
     }
   end
 
+  Rails.application.config.s3_host = "partnr-dev-assets.s3-us-west-2.amazonaws.com"
+
   # set up aws
   Aws.config={
     :access_key_id => 'AKIAJUUWSQI2SFDTT5ZQ',

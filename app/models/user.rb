@@ -49,14 +49,11 @@ class User < ActiveRecord::Base
   end
 
   def avatar_link
+    # paperclip isn't working too well with AWS S3
+    # so we're using this small shim
     link = URI avatar.url
     link.scheme = "https"
-    #TODO: clean this up later
-    if Rails.env.production?
-      link.host = "partnr-prd-assets.s3-us-west-2.amazonaws.com"
-    else
-      link.host = "partnr-dev-assets.s3-us-west-2.amazonaws.com"
-    end
+    link.host = Rails.application.config.s3_host
     link.path = link.path.split('/')[2..100].join('/').prepend '/'
     link.to_s
   end
