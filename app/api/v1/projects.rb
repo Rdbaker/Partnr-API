@@ -82,7 +82,7 @@ module V1
         creator: current_user.id
       })
 
-      if params.has_key? :image
+      if params.has_key? :cover_photo
         p.cover_photo = ActionDispatch::Http::UploadedFile.new(params[:cover_photo])
         p.save!
       end
