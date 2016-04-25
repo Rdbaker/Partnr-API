@@ -27,3 +27,4 @@ coverage
 public/assets
 
 node_modules
+.byebug_history

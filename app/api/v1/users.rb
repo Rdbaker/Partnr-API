@@ -32,6 +32,18 @@ module V1
       end
     end
 
+
+    desc "Post an avatar photo.", entity: Entities::UserData::AsPrivate
+    params do
+      requires :image, :type => Rack::Multipart::UploadedFile, :desc => "Image file."
+    end
+    post :avatar do
+      authenticated_user
+      current_user.avatar = ActionDispatch::Http::UploadedFile.new(params[:image])
+      current_user.save
+    end
+
+
     desc "Retrieve info for a single user.", entity: Entities::UserData::AsPublic
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The users's ID."

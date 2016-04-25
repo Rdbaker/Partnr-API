@@ -1,6 +1,6 @@
 angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications, routeUtils, principal) {
     $scope.newNotifications = {};
-	$scope.allNotifications = {};
+    $scope.allNotifications = {};
 
     $scope.$on('notifications', function(event, updatedNotifications) {
         $scope.allNotifications = updatedNotifications;

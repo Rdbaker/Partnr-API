@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   has_many :skills, through: :tasks
   has_many :categories, through: :tasks
   has_one :profile, :dependent => :destroy
+  has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/img/user.png"
+  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
   has_many :connections, :dependent => :destroy
 
@@ -44,6 +46,16 @@ class User < ActiveRecord::Base
 
   def gravatar_link
     "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.strip.downcase)}?d=404"
+  end
+
+  def avatar_link
+    # paperclip isn't working too well with AWS S3
+    # so we're using this small shim
+    link = URI avatar.url
+    link.scheme = "https"
+    link.host = Rails.application.config.s3_host
+    link.path = link.path.split('/')[2..100].join('/').prepend '/'
+    link.to_s
   end
 
   # return the full name of the user

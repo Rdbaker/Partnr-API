@@ -53,4 +53,23 @@ Rails.application.configure do
       :enable_starttls_auto => true
     }
   end
+
+  Rails.application.config.s3_host = "partnr-dev-assets.s3-us-west-2.amazonaws.com"
+
+  # set up aws
+  Aws.config={
+    :access_key_id => 'AKIAJUUWSQI2SFDTT5ZQ',
+    :secret_access_key => '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',
+    :region => 'us-west-2'
+  }
+
+  config.paperclip_defaults = {
+    :storage => :s3,
+    :s3_region => 'us-west-2',
+    :s3_credentials => {
+      :bucket => 'partnr-dev-assets',
+      :access_key_id => 'AKIAJUUWSQI2SFDTT5ZQ',
+      :secret_access_key => '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'
+    }
+  }
 end
