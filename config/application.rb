@@ -35,5 +35,7 @@ module Partnr
     config.autoload_paths += Dir[Rails.root.join('app', 'api', 'v1', 'helpers')]
     config.autoload_paths += Dir[Rails.root.join('app', 'api', 'v1', 'entities')]
     config.autoload_paths += Dir[Rails.root.join('app', 'api', 'v1', 'entities', 'profile')]
+
+    config.assets.paths << Rails.root.join("node_modules")
   end
 end

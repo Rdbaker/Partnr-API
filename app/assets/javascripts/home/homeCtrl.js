@@ -4,7 +4,7 @@ angular.module('partnr.core').controller('HomeController', function($scope, $sta
 	$scope.search = search.createNew();
 	$scope.projects = [];
 	$scope.loadComplete = false;
-	
+
 	$scope.getProjectStatus = function(status) {
 		if (status === 'not_started') {
 			return "Not Started";
