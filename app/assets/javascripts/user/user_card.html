@@ -1,0 +1,25 @@
+<div class="pn-user-card">
+  <div class="pn-user-card-top-row">
+    <div class="pn-user-card-image">
+      <a class="pn-img-partnr" ui-sref="profile({ id: user.id })">
+        <img ng-src="{{ user.links.avatar }}" alt="{{ user.name }}">
+      </a>
+    </div>
+    <div class="pn-user-card-name" ui-sref="profile({ id: user.id })">{{ user.name }}</div>
+    <div class="pn-user-card-position" ng-show="{{ !!user.profile && user.profile.positions.length > 0 }}">
+      {{ user.profile.positions[0].title}} at {{ user.profile.positions[0].company }}
+    </div>
+  </div>
+  <div class="pn-user-card-detail-row clearfix">
+    <div class="pn-user-card-location" ui-sref="profile({ id: user.id })" ng-show="{{ !!user.profile.location }}">
+      {{ user.profile.location.geo_string }}
+    </div>
+    <div class="pn-user-card-projects" ui-sref="profile({ id: user.id })">
+      {{ user.projects.length }} Projects
+    </div>
+  </div>
+  <div class="pn-user-card-bottom-row" ng-show="{{ !!user.skillset }}">
+  </div>
+  <div class="pn-user-card-footer pn-skills-container" ng-show="{{ !!user.skillset }}">
+  </div>
+</div>

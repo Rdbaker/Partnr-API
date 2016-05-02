@@ -1,29 +1,56 @@
 angular.module('partnr.search').controller('SearchController', function($scope, $state, $stateParams, $q, $log,
-  principal, search, toaster) {
+  principal, search, toaster, applications) {
   $scope.user = principal.getUser();
-  $log.debug($scope.user);
   $scope.projects = [];
   $scope.roles = [];
   $scope.users = [];
-  $scope.skills = [];
-  $scope.query = "asdf";
-  $scope.loadComplete = false;
+  $scope.entities = [];
+  $scope.loadComplete = true;
 
-  $scope.doSearch = function() {
-    $stateParams.q = $scope.query;
-    search.query($scope.query)
-      .then(function(res) {
-        $scope.projects = res.projects;
-        $scope.roles = res.roles;
-        $scope.users = res.users;
-        $scope.skills = res.skills;
-      });
+  function getEntities(paramEntities) {
+    if(paramEntities === undefined)
+      return [];
+
+    return paramEntities instanceof Array ? paramEntities : [paramEntities];
   }
 
+  $scope.doSearch = function() {
+    $state.go('search', { q: $scope.query, entities: $scope.entities });
+  };
 
-  if($stateParams.q !== undefined) {
-    $scope.query = "asdf";
+	$scope.doApply = function(role) {
+		applications.create({ role : role }).then(function(result) {
+			toaster.success('Request sent!');
+		});
+		$scope.canApply = false;
+	};
+
+  $scope.processInput = function(e) {
+    if(e.which === 13)
+      $scope.doSearch();
+  };
+
+  $scope.toggleEntityInQueryParams = function(entName) {
+    if($scope.entities.includes(entName)) {
+      var ind = $scope.entities.indexOf(entName);
+      $scope.entities = $scope.entities.slice(0, ind).concat($scope.entities.slice(ind + 1));
+    } else {
+      $scope.entities.push(entName);
+    }
     $scope.doSearch();
+  };
+
+  if(!!$stateParams.q) {
+    $scope.loadComplete = false;
+    search.query($stateParams.q, getEntities($stateParams.entities))
+      .then(function(res) {
+        $scope.query = $stateParams.q;
+        $scope.entities = getEntities($stateParams.entities)
+        $scope.projects = res.data.projects;
+        $scope.roles = res.data.roles;
+        $scope.users = res.data.users;
+        $scope.loadComplete = true;
+      });
   }
 
 });

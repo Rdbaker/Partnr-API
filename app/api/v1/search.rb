@@ -9,7 +9,7 @@ module V1
           "Role",       # search for a role by the title of it
           "Project",    # search for a project by its title
           "User",       # search for a user by the full name
-          "Skills"      # search for a skill by its name
+          "Skill"       # search for a skill by its name
         ]
       end
     end
@@ -21,12 +21,24 @@ module V1
       requires :query, type: String, length: 255, desc: "The string to use for searching."
     end
     get do
-      search = {
-        :roles => [Role.first],
-        :projects => [Project.first],
-        :users => [User.first],
-        :skills => [Skill.first],
-      }
+      search = {}
+      if params[:entities].nil?
+        params[:entities] = allowed_entities
+      end
+      params[:query] = "%" + params[:query] + "%"
+
+      if params[:entities].include? "User"
+        search[:users] = User.search(params[:query])
+      end
+      if params[:entities].include? "Project"
+        search[:projects] = Project.search(params[:query])
+      end
+      if params[:entities].include? "Role"
+        search[:roles] = Role.search(params[:query])
+      end
+      if params[:entities].include? "Skill"
+        search[:skills] = Skill.search(params[:query])
+      end
 
       present search, with: Entities::SearchData::AsFull
     end

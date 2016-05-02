@@ -309,11 +309,11 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 
 		.state('search', {
 			parent: 'site',
-			url: '/search',
+			url: '/search?q&entities',
 			views: {
 				'content@': {
 					templateUrl: 'search/search_page.html',
-					conroller: 'SearchController'
+					controller: 'SearchController'
 				}
 			},
 			data: {

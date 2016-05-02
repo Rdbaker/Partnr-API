@@ -87,6 +87,10 @@ class User < ActiveRecord::Base
     @follows ||= get_follows
   end
 
+  def self.search(query)
+    where("LOWER( users.first_name ) LIKE :query OR LOWER( users.last_name ) LIKE :query OR LOWER( users.email ) LIKE :query", { :query => query.downcase })
+  end
+
 protected
 
   def confirmation_required?

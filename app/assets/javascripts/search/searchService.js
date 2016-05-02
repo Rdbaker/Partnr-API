@@ -17,7 +17,7 @@ angular.module('partnr.search').factory('search', function($rootScope, $http, $l
         method: 'GET',
         url: $rootScope.apiRoute + 'search',
         headers: principal.getHeaders(),
-        params: { query: keywords, entities: entities }
+        params: { query: keywords, 'entities[]': entities }
       });
     },
 
