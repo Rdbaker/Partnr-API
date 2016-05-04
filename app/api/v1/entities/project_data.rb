@@ -7,6 +7,7 @@ module V1::Entities
       expose :id, documentation: { type: "Integer", desc: "The project id." }
       expose :links do
         expose :self_link, documentation: { type: "URI", desc: "The link for the full project entity." }, as: :self
+        expose :cover_photo_link, documentation: { type: "URI", desc: "The link for the project cover photo." }, as: :cover_photo
       end
     end
 
@@ -32,6 +33,7 @@ module V1::Entities
       expose :itself, as: :project do
         expose :title
         expose :id
+        expose :status, documentation: { type: "String", desc: "The project status." }
         expose :links do
           expose :self_link, documentation: { type: "URI", desc: "The link for the full project entity." }, as: :self
         end

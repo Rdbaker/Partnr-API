@@ -1,6 +1,8 @@
 class Task < Notifier
+  include PublicActivity::Common
+
   belongs_to :project
-  has_and_belongs_to_many :users
+  belongs_to :user
   belongs_to :bmark
   has_many :skills, :dependent => :nullify
   has_many :categories, :dependent => :nullify

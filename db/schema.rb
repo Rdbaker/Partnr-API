@@ -11,10 +11,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302060919) do
+ActiveRecord::Schema.define(version: 20160424151214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.integer  "trackable_id"
+    t.string   "trackable_type"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "key"
+    t.text     "parameters"
+    t.integer  "recipient_id"
+    t.string   "recipient_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activities", ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
+  add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
+  add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+
+  create_table "activity_feeds", force: :cascade do |t|
+    t.integer  "actor_id"
+    t.integer  "subject_id"
+    t.string   "subject_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "activity_feeds", ["actor_id"], name: "index_activity_feeds_on_actor_id", using: :btree
+  add_index "activity_feeds", ["subject_type", "subject_id"], name: "index_activity_feeds_on_subject_type_and_subject_id", using: :btree
 
   create_table "applications", force: :cascade do |t|
     t.integer  "status",     default: 0
@@ -64,11 +92,30 @@ ActiveRecord::Schema.define(version: 20160302060919) do
   add_index "comments", ["project_id"], name: "index_comments_on_project_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
+  create_table "connections", force: :cascade do |t|
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "status",        default: 0
+    t.integer  "user_id"
+    t.integer  "connection_id"
+  end
+
   create_table "conversations", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "project_id"
   end
+
+  create_table "follows", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "followable_id"
+    t.string   "followable_type"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "follows", ["followable_type", "followable_id"], name: "index_follows_on_followable_type_and_followable_id", using: :btree
+  add_index "follows", ["user_id"], name: "index_follows_on_user_id", using: :btree
 
   create_table "interests", force: :cascade do |t|
     t.string   "title",      null: false
@@ -197,12 +244,16 @@ ActiveRecord::Schema.define(version: 20160302060919) do
   create_table "projects", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "owner",                       null: false
-    t.integer  "creator",                     null: false
-    t.integer  "status",          default: 0
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.integer  "owner",                                null: false
+    t.integer  "creator",                              null: false
+    t.integer  "status",                   default: 0
     t.integer  "conversation_id"
+    t.string   "cover_photo_file_name"
+    t.string   "cover_photo_content_type"
+    t.integer  "cover_photo_file_size"
+    t.datetime "cover_photo_updated_at"
   end
 
   add_index "projects", ["conversation_id"], name: "index_projects_on_conversation_id", using: :btree
@@ -253,10 +304,12 @@ ActiveRecord::Schema.define(version: 20160302060919) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.integer  "bmark_id"
+    t.integer  "user_id"
   end
 
   add_index "tasks", ["bmark_id"], name: "index_tasks_on_bmark_id", using: :btree
   add_index "tasks", ["project_id"], name: "index_tasks_on_project_id", using: :btree
+  add_index "tasks", ["user_id"], name: "index_tasks_on_user_id", using: :btree
 
   create_table "tasks_users", id: false, force: :cascade do |t|
     t.integer "task_id", null: false
@@ -299,6 +352,10 @@ ActiveRecord::Schema.define(version: 20160302060919) do
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
     t.integer  "notification_id"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
@@ -317,6 +374,7 @@ ActiveRecord::Schema.define(version: 20160302060919) do
 
   add_foreign_key "categories", "tasks"
   add_foreign_key "conversations", "projects"
+  add_foreign_key "follows", "users"
   add_foreign_key "interests", "profiles"
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
   add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
@@ -330,6 +388,7 @@ ActiveRecord::Schema.define(version: 20160302060919) do
   add_foreign_key "skills", "tasks"
   add_foreign_key "tasks", "bmarks"
   add_foreign_key "tasks", "projects"
+  add_foreign_key "tasks", "users"
   add_foreign_key "user_conversations", "conversations"
   add_foreign_key "user_conversations", "users"
   add_foreign_key "users", "notifications"

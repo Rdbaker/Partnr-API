@@ -32,11 +32,11 @@ module V1
         end
       end
 
-      def project_users_align?
-        @users = nil
-        if params.has_key? :users
-          @users = params[:users].collect { |u| get_record(User, u) }
-          error!("One of those users doesn't belong to this project", 400) unless @users.all? { |u| @project.belongs_to_project(u) }
+      def project_user_align?
+        @user = nil
+        if params.has_key? :user
+          @user = get_record(User, params[:user])
+          error!("That user doesn't belong to this project", 400) unless @project.belongs_to_project(@user)
         end
       end
     end
@@ -63,7 +63,7 @@ module V1
       optional :description, type: String, length: 1000, allow_blank: false, desc: "The task's description."
       optional :milestone, type: Integer, allow_blank: false, desc: "The milestone ID to create the task under."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The task's status."
-      optional :users, type: Array[Integer], allow_blank: false, desc: "The list of user IDs to assign the task to."
+      optional :user, type: Integer, allow_blank: false, desc: "The user ID to assign the task to."
       optional :skills, type: Array[Integer], allow_blank: false, desc: "The list of skill IDs to give to this task."
       optional :categories, type: Array[Integer], length: 3, allow_blank: false, desc: "The list of category IDs to give to this task."
     end
@@ -72,24 +72,36 @@ module V1
 
       # make sure the milestone is a part of the project
       project_milestone_align?
-      # make sure the users are all on the project
-      project_users_align?
+      # make sure the user is on the project
+      project_user_align?
 
       if params.has_key? :status
         params[:status] = { "not_started" => 0, "in_progress" => 1, "complete" => 2 }[params[:status]]
+      end
+
+      if params.has_key? :categories
+        cats = get_collection(Category, params[:categories])
+      end
+
+      if params.has_key? :skills
+        skills = get_collection(Skill, params[:skills])
       end
 
       t = Task.create!({
         title: params[:title],
         description: params[:description],
         project: @project,
-        users: @users || [],
-        bmark: params[:milestone],
+        user: @user || nil,
+        bmark: @milestone,
         user_notifier: current_user,
-        categories: get_collection(Category, params[:categories]),
-        skills: get_collection(Skill, params[:skills]),
+        categories: cats || [],
+        skills: skills || [],
         status: params[:status] || 0
       })
+
+      if t.complete?
+        t.create_activity key: 'activity.task.completed', owner: current_user
+      end
 
       present t, with: Entities::TaskData::AsFull
     end
@@ -101,7 +113,7 @@ module V1
       optional :description, type: String, length: 1000, desc: "The description of the task to update."
       optional :milestone, type: Integer, desc: "The milestone ID of the task."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The task's status."
-      optional :users, type: Array[Integer], allow_blank: true, desc: "The list of user IDs to assign the task to."
+      optional :user, type: Integer, allow_blank: true, desc: "The user ID to assign the task to."
       optional :skills, type: Array[Integer], allow_blank: false, desc: "The list of skill IDs to give to this task."
       optional :categories, type: Array[Integer], length: 3, allow_blank: false, desc: "The list of category IDs to give to this task."
     end
@@ -110,8 +122,8 @@ module V1
       params[:project] = @task.project.id
       # make sure the milestone is a part of the project
       project_milestone_align?
-      # make sure the users are all on the project
-      project_users_align?
+      # make sure the user is on the project
+      project_user_align?
 
       if params.has_key? :status
         params[:status] = { "not_started" => 0, "in_progress" => 1, "complete" => 2 }[params[:status]]
@@ -130,13 +142,17 @@ module V1
       @task.update!({
         title: params[:title] || @task.title,
         description: params[:description] || @task.description,
-        users: @users || @task.users,
+        user: @user || @task.user,
         user_notifier: current_user,
         status: params[:status] || @task.status,
         bmark: @milestone || @task.bmark,
         skills: skills,
         categories: categories
       })
+
+      if @task.complete? && @task.previous_changes.has_key?("status")
+        @task.create_activity key: 'activity.task.completed', owner: current_user
+      end
 
       present @task, with: Entities::TaskData::AsFull
     end

@@ -83,9 +83,12 @@ module V1
       @benchmark.user_notifier = current_user
       @benchmark.update!({
         title: params[:title] || @benchmark.title,
-        complete: params[:complete] || @benchmark.complete,
+        complete: params[:complete].nil? ? @benchmark.complete : params[:complete],
         due_date: params[:due_date] || @benchmark.due_date
       })
+      if @benchmark.complete && @benchmark.previous_changes.has_key?("complete")
+        @benchmark.create_activity key: 'activity.benchmark.completed', owner: current_user
+      end
       present @benchmark, with: Entities::BmarkData::AsFull
     end
 

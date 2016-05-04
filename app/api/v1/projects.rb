@@ -68,17 +68,26 @@ module V1
     params do
       requires :title, type: String, length: 1000, allow_blank: false, desc: "The Project's title."
       optional :description, type: String, length: 1000, allow_blank: false, desc: "The Project's description."
+      optional :cover_photo, :type => Rack::Multipart::UploadedFile, :desc => "Image file."
     end
     post do
       authenticated_user
       p = Project.new
       p.user_notifier = current_user
+
       p.update!({
         title: params[:title],
         description: params[:description],
         owner: current_user.id,
         creator: current_user.id
       })
+
+      if params.has_key? :cover_photo
+        p.cover_photo = ActionDispatch::Http::UploadedFile.new(params[:cover_photo])
+        p.save!
+      end
+
+      p.create_activity key: 'activity.project.started', owner: current_user
       present p, with: Entities::ProjectData::AsFull
     end
 
@@ -90,17 +99,24 @@ module V1
       optional :description, type: String, length: 1000, allow_blank: false, desc: "The Project's description."
       optional :owner, type: Integer, allow_blank: false, valid_user: true, desc: "The Project's owner's ID."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The project's status."
-      at_least_one_of :title, :description, :owner, :status
+      optional :cover_photo, :type => Rack::Multipart::UploadedFile, :desc => "Image file."
+      at_least_one_of :title, :description, :owner, :status, :cover_photo
     end
     put ":id" do
+      project_permissions(params[:id])
+      @project.user_notifier = current_user
       if !!params[:title] || !!params[:description] || !!params[:owner]
-        project_permissions(params[:id])
-        @project.user_notifier = current_user
         @project.update!(permitted_params params)
       elsif !!params[:status]
         project_status_permissions(params[:id])
-        @project.user_notifier = current_user
         @project.status = params[:status]
+        @project.save!
+      end
+      if @project.previous_changes.has_key?("status")
+        @project.create_activity key: 'activity.project.status_change', owner: current_user
+      end
+      if params.has_key? :cover_photo
+        @project.cover_photo = ActionDispatch::Http::UploadedFile.new(params[:cover_photo])
         @project.save!
       end
       present @project, with: Entities::ProjectData::AsFull
@@ -116,6 +132,36 @@ module V1
       @project.user_notifier = current_user
       @project.destroy
       status 204
+    end
+
+
+    desc "Get the follows for a project.", entity: Entities::FollowData::AsSearch
+    params do
+      requires :id, type: Integer, allow_blank: false, desc: "The Project ID."
+    end
+    get ":id/follows" do
+      proj = get_record(Project, params[:id])
+      present Follow.project(proj), with: Entities::FollowData::AsSearch
+    end
+
+
+    desc "Follow the project.", entity: Entities::FollowData::AsFull
+    params do
+      requires :id, type: Integer, allow_blank: false, desc: "The Project ID."
+      optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of users per page."
+      optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page of the follows to get."
+    end
+    post ":id/follows" do
+      authenticated_user
+      proj = get_record(Project, params[:id])
+      f = Follow.find_or_create_by(
+        followable_id: proj.id,
+        followable_type: "Project",
+        user: current_user
+      )
+      present f
+        .page(params[:page])
+        .per(params[:per_page]), with: Entities::FollowData::AsFull
     end
   end
 end

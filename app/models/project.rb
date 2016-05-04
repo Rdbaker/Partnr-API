@@ -1,6 +1,8 @@
 require 'set'
 
 class Project < Notifier
+  include PublicActivity::Common
+
   belongs_to :user, :foreign_key => 'owner'
   has_many :roles, :dependent => :destroy
   has_many :bmarks, :dependent => :destroy
@@ -9,6 +11,9 @@ class Project < Notifier
   has_many :tasks, :dependent => :destroy
   has_many :comments, :dependent => :destroy
   has_one :conversation, :dependent => :destroy
+  has_many :follows, as: :followable, :dependent => :destroy
+  has_attached_file :cover_photo, styles: { medium: "300x300>", thumb: "100x100>" }
+  validates_attachment_content_type :cover_photo, :content_type => /\Aimage\/.*\Z/
 
   after_create :make_conversation
   after_update :update_conversation
@@ -55,6 +60,16 @@ class Project < Notifier
 
   def self_link
     "/api/v1/projects/#{id}"
+  end
+
+  def cover_photo_link
+    # paperclip isn't working too well with AWS S3
+    # so we're using this small shim
+    link = URI cover_photo.url
+    link.scheme = "https"
+    link.host = Rails.application.config.s3_host
+    link.path = link.path.split('/')[2..100].join('/').prepend '/'
+    link.to_s
   end
 
   def update_conversation
