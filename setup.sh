@@ -13,5 +13,6 @@ gem install mailcatcher --no-ri --no-doc
 sudo npm install bower -g
 sudo ln -s /usr/bin/nodejs /usr/bin/node
 bower install
+npm i
 sudo -u postgres -s createuser -s vagrant
 rake db:setup

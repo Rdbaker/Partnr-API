@@ -19,6 +19,8 @@ module V1::Entities
       expose :roles, using: RoleData::AsNested, documentation: { type: "RoleData (shallow)",
                                                                   desc: "The roles this user has on projects.",
                                                                   is_array: true }
+      expose :profile, using: ProfileData::AsFull, documentation: { type: "ProfileData (nested)",
+                                                                      desc: "The profile of the user"}
     end
 
     class AsPublic < AsSearch
@@ -28,8 +30,6 @@ module V1::Entities
       expose :tasks, using: TaskData::AsNested, documentation: { type: "TaskData (nested)",
                                                                         desc: "The tasks to which the user is assigned.",
                                                                         is_array: true }
-      expose :profile, using: ProfileData::AsFull, documentation: { type: "ProfileData (nested)",
-                                                                      desc: "The profile of the user"}
     end
 
     class AsPrivate < AsPublic

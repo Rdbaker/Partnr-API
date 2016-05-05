@@ -1,5 +1,5 @@
 angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider) {
-	
+
 	$stateProvider
 		.state('site', {
 			'abstract': true,
@@ -14,7 +14,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			parent: 'site',
 			url: '/',
 			views: {
-				'content@': { 
+				'content@': {
 					templateUrl: 'home/home.html',
 					controller: 'HomeController',
 				}
@@ -29,7 +29,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			parent: 'site',
 			url: '/account/login',
 			views: {
-				'content@': { 
+				'content@': {
 					templateUrl: 'auth/login.html',
 					controller: 'LoginController',
 				}
@@ -44,7 +44,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			parent: 'site',
 			url: '/account/create',
 			views: {
-				'content@': { 
+				'content@': {
 					templateUrl: 'user/create.html',
 					controller: 'CreateUserController',
 				}
@@ -134,7 +134,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			parent: 'site',
 			url: '/conversations',
 			views: {
-				'content@': { 
+				'content@': {
 					templateUrl: 'conversations/list_conversation.html',
 					controller: 'ListConversationController',
 				}
@@ -149,7 +149,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			parent: 'site',
 			url: '/partners',
 			views: {
-				'content@': { 
+				'content@': {
 					templateUrl: 'partners/partners.html',
 					controller: 'PartnersController',
 				}
@@ -164,7 +164,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			parent: 'site',
 			url: '/portfolio',
 			views: {
-				'content@': { 
+				'content@': {
 					templateUrl: 'portfolio/portfolio.html',
 					controller: 'PortfolioController',
 				}
@@ -204,7 +204,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				entities: ['project']
 			}
 		})
-		
+
 		.state('project_create', {
 			parent: 'site',
 			url: '/projects/create',
@@ -307,11 +307,26 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
+		.state('search', {
+			parent: 'site',
+			url: '/search?q&entities',
+			views: {
+				'content@': {
+					templateUrl: 'search/search_page.html',
+					controller: 'SearchController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: []
+			}
+		})
+
 		.state('settings', {
 			parent: 'site',
 			url: '/settings',
 			views: {
-				'content@': { 
+				'content@': {
 					templateUrl: 'settings/settings.html',
 					conroller: 'SettingsController',
 				}

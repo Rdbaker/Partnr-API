@@ -8,4 +8,8 @@ class Skill < ActiveRecord::Base
   def self_link
     "/api/v1/skills/#{id}"
   end
+
+  def self.search(query)
+    where("LOWER( skills.title ) LIKE :query", { :query => query.downcase })
+  end
 end

@@ -27,4 +27,8 @@ class Role < Notifier
   def self_link
     "/api/v1/roles/#{id}"
   end
+
+  def self.search(query)
+    where("LOWER( roles.title ) LIKE :query", { :query => query.downcase })
+  end
 end
