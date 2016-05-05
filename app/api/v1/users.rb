@@ -5,9 +5,7 @@ module V1
   class Users < Grape::API
     helpers do
       def get_user(id)
-        user = User.find(id)
-        error!("404 Not Found", 404) if user.nil?
-        user
+        get_record(User, id)
       end
     end
 
