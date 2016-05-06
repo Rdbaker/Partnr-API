@@ -20,7 +20,6 @@ class Project < Notifier
   after_save :update_conversation
 
   validates :title, :owner, :creator, :status, presence: true
-  skip_callback :destroy, :before, :destroy_notification
 
   enum status: { not_started: 0, in_progress: 1, complete: 2 }
 

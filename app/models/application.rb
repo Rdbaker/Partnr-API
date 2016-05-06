@@ -9,7 +9,6 @@ class Application < Notifier
   before_update :destroy_notification, if: :status_rejected?
   before_update :update_role, if: :status_accepted?
   skip_callback :update, :after, :update_notification
-  skip_callback :destroy, :before, :destroy_notification
 
   enum status: { pending: 0, accepted: 1, rejected: 2 }
 
