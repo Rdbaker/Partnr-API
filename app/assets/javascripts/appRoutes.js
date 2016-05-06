@@ -317,7 +317,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 				}
 			},
 			data: {
-				roles: ['Admin'],
+				roles: [],
 				entities: []
 			}
 		})

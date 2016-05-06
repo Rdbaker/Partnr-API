@@ -81,4 +81,7 @@ gem 'public_activity'
 gem "paperclip", "~> 5.0.0.beta1"
 gem 'aws-sdk'
 
+# watch service performance
+gem 'newrelic_rpm'
+
 ruby '2.3.0'
