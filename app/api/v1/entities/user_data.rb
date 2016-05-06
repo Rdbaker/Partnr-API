@@ -21,6 +21,8 @@ module V1::Entities
                                                                   is_array: true }
       expose :profile, using: ProfileData::AsFull, documentation: { type: "ProfileData (nested)",
                                                                       desc: "The profile of the user"}
+      expose :skillscore, documentation: { type: "Object",
+                                           desc: "The skillscore of the user."}
     end
 
     class AsPublic < AsSearch
