@@ -12,8 +12,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 	$scope.canPost = false;
 	$scope.loadComplete = false;
 	$scope.user = principal.getUser();
-
-	var loadSteps = 2;
+	var loadSteps = 1;
 	var loadStepsAchieved = 0;
 
 	var doLoadStep = function() {
@@ -21,6 +20,14 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		if (loadStepsAchieved === loadSteps) {
 			$scope.loadComplete = true;
 		}
+	};
+
+	var hasRole = function(project, userId) {
+		var hasRole = false;
+		for (var i = 0; i < project.roles.length; i++) {
+			hasRole |= (project.roles[i].user && project.roles[i].user.id === userId);
+		};
+		return hasRole;
 	};
 
 	$scope.doApply = function(role) {
@@ -76,23 +83,19 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		$scope.isMember = result.isMember;
 		$scope.canPost = ($scope.user ? true : false);
 
+		if ($scope.user) {
+			$log.debug('got user');
+			applications.list({'project' : $stateParams.project_id, 'user' : $scope.user.id}).then(function(result) {
+				if (result.data.length > 0 || hasRole($scope.project, $scope.user.id)) {
+					$scope.canApply = false;
+				} else {
+					$scope.canApply = true;
+				}
+			});
+		} else {
+			$scope.canApply = false;
+		}
+
 		doLoadStep();
 	});
-
-	if ($scope.user) {
-		$log.debug('got user');
-		applications.list({'project' : $stateParams.project_id, 'user' : $scope.user.id}).then(function(result) {
-			$log.debug(result.data);
-			if (result.data.length > 0) {
-				$scope.canApply = false;
-			} else {
-				$scope.canApply = true;
-			}
-
-			doLoadStep();
-		});
-	} else {
-		$scope.canApply = false;
-		doLoadStep();
-	}
 });
