@@ -38,7 +38,7 @@
   <h3 class="inline">Projects</h3>
   <div class="clearfix">
     <div ng-repeat="project in user.projects">
-      <a ui-sref="project({ id: project.id })">{{ project.title }}</a>
+      <a ng-click="$state.go('project', { project_id: project.id })">{{ project.title }}</a>
     </div>
   </div>
 </div>
