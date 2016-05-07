@@ -1,4 +1,4 @@
-<div class="content-container with-tabs clearfix">
+<div ng-show="loadComplete" class="content-container with-tabs clearfix">
 	<h2>New Task</h2>
 	<form class="col-md-6" name="taskForm">
 		<fieldset ng-disabled="loading">
@@ -20,4 +20,9 @@
 			<button class="btn btn-primary" ng-click="createTask()" ng-disabled="taskForm.$invalid">Create</button>
 		</fieldset>
 	</form>
+</div>
+<div ng-hide="loadComplete" class="content-container with-tabs">
+  <div class="text-center loading">
+    <img src="/assets/ajax-loader.gif">
+  </div>
 </div>

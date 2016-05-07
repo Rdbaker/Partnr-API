@@ -7,10 +7,12 @@ angular.module('partnr.users.assets').controller('CreateTaskController', functio
 		project: $stateParams.project_id
 	};
 
+	$scope.loadComplete = false;
 	$scope.loading = false;
 	$scope.milestones = [];
 
 	milestones.listByProject($stateParams.project_id).then(function(result) {
+		$scope.loadComplete = true;
 		$scope.milestones = result.data;
 	});
 

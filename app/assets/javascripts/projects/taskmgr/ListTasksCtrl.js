@@ -25,13 +25,21 @@ angular.module('partnr.users.assets').controller('ListTasksController', function
 	tasks.listByProject($stateParams.project_id).then(function(result) {
 		$scope.tasks = result.data;
 
+		console.log($scope.tasks);
+
 		// Map tasks to a milestone
 		for (var idx = 0; idx < $scope.tasks.length; idx++) {
 			if ($scope.tasks[idx].milestone
 				&& $scope.tasks[idx].milestone.id) {
-				$scope.milestoneTaskMap[$scope.tasks[idx]] = $scope.tasks[idx];
+				if ($scope.milestoneTaskMap[$scope.tasks[idx].milestone.id] === undefined) {
+					$scope.milestoneTaskMap[$scope.tasks[idx].milestone.id] = [ $scope.tasks[idx] ];					
+				} else {
+					$scope.milestoneTaskMap[$scope.tasks[idx].milestone.id].push($scope.tasks[idx]);
+				}
 			}
 		}
+
+		console.log($scope.milestoneTaskMap);
 
 		doLoadStep();
 	});
@@ -46,7 +54,7 @@ angular.module('partnr.users.assets').controller('ListTasksController', function
 				var milestone = $scope.milestones[idx];
 				if ($scope.milestoneTaskMap[milestone.id] !== undefined) {
 					milestone.tasksTotal = $scope.milestoneTaskMap[milestone.id].length;
-					milestone.tasksComplete = $filter('filter')($scope.milestoneTaskMap[milestone.id], { status: 'complete' });
+					milestone.tasksComplete = $filter('filter')($scope.milestoneTaskMap[milestone.id], { status: 'complete' }).length;
 				} else {
 					milestone.tasksTotal = 0;
 					milestone.tasksComplete = 0;
