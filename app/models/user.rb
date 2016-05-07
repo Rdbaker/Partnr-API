@@ -16,8 +16,6 @@ class User < ActiveRecord::Base
   has_many :applications, :dependent => :destroy
   has_many :conversations, through: :user_conversations
   has_many :user_conversations, :dependent => :destroy
-  has_many :skills, through: :tasks
-  has_many :categories, through: :tasks
   has_one :profile, :dependent => :destroy
   has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/img/user.png"
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
@@ -85,6 +83,22 @@ class User < ActiveRecord::Base
 
   def follows
     @follows ||= get_follows
+  end
+
+  def skillscore
+    skillset.calculate
+  end
+
+  def skillset
+    @skillset ||= Skillset.find_or_create_by(user_id: self.id)
+  end
+
+  def tasks
+    @tasks ||= Task.where user_id: self.id
+  end
+
+  def self.search(query)
+    where("LOWER( users.first_name ) LIKE :query OR LOWER( users.last_name ) LIKE :query OR LOWER( users.email ) LIKE :query", { :query => query.downcase })
   end
 
 protected

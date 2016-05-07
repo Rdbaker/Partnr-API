@@ -35,5 +35,13 @@ module Partnr
     config.autoload_paths += Dir[Rails.root.join('app', 'api', 'v1', 'helpers')]
     config.autoload_paths += Dir[Rails.root.join('app', 'api', 'v1', 'entities')]
     config.autoload_paths += Dir[Rails.root.join('app', 'api', 'v1', 'entities', 'profile')]
+
+    # NPM asset paths
+    Rails.root.join('node_modules').to_s.tap do |npm_path|
+      config.sass.load_paths << npm_path
+      config.assets.paths << npm_path
+    end
+    # Precompile Bootstrap fonts
+    config.assets.precompile << %r(bootstrap-sass/assets/fonts/bootstrap/[\w-]+\.(?:eot|svg|ttf|woff2?)$)
   end
 end

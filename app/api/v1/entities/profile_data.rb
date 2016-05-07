@@ -19,12 +19,6 @@ module V1::Entities
     end
 
     class AsFull < AsNested
-      expose :skills, using: SkillData::AsSearch, documentation: { type: "SkillData (search)",
-                                                                   desc: "The skills connected to the user through tasks",
-                                                                   is_array: true }
-      expose :categories, using: CategoryData::AsSearch, documentation: { type: "CategoryData (search)",
-                                                                          desc: "The categories connected to the user through tasks",
-                                                                          is_array: true }
     end
   end
 end

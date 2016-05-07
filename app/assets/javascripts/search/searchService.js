@@ -4,17 +4,30 @@ angular.module('partnr.search').factory('search', function($rootScope, $http, $l
 			return {
 				keywords: "",
 				result: {},
-				queried: false 
+				queried: false
 			};
 		},
+
+    query : function(keywords, entities) {
+      if(!Array.prototype.isPrototypeOf(entities))
+        entities = [];
+      $log.debug('[SEARCH] Sending get request for entities ' + entities + ' and keywords ' + keywords);
+
+      return $http({
+        method: 'GET',
+        url: $rootScope.apiRoute + 'search',
+        headers: principal.getHeaders(),
+        params: { query: keywords, 'entities[]': entities }
+      });
+    },
 
 		queryProjects : function(keywords) {
 			$log.debug('[SEARCH] Sending get request for projects with keywords ' + keywords);
 			return $http({
 				method: 'GET',
-				url: $rootScope.apiRoute + 'projects',
+				url: $rootScope.apiRoute + 'search',
 				headers: principal.getHeaders(),
-				params: { title: keywords }
+				params: { entities: ['Project'], query: keywords }
 			});
 		},
 
@@ -23,9 +36,9 @@ angular.module('partnr.search').factory('search', function($rootScope, $http, $l
 
 			return $http({
 				method: 'GET',
-				url: $rootScope.apiRoute + 'roles',
+				url: $rootScope.apiRoute + 'search',
 				headers: principal.getHeaders(),
-				params: { title: keywords }
+				params: { entities: ['Role'], query: keywords }
 			});
 		}
 	};

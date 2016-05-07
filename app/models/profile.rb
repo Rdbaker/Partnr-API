@@ -5,14 +5,6 @@ class Profile < ActiveRecord::Base
   has_many :positions, :dependent => :destroy
   has_many :interests, :dependent => :destroy
 
-  def skills
-    user.skills
-  end
-
-  def categories
-    user.categories
-  end
-
   def self_link
     "/api/v1/profiles/#{id}"
   end

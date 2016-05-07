@@ -19,6 +19,7 @@ module V1
     mount Activities    => '/activities'
     mount Feeds         => '/feeds'
     mount Follows       => '/follows'
+    mount Search        => '/search'
 
     add_swagger_documentation(
       base_path: '/api/v1',

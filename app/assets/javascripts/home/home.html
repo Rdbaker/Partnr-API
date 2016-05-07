@@ -6,12 +6,12 @@
 		<div class="impact-group">
 			<div class="impact-container text-center col-md-5 col-xs-5">
 				<h2>Join something.</h2>
-				<div class="input-group">
-					<input type="text" class="form-control" ng-model="search.keywords" placeholder="search for a project or role">
-					<span class="input-group-btn">
-						<button type="button" class="btn btn-primary" ng-click="doSearch()"><i class="fa fa-search"></i></button>
-					</span>
-				</div>
+        <div class="input-group">
+            <input type="text" class="form-control" ng-model="searchQuery" placeholder="search for a project or role" ng-keypress="processInput($event)">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" ng-click="doSearch()"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
 			</div>
 			<div class="col-md-1 col-xs-1 text-center">
 				<h2><em>or</em></h2>

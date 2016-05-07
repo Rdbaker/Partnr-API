@@ -23,7 +23,7 @@ module V1
     end
     post do
       cat = get_record(Category, params[:category])
-      @skill = Skill.find_or_create_by({ title: title.downcase, category: cat })
+      @skill = Skill.where({ title: params[:title].downcase, category: cat }).first_or_create
       present @skill, with: Entities::SkillData::AsFull
     end
   end

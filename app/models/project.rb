@@ -78,6 +78,10 @@ class Project < Notifier
     self.conversation.save!
   end
 
+  def self.search(query)
+    where("LOWER( projects.title ) LIKE :query", { :query => query.downcase })
+  end
+
   private
 
   def make_conversation
