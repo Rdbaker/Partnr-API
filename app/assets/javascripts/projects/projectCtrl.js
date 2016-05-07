@@ -12,8 +12,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 	$scope.canPost = false;
 	$scope.loadComplete = false;
 	$scope.user = principal.getUser();
-	$log.debug('user');
-	console.log($scope.user);
+
 	var loadSteps = 2;
 	var loadStepsAchieved = 0;
 
