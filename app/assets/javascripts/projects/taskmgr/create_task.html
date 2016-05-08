@@ -16,6 +16,12 @@
 					<option value="">&nbsp;</option>
 				</select>
 			</div>
+			<div class="form-group" ng-if="users.length > 0">
+				<label for="taskUser">user (optional)</label>
+				<select class="form-control" ng-model="task.user" ng-options="user.id as user.name for user in users">
+					<option value="">&nbsp;</option>
+				</select>
+			</div>
 			<button class="btn btn-default" ng-click="reset()">Reset</button>
 			<button class="btn btn-primary" ng-click="createTask()" ng-disabled="taskForm.$invalid">Create</button>
 		</fieldset>
