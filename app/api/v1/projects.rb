@@ -159,9 +159,7 @@ module V1
         followable_type: "Project",
         user: current_user
       )
-      present f
-        .page(params[:page])
-        .per(params[:per_page]), with: Entities::FollowData::AsFull
+      present f, with: Entities::FollowData::AsFull
     end
   end
 end
