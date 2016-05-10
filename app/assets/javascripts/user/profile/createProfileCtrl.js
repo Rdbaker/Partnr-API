@@ -5,11 +5,11 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 	$scope.schools = [];
 	$scope.positions = [];
 	$scope.interests = [];
-	$scope.avatar=null;
+	$scope.avatar = null;
 	$scope.addAvatar = function(image){
 		var file = image.files[0];
 		var fd = new FormData();
-		fd.append('image',file);
+		fd.append('image', file);
 		$scope.avatar = fd;
 	};
 
@@ -51,7 +51,7 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 
 		var requests = [];
 
-		if ($scope.avatar !== null){
+		if ($scope.avatar !== null) {
 			requests.push(users.postAvatar($scope.avatar).$promise);
 		}
 

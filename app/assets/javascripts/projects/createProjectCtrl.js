@@ -10,23 +10,23 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 	$scope.roles = [{ title: '' }];
 	$scope.loading = false;
 	$scope.stepNames = [
-		"Basic Info",
-		"Your Role",
-		"More Roles",
-		"Cover Photo",
-		"Finished"
+	"Basic Info",
+	"Your Role",
+	"More Roles",
+	"Cover Photo",
+	"Finished"
 	];
 
 	$scope.rolePlaceholders = [
-		"Engineer",
-		"Project Manager",
-		"Botanist",
-		"Programmer",
-		"Designer",
-		"Electrician",
-		"Fabricator",
-		"CAD Specialist",
-		"Bounty Hunter"
+	"Engineer",
+	"Project Manager",
+	"Botanist",
+	"Programmer",
+	"Designer",
+	"Electrician",
+	"Fabricator",
+	"CAD Specialist",
+	"Bounty Hunter"
 	];
 
 	$scope.validateProject = function() {
@@ -77,7 +77,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		fd.append('title',$scope.project.title);
 		fd.append('description',$scope.project.description);
 		if ($scope.coverPhoto !== null){
-		fd.append('cover_photo',$scope.coverPhoto);
+			fd.append('cover_photo',$scope.coverPhoto);
 		}		
 		if ($scope.validateProject()) {
 			projects.create(fd).then(function(result) {

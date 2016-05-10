@@ -66,7 +66,7 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 		fd.append('status',preparedProject.status);
 		fd.append('description',preparedProject.description);
 		if ($scope.updatedPhoto !== null){
-		fd.append('cover_photo',$scope.updatedPhoto);
+			fd.append('cover_photo',$scope.updatedPhoto);
 		}
 
 		var requests = [];

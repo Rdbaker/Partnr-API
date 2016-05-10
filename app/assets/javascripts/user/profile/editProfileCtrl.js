@@ -79,10 +79,10 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 		title: ""
 	});
 
-	$scope.changeAvatar = function(image){
+	$scope.changeAvatar = function(image) {
 		var file = image.files[0];
 		var fd = new FormData();
-		fd.append('image',file);
+		fd.append('image', file);
 		$scope.avatar = fd;
 	};
 

@@ -34,7 +34,7 @@ angular.module('partnr.users.assets').factory('projects', function($rootScope, $
 		create : function(project) {
 			$log.debug("[PROJECT] Sending create request");
 
-			project.append("owner",principal.getUser().id);
+			project.append("owner", principal.getUser().id);
 			$log.debug(project);
 
 			return $http({

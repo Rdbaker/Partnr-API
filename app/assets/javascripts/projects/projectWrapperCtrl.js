@@ -11,10 +11,6 @@ angular.module('partnr.users.assets').controller('ProjectWrapperController', fun
 		$log.debug('[PROJECT] Receiving Photo Update event');
 		$scope.initialize();
 	});
-	$scope.$on('Avatar_Update', function(){
-            $log.debug('[PROJECT] avatar update');
-            $scope.initialize;
-    });
 
 	console.log($stateParams);
 	
@@ -98,14 +94,14 @@ angular.module('partnr.users.assets').controller('ProjectWrapperController', fun
 		if ($scope.project) {
 			switch($scope.project.status) {
 				case 'not_started':
-				result = "Not Started";
-				break;
+					result = "Not Started";
+					break;
 				case 'in_progress':
-				result = "In Progress";
-				break;
+					result = "In Progress";
+					break;
 				case "complete":
-				result = "Completed";
-				break;
+					result = "Completed";
+					break;
 			}
 		}
 		

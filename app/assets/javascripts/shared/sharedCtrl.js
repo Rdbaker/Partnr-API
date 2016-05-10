@@ -1,4 +1,4 @@
-angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications, routeUtils, principal,users,$rootScope) {
+angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications, routeUtils, principal, users) {
     $scope.newNotifications = {};
     $scope.allNotifications = {};
     $scope.avatar = null;
@@ -10,11 +10,11 @@ angular.module('partnr.core').controller('SharedController', function($scope, $s
     });
 
     $scope.$on('Avatar_Update', function(){
-            $scope.getUserAvatar();
-            $log.debug('[HEADER] avatar update');
+        getUserAvatar();
+        $log.debug('[HEADER] avatar update');
     });
 
-    $scope.getUserAvatar = function(){
+    getUserAvatar = function(){
         users.getUserInfo().then(function(response){
             $scope.avatar = response.data.links.avatar;
         });
@@ -50,5 +50,5 @@ angular.module('partnr.core').controller('SharedController', function($scope, $s
         }
     };
 
-    $scope.getUserAvatar();
+    getUserAvatar();
 });
