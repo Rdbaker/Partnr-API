@@ -133,6 +133,8 @@ private
   end
 
   def get_follows
+    # user can only currently explicitly follow a project
+    # make it so this also does something with that project's "child" entities (roles, milestones, etc.)
     Follow.where({ user: self })
   end
 
