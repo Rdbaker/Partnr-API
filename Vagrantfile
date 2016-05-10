@@ -10,6 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Configurate the virtual machine to use 2GB of RAM
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "1024"]
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
     vb.name = "partnr_vm"
   end
 
