@@ -14,8 +14,7 @@ class Notifier < ActiveRecord::Base
   end
 
   def destroy_notification
-    # notify 2
-    0
+    destroy_child_notifications
   end
 
 protected
@@ -37,6 +36,10 @@ private
         n.save!
       end
     end
+  end
+
+  def destroy_child_notifications
+    Notification.where({ notifier: self }).delete_all
   end
 
 end

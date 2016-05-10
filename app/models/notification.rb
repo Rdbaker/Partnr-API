@@ -17,6 +17,14 @@ class Notification < ActiveRecord::Base
     not read?
   end
 
+  def dead?
+    notifier.nil?
+  end
+
+  def self.dead
+    where({ notifier: nil })
+  end
+
   def message
     m = I18n.t "notification.#{notifier.class}.#{action}"
     if m.start_with? "translation missing: en.notification."
