@@ -21,7 +21,9 @@
 					</ul>
 				</li>
 				<li uib-dropdown>
-					<a href id="user-dropdown" uib-dropdown-toggle><img src="/img/user.png" /></a>
+					<a href id="user-dropdown" uib-dropdown-toggle>
+						<img ng-src="{{getUserAvatar()}}" />
+					</a>
 					<ul uib-dropdown-menu class="header-dropdown" aria-labelledby="user-dropdown">
 						<li><a href ng-click="$state.go('user_project_list')">My Projects</a></li>
 						<li><a href ng-click="$state.go('project_create')">Create Project</a></li>

@@ -1,5 +1,6 @@
 angular.module('partnr.users.assets').controller('CreateProjectController', function($scope, $state, $log, $q, $timeout, projects, roles, principal, toaster) {
 	$scope.step = 1;
+	$scope.coverPhoto = null;
 	$scope.project = {
 		title: '',
 		description: ''
@@ -12,6 +13,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		"Basic Info",
 		"Your Role",
 		"More Roles",
+		"Cover Photo",
 		"Finished"
 	];
 
@@ -44,10 +46,15 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		toaster.error("Project could not be created. Please try again.");
 	};
 
+	$scope.addCoverPhoto = function(image){
+		var file = image.files[0];
+		$scope.coverPhoto = file;
+	};
+
 	$scope.stepUp = function() {
 		$scope.step++;
 
-		if ($scope.step === 4) {
+		if ($scope.step === 5) {
 			$scope.loading = true;
 			$scope.doProjectCreate().then(function() {
 				$scope.processOwnerRole().then(function() {
@@ -65,9 +72,15 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 
 	$scope.doProjectCreate = function() {
 		var deferred = $q.defer();
-
+		var fd = new FormData();
+		fd.append('id',$scope.project.id);
+		fd.append('title',$scope.project.title);
+		fd.append('description',$scope.project.description);
+		if ($scope.coverPhoto !== null){
+		fd.append('cover_photo',$scope.coverPhoto);
+		}		
 		if ($scope.validateProject()) {
-			projects.create($scope.project).then(function(result) {
+			projects.create(fd).then(function(result) {
 				$log.debug(result.data);
 				if (result.data.id) {
 					$scope.project = result.data;

@@ -3,13 +3,13 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 
 	var editableAttributeList = function(type, template) {
 		this.type = type;
-		this.template = template
+		this.template = template;
 		this.all = [];
 		this.new = [];
 		this.toDelete = [];
 
 		this.addNewItem = function() {
-			$log.debug("Add new item")
+			$log.debug("Add new item");
 			this.new.push(angular.copy(this.template));
 			$log.debug(this);
 		};
@@ -62,6 +62,7 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 	};
 
 	$scope.user = null;
+	$scope.avatar = null;
 	$scope.location = "";
 	$scope.schools = new editableAttributeList("school", {
 		school_name: "", 
@@ -75,6 +76,13 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 	$scope.interests = new editableAttributeList("interest", {
 		title: ""
 	});
+
+	$scope.changeAvatar = function(image){
+		var file = image.files[0];
+		var fd = new FormData();
+		fd.append('image',file);
+		$scope.avatar = fd;
+	};
 
 	users.get(principal.getUser().id).then(function(result) {
 		$log.debug(result.data);
@@ -94,6 +102,10 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 		$scope.loadComplete = false;
 
 		var requests = [];
+
+		if ($scope.avatar !== null){
+			requests.push(users.postAvatar($scope.avatar).$promise);
+		}
 
 		if (profiles.isValidLocation($scope.location)) {
 			requests.push(profiles.addLocation($scope.location).$promise);

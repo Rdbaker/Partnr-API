@@ -1,6 +1,8 @@
 <toasts></toasts>
 <div class="content-container" ng-show="loadComplete">
   <h2>Edit your profile info</h2>
+  <h3>Profile Picture</h3>
+    <form><input type="file" onchange="angular.element(this).scope().changeAvatar(this)" multiple accept='image/*' /></form>
   <h3>Your current location</h3>
   <input type="text" class="form-control" ng-model="location" />
 

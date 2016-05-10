@@ -7,6 +7,7 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 	$scope.loadComplete = false;
 	$scope.newRoles = [];
 	$scope.rolesToDelete = [];
+	$scope.updatedPhoto = null;
 
 	$scope.$parent.getProjectWrapperInfo().then(function(result) {
 		$log.debug(result);
@@ -14,6 +15,13 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 		$scope.isOwner = result.isOwner;
 		$scope.loadComplete = true;
 	});
+
+
+	$scope.changeCoverPhoto = function(image){
+		var file = image.files[0];
+		$scope.updatedPhoto = file;
+
+	};
 
 	$scope.addRole = function() {
 		$scope.newRoles.push({ 
@@ -52,9 +60,17 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 		var preparedProject = angular.copy($scope.project);
 		delete preparedProject.owner;
 		$scope.loadComplete = false;
+		var fd = new FormData();
+		fd.append('id',preparedProject.id);
+		fd.append('title',preparedProject.title);
+		fd.append('status',preparedProject.status);
+		fd.append('description',preparedProject.description);
+		if ($scope.updatedPhoto !== null){
+		fd.append('cover_photo',$scope.updatedPhoto);
+		}
 
 		var requests = [];
-		requests.push(projects.update(preparedProject).$promise);
+		requests.push(projects.update(fd).$promise);
 
 		for (var i = 0; i < $scope.rolesToDelete.length; i++) {
 			requests.push(roles.delete($scope.rolesToDelete[i].id).$promise);

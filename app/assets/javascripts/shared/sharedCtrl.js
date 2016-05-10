@@ -7,6 +7,10 @@ angular.module('partnr.core').controller('SharedController', function($scope, $s
         $scope.newNotifications = notifications.getNew();
     });
 
+    $scope.getUserAvatar = function(){
+        return principal.getUser().links.avatar;
+    };
+
     $scope.doLogout = function() {
         principal.logout().then(function() {
             $state.go('login');

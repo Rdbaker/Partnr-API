@@ -89,18 +89,30 @@ angular.module('partnr.users.assets').controller('ProjectWrapperController', fun
 		if ($scope.project) {
 			switch($scope.project.status) {
 				case 'not_started':
-					result = "Not Started";
-					break;
+				result = "Not Started";
+				break;
 				case 'in_progress':
-					result = "In Progress";
-					break;
+				result = "In Progress";
+				break;
 				case "complete":
-					result = "Completed";
-					break;
+				result = "Completed";
+				break;
 			}
 		}
 		
 		return result;
+	};
+
+	$scope.getProjectCoverPhoto = function(){
+		if ($scope.project){
+			$log.debug('the path is', $scope.project.links.cover_photo);
+			if ($scope.project.links.cover_photo !== 'https://partnr-dev-assets.s3-us-west-2.amazonaws.com/original/missing.png'){
+				return $scope.project.links.cover_photo;
+			} else {
+				$log.debug('else triggered');
+				return null;
+			}
+		}
 	};
 
 	$scope.initialize();
