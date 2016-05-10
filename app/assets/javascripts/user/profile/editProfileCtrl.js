@@ -1,5 +1,7 @@
-angular.module('partnr.users.assets').controller('EditProfileController', function($scope, $state, $log, $q, $filter, toaster, users, principal, profiles) {
+angular.module('partnr.users.assets').controller('EditProfileController', function($scope, $state, $log, $q, $filter, toaster, users, principal, profiles,$rootScope,$timeout) {
 	$scope.loadComplete = false;
+
+
 
 	var editableAttributeList = function(type, template) {
 		this.type = type;
@@ -118,6 +120,11 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 		$log.debug(requests);
 
 		$q.all(requests).then(function(result) {
+			if ($scope.avatar !== null){
+				$timeout(function(){
+					$rootScope.$broadcast('Avatar_Update');
+				},20000);
+			}
 			$log.debug(result);
 			toaster.success("Profile updated!");
 			$state.go('home');

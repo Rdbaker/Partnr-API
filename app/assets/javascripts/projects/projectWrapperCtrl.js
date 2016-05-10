@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('ProjectWrapperController', function($scope, $state, $stateParams, $log, $q, principal, projects) {
+angular.module('partnr.users.assets').controller('ProjectWrapperController', function($scope, $state, $stateParams, $log, $q, principal, projects,$rootScope) {
 	$scope.loadComplete = false;
 	$scope.isMember = false;
 	$scope.isOwner = false;
@@ -6,6 +6,15 @@ angular.module('partnr.users.assets').controller('ProjectWrapperController', fun
 	$scope.projectId = $stateParams.project_id;
 	$scope.user = principal.getUser();
 	$scope.project = null;
+
+	$scope.$on('Photo_Update', function(){
+		$log.debug('[PROJECT] Receiving Photo Update event');
+		$scope.initialize();
+	});
+	$scope.$on('Avatar_Update', function(){
+            $log.debug('[PROJECT] avatar update');
+            $scope.initialize;
+    });
 
 	console.log($stateParams);
 	
@@ -101,18 +110,6 @@ angular.module('partnr.users.assets').controller('ProjectWrapperController', fun
 		}
 		
 		return result;
-	};
-
-	$scope.getProjectCoverPhoto = function(){
-		if ($scope.project){
-			$log.debug('the path is', $scope.project.links.cover_photo);
-			if ($scope.project.links.cover_photo !== 'https://partnr-dev-assets.s3-us-west-2.amazonaws.com/original/missing.png'){
-				return $scope.project.links.cover_photo;
-			} else {
-				$log.debug('else triggered');
-				return null;
-			}
-		}
 	};
 
 	$scope.initialize();

@@ -1,5 +1,5 @@
 angular.module('partnr.users.assets').controller('EditProjectController', function($scope, $state, 
-	$stateParams, $log, $q, $filter, projects, applications, roles, principal, toaster, modals) {
+	$stateParams, $log, $q, $filter, projects, applications, roles, principal, toaster, modals,$rootScope) {
 	$scope.project = {
 		status: 'not_started'
 	};
@@ -83,6 +83,10 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 		}
 
 		$q.all(requests).then(function(result) {
+			if ($scope.updatedPhoto !== null){
+				$log.debug('[PROJECT] Sending Photo Update event');
+				$rootScope.$broadcast('Photo_Update');
+			}
 			$log.debug(result);
 			toaster.success("Project updated!");
 			$state.go('project', {id : $scope.project.id});

@@ -9,6 +9,14 @@ angular.module('partnr.users').factory('users', function($rootScope, $http, $log
 				headers: principal.getHeaders()
 			});
 		},
+		getUserInfo : function(id) {
+			$log.debug("[USER] Sending GET user request");
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'users/me',
+				headers: principal.getHeaders()
+			});
+		},
 
 		create : function(acct) {
 			$log.debug("[USER] Sending Create request");
