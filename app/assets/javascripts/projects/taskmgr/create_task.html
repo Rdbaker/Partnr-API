@@ -1,7 +1,7 @@
 <div ng-show="loadComplete" class="content-container with-tabs clearfix">
 	<h2>New Task</h2>
 	<form class="col-md-6" name="taskForm">
-		<fieldset ng-disabled="loading">
+		<fieldset ng-disabled="formLoading">
 			<div class="form-group">
 				<label for="taskName">name</label>
 				<input id="taskName" class="form-control" ng-model="task.title" required />

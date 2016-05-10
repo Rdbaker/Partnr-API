@@ -297,8 +297,23 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			url: '/milestones/create',
 			views: {
 				'projectinfo': {
-					templateUrl: 'projects/taskmgr/create_milestone.html',
-					controller: 'CreateMilestoneController'
+					templateUrl: 'projects/taskmgr/milestone_form.html',
+					controller: 'MilestoneFormController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: ['Milestone']
+			}
+		})
+
+		.state('project_milestone_edit', {
+			parent: 'project_wrapper',
+			url: '/milestones/{milestone_id:int}/edit',
+			views: {
+				'projectinfo': {
+					templateUrl: 'projects/taskmgr/milestone_form.html',
+					controller: 'MilestoneFormController'
 				}
 			},
 			data: {
