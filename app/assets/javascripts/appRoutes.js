@@ -279,7 +279,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 
 		.state('project_taskmgr', {
 			parent: 'project_wrapper',
-			url: '/taskmgr?v',
+			url: '/taskmgr',
 			views: {
 				'projectinfo': {
 					templateUrl: 'projects/taskmgr/list_tasks.html',

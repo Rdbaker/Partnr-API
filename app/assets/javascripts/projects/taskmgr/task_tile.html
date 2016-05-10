@@ -1,0 +1,17 @@
+<div class="content-container no-padding pn-task clearfix">
+	<div class="complete-btn-wrapper">
+		<button class="complete-btn {{ task.status }}"><i class="fa fa-check-square"></i></button>
+	</div>
+	<div>
+		<div class="title-group">
+			<span class="pn-task-title">{{ task.title }}</span>
+			<a ui-sref="project_task_edit({ task_id: task.id })" class="sm-edit-link"><i class="fa fa-pencil"></i><span>edit</span></a>
+		</div>
+	</div>
+	<div class="supporting-text small pn-task-info clearfix">
+		<span ng-if="task.user" class="col-md-2"><i class="fa fa-user"></i>{{ task.user.name }}</span>
+		<span ng-if="!task.user" class="col-md-2"><i class="fa fa-user"></i><em>None</em></span>
+		<span ng-if="task.milestone" class="col-md-2"><i class="fa fa-flag"></i>{{ task.milestone.title }}</span>
+		<span ng-if="!task.milestone" class="col-md-2"><i class="fa fa-flag"></i><em>None</em></span>
+	</div>
+</div>

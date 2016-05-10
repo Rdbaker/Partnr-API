@@ -23,7 +23,7 @@
 	<div ng-if="viewingEntity === 'Task'" class="clearfix">
 		<div>
 			<div ng-show="tasks.length > 0" ng-repeat="task in tasks track by $index">
-		    	<span class="title"></span>
+		    	<task-tile task="task"></task-tile>
 			</div>
 		</div>
 		<div ng-show="tasks.length <= 0" class="text-center">

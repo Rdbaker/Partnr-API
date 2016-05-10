@@ -6,13 +6,6 @@ angular.module('partnr.users.assets').controller('ListTasksController', function
 	$scope.milestoneTaskMap = [];
 	$scope.viewingEntity = 'Milestone';
 
-	if ($stateParams.v
-		&& $stateParams.v.toUpperCase() === 'TASK') {
-		$scope.viewingEntity = 'Task';
-	} else {
-		$scope.viewingEntity = 'Milestone';
-	}
-
 	$scope.loadComplete = false;
 	var loadSteps = 2;
 	var loadStepsAchieved = 0;
@@ -69,5 +62,5 @@ angular.module('partnr.users.assets').controller('ListTasksController', function
 		} else {
 			$state.go('project_task_create', { project_id : $stateParams.project_id });
 		}
-	}
+	};
 });

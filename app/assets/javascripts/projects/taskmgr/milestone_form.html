@@ -17,8 +17,8 @@
 				<button class="btn btn-primary" ng-click="createMilestone()" ng-disabled="milestoneForm.$invalid">Create</button>
 			</div>
 			<div ng-if="crudState === 'edit'">
-				<button class="btn btn-danger" ng-click="delete()">Delete</button>
 				<button class="btn btn-primary" ng-click="saveMilestone()" ng-disabled="milestoneForm.$invalid">Save</button>
+				<button class="btn btn-danger" ng-click="delete()">Delete</button>
 			</div>
 		</fieldset>
 	</form>

@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('MilestoneFormController', function($scope, $state, $stateParams, $log, $q, $timeout, milestones, principal, toaster) {
+angular.module('partnr.users.assets').controller('MilestoneFormController', function($scope, $state, $stateParams, $log, $q, $timeout, milestones, principal, modals, toaster) {
 	$scope.milestone = {
 		title: '',
 		due_date: '',
@@ -46,6 +46,29 @@ angular.module('partnr.users.assets').controller('MilestoneFormController', func
 				$state.go('project_taskmgr', { project_id: $stateParams.project_id });
 			}
 		}, creationFailCallback);
+	};
+
+	$scope.saveMilestone = function() {
+		$scope.formLoading = true;
+		milestones.update($scope.milestone).then(function(result) {
+			$scope.formLoading = false;
+
+			if (result.data.id) {
+				$state.go('project_taskmgr');
+			}
+		});
+	};
+
+	$scope.delete = function() {
+		modals.confirm("Are you sure you want to delete this milestone?", function(result) {
+			if (result) {
+				$scope.formLoading = true;
+				milestones.delete($scope.milestone.id).then(function() {
+					$scope.formLoading = false;
+					$state.go('project_taskmgr');
+				});
+			}
+		});
 	};
 
 	$scope.reset = function() {
