@@ -52,12 +52,18 @@ module V1
 
     desc "Retrieve all tasks for a project", entity: Entities::TaskData::AsSearch
     params do
-      requires :project, type: Integer, allow_blank: false, desc: "The Project ID for the tasks to retreive."
+      requires :project, type: Integer, allow_blank: false, desc: "The Project ID for the tasks to retrieve."
+      optional :bmark, type: Integer, allow_blank: false, desc: "The milestone ID for the tasks to retrieve"
       optional :title, type: String, desc: "The title of the project task to retrieve."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of tasks per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the tasks."
     end
     get do
+      if params.has_key? :milestone
+        params[:bmark] = params[:milestone]
+        params.delete :milestone
+      end
+
       present Task.where(permitted_params params)
         .page(params[:page])
         .per(params[:per_page]), with: Entities::TaskData::AsSearch

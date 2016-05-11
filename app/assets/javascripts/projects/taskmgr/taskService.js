@@ -21,6 +21,22 @@ angular.module('partnr.users.assets').factory('tasks', function($rootScope, $htt
 			});
 		},
 
+		listByProjectAndMilestone : function(project_id, milestone_id) {
+			$log.debug('[TASK] Getting list by project and milestone');
+			$log.debug(project_id);
+			$log.debug(milestone_id);
+
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'tasks',
+				headers: principal.getHeaders(),
+				params: {
+					project: project_id,
+					milestone: milestone_id
+				}
+			});
+		},
+
 		list : function() {
 			$log.debug('[TASK] Sending list request');
 

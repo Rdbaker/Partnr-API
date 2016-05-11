@@ -22,7 +22,7 @@
 	</div>
 	<div ng-if="viewingEntity === 'Task'" class="clearfix">
 		<div>
-			<div ng-show="tasks.length > 0" ng-repeat="task in tasks track by $index">
+			<div ng-show="tasks.length > 0" ng-repeat="task in tasks | filter:searchText track by $index">
 		    	<task-tile task="task"></task-tile>
 			</div>
 		</div>

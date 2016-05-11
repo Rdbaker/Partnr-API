@@ -1,5 +1,6 @@
 <div ng-show="loadComplete" class="content-container with-tabs clearfix">
-	<h2>New Task</h2>
+	<h2 ng-if="crudState === 'create'">New Task</h2>
+	<h2 ng-if="crudState === 'edit'">Edit Task</h2>
 	<form class="col-md-6" name="taskForm">
 		<fieldset ng-disabled="formLoading">
 			<div class="form-group">

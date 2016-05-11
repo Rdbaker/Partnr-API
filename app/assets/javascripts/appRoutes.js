@@ -292,6 +292,21 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
+		.state('project_milestone', {
+			parent: 'project_wrapper',
+			url: '/milestones/{milestone_id:int}',
+			views: {
+				'projectinfo': {
+					templateUrl: 'projects/taskmgr/milestone.html',
+					controller: 'MilestoneController'
+				}
+			},
+			data: {
+				roles: [],
+				entities: ['milestone']
+			}
+		})
+
 		.state('project_milestones', {
 			parent: 'project_wrapper',
 			url: '/milestones',
