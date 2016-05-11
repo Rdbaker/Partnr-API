@@ -119,7 +119,7 @@ module V1
       requires :id, type: Integer, allow_blank: false, desc: "The task ID to update."
       optional :title, type: String, length: 255, allow_blank: false, desc: "The title of the task to update."
       optional :description, type: String, length: 1000, desc: "The description of the task to update."
-      optional :milestone, type: Integer, desc: "The milestone ID of the task."
+      optional :milestone, type: Integer, allow_blank: true, desc: "The milestone ID of the task."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The task's status."
       optional :user, type: Integer, allow_blank: true, desc: "The user ID to assign the task to."
       optional :skills, type: Array[Integer], allow_blank: false, desc: "The list of skill IDs to give to this task."
@@ -129,9 +129,22 @@ module V1
       task_put_permissions
       params[:project] = @task.project.id
       # make sure the milestone is a part of the project
-      project_milestone_align?
+      if params.has_key? :milestone and params[:milestone]
+        project_milestone_align?
+      end
+
+      if params.has_key? :milestone and not params[:milestone]
+        @task.bmark = nil;
+      end
+
       # make sure the user is on the project
-      project_user_align?
+      if params.has_key? :user and params[:user]
+        project_user_align?
+      end
+
+      if params.has_key? :user and not params[:user]
+        @task.user = nil;
+      end
 
       if params.has_key? :status
         params[:status] = { "not_started" => 0, "in_progress" => 1, "complete" => 2 }[params[:status]]

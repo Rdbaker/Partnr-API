@@ -53,19 +53,11 @@ angular.module('partnr.users.assets').factory('tasks', function($rootScope, $htt
 			if (taskToUpdate.skills.length === 0) delete taskToUpdate.skills;
 			if (taskToUpdate.categories.length === 0) delete taskToUpdate.categories;
 
-			// if (taskToUpdate.milestone == null) {
-			// 	delete taskToUpdate.milestone;
-			// } else 
-
-			if (taskToUpdate.milestone.id) {
+			if (taskToUpdate.milestone && taskToUpdate.milestone.id) {
 				taskToUpdate.milestone = taskToUpdate.milestone.id;
 			}
 
-			// if (taskToUpdate.user === null) {
-			// 	delete taskToUpdate.user;
-			// } else 
-
-			if (taskToUpdate.user.id) {
+			if (taskToUpdate.user && taskToUpdate.user.id) {
 				taskToUpdate.user = taskToUpdate.user.id;
 			}
 
