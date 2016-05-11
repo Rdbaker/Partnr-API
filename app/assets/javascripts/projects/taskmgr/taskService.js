@@ -48,12 +48,32 @@ angular.module('partnr.users.assets').factory('tasks', function($rootScope, $htt
 		update : function(task) {
 			$log.debug("[TASK] Sending update request");
 			$log.debug(task);
+			var taskToUpdate = angular.copy(task);
+
+			if (taskToUpdate.skills.length === 0) delete taskToUpdate.skills;
+			if (taskToUpdate.categories.length === 0) delete taskToUpdate.categories;
+
+			// if (taskToUpdate.milestone == null) {
+			// 	delete taskToUpdate.milestone;
+			// } else 
+
+			if (taskToUpdate.milestone.id) {
+				taskToUpdate.milestone = taskToUpdate.milestone.id;
+			}
+
+			// if (taskToUpdate.user === null) {
+			// 	delete taskToUpdate.user;
+			// } else 
+
+			if (taskToUpdate.user.id) {
+				taskToUpdate.user = taskToUpdate.user.id;
+			}
 
 			return $http({
 				method: 'PUT',
-				url: $rootScope.apiRoute + 'tasks/' + task.id,
+				url: $rootScope.apiRoute + 'tasks/' + taskToUpdate.id,
 				headers: principal.getHeaders(),
-				data: task
+				data: taskToUpdate
 			});
 		},
 

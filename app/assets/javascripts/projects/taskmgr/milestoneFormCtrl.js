@@ -6,25 +6,17 @@ angular.module('partnr.users.assets').controller('MilestoneFormController', func
 	};
 
 	$scope.crudState = ($state.current.name.includes('create') ? 'create' : 'edit');
-	$scope.loadComplete = true;
+	$scope.loadComplete = false;
 	$scope.formLoading = false;
-	var loadSteps = 2;
-	var loadStepsAchieved = 0;
-
-	var doLoadStep = function() {
-		loadStepsAchieved += 1;
-		if (loadStepsAchieved === loadSteps) {
-			$scope.loadComplete = true;
-		}
-	};
 
 	if ($scope.crudState === 'edit') {
 		milestones.get($stateParams.milestone_id).then(function(result) {
 			$log.debug(result.data);
 			$scope.milestone = result.data;
+			$scope.loadComplete = true;
 		});
 	} else {
-		doLoadStep();
+		$scope.loadComplete = true;
 	}
 
 	var creationFailCallback = function() {
@@ -43,7 +35,7 @@ angular.module('partnr.users.assets').controller('MilestoneFormController', func
 			$scope.formLoading = false;
 
 			if (result.data.id) {
-				$state.go('project_taskmgr', { project_id: $stateParams.project_id });
+				$state.go('project_milestones', { project_id: $stateParams.project_id });
 			}
 		}, creationFailCallback);
 	};
@@ -54,7 +46,7 @@ angular.module('partnr.users.assets').controller('MilestoneFormController', func
 			$scope.formLoading = false;
 
 			if (result.data.id) {
-				$state.go('project_taskmgr');
+				$state.go('project_milestones');
 			}
 		});
 	};
@@ -65,7 +57,7 @@ angular.module('partnr.users.assets').controller('MilestoneFormController', func
 				$scope.formLoading = true;
 				milestones.delete($scope.milestone.id).then(function() {
 					$scope.formLoading = false;
-					$state.go('project_taskmgr');
+					$state.go('project_milestones');
 				});
 			}
 		});

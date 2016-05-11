@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('CreateTaskController', function($scope, $state, $stateParams, $log, $q, $timeout, tasks, milestones, principal, toaster) {
+angular.module('partnr.users.assets').controller('TaskFormController', function($scope, $state, $stateParams, $log, $q, $timeout, tasks, milestones, principal, modals, toaster) {
 	$scope.task = {
 		title: '',
 		description: '',
@@ -7,11 +7,12 @@ angular.module('partnr.users.assets').controller('CreateTaskController', functio
 		project: $stateParams.project_id
 	};
 
+	$scope.crudState = ($state.current.name.includes('create') ? 'create' : 'edit');
 	$scope.loadComplete = false;
 	$scope.formLoading = false;
 	$scope.milestones = [];
 	$scope.users = [];
-	var loadSteps = 2;
+	var loadSteps = 3;
 	var loadStepsAchieved = 0;
 
 	var doLoadStep = function() {
@@ -20,6 +21,18 @@ angular.module('partnr.users.assets').controller('CreateTaskController', functio
 			$scope.loadComplete = true;
 		}
 	};
+
+	if ($scope.crudState === 'edit') {
+		tasks.get($stateParams.task_id).then(function(result) {
+			$log.debug(result.data);
+			$scope.task = result.data;
+			$scope.task.milestone = ($scope.task.milestone ? $scope.task.milestone.id : null);
+			$scope.task.user = ($scope.task.user ? $scope.task.user.id : null);
+			doLoadStep();
+		});
+	} else {
+		doLoadStep();
+	}
 
 	milestones.listByProject($stateParams.project_id).then(function(result) {
 		$scope.milestones = result.data;
@@ -61,9 +74,33 @@ angular.module('partnr.users.assets').controller('CreateTaskController', functio
 			$scope.formLoading = false;
 
 			if (result.data.id) {
-				$state.go('project_taskmgr', { project_id: $stateParams.project_id, v: 'task' });
+				$state.go('project_tasks', { project_id: $stateParams.project_id, v: 'task' });
 			}
 		}, creationFailCallback);
+	};
+
+	$scope.saveTask = function() {
+		$scope.formLoading = true;
+
+		tasks.update($scope.task).then(function(result) {
+			$scope.formLoading = false;
+
+			if (result.data.id) {
+				$state.go('project_tasks');
+			}
+		});
+	};
+
+	$scope.delete = function() {
+		modals.confirm("Are you sure you want to delete this task?", function(result) {
+			if (result) {
+				$scope.formLoading = true;
+				tasks.delete($scope.task.id).then(function() {
+					$scope.formLoading = false;
+					$state.go('project_tasks');
+				});
+			}
+		});
 	};
 
 	$scope.reset = function() {

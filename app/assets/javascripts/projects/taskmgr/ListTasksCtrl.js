@@ -4,7 +4,7 @@ angular.module('partnr.users.assets').controller('ListTasksController', function
 	$scope.tasks = [];
 	$scope.milestones = [];
 	$scope.milestoneTaskMap = [];
-	$scope.viewingEntity = 'Milestone';
+	$scope.viewingEntity = ($state.current.name.includes('task') ? 'Task' : 'Milestone');
 
 	$scope.loadComplete = false;
 	var loadSteps = 2;
@@ -41,20 +41,27 @@ angular.module('partnr.users.assets').controller('ListTasksController', function
 		loadStepsAchieved += 1;
 		if (loadStepsAchieved >= loadSteps) {
 			$scope.loadComplete = true;
+			syncTaskData();
+		}
+	};
 
-			// Sync the task and milestone data
-			for (var idx = 0; idx < $scope.milestones.length; idx++) {
-				var milestone = $scope.milestones[idx];
-				if ($scope.milestoneTaskMap[milestone.id] !== undefined) {
-					milestone.tasksTotal = $scope.milestoneTaskMap[milestone.id].length;
-					milestone.tasksComplete = $filter('filter')($scope.milestoneTaskMap[milestone.id], { status: 'complete' }).length;
-				} else {
-					milestone.tasksTotal = 0;
-					milestone.tasksComplete = 0;
-				}
+	var syncTaskData = function() {
+		// Sync the task and milestone data
+		for (var idx = 0; idx < $scope.milestones.length; idx++) {
+			var milestone = $scope.milestones[idx];
+			if ($scope.milestoneTaskMap[milestone.id] !== undefined) {
+				milestone.tasksTotal = $scope.milestoneTaskMap[milestone.id].length;
+				milestone.tasksComplete = $filter('filter')($scope.milestoneTaskMap[milestone.id], { status: 'complete' }).length;
+			} else {
+				milestone.tasksTotal = 0;
+				milestone.tasksComplete = 0;
 			}
 		}
 	};
+
+	$scope.$on("taskUpdate", function() {
+		syncTaskData();
+	});
 
 	$scope.newEntity = function() {
 		if ($scope.viewingEntity === 'Milestone') {

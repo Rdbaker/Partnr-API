@@ -1,11 +1,12 @@
-<div class="content-container no-padding pn-task clearfix">
+<div class="content-container no-padding pn-task clearfix {{ task.status }}">
 	<div class="complete-btn-wrapper">
-		<button class="complete-btn {{ task.status }}"><i class="fa fa-check-square"></i></button>
+		<button class="complete-btn {{ task.status }}" ng-click="completeTask()"><i class="fa fa-check-square"></i></button>
 	</div>
 	<div>
 		<div class="title-group">
 			<span class="pn-task-title">{{ task.title }}</span>
-			<a ui-sref="project_task_edit({ task_id: task.id })" class="sm-edit-link"><i class="fa fa-pencil"></i><span>edit</span></a>
+			<a ng-if="task.status !== 'complete'" ui-sref="project_task_edit({ task_id: task.id })" class="sm-edit-link"><i class="fa fa-pencil"></i><span>edit</span></a>
+			<p ng-if="task.description" class="supporting-text small">{{ task.description }}</p>
 		</div>
 	</div>
 	<div class="supporting-text small pn-task-info clearfix">

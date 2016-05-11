@@ -41,6 +41,14 @@ module V1
       end
     end
 
+    desc "Retrieve a single task based on its ID"
+    params do
+      requires :id, type: Integer, allow_blank: false, desc: "The task ID."
+    end
+    get ":id" do
+      task = get_record(Task, params[:id])
+      present task, with: Entities::TaskData::AsFull
+    end
 
     desc "Retrieve all tasks for a project", entity: Entities::TaskData::AsSearch
     params do

@@ -277,9 +277,9 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('project_taskmgr', {
+		.state('project_tasks', {
 			parent: 'project_wrapper',
-			url: '/taskmgr',
+			url: '/tasks',
 			views: {
 				'projectinfo': {
 					templateUrl: 'projects/taskmgr/list_tasks.html',
@@ -289,6 +289,21 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			data: {
 				roles: [],
 				entities: ['task']
+			}
+		})
+
+		.state('project_milestones', {
+			parent: 'project_wrapper',
+			url: '/milestones',
+			views: {
+				'projectinfo': {
+					templateUrl: 'projects/taskmgr/list_tasks.html',
+					controller: 'ListTasksController'
+				}
+			},
+			data: {
+				roles: [],
+				entities: ['milestone']
 			}
 		})
 
@@ -327,8 +342,23 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			url: '/tasks/create',
 			views: {
 				'projectinfo': {
-					templateUrl: 'projects/taskmgr/create_task.html',
-					controller: 'CreateTaskController'
+					templateUrl: 'projects/taskmgr/task_form.html',
+					controller: 'TaskFormController'
+				}
+			},
+			data: {
+				roles: ['Admin'],
+				entities: ['Task']
+			}
+		})
+
+		.state('project_task_edit', {
+			parent: 'project_wrapper',
+			url: '/tasks/{task_id:int}/edit',
+			views: {
+				'projectinfo': {
+					templateUrl: 'projects/taskmgr/task_form.html',
+					controller: 'TaskFormController'
 				}
 			},
 			data: {

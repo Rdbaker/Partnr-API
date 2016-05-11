@@ -22,8 +22,15 @@
 					<option value="">&nbsp;</option>
 				</select>
 			</div>
-			<button class="btn btn-default" ng-click="reset()">Reset</button>
-			<button class="btn btn-primary" ng-click="createTask()" ng-disabled="taskForm.$invalid">Create</button>
+			<div ng-if="crudState === 'create'">
+				<button class="btn btn-default" ng-click="reset()">Reset</button>
+				<button class="btn btn-primary" ng-click="createTask()" ng-disabled="taskForm.$invalid">Create</button>
+			</div>
+			<div ng-if="crudState === 'edit'">
+				<button class="btn btn-primary" ng-click="saveTask()" ng-disabled="taskForm.$invalid">Save</button>
+				<button class="btn btn-danger" ng-click="delete()">Delete</button>
+			</div>
+		</fieldset>
 		</fieldset>
 	</form>
 </div>
