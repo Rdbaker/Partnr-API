@@ -123,7 +123,7 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 			if ($scope.avatar !== null){
 				$timeout(function(){
 					$rootScope.$broadcast('Avatar_Update');
-				},20000);
+				},5000);
 			}
 			$log.debug(result);
 			toaster.success("Profile updated!");
