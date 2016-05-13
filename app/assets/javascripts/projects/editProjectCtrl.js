@@ -83,7 +83,7 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 		}
 
 		$q.all(requests).then(function(result) {
-			if ($scope.updatedPhoto !== null){
+			if ($scope.updatedPhoto !== null) {
 				$log.debug('[PROJECT] Sending Photo Update event');
 				$rootScope.$broadcast('Photo_Update');
 			}

@@ -6,7 +6,7 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 	$scope.positions = [];
 	$scope.interests = [];
 	$scope.avatar = null;
-	$scope.addAvatar = function(image){
+	$scope.addAvatar = function(image) {
 		var file = image.files[0];
 		var fd = new FormData();
 		fd.append('image', file);
