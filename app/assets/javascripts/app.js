@@ -8,7 +8,12 @@ angular.module('partnr.core', ['ui.router',
   'ui.bootstrap', 'templates', 'wu.masonry',
   'partnr.auth', 'partnr.users', 'partnr.messaging',
   'partnr.notify', 'partnr.search', 'partnr.users.assets'
-  ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization) {
+  ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization, skills) {
+
+   /**
+    * Set basic app-level variables and manage state changes 
+    */
+
    principal.fetchCsrf();
    $rootScope.$state = $state; // application state
    $rootScope.apiVersion = "v1";
@@ -56,4 +61,14 @@ angular.module('partnr.core', ['ui.router',
 
     $window.ga('send', 'pageview', { page: $location.url() });
    });
+
+   /**
+    * Load skill categories
+    */
+    $rootScope.categories = [];
+    skills.listCategories().then(function(result) {
+      if (result.data) {
+        $rootScope.categories = result.data;
+      }
+    });
 });
