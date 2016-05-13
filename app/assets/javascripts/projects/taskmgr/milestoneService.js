@@ -33,8 +33,6 @@ angular.module('partnr.users.assets').factory('milestones', function($rootScope,
 
 		create : function(milestone) {
 			$log.debug("[MILESTONE] Sending create request");
-
-			milestone.owner = principal.getUser().id;
 			$log.debug(milestone);
 
 			return $http({

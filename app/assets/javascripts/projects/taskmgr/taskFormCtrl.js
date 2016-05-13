@@ -68,8 +68,6 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 			delete $scope.task.milestone;
 		}
 
-		console.log($scope.task);
-
 		tasks.create($scope.task).then(function(result) {
 			$scope.formLoading = false;
 

@@ -18,8 +18,6 @@ angular.module('partnr.users.assets').controller('ListTasksController', function
 	tasks.listByProject($stateParams.project_id).then(function(result) {
 		$scope.tasks = result.data;
 
-		console.log($scope.tasks);
-
 		// Map tasks to a milestone
 		for (var idx = 0; idx < $scope.tasks.length; idx++) {
 			if ($scope.tasks[idx].milestone
@@ -31,8 +29,6 @@ angular.module('partnr.users.assets').controller('ListTasksController', function
 				}
 			}
 		}
-
-		console.log($scope.milestoneTaskMap);
 
 		doLoadStep();
 	});
