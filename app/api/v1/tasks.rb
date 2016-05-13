@@ -137,14 +137,14 @@ module V1
       # make sure the milestone is a part of the project
       project_milestone_align?
 
-      if params.has_key? :milestone && not params[:milestone]
+      if params.has_key? :milestone && !params[:milestone]
         @task.bmark = nil;
       end
 
       # make sure the user is on the project
       project_user_align?
 
-      if params.has_key? :user && not params[:user]
+      if params.has_key? :user && !params[:user]
         @task.user = nil;
       end
 
