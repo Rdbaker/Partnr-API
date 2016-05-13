@@ -31,7 +31,7 @@ module V1
             @milestone = get_record(Bmark, params[:milestone])
             error!("That milestone doesn't belong to this project", 400) unless @project.bmarks.member?(@milestone)
           else
-            @mileston = nil
+            @milestone = nil
             @task.bmark = nil
           end
         end
