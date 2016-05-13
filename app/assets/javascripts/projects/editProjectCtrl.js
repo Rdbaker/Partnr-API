@@ -1,5 +1,5 @@
 angular.module('partnr.users.assets').controller('EditProjectController', function($scope, $state, 
-	$stateParams, $log, $q, $filter, projects, applications, roles, principal, toaster, modals,$rootScope) {
+	$stateParams, $log, $q, $filter, projects, applications, roles, principal, toaster, modals, $rootScope) {
 	$scope.project = {
 		status: 'not_started'
 	};
@@ -17,7 +17,7 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 	});
 
 
-	$scope.changeCoverPhoto = function(image){
+	$scope.changeCoverPhoto = function(image) {
 		var file = image.files[0];
 		$scope.updatedPhoto = file;
 
@@ -61,11 +61,11 @@ angular.module('partnr.users.assets').controller('EditProjectController', functi
 		delete preparedProject.owner;
 		$scope.loadComplete = false;
 		var fd = new FormData();
-		fd.append('id',preparedProject.id);
-		fd.append('title',preparedProject.title);
-		fd.append('status',preparedProject.status);
-		fd.append('description',preparedProject.description);
-		if ($scope.updatedPhoto !== null){
+		fd.append('id', preparedProject.id);
+		fd.append('title', preparedProject.title);
+		fd.append('status', preparedProject.status);
+		fd.append('description', preparedProject.description);
+		if ($scope.updatedPhoto !== null) {
 			fd.append('cover_photo',$scope.updatedPhoto);
 		}
 

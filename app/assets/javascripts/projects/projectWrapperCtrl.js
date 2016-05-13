@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('ProjectWrapperController', function($scope, $state, $stateParams, $log, $q, principal, projects,$rootScope) {
+angular.module('partnr.users.assets').controller('ProjectWrapperController', function($scope, $state, $stateParams, $log, $q, principal, projects) {
 	$scope.loadComplete = false;
 	$scope.isMember = false;
 	$scope.isOwner = false;
@@ -7,7 +7,7 @@ angular.module('partnr.users.assets').controller('ProjectWrapperController', fun
 	$scope.user = principal.getUser();
 	$scope.project = null;
 
-	$scope.$on('Photo_Update', function(){
+	$scope.$on('Photo_Update', function() {
 		$log.debug('[PROJECT] Receiving Photo Update event');
 		$scope.initialize();
 	});

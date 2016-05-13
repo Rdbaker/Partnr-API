@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('CreateProfileController', function($scope, $state, $log, $q, toaster, profiles,users) {
+angular.module('partnr.users.assets').controller('CreateProfileController', function($scope, $state, $log, $q, toaster, profiles, users) {
 	$scope.loadComplete = true;
 
 	$scope.location = "";

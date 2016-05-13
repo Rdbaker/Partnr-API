@@ -9,12 +9,12 @@ angular.module('partnr.core').controller('SharedController', function($scope, $s
         $scope.newNotifications = notifications.getNew();
     });
 
-    $scope.$on('Avatar_Update', function(){
+    $scope.$on('Avatar_Update', function() {
         getUserAvatar();
         $log.debug('[HEADER] avatar update');
     });
 
-    getUserAvatar = function(){
+    getUserAvatar = function() {
         users.getUserInfo().then(function(response){
             $scope.avatar = response.data.links.avatar;
         });

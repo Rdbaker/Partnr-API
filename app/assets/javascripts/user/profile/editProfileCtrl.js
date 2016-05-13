@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('EditProfileController', function($scope, $state, $log, $q, $filter, toaster, users, principal, profiles,$rootScope,$timeout) {
+angular.module('partnr.users.assets').controller('EditProfileController', function($scope, $state, $log, $q, $filter, toaster, users, principal, profiles, $rootScope, $timeout) {
 	$scope.loadComplete = false;
 
 
@@ -105,7 +105,7 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 
 		var requests = [];
 
-		if ($scope.avatar !== null){
+		if ($scope.avatar !== null) {
 			requests.push(users.postAvatar($scope.avatar).$promise);
 		}
 
@@ -120,7 +120,7 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 		$log.debug(requests);
 
 		$q.all(requests).then(function(result) {
-			if ($scope.avatar !== null){
+			if ($scope.avatar !== null) {
 				$timeout(function(){
 					$rootScope.$broadcast('Avatar_Update');
 				},5000);

@@ -10,23 +10,23 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 	$scope.roles = [{ title: '' }];
 	$scope.loading = false;
 	$scope.stepNames = [
-	"Basic Info",
-	"Your Role",
-	"More Roles",
-	"Cover Photo",
-	"Finished"
+		"Basic Info",
+		"Your Role",
+		"More Roles",
+		"Cover Photo",
+		"Finished"
 	];
 
 	$scope.rolePlaceholders = [
-	"Engineer",
-	"Project Manager",
-	"Botanist",
-	"Programmer",
-	"Designer",
-	"Electrician",
-	"Fabricator",
-	"CAD Specialist",
-	"Bounty Hunter"
+		"Engineer",
+		"Project Manager",
+		"Botanist",
+		"Programmer",
+		"Designer",
+		"Electrician",
+		"Fabricator",
+		"CAD Specialist",
+		"Bounty Hunter"
 	];
 
 	$scope.validateProject = function() {
@@ -46,7 +46,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		toaster.error("Project could not be created. Please try again.");
 	};
 
-	$scope.addCoverPhoto = function(image){
+	$scope.addCoverPhoto = function(image) {
 		var file = image.files[0];
 		$scope.coverPhoto = file;
 	};
@@ -73,11 +73,11 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 	$scope.doProjectCreate = function() {
 		var deferred = $q.defer();
 		var fd = new FormData();
-		fd.append('id',$scope.project.id);
-		fd.append('title',$scope.project.title);
-		fd.append('description',$scope.project.description);
-		if ($scope.coverPhoto !== null){
-			fd.append('cover_photo',$scope.coverPhoto);
+		fd.append('id', $scope.project.id);
+		fd.append('title', $scope.project.title);
+		fd.append('description', $scope.project.description);
+		if ($scope.coverPhoto !== null) {
+			fd.append('cover_photo', $scope.coverPhoto);
 		}		
 		if ($scope.validateProject()) {
 			projects.create(fd).then(function(result) {
