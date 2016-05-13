@@ -27,16 +27,26 @@ module V1
       def project_milestone_align?
         @milestone = nil
         if params.has_key? :milestone
-          @milestone = get_record(Bmark, params[:milestone])
-          error!("That milestone doesn't belong to this project", 400) unless @project.bmarks.member?(@milestone)
+          if params[:milestone]
+            @milestone = get_record(Bmark, params[:milestone])
+            error!("That milestone doesn't belong to this project", 400) unless @project.bmarks.member?(@milestone)
+          else
+            @mileston = nil
+            @task.bmark = nil
+          end
         end
       end
 
       def project_user_align?
         @user = nil
         if params.has_key? :user
-          @user = get_record(User, params[:user])
-          error!("That user doesn't belong to this project", 400) unless @project.belongs_to_project(@user)
+          if params[:user]
+            @user = get_record(User, params[:user])
+            error!("That user doesn't belong to this project", 400) unless @project.belongs_to_project(@user)
+          else
+            @user = nil
+            @task.user = nil
+          end
         end
       end
     end
@@ -135,22 +145,10 @@ module V1
       task_put_permissions
       params[:project] = @task.project.id
       # make sure the milestone is a part of the project
-      if params.has_key? :milestone && params[:milestone]
-        project_milestone_align?
-      end
-
-      if params.has_key? :milestone && !params[:milestone]
-        @task.bmark = nil;
-      end
+      project_milestone_align?
 
       # make sure the user is on the project
-      if params.has_key? :user && params[:user]
-        project_user_align?
-      end
-
-      if params.has_key? :user && !params[:user]
-        @task.user = nil;
-      end
+      project_user_align?
 
       if params.has_key? :status
         params[:status] = { "not_started" => 0, "in_progress" => 1, "complete" => 2 }[params[:status]]
