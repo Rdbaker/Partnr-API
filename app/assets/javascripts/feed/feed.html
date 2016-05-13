@@ -1,0 +1,11 @@
+<toasts></toasts>
+<div ng-show="loadComplete">
+	<div ng-repeat="a in activities" class="pn-activity-feed">
+		<feed-activity activity="a"></feed-activity>
+	</div>
+</div>
+<div class="loading-wrapper" ng-hide="loadComplete">
+	<div class="text-center loading-container">
+		<img src="/assets/ajax-loader.gif">
+	</div>
+</div>

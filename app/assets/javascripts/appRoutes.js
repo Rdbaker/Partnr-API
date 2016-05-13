@@ -1,29 +1,44 @@
 angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider) {
 
-	$stateProvider
-		.state('site', {
-			'abstract': true,
-			resolve: {
-				authorize: ['authorization', function(authorization) {
-					return authorization.authorize();
+  $stateProvider
+    .state('site', {
+      'abstract': true,
+      resolve: {
+        authorize: ['authorization', function(authorization) {
+          return authorization.authorize();
 				}]
-			}
-		})
+      }
+    })
 
-		.state('home', {
-			parent: 'site',
-			url: '/',
-			views: {
-				'content@': {
-					templateUrl: 'home/home.html',
-					controller: 'HomeController',
-				}
-			},
-			data: {
-				roles: [],
-				entities: []
-			}
-		})
+    .state('feed', {
+      parent: 'site',
+      url: '/',
+      views: {
+        'content@': {
+          templateUrl: 'feed/feed.html',
+          controller: 'FeedController'
+        }
+      },
+      data: {
+        roles: [],
+        entities: []
+      }
+    })
+
+    .state('home', {
+      parent: 'site',
+      url: '/explore',
+      views: {
+        'content@': {
+          templateUrl: 'home/home.html',
+          controller: 'HomeController',
+        }
+      },
+      data: {
+        roles: [],
+        entities: []
+      }
+    })
 
 		.state('login', {
 			parent: 'site',

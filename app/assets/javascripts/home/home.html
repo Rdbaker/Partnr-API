@@ -23,25 +23,6 @@
 		</div>
 	</div>
 </div>
-<div class="content-container" ng-show="search.queried">
-	<div class="results">
-		<div ng-show="search.result.projects.length > 0">
-			<h4>Projects</h4>
-			<span ng-repeat="p in search.result.projects">
-				<a ui-sref="project({ id: p.id })">{{ p.title }}</a>
-			</span>
-		</div>
-		<div ng-show="search.result.roles.length > 0">
-			<h4>Roles</h4>
-			<span ng-repeat="r in search.result.roles">
-				<a ui-sref="project({ id: r.project.id })">{{ r.title }}</a>
-			</span>
-		</div>
-		<div ng-show="search.result.roles.length === 0 && search.result.projects.length === 0">
-			No Results
-		</div>
-	</div>
-</div>
 <div masonry ng-show="loadComplete">
 	<div ng-repeat="p in projects" class="masonry-brick col-md-4">
 		<project-tile project="p"></project-tile>
