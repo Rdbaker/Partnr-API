@@ -69,6 +69,12 @@ angular.module('partnr.core', ['ui.router',
     skills.listCategories().then(function(result) {
       if (result.data) {
         $rootScope.categories = result.data;
+
+        for (var i = 0; i < $rootScope.categories.length; i++) {
+          $rootScope.categories[i].color_rgb = skills.hexToRgb($rootScope.categories[i].color_hex);
+        }
+
+        $log.debug(result.data);
       }
     });
 });
