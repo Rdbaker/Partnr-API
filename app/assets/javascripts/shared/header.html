@@ -4,7 +4,7 @@
 			<a class="navbar-brand logo-container" ui-sref="home"><img class="partnr-logo" src="/assets/partnr-logo.png" /></a>
 		</div>
 
-		<div ng-if="isLoggedIn()" class="collapse navbar-collapse pull-right">
+		<div ng-if="isLoggedIn()" ng-init="getUserAvatar()" class="collapse navbar-collapse pull-right">
 			<ul class="nav navbar-nav">
 				<li ng-class="{'active': $state.includes('home')}"><a ui-sref="home">Home</a></li>
 				<li ng-class="{'active': $state.includes('project_list')}"><a ui-sref="project_list">Browse</a></li>
