@@ -4,10 +4,14 @@
   <input type="text" name="name" class="form-control" ng-model="project.title" />
   <h3>Status</h3>
   <div class="btn-group">
-      <label class="btn btn-primary" ng-model="project.status" btn-radio="'not_started'">Not Started</label>
-      <label class="btn btn-primary" ng-model="project.status" btn-radio="'in_progress'">In Progress</label>
-      <label class="btn btn-primary" ng-model="project.status" btn-radio="'complete'">Completed</label>
+    <label class="btn btn-primary" ng-model="project.status" btn-radio="'not_started'">Not Started</label>
+    <label class="btn btn-primary" ng-model="project.status" btn-radio="'in_progress'">In Progress</label>
+    <label class="btn btn-primary" ng-model="project.status" btn-radio="'complete'">Completed</label>
   </div>
+  <h3>Cover Photo Image</h3>
+  <form>
+    <input type="file" onchange="angular.element(this).scope().changeCoverPhoto(this)" multiple accept='image/*' />
+  </form>
   <h3>Description</h3>
   <textarea name="description" class="form-control" ng-model="project.description" /></textarea>
   <h3 class="inline">Roles</h3>
