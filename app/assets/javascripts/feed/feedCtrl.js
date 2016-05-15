@@ -4,17 +4,20 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
   $scope.loadComplete = false;
   var page = 0;
 
+  var makeReadable = function(attr) {
+    return attr.replace('_', ' ');
+  };
+
 	var parse = function(activity) {
     var re = /{\w+_\w+}/;
 		var result = activity.message;
-    var unparsed = re.exec(activity.message);
-    if (unparsed === null)
-      return result;
-
-    for (var i=0; i < unparsed.length; i++) {
-      var ent = unparsed[i];
-      var arr = ent.slice(1,-1).split('_');
-      result = result.replace(ent, activity.subject[arr[0]][arr[1]]);
+    var unparsed;
+    while( ( unparsed = re.exec(result) ) !== null) {
+      for (var i=0; i < unparsed.length; i++) {
+        var ent = unparsed[i];
+        var arr = ent.slice(1,-1).split('_');
+        result = result.replace(ent, makeReadable(activity.subject[arr[0]][arr[1]]));
+      }
     }
 
 		return result;
@@ -29,6 +32,7 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
         // get rid of "{user_name}" for now
         res.data[i].message = res.data[i].message.slice(res.data[i].message.indexOf('}')+2);
         res.data[i].parsedMessage = parse(res.data[i]);
+        res.data[i].displayDate = (new Date(res.data[i].sent_at)).toDateString();
       }
       $log.debug(res);
       $scope.activities = res.data;

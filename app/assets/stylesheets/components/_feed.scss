@@ -1,0 +1,13 @@
+.pn-activity-feed {
+  &::before {
+    left: 165px;
+  }
+}
+
+.pn-activity-block {
+  .pn-activity-date {
+    display: inline-block;
+    min-width: 140px;
+    max-width: 140px;
+  }
+}
