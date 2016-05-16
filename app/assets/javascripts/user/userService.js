@@ -9,6 +9,14 @@ angular.module('partnr.users').factory('users', function($rootScope, $http, $log
 				headers: principal.getHeaders()
 			});
 		},
+		getUserInfo : function(id) {
+			$log.debug("[USER] Sending GET user request");
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'users/me',
+				headers: principal.getHeaders()
+			});
+		},
 
 		create : function(acct) {
 			$log.debug("[USER] Sending Create request");
@@ -47,6 +55,17 @@ angular.module('partnr.users').factory('users', function($rootScope, $http, $log
 					"password" : password,
 					"password_confirmation" : confirmPassword
 				}
+			});
+		},
+
+		postAvatar : function(avatar){
+			$log.debug("[USER] Sending avatar post request");
+			return $http({
+				method: 'POST',
+				url: $rootScope.apiRoute + 'users/avatar',
+				transformRequest: angular.identity,
+				headers: {'Content-Type': undefined},
+				data: avatar
 			});
 		}
 	};

@@ -1,11 +1,25 @@
-angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications, routeUtils, principal) {
+angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications, routeUtils, principal, users) {
     $scope.newNotifications = {};
     $scope.allNotifications = {};
+    $scope.avatar = null;
+    
 
     $scope.$on('notifications', function(event, updatedNotifications) {
         $scope.allNotifications = updatedNotifications;
         $scope.newNotifications = notifications.getNew();
     });
+
+    $scope.$on('Avatar_Update', function() {
+        $scope.getUserAvatar();
+        $log.debug('[HEADER] avatar update');
+    });
+
+    $scope.getUserAvatar = function() {
+        $log.debug("Getting user avatar");
+        users.getUserInfo().then(function(response){
+            $scope.avatar = response.data.links.avatar;
+        });
+    };
 
     $scope.doLogout = function() {
         principal.logout().then(function() {

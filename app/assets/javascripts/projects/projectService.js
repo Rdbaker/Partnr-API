@@ -34,13 +34,16 @@ angular.module('partnr.users.assets').factory('projects', function($rootScope, $
 		create : function(project) {
 			$log.debug("[PROJECT] Sending create request");
 
-			project.owner = principal.getUser().id;
+			project.append("owner", principal.getUser().id);
 			$log.debug(project);
 
 			return $http({
 				method: 'POST',
 				url: $rootScope.apiRoute + 'projects',
-				headers: principal.getHeaders(),
+				headers: {
+					'Content-Type': undefined
+				},
+				transformRequest: angular.identity,
 				data: project
 			});
 		},
@@ -51,8 +54,11 @@ angular.module('partnr.users.assets').factory('projects', function($rootScope, $
 
 			return $http({
 				method: 'PUT',
-				url: $rootScope.apiRoute + 'projects/' + project.id,
-				headers: principal.getHeaders(),
+				url: $rootScope.apiRoute + 'projects/' + project.get('id'),
+				headers: {
+					'Content-Type': undefined
+				},
+				transformRequest: angular.identity,
 				data: project
 			});
 		},

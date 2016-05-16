@@ -2,7 +2,7 @@
 <h1 class="col-md-8 centered header-outside-container">Create a Project</h1>
 <div class="create-project-process content-container col-md-8 centered">
 	<div class="progress-bar-wrapper">
-		<uib-progressbar max="4" value="step"><span style="white-space:nowrap;">{{ stepNames[step - 1] }}</span></uib-progressbar>
+		<uib-progressbar max="5" value="step"><span style="white-space:nowrap;">{{ stepNames[step - 1] }}</span></uib-progressbar>
 	</div>
 	<div ng-show="step === 1">
 		<div class="clearfix" ng-hide="loading">
@@ -43,11 +43,24 @@
 			</div>
 			<div class="button-group pull-right">
 				<button class="btn btn-default" ng-click="stepDown()" >< Back</button>
+				<button class="btn btn-primary" ng-click="stepUp()">Next ></button>
+			</div>
+		</div>
+	</div>
+	<div ng-show="step === 4">
+		<h3>Add a cover photo to this project</h3>
+		<div ng-hide="loading" class="clearfix">
+			<div>	
+				<label for="name">Cover Photo</label>
+					<input type="file" onchange="angular.element(this).scope().addCoverPhoto(this)" accept='image/*' />
+			</div>
+			<div class="button-group pull-right">
+				<button class="btn btn-default" ng-click="stepDown()" >< Back</button>
 				<button class="btn btn-primary" ng-click="stepUp()">Finish</button>
 			</div>
 		</div>
 	</div>
-	<div ng-show="!loading && step === 4" class="text-center">
+	<div ng-show="!loading && step === 5" class="text-center">
 		<i class="fa fa-thumbs-up fa-5"></i>
 		<h1>You're Done!</h1>
 	</div>
