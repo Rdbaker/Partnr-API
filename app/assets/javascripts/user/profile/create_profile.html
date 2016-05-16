@@ -2,6 +2,10 @@
 <h1>Welcome to Partnr</h1>
 <div class="content-container" ng-show="loadComplete">
   <h2>Time to create your profile!</h2>
+  <h3>Add a profile picture</h3>
+  <form>
+    <input type="file" onchange="angular.element(this).scope().addAvatar(this)" multiple accept='image/*' />
+  </form>
   <h3>Your current location</h3>
   <input type="text" class="form-control" ng-model="location" />
 

@@ -7,6 +7,11 @@ angular.module('partnr.users.assets').controller('ProjectWrapperController', fun
 	$scope.user = principal.getUser();
 	$scope.project = null;
 
+	$scope.$on('Photo_Update', function() {
+		$log.debug('[PROJECT] Receiving Photo Update event');
+		$scope.initialize();
+	});
+
 	console.log($stateParams);
 	
 	$scope.getProject = function(project) {

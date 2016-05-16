@@ -1,10 +1,17 @@
-angular.module('partnr.users.assets').controller('CreateProfileController', function($scope, $state, $log, $q, toaster, profiles) {
+angular.module('partnr.users.assets').controller('CreateProfileController', function($scope, $state, $log, $q, toaster, profiles, users) {
 	$scope.loadComplete = true;
 
 	$scope.location = "";
 	$scope.schools = [];
 	$scope.positions = [];
 	$scope.interests = [];
+	$scope.avatar = null;
+	$scope.addAvatar = function(image) {
+		var file = image.files[0];
+		var fd = new FormData();
+		fd.append('image', file);
+		$scope.avatar = fd;
+	};
 
 	$scope.addSchool = function() {
 		$scope.schools.push({ 
@@ -43,6 +50,10 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 		$scope.loadComplete = false;
 
 		var requests = [];
+
+		if ($scope.avatar !== null) {
+			requests.push(users.postAvatar($scope.avatar).$promise);
+		}
 
 		if (profiles.isValidLocation($scope.location)) {
 			requests.push(profiles.addLocation($scope.location).$promise);
