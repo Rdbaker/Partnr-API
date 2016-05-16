@@ -20,7 +20,7 @@
   background: $gray-bg;
   border-radius: $border-radius-container;
   border: 1px solid $brand-border-blue;
-  padding: 20px;
+  padding: 15px;
   box-shadow: $default-box-shadow;
 
   &.no-padding {
@@ -30,6 +30,10 @@
   &.with-tabs {
     border-radius: 0 0 3px 3px;
     border-top: 0;
+  }
+
+  &.thin {
+    padding: 5px;
   }
 }
 
@@ -50,6 +54,10 @@
   img {
     margin-top: 12px;
   }
+}
+
+.form-group.less-margin-bottom {
+  margin-bottom: 5px;
 }
 
 .internal-container {
