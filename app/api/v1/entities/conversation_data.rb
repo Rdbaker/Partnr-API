@@ -21,7 +21,7 @@ module V1::Entities
       end
     end
 
-    class AsFull < AsSearch
+    class AsFull < AsDeep
     end
   end
 end

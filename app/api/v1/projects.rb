@@ -105,6 +105,11 @@ module V1
     put ":id" do
       project_permissions(params[:id])
       @project.user_notifier = current_user
+      if params.has_key? :cover_photo
+        @project.cover_photo = ActionDispatch::Http::UploadedFile.new(params[:cover_photo])
+        @project.save!
+        params.delete :cover_photo
+      end
       if !!params[:title] || !!params[:description] || !!params[:owner]
         @project.update!(permitted_params params)
       elsif !!params[:status]
@@ -114,10 +119,6 @@ module V1
       end
       if @project.previous_changes.has_key?("status")
         @project.create_activity key: 'activity.project.status_change', owner: current_user
-      end
-      if params.has_key? :cover_photo
-        @project.cover_photo = ActionDispatch::Http::UploadedFile.new(params[:cover_photo])
-        @project.save!
       end
       present @project, with: Entities::ProjectData::AsFull
     end

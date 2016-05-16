@@ -27,29 +27,53 @@ module V1
       def project_milestone_align?
         @milestone = nil
         if params.has_key? :milestone
-          @milestone = get_record(Bmark, params[:milestone])
-          error!("That milestone doesn't belong to this project", 400) unless @project.bmarks.member?(@milestone)
+          if params[:milestone]
+            @milestone = get_record(Bmark, params[:milestone])
+            error!("That milestone doesn't belong to this project", 400) unless @project.bmarks.member?(@milestone)
+          else
+            @milestone = nil
+            @task.bmark = nil
+          end
         end
       end
 
       def project_user_align?
         @user = nil
         if params.has_key? :user
-          @user = get_record(User, params[:user])
-          error!("That user doesn't belong to this project", 400) unless @project.belongs_to_project(@user)
+          if params[:user]
+            @user = get_record(User, params[:user])
+            error!("That user doesn't belong to this project", 400) unless @project.belongs_to_project(@user)
+          else
+            @user = nil
+            @task.user = nil
+          end
         end
       end
     end
 
+    desc "Retrieve a single task based on its ID"
+    params do
+      requires :id, type: Integer, allow_blank: false, desc: "The task ID."
+    end
+    get ":id" do
+      task = get_record(Task, params[:id])
+      present task, with: Entities::TaskData::AsFull
+    end
 
     desc "Retrieve all tasks for a project", entity: Entities::TaskData::AsSearch
     params do
-      requires :project, type: Integer, allow_blank: false, desc: "The Project ID for the tasks to retreive."
+      requires :project, type: Integer, allow_blank: false, desc: "The Project ID for the tasks to retrieve."
+      optional :bmark, type: Integer, allow_blank: false, desc: "The milestone ID for the tasks to retrieve"
       optional :title, type: String, desc: "The title of the project task to retrieve."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of tasks per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the tasks."
     end
     get do
+      if params.has_key? :milestone
+        params[:bmark] = params[:milestone]
+        params.delete :milestone
+      end
+
       present Task.where(permitted_params params)
         .page(params[:page])
         .per(params[:per_page]), with: Entities::TaskData::AsSearch
@@ -111,7 +135,7 @@ module V1
       requires :id, type: Integer, allow_blank: false, desc: "The task ID to update."
       optional :title, type: String, length: 255, allow_blank: false, desc: "The title of the task to update."
       optional :description, type: String, length: 1000, desc: "The description of the task to update."
-      optional :milestone, type: Integer, desc: "The milestone ID of the task."
+      optional :milestone, type: Integer, allow_blank: true, desc: "The milestone ID of the task."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The task's status."
       optional :user, type: Integer, allow_blank: true, desc: "The user ID to assign the task to."
       optional :skills, type: Array[Integer], allow_blank: false, desc: "The list of skill IDs to give to this task."
@@ -122,6 +146,7 @@ module V1
       params[:project] = @task.project.id
       # make sure the milestone is a part of the project
       project_milestone_align?
+
       # make sure the user is on the project
       project_user_align?
 

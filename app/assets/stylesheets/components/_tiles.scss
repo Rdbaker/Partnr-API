@@ -82,3 +82,22 @@
 		}
 	}
 }
+
+.tile {
+	min-height: 50px;
+	padding: 10px;
+
+	h3 {
+		margin-top: 10px;
+	}
+}
+
+.supporting-text {
+	color: #888;
+}
+
+.milestone-tile {
+	.progress {
+		margin-bottom: 0;
+	}
+}

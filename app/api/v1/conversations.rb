@@ -69,7 +69,7 @@ module V1
         m = Message.new({
           user: current_user,
           body: params[:message],
-          conversation: intersection[0]
+          conversation: c
         })
         m.save!
       end
@@ -82,6 +82,7 @@ module V1
       requires :id, type: Integer, allow_blank: false, desc: "The ID of the conversation."
       optional :message, type: String, length: 1000, allow_blank: false, desc: "The message to add to the conversation."
       optional :is_read, type: Boolean
+      at_least_one_of :message, :is_read
     end
     put ":id" do
       find_conv
@@ -114,16 +115,15 @@ module V1
 
     desc "Deletes a message from an existing conversation", entity: Entities::ConversationData::AsFull
     params do
-      requires :id, type: Integer, allow_blank: false, desc: "The ID of the message."
+      requires :id, type: Integer, allow_blank: false, desc: "The ID of the conversation."
+      requires :msg_id, type: Integer, allow_blank: false, desc: "The ID of the message."
     end
     delete ":id" do
-      authenticated_user
-      msg = Message.find_by(id: params[:id])
-      error!("No message could be found with that ID.", 404) if msg.nil?
+      find_conv
+      msg = get_record(Message, params[:msg_id])
       error!("You can only delete messages you sent.", 401) unless msg.user == current_user
-      conv = msg.conversation
       msg.destroy!
-      present conv, with: Entities::ConversationData::AsDeep, is_read: find_is_read(conv.id)
+      present @conv, with: Entities::ConversationData::AsDeep, is_read: find_is_read(@conv.id)
     end
   end
 end
