@@ -10,17 +10,16 @@ angular.module('partnr.core').controller('SharedController', function($scope, $s
     });
 
     $scope.$on('Avatar_Update', function() {
-        getUserAvatar();
+        $scope.getUserAvatar();
         $log.debug('[HEADER] avatar update');
     });
 
-    getUserAvatar = function() {
+    $scope.getUserAvatar = function() {
+        $log.debug("Getting user avatar");
         users.getUserInfo().then(function(response){
             $scope.avatar = response.data.links.avatar;
         });
     };
-
-
 
     $scope.doLogout = function() {
         principal.logout().then(function() {
@@ -49,6 +48,4 @@ angular.module('partnr.core').controller('SharedController', function($scope, $s
             }
         }
     };
-
-    getUserAvatar();
 });
