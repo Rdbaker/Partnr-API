@@ -1,4 +1,4 @@
-<a href class="cat-select" ng-style="selected && { 'background-color' : buttonBackground() }">
+<a href class="cat-select" ng-click="click()" ng-class="{ 'selected' : selected, 'selectable' : selectable }" ng-style="selected && { 'background-color' : buttonBackground() }">
 	<div style="background: {{ category.color_hex }}" class="pn-cat-circle">
 		<i class="fa {{ category.icon_class }}"></i>
 	</div>

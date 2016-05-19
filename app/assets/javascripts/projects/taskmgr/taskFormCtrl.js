@@ -57,6 +57,15 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 		toaster.error("Task could not be created. Please try again.");
 	};
 
+	$scope.selectCategories = function() {
+		console.log($scope.task.categories);
+		modals.selectCategories($scope.task.categories, function(categories) {
+			if (categories) {
+				$scope.task.categories = categories;
+			}
+		});
+	};
+
 	$scope.createTask = function() {
 		$scope.formLoading = true;
 

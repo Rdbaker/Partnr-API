@@ -3,13 +3,16 @@ angular.module('partnr.users.assets').directive('categoryButton', function($root
         restrict: 'AE',
         templateUrl: 'skills/category_button.html',
         scope: {
-            category: '='
+            category: '=',
+            selectable: '=?',
+            selected: '=?'
         },
         link: function($scope, elem, attr, ctrl) {
-            $scope.selected = false;
 
-            $scope.selectToggle = function() {
-            	$scope.selected = !$scope.selected;
+            $scope.click = function() {
+                $scope.$emit('category::button::click', {
+                    category: $scope.category
+                });
             }
 
             $scope.buttonBackground = function() {
