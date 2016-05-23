@@ -1,4 +1,13 @@
 <div ng-controller= "ChatController">
+	<style>
+		span .badge {
+			font-size: 10px;
+			padding: 2px 3px;
+			background: #ff9a39;
+			position: relative;
+			left: -5px;
+		}
+	</style>
 	<div name="chat" style="height:600px;overflow: auto;" class="pn-user-card">
 		<div name="header">
 			<button name="step-back-button" ng-show="step > 1" ng-click="goStepBack()">Back</button>
@@ -17,34 +26,34 @@
 			</div>
 		</div>
 		<div name="chat-selection" ng-show="!isChatActive; step === 1">
-			<span ng-class="{active: over}" ng-mouseover="over=true" ng-mouseleave="over=false" ng-repeat="conversation in conversations | filter : isAtLeastTwoAndNotCurrentUserFilter">
-				<h4 ng-click="activateChat(conversation)" ng-show="step === 1; !isChatActive" ng-repeat="user in conversation.users | filter : notUserFilter">{{ user.name }}&nbsp;</h4>
-			</span>
-		</div>
-		<div name="active-chat" ng-show="isChatActive">				
-			<span ng-repeat="user in openConversation.users | filter : notUserFilter">
-				{{ user.name }}&nbsp;
-			</span>	
-			<div name="chatmessage" ng-repeat="message in openConversation.messages">
+			<span ng-class="{active: over}" ng-mouseover="over=true" ng-mouseleave="over=false" ng-repeat="conversation in conversations">
+				<h5 ng-click="activateChat(conversation)" ng-show="step === 1; !isChatActive" >
+					<span class="badge" ng-if="!conversation.is_read">new!
+					</span>&nbsp;{{conversation.namelist}}<span ng-if="conversation.non_displayable_name_amount > 0"> + {{ conversation.non_displayable_name_amount}}</span></h5>
+				</span>
+			</div>
+			<div name="active-chat" ng-show="isChatActive">				
+				&nbsp;{{openConversation.namelist}}<span ng-if="conversation.non_displayable_name_amount > 0"> + {{ openConversation.non_displayable_name_amount}}</span>
+				<div name="chatmessage" ng-repeat="message in openConversation.messages">
+					<p>
+						<h5>
+							<a <a href ui-sref="profile({ id: message.user.id })">{{ message.user.name }}</a></strong> at {{ message.sent_at | date: returnDateFilter(message.sent_at) }}:
+						</h5>
+					</p>
+					<p>
+						<div ng-bind-html="message.body | linky">
+							{{ message.body }}
+						</div>
+					</p>
+				</div>
+			</div>
+			<div name="new-message" ng-show="step === 2 || isChatActive">
+				<h6>Your Message:</h6>
+				<textarea class="form-control" ng-model="newMessage" ng-disabled="isMessageSubmitting" ngMaxlength="1000" ng-change="checkLength(1000)" ng-keyup="sendMessage($event)">
+				</textarea>
 				<p>
-					<h5>
-						<a <a href ui-sref="profile({ id: message.user.id })">{{ message.user.name }}</a></strong> at {{ message.sent_at | date: returnDateFilter(message.sent_at) }}:
-					</h5>
-				</p>
-				<p>
-					<div ng-bind-html="message.body | linky">
-					{{ message.body }}
-					</div>
+					<h6>{{ 1000 - newMessage.length }} remaining</h6>
 				</p>
 			</div>
 		</div>
-		<div name="new-message" ng-show="step === 2 || isChatActive">
-			<h6>Your Message:</h6>
-			<textarea class="form-control" ng-model="newMessage" ng-disabled="isMessageSubmitting" ngMaxlength="1000" ng-change="checkLength(1000)" ng-keyup="sendMessage($event)">
-			</textarea>
-			<p>
-				<h6>{{ 1000 - newMessage.length }} remaining</h6>
-			</p>
-		</div>
 	</div>
-</div>

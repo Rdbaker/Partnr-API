@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('ChatController', function($scope, $log, users, principal, conversations, $filter) {
+angular.module('partnr.users.assets').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope) {
 	$scope.openConversation = {};
 	$scope.users = [];
 	$scope.messageLength = 1000;
@@ -7,13 +7,37 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 	$scope.isChatActive = false;
 	$scope.nextButtonTitle = "Start new Conversation";
 	var selectedUserIds = [];
-	var currentDate = Date.now;
 
+	var poll = function poll (callback) {
+		conversations.list().then(function(result) {
+			$scope.conversations = $filter('filter')(result.data, $scope.isAtLeastTwoAndNotCurrentUserFilter);
+			for (i = 0; i < $scope.conversations.length; i++) {
+				processUserNames($scope.conversations[i]);
+			}
+		});
+	};
+	poll();
+	$interval(poll,$rootScope.pollDuration);
 
-	conversations.list().then(function(result) {
-		$scope.conversations = result.data;
-		$log.debug("[CHAT] conversations: ", $scope.conversations);
+	$scope.$on('$destroy', function() {
+		$log.debug("Cancelling message update requests");
+		$interval.cancel(poll);
 	});
+
+	function processUserNames (conversation) {
+		var displayableUsers = 1;
+		conversation.users = $filter('filter')(conversation.users, $scope.isNotUserFilter);
+		var usernameString = conversation.users[0].name;
+		var concatString = ", ";
+		for (var i = 1; i < conversation.users.length; i++) {
+			if (conversation.users[i].name.length+concatString.length+usernameString.length < 27) {
+				usernameString = conversation.users[i].name + concatString + usernameString;
+				displayableUsers ++;
+			}
+		}
+		conversation.namelist = usernameString;
+		conversation.non_displayable_name_amount = conversation.users.length - displayableUsers;
+	}
 
 	$scope.goStepForward = function goStepForward(){
 		$scope.step = $scope.step + 1;
@@ -40,22 +64,33 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 
 	$scope.goStepBack = function goStepBack(){
 		$scope.step = $scope.step - 1;
+		if ($scope.step === 1) {
+			$scope.newMessage = "";
+			$scope.nextButtonTitle = "Start new Conversation";
+		}
 	};
 
-	$scope.notUserFilter = function notUserFilter (user) {
+	$scope.isNotUserFilter = function isUserFilter (user) {
+		//$log.debug('[CHAT] UserId: ', user.id);
+		//$log.debug('[CHAT] UserId: ', $scope.currentUserId);
 		return (user.id !== $scope.currentUserId);
 	};
 
-	$scope.isAtLeastTwoAndNotCurrentUserFilter = function isAtLeastTwoAndNotCurrentUserFilter (element) {
-		return !(element.users.length < 2 && $scope.notUserFilter(element.users[0]));
+	$scope.isAtLeastTwoAndNotCurrentUserFilter = function isAtLeastTwoAndNotCurrentUserFilter (element) {	
+		return !(element.users.length < 2 && !$scope.isNotUserFilter(element.users[0]));
 	};
 
-	
+
 
 	$scope.activateChat = function activateChat (conversation) {
 		$scope.isChatActive = true;
 		conversations.get(conversation.id).then(function(result) {
 			$scope.openConversation = result.data;
+			$scope.openConversation.namelist = conversation.namelist;
+			$scope.openConversation.non_displayable_name_amount = conversation.non_displayable_name_amount;
+			conversations.changeIsRead(conversation.id, true).then(function(result){
+				conversation.is_read = true;
+			});
 		});
 	};
 
@@ -78,9 +113,9 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 	};
 
 	$scope.returnDateFilter = function returnDateFilter (date){
-		var todayDate = $filter('date')(date, 'longDate');
-		var messageDate = $filter('date')(date, 'longDate');
-		if (todayDate === messageDate) {
+		var todayDate = new Date();
+		var messageDate = new Date(date);
+		if (todayDate.setHours(0,0,0,0) == messageDate.setHours(0,0,0,0)) {
 			return 'shortTime';
 		} else {
 			return 'short';
@@ -92,7 +127,7 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 			$scope.newMessage = $scope.newMessage.substring(0, maxLength);
 		}
 	};
-	
+
 	$scope.sendMessage = function sendMessage(event) {
 		if (event.keyCode === 13) {
 			$scope.isMessageSubmitting = true;
@@ -105,12 +140,12 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 		}
 	};
 
-	$scope.selectUser = function selectUser(user) {
+	$scope.selectUser = function selectUser (user) {
 		var index = selectedUserIds.indexOf(user.id);
 		user.selected ? user.selected = false : user.selected = true;
 		if (index > -1) {
 			selectedUserIds.splice(index, 1);
-			
+
 		} else {
 			selectedUserIds.push(user.id);
 		}
