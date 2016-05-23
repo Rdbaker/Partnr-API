@@ -3,7 +3,7 @@
 </div>
 <div class="modal-body">
 	<div class="cat-wrapper">
-		<category-button selected="selected.indexOf(category) > -1" selectable="selected.length < max" ng-repeat="category in $root.categories" category="category"></category-button>
+		<category-button selected="isSelected(category)" selectable="selected.length < max" ng-repeat="category in $root.categories" category="category"></category-button>
 	</div>
 </div>
 <div class="modal-footer">

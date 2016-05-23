@@ -9,7 +9,10 @@ angular.module('partnr.notify').controller('SelectCategoriesModalController', fu
     }
 
     $scope.$on('category::button::click', function(event, selectData) {
-        var selectedIdx = $scope.selected.indexOf(selectData.category);
+        $log.debug(selectData.category);
+        var selectedIdx = $scope.selected.findIndex(function(el) {
+            return el.id === selectData.category.id;
+        });
 
         if (selectedIdx === -1) {
             if ($scope.selected.length < $scope.max) {
@@ -20,7 +23,14 @@ angular.module('partnr.notify').controller('SelectCategoriesModalController', fu
         }
     });
 
-    $scope.ok = function () {
+    $scope.isSelected = function(category) {
+        var selectedIdx = $scope.selected.findIndex(function(el) {
+            return el.id === category.id;
+        });
+        return (selectedIdx > -1);
+    };
+
+    $scope.ok = function() {
         $uibModalInstance.close($scope.selected);
     };
 
