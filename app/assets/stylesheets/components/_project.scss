@@ -134,7 +134,7 @@ a.sm-edit-link {
 
 		a, span {
 			color: inherit;
-			padding: 5px 10px;
+			padding: 9px 10px;
 			display: inline-block;
 			margin: 0;
 
@@ -227,5 +227,22 @@ button i.fa {
 			background: #e9e9e9;
 			color: #444;
 		}
+	}
+}
+
+.pn-cat-circle-inline {
+	display: inline-block;
+}
+
+.pn-cat-circle.pn-cat-circle-xs {
+	border-radius: 25px;
+	width: 25px;
+	height: 25px;
+
+	i {
+		line-height: 25px;
+		font-size: 11px;
+		content: " ";
+		color: white;
 	}
 }

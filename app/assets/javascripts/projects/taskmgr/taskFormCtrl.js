@@ -31,6 +31,7 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 			doLoadStep();
 		});
 	} else {
+		$scope.task.milestone = ($stateParams.mref ? parseInt($stateParams.mref) : null);
 		doLoadStep();
 	}
 
@@ -51,6 +52,14 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 
 		doLoadStep();
 	});
+
+	var redirect = function() {
+		if ($stateParams.mref) {
+			$state.go('project_milestone', { milestone_id: $stateParams.mref });	
+		} else {
+			$state.go('project_tasks');
+		}
+	};
 
 	var creationFailCallback = function() {
 		$scope.formLoading = false;
@@ -161,7 +170,7 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 				$scope.formLoading = false;
 
 				if (result.data.id) {
-					$state.go('project_tasks', { project_id: $stateParams.project_id, v: 'task' });
+					redirect();
 				}
 			}, creationFailCallback);
 		});
@@ -176,7 +185,7 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 				$scope.formLoading = false;
 
 				if (result.data.id) {
-					$state.go('project_tasks');
+					redirect();
 				}
 			});
 		});
@@ -188,7 +197,7 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 				$scope.formLoading = true;
 				tasks.delete($scope.task.id).then(function() {
 					$scope.formLoading = false;
-					$state.go('project_tasks');
+					redirect();
 				});
 			}
 		});
