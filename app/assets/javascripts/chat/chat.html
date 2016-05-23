@@ -1,0 +1,50 @@
+<div ng-controller= "ChatController">
+	<div name="chat" style="height:600px;overflow: auto;" class="pn-user-card">
+		<div name="header">
+			<button name="step-back-button" ng-show="step > 1" ng-click="goStepBack()">Back</button>
+			<button ng-show="!isChatActive" ng-click="goStepForward()" ng-disabled="isNextDisabled()">{{nextButtonTitle}}</button>
+			<button name="chat-back-button" ng-show="isChatActive" ng-click="isChatActive = false">Back</button>
+		</div>
+		<div name="user-select" ng-show="step === 2">
+			<h3>Select Chat Participants</h3>
+			<div class="pn-search-query-group input-group">
+				<input type="text" ng-model="query" placeholder="Search" class="form-control"/>
+				<div class="input-group-addon pn-btn-search">
+				</div>
+			</div>
+			<div name="add-people" ng-repeat="user in users | filter : {'name':query} | filter : notUserFilter">
+				<h5 ng-click="selectUser(user)" ng-class="{'selected': user.selected}">{{ user.name }}</h5>
+			</div>
+		</div>
+		<div name="chat-selection" ng-show="!isChatActive; step === 1">
+			<span ng-class="{active: over}" ng-mouseover="over=true" ng-mouseleave="over=false" ng-repeat="conversation in conversations | filter : isAtLeastTwoAndNotCurrentUserFilter">
+				<h4 ng-click="activateChat(conversation)" ng-show="step === 1; !isChatActive" ng-repeat="user in conversation.users | filter : notUserFilter">{{ user.name }}&nbsp;</h4>
+			</span>
+		</div>
+		<div name="active-chat" ng-show="isChatActive">				
+			<span ng-repeat="user in openConversation.users | filter : notUserFilter">
+				{{ user.name }}&nbsp;
+			</span>	
+			<div name="chatmessage" ng-repeat="message in openConversation.messages">
+				<p>
+					<h5>
+						<a <a href ui-sref="profile({ id: message.user.id })">{{ message.user.name }}</a></strong> at {{ message.sent_at | date: returnDateFilter(message.sent_at) }}:
+					</h5>
+				</p>
+				<p>
+					<div ng-bind-html="message.body | linky">
+					{{ message.body }}
+					</div>
+				</p>
+			</div>
+		</div>
+		<div name="new-message" ng-show="step === 2 || isChatActive">
+			<h6>Your Message:</h6>
+			<textarea class="form-control" ng-model="newMessage" ng-disabled="isMessageSubmitting" ngMaxlength="1000" ng-change="checkLength(1000)" ng-keyup="sendMessage($event)">
+			</textarea>
+			<p>
+				<h6>{{ 1000 - newMessage.length }} remaining</h6>
+			</p>
+		</div>
+	</div>
+</div>

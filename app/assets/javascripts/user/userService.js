@@ -1,5 +1,22 @@
 angular.module('partnr.users').factory('users', function($rootScope, $http, $log, principal) {
 	return {
+		getAllUsers : function(per_page,page) {
+			$log.debug("[USER] Sending GET all users request", per_page);
+			var per_pageExt = "";
+			var pageExt = "";
+			if (per_page) {
+				per_pageExt = '?per_page=' + per_page;
+			}
+			if (page) {
+				pageExt = '& page=' + page;
+			}
+
+			return $http({
+				method: 'GET',
+				url: $rootScope.apiRoute + 'users/' + per_pageExt + pageExt,
+				headers: principal.getHeaders()
+			});
+		},
 		get : function(id) {
 			$log.debug("[USER] Sending GET request");
 
