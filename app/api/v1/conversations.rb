@@ -30,7 +30,7 @@ module V1
         return {} if proj.conversation.nil?
         present proj.conversation, with: Entities::ConversationData::AsDeep, is_read: find_is_read(proj.conversation.id)
       else
-        present current_user.conversations, with: Entities::ConversationData::AsSearch, user_convs: current_user.user_conversations
+        present current_user.conversations.order('updated_at desc'), with: Entities::ConversationData::AsSearch, user_convs: current_user.user_conversations
       end
     end
 
@@ -45,7 +45,7 @@ module V1
     end
 
 
-    desc "Sends a message in the conversation or posts a new one if a conversation doesn't exist", entity: Entities::MessageData::AsShallow
+    desc "Sends a message in the conversation or posts a new one if a conversation doesn't exist", entity: Entities::ConversationData::AsDeep
     params do
       requires :users, type: Array[Integer], allow_blank: false, desc: "The list of user IDs to send the message to.", documentation: { example: "42,87,17,6" }
       optional :message, type: String, length: 1000, allow_blank: false, desc: "The message to add to the conversation."
@@ -72,8 +72,11 @@ module V1
           conversation: c
         })
         m.save!
+        # manually set the updated_at param
+        c.updated_at = m.updated_at
+        c.save!
       end
-      present m, with: Entities::MessageData::AsNested
+      present c, with: Entities::ConversationData::AsDeep
     end
 
 
