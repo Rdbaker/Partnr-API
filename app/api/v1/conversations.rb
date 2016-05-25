@@ -114,6 +114,8 @@ module V1
           end
           uconv.save!
         end
+        @conv.updated_at = m.updated_at
+        @conv.save!
       end
       present m, with: Entities::MessageData::AsNested
     end
