@@ -7,29 +7,54 @@
 			position: relative;
 			left: -5px;
 		}
+		.active {
+			color: green;
+			background-color: green;
+		}
+
+		.selected {
+			color: green;
+			background-color: green;
+		}
+
+		.open-chat-window {
+			height:600px;
+			overflow: auto;
+		}
+
+		.minimized-chat-window {
+			height: 50px;
+		}
 	</style>
-	<div name="chat" style="height:600px;overflow: auto;" class="pn-user-card">
-		<div name="header">
-			<button name="step-back-button" ng-show="step > 1" ng-click="goStepBack()">Back</button>
-			<button ng-show="!isChatActive" ng-click="goStepForward()" ng-disabled="isNextDisabled()">{{nextButtonTitle}}</button>
-			<button name="chat-back-button" ng-show="isChatActive" ng-click="isChatActive = false">Back</button>
-		</div>
-		<div name="user-select" ng-show="step === 2">
-			<h3>Select Chat Participants</h3>
-			<div class="pn-search-query-group input-group">
+	<div name="chat-window" class="pn-user-card" ng-class="isChatWindowOpen ? 'open-chat-window' : 'minimized-chat-window'">
+		<h2 ng-click="isChatWindowOpen = true" ng-show="!isChatWindowOpen">Open Chat</h2>
+		<div name="chat" ng-show="isChatWindowOpen">
+			<div name="header">
+				<button name="step-back-button" ng-show="step > 1" ng-click="goStepBack()">Back</button>
+				<button ng-show="!isChatActive" ng-click="goStepForward()" ng-disabled="isNextDisabled()">{{nextButtonTitle}}</button>
+				<button name="chat-back-button" ng-show="isChatActive" ng-click="deactivateChat()">Back</button>
+				<button name="chat-minimize-button" ng-click="isChatWindowOpen = false">Minimize</button>
+			</div>
+			<div name="search" class="pn-search-query-group input-group">
 				<input type="text" ng-model="query" placeholder="Search" class="form-control"/>
 				<div class="input-group-addon pn-btn-search">
 				</div>
 			</div>
-			<div name="add-people" ng-repeat="user in users | filter : {'name':query} | filter : notUserFilter">
-				<h5 ng-click="selectUser(user)" ng-class="{'selected': user.selected}">{{ user.name }}</h5>
+			<div name="user-select" ng-show="step === 2">
+				<h3>Select Chat Participants</h3>
+				<div name="add-people" ng-repeat="user in users | filter : {'name':query} | filter : isNotUserFilter">
+					<h5 ng-click="selectUser(user)" ng-class="{'selected': user.selected}">{{ user.name }}</h5>
+				</div>
 			</div>
-		</div>
-		<div name="chat-selection" ng-show="!isChatActive; step === 1">
-			<span ng-class="{active: over}" ng-mouseover="over=true" ng-mouseleave="over=false" ng-repeat="conversation in conversations">
-				<h5 ng-click="activateChat(conversation)" ng-show="step === 1; !isChatActive" >
-					<span class="badge" ng-if="!conversation.is_read">new!
-					</span>&nbsp;{{conversation.namelist}}<span ng-if="conversation.non_displayable_name_amount > 0"> + {{ conversation.non_displayable_name_amount}}</span></h5>
+			<div name="chat-selection" ng-show="!isChatActive; step === 1">
+				<span ng-class="{active: over}" ng-mouseover="over=true" ng-mouseleave="over=false" ng-repeat="conversation in conversations | orderBy: 'date' | filter : {'namelist':query} " >
+					<h5 ng-click="activateChat(conversation)" ng-show="step === 1; !isChatActive" >
+						<span class="badge" ng-if="!conversation.is_read">new!
+						</span>
+						&nbsp;{{conversation.namelist}} - date:{{conversation.date | date : 'short'}}
+						<span ng-if="conversation.non_displayable_name_amount > 0"> + {{ conversation.non_displayable_name_amount}}
+						</span>
+					</h5>
 				</span>
 			</div>
 			<div name="active-chat" ng-show="isChatActive">				
@@ -57,3 +82,4 @@
 			</div>
 		</div>
 	</div>
+</div>
