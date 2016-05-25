@@ -23,7 +23,8 @@
 		</div>
 	</div>
 </div>
-<div masonry ng-show="loadComplete">
+<div ui-view=".feed"></div>
+<div masonry ng-show="loadComplete && !user">
 	<div ng-repeat="p in projects" class="masonry-brick col-md-4">
 		<project-tile project="p"></project-tile>
 	</div>

@@ -10,24 +10,9 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
       }
     })
 
-    .state('feed', {
-      parent: 'site',
-      url: '/',
-      views: {
-        'content@': {
-          templateUrl: 'feed/feed.html',
-          controller: 'FeedController'
-        }
-      },
-      data: {
-        roles: [],
-        entities: []
-      }
-    })
-
     .state('home', {
       parent: 'site',
-      url: '/explore',
+      url: '/',
       views: {
         'content@': {
           templateUrl: 'home/home.html',
@@ -39,6 +24,18 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
         entities: []
       }
     })
+
+    .state('home.feed', {
+      parent: 'home',
+      templateUrl: 'feed/feed.html',
+      controller: 'FeedController',
+      data: {
+        roles: ['Admin'],
+        entities: []
+      }
+    })
+
+
 
 		.state('login', {
 			parent: 'site',
