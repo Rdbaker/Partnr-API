@@ -76,7 +76,10 @@ module V1
         c.updated_at = m.updated_at
         c.save!
       end
-      present c, with: Entities::ConversationData::AsDeep
+      ucon = c.user_conversations.find_by(user_id: current_user.id)
+      ucon.is_read = true
+      ucon.save!
+      present c, with: Entities::ConversationData::AsDeep, is_read: ucon.is_read
     end
 
 
