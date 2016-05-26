@@ -5,7 +5,7 @@ angular.module('partnr.notify', []);
 angular.module('partnr.search', []);
 angular.module('partnr.feed', []);
 angular.module('partnr.users.assets', []);
-angular.module('partnr.core', ['ui.router',
+angular.module('partnr.core', ['ui.router', 'angular-inview',
   'ui.bootstrap', 'templates', 'wu.masonry', 'ngTagsInput',
   'partnr.auth', 'partnr.users', 'partnr.messaging',
   'partnr.notify', 'partnr.search', 'partnr.users.assets',

@@ -2,6 +2,7 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
   $scope.user = principal.getUser();
   $scope.activities = [];
   $scope.loadComplete = false;
+  $scope.endOfFeed = false;
   var page = 0;
 
   var makeReadable = function(attr) {
@@ -25,7 +26,16 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
 
 
   $scope.getNextFeedPage = function() {
+    if($scope.endOfFeed)
+      return;
+    $scope.loadComplete = false;
     feeds.list(++page).then(function(res) {
+      if(res.data.length === 0) {
+        angular.element('#feedScroll').remove();
+        $scope.endOfFeed = true;
+        $scope.loadComplete = true;
+        return;
+      }
       $log.debug('[FEED] recieved feed:');
       for(var i=0; i < res.data.length; i++) {
         res.data[i]['user'] = res.data[i]['actor'];
@@ -35,7 +45,7 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
         res.data[i].displayDate = (new Date(res.data[i].sent_at)).toDateString();
       }
       $log.debug(res);
-      $scope.activities = res.data;
+      $scope.activities = $scope.activities.concat(res.data);
       $scope.loadComplete = true;
     });
   };

@@ -15,5 +15,6 @@
 //= require angular-ui-router/release/angular-ui-router.min
 //= require angular-ui-utils/ui-utils.min
 //= require angular-masonry/angular-masonry
+//= require angular-inview/angular-inview
 //= require ng-tags-input/ng-tags-input.min
 //= require_tree .
