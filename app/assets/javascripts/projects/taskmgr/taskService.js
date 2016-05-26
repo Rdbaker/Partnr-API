@@ -66,9 +66,7 @@ angular.module('partnr.users.assets').factory('tasks', function($rootScope, $htt
 			$log.debug(task);
 			var taskToUpdate = angular.copy(task);
 
-			if (taskToUpdate.skills.length === 0) {
-				delete taskToUpdate.skills;
-			} else if (taskToUpdate.skills[0].id) {
+			if (taskToUpdate.skills.length > 0 && taskToUpdate.skills[0].id) {
 				var strippedSkills = [];
 				for (var i = 0; i < taskToUpdate.skills.length; i++) {
 					strippedSkills.push(taskToUpdate.skills[i].id);
@@ -76,9 +74,7 @@ angular.module('partnr.users.assets').factory('tasks', function($rootScope, $htt
 				taskToUpdate.skills = strippedSkills;
 			}
 
-			if (taskToUpdate.categories.length === 0) {
-				delete taskToUpdate.categories;
-			} else if (taskToUpdate.categories[0].id) {
+			if (taskToUpdate.categories.length > 0 && taskToUpdate.categories[0].id) {
 				var strippedCategories = [];
 				for (var i = 0; i < taskToUpdate.categories.length; i++) {
 					strippedCategories.push(taskToUpdate.categories[i].id);
