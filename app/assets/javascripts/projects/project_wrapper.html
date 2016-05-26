@@ -1,12 +1,13 @@
 <div class="partnr-header-wrapper" ng-show="loadComplete">
   <div class="partnr-page-header project-header clearfix" pn-bg-img="{{project.links.cover_photo}}">
-    <h1 class="text-center impact-title">{{ project.title }}</h1>
+    <h1 class="text-center impact-title"> </h1>
     <div class="text-center project-status">
       <span><i ng-if="project.status === 'not_started'" class="fa fa-circle-o"></i>
       <i ng-if="project.status === 'in_progress'" class="fa fa-arrow-circle-right"></i>
       <i ng-if="project.status === 'complete'" class="fa fa-check-circle"></i> {{ getStatus() }}</span>
     </div>
   </div>
+  <h1 class="text-center impact-title">{{ project.title }}</h1>
 </div>
 <toasts></toasts>
 <ul class="content-container-tabs nav nav-tabs" ng-show="loadComplete" role="tablist">

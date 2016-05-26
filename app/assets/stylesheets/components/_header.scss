@@ -141,11 +141,6 @@ nav .badge {
     border-bottom: 1px solid #03677a;
   }
 
-  .impact-title {
-    padding-top: 50px;
-    text-shadow: 1px 2px 1px #03677a;
-  }
-
   .impact-group {
     display: flex;
     justify-content: center;
@@ -184,4 +179,10 @@ nav .badge {
       font-size: 20px;
     }
   }
+}
+
+
+.impact-title {
+  padding-top: 50px;
+  text-shadow: 1px 2px 1px #03677a;
 }
