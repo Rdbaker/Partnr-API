@@ -3,7 +3,8 @@ angular.module('partnr.users.assets').directive('taskTile', function($rootScope,
         restrict: 'AE',
         templateUrl: 'projects/taskmgr/task_tile.html',
         scope: {
-            task: '='
+            task: '=',
+            mref: '='
         },
         link: function($scope, elem, attr, ctrl) {
             $scope.$state = $state;

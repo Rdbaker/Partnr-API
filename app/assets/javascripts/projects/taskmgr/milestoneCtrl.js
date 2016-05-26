@@ -41,6 +41,6 @@ angular.module('partnr.users.assets').controller('MilestoneController', function
 	});
 
 	$scope.newTask = function() {
-		$state.go('project_task_create', { project_id : $stateParams.project_id });
+		$state.go('project_task_create', { project_id : $stateParams.project_id, mref: $scope.milestone.id });
 	};
 });

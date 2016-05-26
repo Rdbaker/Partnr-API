@@ -373,7 +373,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 
 		.state('project_task_create', {
 			parent: 'project_wrapper',
-			url: '/tasks/create',
+			url: '/tasks/create?mref',
 			views: {
 				'projectinfo': {
 					templateUrl: 'projects/taskmgr/task_form.html',
@@ -388,7 +388,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 
 		.state('project_task_edit', {
 			parent: 'project_wrapper',
-			url: '/tasks/{task_id:int}/edit',
+			url: '/tasks/{task_id:int}/edit?mref',
 			views: {
 				'projectinfo': {
 					templateUrl: 'projects/taskmgr/task_form.html',
