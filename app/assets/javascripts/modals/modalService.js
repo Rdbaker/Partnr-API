@@ -1,4 +1,4 @@
-angular.module('partnr.notify').service('modals', function($uibModal, $location) {
+angular.module('partnr.notify').service('modals', function($uibModal, $location, $log) {
     return {
         // modals
 
@@ -27,5 +27,17 @@ angular.module('partnr.notify').service('modals', function($uibModal, $location)
 
             modal.result.then(callback);
         },
+
+        selectCategories : function(selectedCategories, callback) {
+            var modal = $uibModal.open({
+                templateUrl: 'modals/select_categories_modal.html',
+                controller: 'SelectCategoriesModalController',
+                resolve: {
+                    selectedCategories: function() { return selectedCategories; }
+                }
+            });
+
+            modal.result.then(callback);
+        }
     };
 });
