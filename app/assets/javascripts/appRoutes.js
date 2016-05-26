@@ -34,12 +34,25 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
         }
       },
       data: {
-        roles: ['Admin'],
+        roles: [],
         entities: []
       }
     })
 
-
+    .state('home.landing', {
+      parent: 'home',
+      url: '/landing',
+      views: {
+        'landing@home': {
+        templateUrl: 'landing/landing.html',
+        controller: 'LandingController'
+        }
+      },
+      data: {
+        roles: [],
+        entities: []
+      }
+    })
 
 		.state('login', {
 			parent: 'site',

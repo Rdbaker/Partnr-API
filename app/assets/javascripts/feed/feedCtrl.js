@@ -1,5 +1,6 @@
 angular.module('partnr.feed').controller('FeedController', function($scope, $state, $q, $log, principal, feeds) {
-  $scope.user = principal.getUser();
+  if(!principal.hasUser())
+    $state.go('home.landing');
   $scope.activities = [];
   $scope.loadComplete = false;
   $scope.endOfFeed = false;
