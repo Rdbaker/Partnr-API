@@ -293,7 +293,10 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('project_tasks', {
+    // this was formerly project_tasks
+    // changing it to "task" until have a state for
+    // on specific task, for the link resolve strategy
+		.state('task', {
 			parent: 'project_wrapper',
 			url: '/tasks',
 			views: {
@@ -308,7 +311,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('project_milestone', {
+		.state('milestone', {
 			parent: 'project_wrapper',
 			url: '/milestones/{milestone_id:int}',
 			views: {

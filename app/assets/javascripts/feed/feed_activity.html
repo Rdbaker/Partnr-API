@@ -5,6 +5,8 @@
   </div>
   <div class="pn-activity-text">
     <div class="pn-activity-username">{{ activity.user.name }}</div>
-    <div class="pn-activity-content">{{ activity.parsedMessage }}</div>
+    <a href ng-click="resolveLink(activity)">
+      <div class="pn-activity-content">{{ activity.parsedMessage }}</div>
+    </a>
   </div>
 </div>

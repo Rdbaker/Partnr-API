@@ -40,6 +40,6 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
     });
   };
 
-  $scope.getNextFeedPage();
 
+  $scope.getNextFeedPage();
 });
