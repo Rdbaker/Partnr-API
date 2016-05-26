@@ -6,7 +6,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 	};
 
 	var resolveToHome = function() {
-		return constructRouteObject($state.get("home"), null);
+		return constructRouteObject($state.get("home.feed"), null);
 	};
 
 	var findStates = function(search, exact) {
@@ -190,8 +190,8 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 		}
 
 		if (chosenState == null) {
-			$log.debug("[ROUTE UTILS] resolving to home");
-			chosenState = $state.get("home");
+			$log.debug("[ROUTE UTILS] resolving to home.feed");
+			chosenState = $state.get("home.feed");
 		}
 
 		return chosenState;

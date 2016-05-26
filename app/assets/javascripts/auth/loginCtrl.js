@@ -4,7 +4,7 @@ angular.module('partnr.auth').controller('LoginController', function($scope, $lo
 	$scope.loading = false;
 
 	if (principal.isAuthenticated()) {
-		$state.go('home');
+		$state.go('home.feed');
 	}
 
 	$scope.doLogin = function() {
@@ -14,7 +14,7 @@ angular.module('partnr.auth').controller('LoginController', function($scope, $lo
 				if (loggedIn) {
 					var user = principal.getUser();
 					if (user.last_login != null || user.last_login != undefined) {
-						$state.go('home');
+						$state.go('home.feed');
 					} else {
 						$state.go('profile_create');
 					}

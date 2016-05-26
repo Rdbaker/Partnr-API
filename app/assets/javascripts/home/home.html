@@ -23,14 +23,4 @@
 		</div>
 	</div>
 </div>
-<div ui-view=".feed"></div>
-<div masonry ng-show="loadComplete && !user">
-	<div ng-repeat="p in projects" class="masonry-brick col-md-4">
-		<project-tile project="p"></project-tile>
-	</div>
-</div>
-<div class="loading-wrapper" ng-hide="loadComplete">
-	<div class="text-center loading-container">
-		<img src="/assets/ajax-loader.gif">
-	</div>
-</div>
+<div ui-view="feed"></div>

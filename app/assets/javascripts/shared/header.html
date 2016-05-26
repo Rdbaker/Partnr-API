@@ -1,12 +1,12 @@
 <nav class="navbar navbar-default">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand logo-container" ui-sref="home"><img class="partnr-logo" src="/assets/partnr-logo.png" /></a>
+			<a class="navbar-brand logo-container" ui-sref="home.feed"><img class="partnr-logo" src="/assets/partnr-logo.png" /></a>
 		</div>
 
 		<div ng-if="isLoggedIn()" ng-init="getUserAvatar()" class="collapse navbar-collapse pull-right">
 			<ul class="nav navbar-nav">
-				<li ng-class="{'active': $state.includes('home')}"><a ui-sref="home">Home</a></li>
+				<li ng-class="{'active': $state.includes('home.feed')}"><a ui-sref="home.feed">Home</a></li>
 				<li ng-class="{'active': $state.includes('project_list')}"><a ui-sref="project_list">Browse</a></li>
 				<li uib-dropdown on-toggle="setRead(open)">
 					<a href id="notification-dropdown" uib-dropdown-toggle><i class="fa fa-flag"></i><span ng-if="newNotifications.length > 0" class="badge">{{ newNotifications.length }}</span></a> <!-- ng-click="toggleNotificationsDropdown()" -->

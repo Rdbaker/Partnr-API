@@ -12,7 +12,6 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 
     .state('home', {
       parent: 'site',
-      url: '/',
       views: {
         'content@': {
           templateUrl: 'home/home.html',
@@ -27,8 +26,13 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 
     .state('home.feed', {
       parent: 'home',
-      templateUrl: 'feed/feed.html',
-      controller: 'FeedController',
+      url: '/',
+      views: {
+        'feed@home': {
+        templateUrl: 'feed/feed.html',
+        controller: 'FeedController'
+        }
+      },
       data: {
         roles: ['Admin'],
         entities: []

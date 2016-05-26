@@ -7,12 +7,12 @@ angular.module('partnr.users').controller('CreateUserController', function($scop
 	};
 
 	if (principal.isAuthenticated()) {
-		$state.go('home');
+		$state.go('home.feed');
 	}
 
 
 	$scope.validate = function() {
-		var result = ($scope.acct.email.length > 0 && 
+		var result = ($scope.acct.email.length > 0 &&
 			$scope.acct.first_name.length > 0 &&
 			$scope.acct.last_name.length > 0 &&
 			$scope.acct.password.length > 0);
