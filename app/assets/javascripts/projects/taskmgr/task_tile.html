@@ -15,7 +15,7 @@
 			<span ng-if="!task.user"><i class="fa fa-user"></i><em>None</em></span>
 		</div>
 		<div class="col-md-2">
-			<a ng-if="task.milestone" ui-sref="project_milestone({ milestone_id: task.milestone.id })"><i class="fa fa-flag"></i>{{ task.milestone.title }}</a>
+			<a ng-if="task.milestone" ui-sref="milestone({ milestone_id: task.milestone.id })"><i class="fa fa-flag"></i>{{ task.milestone.title }}</a>
 			<span ng-if="!task.milestone" ><i class="fa fa-flag"></i><em>None</em></span>
 		</div>
 		<div class="col-md-8 text-right">
