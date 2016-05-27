@@ -1,22 +1,23 @@
-angular.module('partnr.users.assets').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope) {
-	$scope.openConversation = {};
+angular.module('partnr.users.assets').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope, $anchorScroll, $location,$element) {
+	$scope.openConversation = {'messages':[]};
 	$scope.messageLength = 1000;
 	$scope.currentUserId = principal.getUser().id;
 	$scope.step = 1;
 	$scope.isChatActive = false;
 	$scope.nextButtonTitle = "Start new Conversation";
+	$scope.title = "Your Conversations";
 	$scope.lessThanOneSelected = true;
 	$scope.isChatWindowOpen = false;
 	var selectedUserIds = [];
 	var pollAllConversationsPromise;
 	var pollOpenConversationPromise;
 	var todayDate = new Date();
+	var scrollBar = angular.element(document.querySelector('#active-chat'));
+	$log.debug(scrollBar);
 
 	//Filters
 
 	$scope.isNotUserFilter = function isUserFilter (user) {
-		//$log.debug('[CHAT] UserId: ', user.id);
-		//$log.debug('[CHAT] UserId: ', $scope.currentUserId);
 		return (user.id !== $scope.currentUserId);
 	};
 
@@ -52,14 +53,18 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 		var displayableUsers = 1;
 		conversation.users = $filter('filter')(conversation.users, $scope.isNotUserFilter);
 		var usernameString = conversation.users[0].name;
+		var searchableString = conversation.users[0].name;
 		var concatString = ", ";
 		for (var i = 1; i < conversation.users.length; i++) {
 			if (conversation.users[i].name.length+concatString.length+usernameString.length < 27) {
 				usernameString = conversation.users[i].name + concatString + usernameString;
 				displayableUsers ++;
 			}
+			searchableString = searchableString + " " + conversation.users[i].name;
+
 		}
 		conversation.namelist = usernameString;
+		conversation.allconversationparticipantsstring = searchableString;
 		conversation.non_displayable_name_amount = conversation.users.length - displayableUsers;
 	}
 
@@ -69,25 +74,29 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 			$scope.openConversation = result.data;
 			$scope.openConversation.namelist = conversation.namelist;
 			$scope.openConversation.non_displayable_name_amount = conversation.non_displayable_name_amount;
-			conversations.changeIsRead(conversation.id, true).then(function(result){
-				conversation.is_read = true;
-			});
+			if (!$scope.openConversation.is_read) {
+				conversations.changeIsRead(conversation.id, true).then(function(result){
+					conversation.is_read = true;
+				});
+			}
 		});
 	}
 
 	//Activation/Deactivation of Chat
 
 	$scope.activateChat = function activateChat (conversation) {
-		$scope.isChatActive = true;
 		conversations.get(conversation.id).then(function(result) {
 			$scope.openConversation = result.data;
 			$scope.openConversation.namelist = conversation.namelist;
 			$scope.openConversation.non_displayable_name_amount = conversation.non_displayable_name_amount;
+			goToLatestMessage($scope.openConversation.messages[$scope.openConversation.messages.length-1]);
+			$log.debug('[CHAT] open Conversation: ', $scope.openConversation);
 			conversations.changeIsRead(conversation.id, true).then(function(result){
 				conversation.is_read = true;
 			});
+			$scope.isChatActive = true;
 		});
-		pollOpenConversationPromise = $interval(pollOpenConversation,5000,0,true, conversation);
+		pollOpenConversationPromise = $interval(pollOpenConversation,$rootScope.pollDuration,0,true, conversation);
 	};
 
 	$scope.deactivateChat = function deactivateChat (conversation) {
@@ -96,12 +105,19 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 		$interval.cancel(pollOpenConversationPromise);
 	};
 
+	function isAtBottomOfScrollbar () {
+		var heightOfScrollbar = scrollBar[0].scrollHeight - scrollBar.height();
+		var scrollBarPosition = scrollBar.scrollTop();
+		return (heightOfScrollbar === scrollBarPosition);
+	}
+
 	
 	//New Chat
 
 	$scope.goStepForward = function goStepForward(){
 		$scope.step = $scope.step + 1;
 		if ($scope.step === 2) {
+			$scope.title = "Select Chat Participants";
 			$scope.newMessage = "";
 			users.getAllUsers().then(function(result) {
 				$scope.users = result.data;
@@ -158,18 +174,28 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 
 	}
 
-	//Send Message
+	//scrolling
 
-	$scope.sendMessage= function(event){
-		if (event.keyCode === 13) {
-			$log.debug('[CHAT] This is the sent message: ', $scope.message);
-			conversations.addMessage($scope.openConversation.id, $scope.message);
-			$scope.message = "";
-			conversations.get($scope.openConversation.id).then(function(result) {
-				$scope.openConversation = result.data;
-			});
-		}
+	function goToLatestMessage (message) {
+		$log.debug('[CHAT] element', scrollBar.prop('scrollHeight'));
+		scrollBar.scrollTop = scrollBar.scrollHeight;
+		
+		 // var newHash = 'message' + message.id;
+		 // var oldHash = $location.hash();
+		 // $log.debug('[CHAT] Jumping!', newHash, oldHash);
+		 // $location.hash(newHash);
+		 // $anchorScroll();
+	}
+
+	$scope.logPosition =  function () {
+		$log.debug('[CHAT] scrollBarElement', $scope.scrollBarPosition);
+		$log.debug('[CHAT] scrollBarPosition', $scope.scrollBarPosition.scrollTop());
+		$log.debug('[CHAT] height', $scope.scrollBarPosition.height());
+		$log.debug('[CHAT] height', $scope.scrollBarPosition[0].scrollHeight);
+		$log.debug('[CHAT] true height', $scope.scrollBarPosition[0].scrollHeight - $scope.scrollBarPosition.height());
 	};
+
+	//Send Message
 
 	$scope.checkLength = function checkLength (maxLength) {
 		if ($scope.newMessage.length > maxLength) {
@@ -185,6 +211,9 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 				$scope.newMessage = "";
 				$scope.openConversation.messages.push(result.data);
 				$scope.isMessageSubmitting = false;
+				if (isAtBottomOfScrollbarinitializeScrollbar()){
+					goToLatestMessage(result.data);
+				}
 			});
 		}
 	};

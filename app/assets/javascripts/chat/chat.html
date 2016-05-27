@@ -1,5 +1,30 @@
 <div ng-controller= "ChatController">
 	<style>
+		.pn-chat-window {
+			position: fixed;
+			bottom: 0;
+			right: 0;
+			padding: 0;
+		}
+
+		.footer {
+			position: absolute;
+			margin: 0 auto;
+			width: 80%;
+			bottom: 0;
+			left: 0; 
+			right: 0;
+		}
+
+		.pn-chat {
+			height: 25vh;
+			overflow-y:auto;
+		}
+		.pn-chat-header {
+			height:5%;
+			width: 100%;
+		}
+
 		span .badge {
 			font-size: 10px;
 			padding: 2px 3px;
@@ -18,60 +43,54 @@
 		}
 
 		.open-chat-window {
-			height:600px;
-			overflow: auto;
+			height:50vh;
 		}
 
 		.minimized-chat-window {
-			height: 50px;
+			height: 4vh;
+		}
+
+		.loading-screen {
+			background-color: white;
+			height:50vh;
+			width:100%;
 		}
 	</style>
-	<div name="chat-window" class="pn-user-card" ng-class="isChatWindowOpen ? 'open-chat-window' : 'minimized-chat-window'">
-		<h2 ng-click="isChatWindowOpen = true" ng-show="!isChatWindowOpen">Open Chat</h2>
+	<div name="chat-window" class="pn-user-card pn-chat-window" ng-class="isChatWindowOpen ? 'open-chat-window' : 'minimized-chat-window'">
+		<span ng-click="isChatWindowOpen = true" ng-show="!isChatWindowOpen">Open Chat</span>
+		<div ng-show="isChatWindowOpen" class="partnr-page-header light pn-chat-header" name="header">
+			<button name="step-back-button" ng-show="step > 1" ng-click="goStepBack()">Back</button>
+			<button ng-show="!isChatActive" ng-click="goStepForward()" ng-disabled="isNextDisabled()">{{nextButtonTitle}}</button>
+			<button name="chat-back-button" ng-show="isChatActive" ng-click="deactivateChat()">Back</button>
+			<button name="chat-minimize-button" ng-click="isChatWindowOpen = false">Minimize</button>
+			<button ng-click="logPosition()">LOG</button>
+		</div>
 		<div name="chat" ng-show="isChatWindowOpen">
-			<div name="header">
-				<button name="step-back-button" ng-show="step > 1" ng-click="goStepBack()">Back</button>
-				<button ng-show="!isChatActive" ng-click="goStepForward()" ng-disabled="isNextDisabled()">{{nextButtonTitle}}</button>
-				<button name="chat-back-button" ng-show="isChatActive" ng-click="deactivateChat()">Back</button>
-				<button name="chat-minimize-button" ng-click="isChatWindowOpen = false">Minimize</button>
-			</div>
-			<div name="search" class="pn-search-query-group input-group">
-				<input type="text" ng-model="query" placeholder="Search" class="form-control"/>
-				<div class="input-group-addon pn-btn-search">
-				</div>
-			</div>
+			<h3 ng-if="!isChatActive">{{title}}</h3>
 			<div name="user-select" ng-show="step === 2">
-				<h3>Select Chat Participants</h3>
 				<div name="add-people" ng-repeat="user in users | filter : {'name':query} | filter : isNotUserFilter">
 					<h5 ng-click="selectUser(user)" ng-class="{'selected': user.selected}">{{ user.name }}</h5>
 				</div>
 			</div>
 			<div name="chat-selection" ng-show="!isChatActive; step === 1">
-				<span ng-class="{active: over}" ng-mouseover="over=true" ng-mouseleave="over=false" ng-repeat="conversation in conversations | orderBy: 'date' | filter : {'namelist':query} " >
+				<span ng-class="{active: over}" ng-mouseover="over=true" ng-mouseleave="over=false" ng-repeat="conversation in conversations | orderBy: 'date' : true | filter : {'allconversationparticipantsstring':query} " >
 					<h5 ng-click="activateChat(conversation)" ng-show="step === 1; !isChatActive" >
 						<span class="badge" ng-if="!conversation.is_read">new!
 						</span>
-						&nbsp;{{conversation.namelist}} - date:{{conversation.date | date : 'short'}}
+						&nbsp;{{conversation.namelist}}
 						<span ng-if="conversation.non_displayable_name_amount > 0"> + {{ conversation.non_displayable_name_amount}}
 						</span>
 					</h5>
 				</span>
 			</div>
-			<div name="active-chat" ng-show="isChatActive">				
-				&nbsp;{{openConversation.namelist}}<span ng-if="conversation.non_displayable_name_amount > 0"> + {{ openConversation.non_displayable_name_amount}}</span>
-				<div name="chatmessage" ng-repeat="message in openConversation.messages">
-					<p>
-						<h5>
-							<a <a href ui-sref="profile({ id: message.user.id })">{{ message.user.name }}</a></strong> at {{ message.sent_at | date: returnDateFilter(message.sent_at) }}:
-						</h5>
-					</p>
-					<p>
-						<div ng-bind-html="message.body | linky">
-							{{ message.body }}
-						</div>
-					</p>
-				</div>
+			<div name="active-chat" ng-if="isChatActive">
+				<h3>			
+					&nbsp;{{$parent.openConversation.namelist}}<span ng-if="conversation.non_displayable_name_amount > 0"> + {{$parent.openConversation.non_displayable_name_amount}}</span>
+				</h3>
+				<chat-message-list open-conversation="$parent.openConversation"></chat-message-list>
 			</div>
+		</div>
+		<div ng-show="isChatWindowOpen" name="footer" class="footer">
 			<div name="new-message" ng-show="step === 2 || isChatActive">
 				<h6>Your Message:</h6>
 				<textarea class="form-control" ng-model="newMessage" ng-disabled="isMessageSubmitting" ngMaxlength="1000" ng-change="checkLength(1000)" ng-keyup="sendMessage($event)">
@@ -79,6 +98,11 @@
 				<p>
 					<h6>{{ 1000 - newMessage.length }} remaining</h6>
 				</p>
+			</div>
+			<div ng-if="isChatWindowOpen && !isChatActive" name="search" class="pn-search-query-group input-group">
+				<input type="text" ng-model="$parent.query" placeholder="Search" class="form-control"/>
+				<div class="input-group-addon pn-btn-search">
+				</div>
 			</div>
 		</div>
 	</div>
