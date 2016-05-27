@@ -62,6 +62,7 @@ angular.module('partnr.users.assets').factory('tasks', function($rootScope, $htt
 		},
 
 		update : function(task) {
+      mixpanel.track('project.task.update');
 			$log.debug("[TASK] Sending update request");
 			$log.debug(task);
 			var taskToUpdate = angular.copy(task);
