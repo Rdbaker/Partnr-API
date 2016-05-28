@@ -16,3 +16,4 @@
 //= require angular-ui-utils/ui-utils.min
 //= require angular-masonry/angular-masonry
 //= require_tree .
+//=require angular-sanitize/angular-sanitize

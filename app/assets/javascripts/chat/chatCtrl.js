@@ -1,19 +1,17 @@
-angular.module('partnr.users.assets').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope, $anchorScroll, $location,$element) {
+angular.module('partnr.messaging').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope, $anchorScroll, $location,$element) {
 	$scope.openConversation = {'messages':[]};
 	$scope.messageLength = 1000;
 	$scope.currentUserId = principal.getUser().id;
 	$scope.step = 1;
 	$scope.isChatActive = false;
-	$scope.nextButtonTitle = "Start new Conversation";
 	$scope.title = "Your Conversations";
+	$scope.nextButtonTitle = "Start new Chat";
 	$scope.lessThanOneSelected = true;
 	$scope.isChatWindowOpen = false;
+	$scope.users = [];
 	var selectedUserIds = [];
 	var pollAllConversationsPromise;
 	var pollOpenConversationPromise;
-	var todayDate = new Date();
-	var scrollBar = angular.element(document.querySelector('#active-chat'));
-	$log.debug(scrollBar);
 
 	//Filters
 
@@ -23,15 +21,6 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 
 	$scope.isAtLeastTwoAndNotCurrentUserFilter = function isAtLeastTwoAndNotCurrentUserFilter (element) {	
 		return !(element.users.length < 2 && !$scope.isNotUserFilter(element.users[0]));
-	};
-
-	$scope.returnDateFilter = function returnDateFilter (date){
-		var messageDate = new Date(date);
-		if (todayDate.setHours(0,0,0,0) == messageDate.setHours(0,0,0,0)) {
-			return 'shortTime';
-		} else {
-			return 'short';
-		}
 	};
 
 	//Polling
@@ -85,43 +74,32 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 	//Activation/Deactivation of Chat
 
 	$scope.activateChat = function activateChat (conversation) {
+		$scope.isChatActive = true;
+		$scope.title = conversation.namelist;
 		conversations.get(conversation.id).then(function(result) {
 			$scope.openConversation = result.data;
 			$scope.openConversation.namelist = conversation.namelist;
 			$scope.openConversation.non_displayable_name_amount = conversation.non_displayable_name_amount;
-			goToLatestMessage($scope.openConversation.messages[$scope.openConversation.messages.length-1]);
+			$scope.title = $scope.openConversation.namelist;
 			$log.debug('[CHAT] open Conversation: ', $scope.openConversation);
 			conversations.changeIsRead(conversation.id, true).then(function(result){
 				conversation.is_read = true;
 			});
-			$scope.isChatActive = true;
 		});
+		$interval.cancel(pollAllConversationsPromise);
 		pollOpenConversationPromise = $interval(pollOpenConversation,$rootScope.pollDuration,0,true, conversation);
 	};
 
-	$scope.deactivateChat = function deactivateChat (conversation) {
-		$scope.isChatActive = false;
-		$scope.openConversation = {};
-		$interval.cancel(pollOpenConversationPromise);
-	};
-
-	function isAtBottomOfScrollbar () {
-		var heightOfScrollbar = scrollBar[0].scrollHeight - scrollBar.height();
-		var scrollBarPosition = scrollBar.scrollTop();
-		return (heightOfScrollbar === scrollBarPosition);
-	}
-
-	
 	//New Chat
 
-	$scope.goStepForward = function goStepForward(){
+	$scope.goStepForward = function goStepForward($event){
+		$event.stopPropagation();
 		$scope.step = $scope.step + 1;
 		if ($scope.step === 2) {
 			$scope.title = "Select Chat Participants";
 			$scope.newMessage = "";
 			users.getAllUsers().then(function(result) {
 				$scope.users = result.data;
-				$log.debug('[CHAT] Users: ', $scope.users);
 			});
 			$scope.nextButtonTitle = "Finish";
 		}
@@ -130,12 +108,24 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 		}
 	};
 
-	$scope.goStepBack = function goStepBack(){
-		$scope.step = $scope.step - 1;
-		if ($scope.step === 1) {
-			$scope.newMessage = "";
-			$scope.nextButtonTitle = "Start new Conversation";
+	$scope.goStepBack = function goStepBack($event){
+		$event.stopPropagation();
+		if ($scope.isChatActive) {
+			$scope.isChatActive = false;
+			$scope.openConversation = {};
+			$interval.cancel(pollOpenConversationPromise);
+			pollAllConversations();
+			pollAllConversationsPromise = $interval(pollAllConversations,$rootScope.pollDuration);
+		} else {
+			$scope.step = $scope.step - 1;
+			if ($scope.step === 1) {
+				$scope.newMessage = "";
+				$scope.nextButtonTitle = "Start new Chat";
+				selectedUserIds = [];
+				$scope.users = [];
+			}
 		}
+		$scope.title = "Your Conversations";
 	};
 
 	$scope.isNextDisabled = function isNextDisabled() {
@@ -167,33 +157,12 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 		conversations.create(newConversation).then(function(result) {
 			$scope.step = 1;
 			$scope.newMessage = "";
-			$scope.nextButtonTitle = "Start new Conversation";
+			$scope.nextButtonTitle = "Start new Chat";
 			$log.debug('[CHAT] newly created conversation', result.data);
 			$scope.activateChat(result.data);
 		});
 
 	}
-
-	//scrolling
-
-	function goToLatestMessage (message) {
-		$log.debug('[CHAT] element', scrollBar.prop('scrollHeight'));
-		scrollBar.scrollTop = scrollBar.scrollHeight;
-		
-		 // var newHash = 'message' + message.id;
-		 // var oldHash = $location.hash();
-		 // $log.debug('[CHAT] Jumping!', newHash, oldHash);
-		 // $location.hash(newHash);
-		 // $anchorScroll();
-	}
-
-	$scope.logPosition =  function () {
-		$log.debug('[CHAT] scrollBarElement', $scope.scrollBarPosition);
-		$log.debug('[CHAT] scrollBarPosition', $scope.scrollBarPosition.scrollTop());
-		$log.debug('[CHAT] height', $scope.scrollBarPosition.height());
-		$log.debug('[CHAT] height', $scope.scrollBarPosition[0].scrollHeight);
-		$log.debug('[CHAT] true height', $scope.scrollBarPosition[0].scrollHeight - $scope.scrollBarPosition.height());
-	};
 
 	//Send Message
 
@@ -207,13 +176,9 @@ angular.module('partnr.users.assets').controller('ChatController', function($sco
 		if (event.keyCode === 13) {
 			$scope.isMessageSubmitting = true;
 			conversations.addMessage($scope.openConversation.id, $scope.newMessage).then(function(result) {
-				$log.debug(result.data);
 				$scope.newMessage = "";
 				$scope.openConversation.messages.push(result.data);
 				$scope.isMessageSubmitting = false;
-				if (isAtBottomOfScrollbarinitializeScrollbar()){
-					goToLatestMessage(result.data);
-				}
 			});
 		}
 	};

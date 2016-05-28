@@ -8,6 +8,7 @@
     "angular-ui-router": "0.2.15",
     "angular-ui-utils": "0.2.3",
     "fontawesome": "4.5.0",
-    "matches-selector": "^2.0.1"
+    "matches-selector": "^2.0.1",
+    "angular-sanitize": "1.4.8"
   }
 }

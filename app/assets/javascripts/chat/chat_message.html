@@ -1,21 +1,27 @@
 <div name=loadscreen ng-hide="isLoaded" class="loading-screen">LOADING...
 </div>
-<div class="pn-chat js-chat-list">
-    <div ng-repeat="message in openConversation.messages">
+<div class="js-chat-list">
+    <div  ng-repeat="message in messages" finish-render="adjustScroll()">
         <p>
-            <a href ui-sref="profile({ id: message.user.id })">
-                {{ message.user.name }}
-            </a> 
-            <span>
-                at {{ message.sent_at | date: returnDateFilter(message.sent_at) }}:
-            </span>
+            <h4>
+                <strong>
+
+                    <a href ui-sref="profile({ id: message.user.id })">
+                        {{ message.user.name }}
+                    </a>
+
+                </strong>
+                <span>
+                    at {{ message.sent_at | date: returnDateFilter(message.sent_at) }}:
+                </span>
+            </h4>
         </p>
         <p>
             <div ng-bind-html="message.body | linky">
-               {{ message.body }}
-           </div>
-       </p>
-   </div>
+             {{ message.body }}
+         </div>
+     </p>
+ </div>
 </div>
 
 
