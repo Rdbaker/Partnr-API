@@ -9,6 +9,9 @@
     <div class="pn-user-card-position" ng-show="{{ !!user.profile && user.profile.positions.length > 0 }}">
       {{ user.profile.positions[0].title}} at {{ user.profile.positions[0].company }}
     </div>
+    <div class="pn-user-card-contact">
+      <pn-conn-btn connection-status="user.connection_status" user-id="user.id"></pn-conn-btn>
+    </div>
   </div>
   <div class="pn-user-card-detail-row clearfix">
     <div class="pn-user-card-location" ui-sref="profile({ id: user.id })" ng-show="{{ !!user.profile.location }}">

@@ -18,7 +18,7 @@ module V1
     get do
       present User
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::UserData::AsSearch
+        .per(params[:per_page]), with: Entities::UserData::AsSearch, current_user: current_user
     end
 
     desc "Retrieve info about the current user.", entity: Entities::UserData::AsPrivate

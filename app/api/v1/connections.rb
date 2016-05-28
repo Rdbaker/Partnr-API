@@ -11,9 +11,25 @@ module V1
         error!("You can't update that connection", 401) unless @conn.has_accept_permissions current_user
       end
 
+      def conn_put_from_user_permissions(user_id)
+        authenticated_user
+        cons = current_user.connections.select { |c| c.other_user(current_user).id == user_id }
+        error!("You are not connected with that user", 404) if cons.empty?
+        @conn = cons.first
+        error!("You can't update that connection", 401) unless @conn.has_accept_permissions current_user
+      end
+
       def conn_destroy_permissions(id)
         authenticated_user
         @conn ||= get_record(Connection, id)
+        error!("You can't delete that connection", 401) unless @conn.has_destroy_permissions current_user
+      end
+
+      def conn_destroy_from_user_permissions(user_id)
+        authenticated_user
+        cons = current_user.connections.select { |c| c.other_user(current_user).id == user_id }
+        error!("You are not connected with that user", 404) if cons.empty?
+        @conn = cons.first
         error!("You can't delete that connection", 401) unless @conn.has_destroy_permissions current_user
       end
     end
@@ -43,7 +59,9 @@ module V1
         error!("You can't see pending connections that aren't yours", 401) unless uid == current_user.id
       end
 
-      params[:status] = { "pending" => 0, "accepted" => 1 }[params[:status]]
+      if params.has_key? :status
+        params[:status] = { "pending" => 0, "accepted" => 1 }[params[:status]]
+      end
 
       present Connection.where("user_id = ? OR connection_id = ?", uid, uid).where(permitted_params params)
         .page(params[:page])
@@ -103,12 +121,39 @@ module V1
     end
 
 
+    desc "Update (accept) a connection given a user id", entity: Entities::ConnectionData::AsFull
+    params do
+      requires :user, type: Integer, allow_blank: false, desc: "The id of the other user in the connection."
+      requires :status, type: String, allow_blank: false, values: ["pending", "accepted"], desc: "The connection's status."
+    end
+    put do
+      conn_put_from_user_permissions params[:user]
+      @conn.status = params[:status]
+      @conn.save!
+      # TODO: this is bad, we should only do one activity per connection acceptance
+      # and have the /activities endpoint do the heavy lifting; I feel bad about this, but it's really late
+      @conn.create_activity key: 'activity.connection.accepted', owner: @conn.user
+      @conn.create_activity key: 'activity.connection.accepted', owner: @conn.connection
+      present @conn, with: Entities::ConnectionData::AsFull
+    end
+
+
     desc "Delete a connection"
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The connection's ID."
     end
     delete ":id" do
       conn_destroy_permissions params[:id]
+      @conn.destroy
+      status 204
+    end
+
+    desc "Delete a connection from a user ID"
+    params do
+      requires :user, type: Integer, allow_blank: false, desc: "The id of the other user in the connection."
+    end
+    delete do
+      conn_destroy_from_user_permissions params[:user]
       @conn.destroy
       status 204
     end

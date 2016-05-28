@@ -97,6 +97,33 @@ class User < ActiveRecord::Base
     @tasks ||= Task.where user_id: self.id
   end
 
+  def connections
+    Connection.where("user_id = ? OR connection_id = ?", id, id)
+  end
+
+  def connection_status(user)
+    # "connect" means they are not connected, or the "user" is nil
+    # "requested" means the "user" sent this user a connection request
+    # "respond" means that this user sent the "user" a connection request
+    # "connected" means the two users are connected
+    if user == self || user.nil? || user.class != User
+      return nil
+    end
+    cons = connections.select { |c| c.other_user(self) == user }
+    if cons.empty?
+      "connect"
+    else
+      con = cons.first
+      if con.accepted?
+        "connected"
+      elsif con.connection == self
+        "requested"
+      else
+        "respond"
+      end
+    end
+  end
+
   def self.search(query)
     where("LOWER( users.first_name ) LIKE :query OR LOWER( users.last_name ) LIKE :query OR LOWER( users.email ) LIKE :query", { :query => query.downcase })
   end

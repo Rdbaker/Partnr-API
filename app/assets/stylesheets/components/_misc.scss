@@ -43,3 +43,11 @@ h3 {
   margin-top: 10px;
 }
 
+.btn.pn-btn-danger:hover,
+.btn.pn-btn-info:hover,
+.btn.pn-btn-warning:hover,
+.btn.pn-btn-success:hover,
+.btn.pn-conreq-accept:hover,
+.btn.pn-conreq-decline:hover {
+  color: white;
+}
