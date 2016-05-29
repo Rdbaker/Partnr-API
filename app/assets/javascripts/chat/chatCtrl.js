@@ -15,7 +15,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 
 	//Filters
 
-	$scope.isNotUserFilter = function isUserFilter (user) {
+	$scope.isNotUserFilter = function isNotUserFilter (user) {
 		return (user.id !== $scope.currentUserId);
 	};
 
@@ -82,17 +82,17 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 			$scope.openConversation.non_displayable_name_amount = conversation.non_displayable_name_amount;
 			$scope.title = $scope.openConversation.namelist;
 			$log.debug('[CHAT] open Conversation: ', $scope.openConversation);
-			conversations.changeIsRead(conversation.id, true).then(function(result){
+			conversations.changeIsRead(conversation.id, true).then(function(result) {
 				conversation.is_read = true;
 			});
 		});
 	$interval.cancel(pollAllConversationsPromise);
-	pollOpenConversationPromise = $interval(pollOpenConversation,$rootScope.pollDuration,0,true, conversation);
+	pollOpenConversationPromise = $interval(pollOpenConversation,$rootScope.pollDuration, 0, true, conversation);
 	};
 
 	//New Chat
 
-	$scope.goStepForward = function goStepForward($event){
+	$scope.goStepForward = function goStepForward($event) {
 		$event.stopPropagation();
 		$scope.step = $scope.step + 1;
 		if ($scope.step === 2) {
