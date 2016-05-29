@@ -2,6 +2,7 @@
 <div class="content-container" ng-show="loadComplete">
   <h1>{{ user.first_name }} {{ user.last_name }}</h1>
   <h2>{{ user.profile.location.geo_string }}</h2>
+  <pn-conn-btn ng-if="currentUser.id !== user.id" user="user"></pn-conn-btn>
 
   <h3 class="inline">Schools</h3>
   <div class="clearfix">

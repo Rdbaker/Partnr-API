@@ -51,7 +51,7 @@ module V1
       if authenticated && current_user.id == params[:id]
         present user, with: Entities::UserData::AsPrivate
       else
-        present user, with: Entities::UserData::AsPublic
+        present user, with: Entities::UserData::AsPublic, current_user: current_user
       end
     end
 
