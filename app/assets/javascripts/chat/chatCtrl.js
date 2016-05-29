@@ -1,4 +1,4 @@
-angular.module('partnr.messaging').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope, $anchorScroll, $location,$element) {
+angular.module('partnr.messaging').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope) {
 	$scope.openConversation = {'messages':[]};
 	$scope.messageLength = 1000;
 	$scope.currentUserId = principal.getUser().id;
