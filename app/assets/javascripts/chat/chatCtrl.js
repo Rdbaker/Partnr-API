@@ -5,10 +5,10 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 	$scope.step = 1;
 	$scope.isChatActive = false;
 	$scope.title = "Your Conversations";
-	$scope.nextButtonTitle = "Start new Chat";
 	$scope.lessThanOneSelected = true;
 	$scope.isChatWindowOpen = false;
 	$scope.users = [];
+	$scope.newMessage = "";
 	var selectedUserIds = [];
 	var pollAllConversationsPromise;
 	var pollOpenConversationPromise;
@@ -86,8 +86,8 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 				conversation.is_read = true;
 			});
 		});
-		$interval.cancel(pollAllConversationsPromise);
-		pollOpenConversationPromise = $interval(pollOpenConversation,$rootScope.pollDuration,0,true, conversation);
+	$interval.cancel(pollAllConversationsPromise);
+	pollOpenConversationPromise = $interval(pollOpenConversation,$rootScope.pollDuration,0,true, conversation);
 	};
 
 	//New Chat
@@ -96,12 +96,13 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 		$event.stopPropagation();
 		$scope.step = $scope.step + 1;
 		if ($scope.step === 2) {
+			selectedUserIds = [];
+			$scope.lessThanOneSelected = true;
 			$scope.title = "Select Chat Participants";
 			$scope.newMessage = "";
 			users.getAllUsers().then(function(result) {
 				$scope.users = result.data;
 			});
-			$scope.nextButtonTitle = "Finish";
 		}
 		if ($scope.step === 3) {
 			createConversation();
@@ -116,11 +117,12 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 			$interval.cancel(pollOpenConversationPromise);
 			pollAllConversations();
 			pollAllConversationsPromise = $interval(pollAllConversations,$rootScope.pollDuration);
+		} else if ($scope.step === 1) {
+			$scope.isChatWindowOpen = false;	
 		} else {
 			$scope.step = $scope.step - 1;
-			if ($scope.step === 1) {
+			if ($scope.step === 2) {
 				$scope.newMessage = "";
-				$scope.nextButtonTitle = "Start new Chat";
 				selectedUserIds = [];
 				$scope.users = [];
 			}
@@ -128,8 +130,8 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 		$scope.title = "Your Conversations";
 	};
 
-	$scope.isNextDisabled = function isNextDisabled() {
-		if ($scope.step === 2 && ($scope.newMessage.length < 1 || $scope.lessThanOneSelected)) {
+	$scope.isSendDisabled = function isSendDisabled() {
+		if ($scope.step === 2 && ($scope.newMessage.length < 1 || selectedUserIds.length < 1)) {
 			return true;
 		} else {
 			return false;
@@ -155,11 +157,14 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 			message: $scope.newMessage
 		};
 		conversations.create(newConversation).then(function(result) {
-			$scope.step = 1;
+			var conversation = result.data;
+			processUserNames(conversation);
+			conversation.date = new Date(conversation.last_updated);
 			$scope.newMessage = "";
-			$scope.nextButtonTitle = "Start new Chat";
-			$log.debug('[CHAT] newly created conversation', result.data);
-			$scope.activateChat(result.data);
+			$log.debug('[CHAT] newly created conversation', conversation);
+			selectedUserIds = [];
+			$scope.activateChat(conversation);
+			$scope.step = 1;
 		});
 
 	}
@@ -173,7 +178,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 	};
 
 	$scope.sendMessage = function sendMessage(event) {
-		if (event.keyCode === 13) {
+		if (event.keyCode === 13 && $scope.step !== 2) {
 			$scope.isMessageSubmitting = true;
 			conversations.addMessage($scope.openConversation.id, $scope.newMessage).then(function(result) {
 				$scope.newMessage = "";

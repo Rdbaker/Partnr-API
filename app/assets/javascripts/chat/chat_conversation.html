@@ -1,27 +1,20 @@
 <div name=loadscreen ng-hide="isLoaded" class="loading-screen">LOADING...
 </div>
-<div class="js-chat-list">
+<div class="chat-conversation">
     <div  ng-repeat="message in messages" finish-render="adjustScroll()">
-        <p>
-            <h4>
-                <strong>
-
-                    <a href ui-sref="profile({ id: message.user.id })">
-                        {{ message.user.name }}
-                    </a>
-
-                </strong>
-                <span>
-                    at {{ message.sent_at | date: returnDateFilter(message.sent_at) }}:
-                </span>
-            </h4>
-        </p>
-        <p>
-            <div ng-bind-html="message.body | linky">
-             {{ message.body }}
-         </div>
-     </p>
- </div>
+        <h4>
+            <a href ui-sref="profile({ id: message.user.id })">
+                {{ message.user.name }}
+            </a>
+        </h4>
+        <h6>
+            at {{ message.sent_at | date: returnDateFilter(message.sent_at) }}:
+        </h6>
+        <div ng-bind-html="message.body | linky">
+           {{ message.body }}
+       </div>
+   </p>
+</div>
 </div>
 
 
