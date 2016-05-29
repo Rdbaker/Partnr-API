@@ -88,8 +88,8 @@ module V1
       optional :milestone, type: Integer, allow_blank: false, desc: "The milestone ID to create the task under."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The task's status."
       optional :user, type: Integer, allow_blank: false, desc: "The user ID to assign the task to."
-      optional :skills, type: Array[Integer], allow_blank: false, desc: "The list of skill IDs to give to this task."
-      optional :categories, type: Array[Integer], length: 3, allow_blank: false, desc: "The list of category IDs to give to this task."
+      optional :skills, type: Array[Integer], desc: "The list of skill IDs to give to this task."
+      optional :categories, type: Array[Integer], length: 3, desc: "The list of category IDs to give to this task."
     end
     post do
       task_create_permissions
@@ -138,8 +138,8 @@ module V1
       optional :milestone, type: Integer, allow_blank: true, desc: "The milestone ID of the task."
       optional :status, type: String, allow_blank: false, values: ["not_started", "in_progress", "complete"], desc: "The task's status."
       optional :user, type: Integer, allow_blank: true, desc: "The user ID to assign the task to."
-      optional :skills, type: Array[Integer], allow_blank: false, desc: "The list of skill IDs to give to this task."
-      optional :categories, type: Array[Integer], length: 3, allow_blank: false, desc: "The list of category IDs to give to this task."
+      optional :skills, type: Array[Integer], desc: "The list of skill IDs to give to this task."
+      optional :categories, type: Array[Integer], length: 3, desc: "The list of category IDs to give to this task."
     end
     put ":id" do
       task_put_permissions

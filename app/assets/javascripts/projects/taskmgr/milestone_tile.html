@@ -1,6 +1,6 @@
 <div class="content-container tile milestone-tile pn-task-card">
 	<div class="pn-task-card-title-group">
-		<span class="pn-task-card-title">{{ milestone.title }}</span>
+		<span class="pn-task-card-title">{{ milestone.title | limitLength:30 }}</span>
 		<a ng-if="$parent.isMember || $parent.isOwner" ui-sref="project_milestone_edit({ milestone_id: milestone.id })" class="sm-edit-link"><i class="fa fa-pencil"></i><span>edit</span></a>
 	</div>
 	<uib-progressbar ng-if="milestone.tasksTotal > 0" value="milestone.tasksComplete" max="milestone.tasksTotal" type="success"></uib-progressbar>

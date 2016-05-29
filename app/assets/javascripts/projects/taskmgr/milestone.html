@@ -28,7 +28,7 @@
 	<div class="clearfix">
 		<div>
 			<div ng-show="tasks.length > 0" ng-repeat="task in tasks track by $index">
-		    	<task-tile task="task"></task-tile>
+		    	<task-tile mref="milestone.id" task="task"></task-tile>
 			</div>
 		</div>
 		<div ng-show="tasks.length <= 0" class="text-center">
