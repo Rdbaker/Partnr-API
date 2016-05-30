@@ -43,6 +43,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
         conversation.users = $filter('filter')(conversation.users, $scope.isNotUserFilter);
         var usernameString = conversation.users[0].name;
         var searchableString = conversation.users[0].name;
+        var allUsersInConversation = "You and " + conversation.users[0].name;
         var concatString = ", ";
         for (var i = 1; i < conversation.users.length; i++) {
             if (conversation.users[i].name.length + concatString.length + usernameString.length < 27) {
@@ -50,11 +51,14 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
                 displayableUsers++;
             }
             searchableString = searchableString + " " + conversation.users[i].name;
+            allUsersInConversation = allUsersInConversation + concatString + conversation.users[i].name;
+
 
         }
         conversation.namelist = usernameString;
-        conversation.allconversationparticipantsstring = searchableString;
+        conversation.searchableUsernames = searchableString;
         conversation.non_displayable_name_amount = conversation.users.length - displayableUsers;
+        conversation.allUsersInConversation = allUsersInConversation;
     }
 
 
@@ -76,7 +80,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
     function notify(msg) {
         $scope.notification = msg;
         $timeout(function() {
-        	$scope.notification = "";
+            $scope.notification = "";
         }, 3000);
     }
 

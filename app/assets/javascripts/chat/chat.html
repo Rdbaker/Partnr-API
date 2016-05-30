@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div name="chat-selection" ng-show="!isChatActive && step === 1" class="chat-selection scrollable">
-                <div class="list-element" ng-class="{selected: over}" ng-mouseover="over=true" ng-mouseleave="over=false" ng-repeat="conversation in conversations | orderBy: 'date' : true | filter : {'allconversationparticipantsstring':query} " ng-click="activateChat(conversation)">
+                <div uib-tooltip="{{conversation.allUsersInConversation}}" tooltip-animation="false" class="list-element" ng-class="{selected: over}" ng-mouseover="over=true" ng-mouseleave="over=false" ng-repeat="conversation in conversations | orderBy: 'date' : true | filter : {'searchableUsernames':query} " ng-click="activateChat(conversation)">
                     <span class="unread-message" ng-if="!conversation.is_read">
 					<i class="fa fa-comment"></i>
 				</span>
