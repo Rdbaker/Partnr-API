@@ -20,6 +20,7 @@
                 <i uib-tooltip="Send" class="fa fa-paper-plane" ng-show="!isChatActive && step === 2"></i>
             </div>
         </div>
+        <div class="notification" ng-if="notification.length > 0">{{$parent.notification}}</div>
         <div ng-if="isChatWindowOpen && !isChatActive" name="search" class="pn-search-query-group input-group col-md-12">
             <input type="text" ng-model="$parent.query" placeholder="Search" class="form-control" />
         </div>
@@ -48,8 +49,7 @@
         </div>
         <div ng-show="isChatWindowOpen" name="footer" class="pn-chat-footer">
             <div name="new-message" ng-show="step === 2 || isChatActive">
-                <h6>Your Message:</h6>
-                <textarea name="chat-message-area" class="form-control chat-message-area" ng-model="newMessage" ng-disabled="isMessageSubmitting" ngMaxlength="1000" ng-change="checkLength(1000)" ng-keyup="sendMessage($event)">
+                <textarea name="chat-message-area" class="form-control chat-message-area" ng-model="newMessage" ngMaxlength="1000" ng-change="checkLength(1000)" ng-keydown="sendMessage($event)">
                 </textarea>
                 <p>
                     <h6>{{ 1000 - newMessage.length }} remaining</h6>

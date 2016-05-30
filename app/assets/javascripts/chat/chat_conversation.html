@@ -1,4 +1,5 @@
-<div name=loadscreen ng-hide="isLoaded" class="loading-screen">LOADING...
+<div name=loadscreen class="text-center loading loading-screen" ng-hide="isLoaded" class="loading-screen">
+    <img src="/assets/ajax-loader.gif">
 </div>
 <div class="chat-conversation">
     <div class="chat-message" ng-repeat="message in messages" finish-render="adjustScroll()">

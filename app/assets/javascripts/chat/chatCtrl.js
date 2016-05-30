@@ -1,4 +1,4 @@
-angular.module('partnr.messaging').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope) {
+angular.module('partnr.messaging').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope, $timeout) {
     $scope.openConversation = { 'messages': [] };
     $scope.messageLength = 1000;
     $scope.currentUserId = principal.getUser().id;
@@ -32,7 +32,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
                 processUserNames($scope.conversations[i]);
                 $scope.conversations[i].date = new Date($scope.conversations[i].last_updated);
             }
-            $log.debug('[CHAT] pollAllConversations ', $scope.conversations);
+            //$log.debug('[CHAT] pollAllConversations ', $scope.conversations);
         });
     }
     pollAllConversations();
@@ -69,6 +69,15 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
                 });
             }
         });
+    }
+
+    //Notifications
+
+    function notify(msg) {
+        $scope.notification = msg;
+        $timeout(function() {
+        	$scope.notification = "";
+        }, 3000);
     }
 
     //Activation/Deactivation of Chat
@@ -179,12 +188,14 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 
     $scope.sendMessage = function sendMessage(event) {
         if (event.keyCode === 13 && $scope.step !== 2) {
-            $scope.isMessageSubmitting = true;
+            event.preventDefault();
             conversations.addMessage($scope.openConversation.id, $scope.newMessage).then(function(result) {
-                $scope.newMessage = "";
-                $scope.openConversation.messages.push(result.data);
-                $scope.isMessageSubmitting = false;
-            });
+                    $scope.newMessage = "";
+                    $scope.openConversation.messages.push(result.data);
+                },
+                function(result) {
+                    notify(result.data.error);
+                });
         }
     };
 });
