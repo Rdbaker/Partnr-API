@@ -14,6 +14,14 @@ angular.module('partnr.users.assets').directive('pnConnBtn', function(connection
 
         $scope.contentUrl = 'shared/connection/connection_' + $scope.connectionUser.connection_status + '_btn.html';
       }
+
+      $scope.$on('user.updated', function(e, user) {
+        if(!!user) {
+          $scope.connectionUser = user;
+          $scope.contentUrl = 'shared/connection/connection_' + $scope.connectionUser.connection_status + '_btn.html';
+        }
+      });
+
       $scope.sendRequest = function() {
         connections.create($scope.connectionUser.id).then(function(res) {
           $scope.contentUrl = 'shared/connection/connection_requested_btn.html';

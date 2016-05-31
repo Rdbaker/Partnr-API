@@ -7,5 +7,6 @@ angular.module('partnr.users.assets').controller('ProfileController', function($
 		$log.debug(result.data);
 		$scope.user = result.data;
 		$scope.loadComplete = true;
+    $scope.$broadcast('user.updated', $scope.user);
 	});
 });
