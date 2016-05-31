@@ -37,7 +37,7 @@ angular.module('partnr.notify').factory('notifications', function($rootScope, $h
 
 	var enablePolling = function() {
 		$log.debug("[NOTIFICATIONS] polling enabled");
-		//polling = true;
+		polling = true;
 	};
 
 	var disablePolling = function() {
