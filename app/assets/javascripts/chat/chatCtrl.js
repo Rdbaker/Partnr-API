@@ -115,6 +115,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
             $scope.lessThanOneSelected = true;
             $scope.title = "Select Chat Participants";
             $scope.newMessage = "";
+            $scope.query = "";
             $scope.users = [];
         }
         if ($scope.step === 3) {
