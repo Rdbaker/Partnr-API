@@ -1,6 +1,6 @@
 <div ng-if="isLoggedIn()" ng-controller="ChatController">
     <div name="chat-window" class="pn-user-card pn-chat-window" ng-class="isChatWindowOpen ? 'open-chat-window' : 'minimized-chat-window'">
-        <span ng-click="isChatWindowOpen = true" ng-show="!isChatWindowOpen">
+        <span class="minimized-chat" ng-click="isChatWindowOpen = true" ng-show="!isChatWindowOpen">
             Open Chat
         </span>
         <div ng-show="isChatWindowOpen" class="pn-chat-header" name="header" ng-click="isChatWindowOpen = false">
