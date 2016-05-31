@@ -24,7 +24,7 @@ angular.module('partnr.users').controller('CreateUserController', function($root
 			users.create($scope.acct).success(function(data, status, headers, config) {
 				$log.debug(data);
 				if (data.id) {
-          mixpanel.track($rootScope.env + ':signup');
+					mixpanel.track($rootScope.env + ':signup');
 					$state.go('login');
 				} else {
 					$log.debug("[USER] Create error");
