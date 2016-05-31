@@ -306,9 +306,10 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-    // this was formerly project_tasks
-    // changing it to "task" until have a state for
-    // on specific task, for the link resolve strategy
+		// this was formerly project_tasks
+		// changing it to "task" until we have a state for
+		// a specific task. This is to allow the link
+		// resolve strategy to work.
 		.state('task', {
 			parent: 'project_wrapper',
 			url: '/tasks',
