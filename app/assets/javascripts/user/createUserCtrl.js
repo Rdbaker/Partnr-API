@@ -1,4 +1,4 @@
-angular.module('partnr.users').controller('CreateUserController', function($scope, $state, $log, $q, users, principal, toaster) {
+angular.module('partnr.users').controller('CreateUserController', function($rootScope, $scope, $state, $log, $q, users, principal, toaster) {
 	$scope.acct = {
 		email : "",
 		first_name: "",
@@ -12,7 +12,7 @@ angular.module('partnr.users').controller('CreateUserController', function($scop
 
 
 	$scope.validate = function() {
-		var result = ($scope.acct.email.length > 0 && 
+		var result = ($scope.acct.email.length > 0 &&
 			$scope.acct.first_name.length > 0 &&
 			$scope.acct.last_name.length > 0 &&
 			$scope.acct.password.length > 0);
@@ -24,6 +24,7 @@ angular.module('partnr.users').controller('CreateUserController', function($scop
 			users.create($scope.acct).success(function(data, status, headers, config) {
 				$log.debug(data);
 				if (data.id) {
+          mixpanel.track($rootScope.env + ':signup');
 					$state.go('login');
 				} else {
 					$log.debug("[USER] Create error");

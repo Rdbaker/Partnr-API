@@ -1,7 +1,7 @@
-angular.module('partnr.core').controller('SharedController', function($scope, $state, $stateParams, $log, $q, notifications, routeUtils, principal, users) {
+angular.module('partnr.core').controller('SharedController', function($rootScope, $scope, $state, $stateParams, $log, $q, notifications, routeUtils, principal, users) {
     $scope.newNotifications = {};
     $scope.allNotifications = {};
-    
+
     $scope.$on('notifications', function(event, updatedNotifications) {
         $scope.allNotifications = updatedNotifications;
         $scope.newNotifications = notifications.getNew();
@@ -21,6 +21,7 @@ angular.module('partnr.core').controller('SharedController', function($scope, $s
 
     $scope.doLogout = function() {
         principal.logout().then(function() {
+            mixpanel.track($rootScope.env + ':logout');
             $state.go('login');
         });
     };

@@ -11,7 +11,7 @@ angular.module('partnr.core', ['ui.router',
   ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization, skills) {
 
    /**
-    * Set basic app-level variables and manage state changes 
+    * Set basic app-level variables and manage state changes
     */
 
    principal.fetchCsrf();
@@ -20,6 +20,13 @@ angular.module('partnr.core', ['ui.router',
    $rootScope.apiRoute  = '/api/' + $rootScope.apiVersion + '/';
    $rootScope.version   = '1.1.0';
    $rootScope.pollDuration = 10000;
+   if(window.location.host === "www.partnr.org" || window.location.host === "www.partnr-up.com") {
+    $rootScope.env = 'PRD';
+   } else if(window.location.host === "dev.partnr.org" || window.location.host === "dev.partnr-up.com") {
+    $rootScope.env = 'DEV';
+   } else {
+    $rootScope.env = 'LCL';
+   }
    var bypassAuthCheck = false;
 
    $rootScope.isLoggedIn = function() {
