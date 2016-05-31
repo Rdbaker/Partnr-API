@@ -19,6 +19,7 @@
     line-height: 1.1;
     position: fixed;
     bottom: 0;
+    width: 24em;
     left: 70vw;
     padding: 0;
     .scrollable {
@@ -83,11 +84,11 @@
         background-color: #dedede;
     }
     .list-element {
-        height: 3vh;
+        position: relative;
         width: 100%;
-        margin: 0;
-        padding: 1vh;
+        margin: 0 auto;
         cursor: pointer;
+        display: inline-block;
     }
     .chat-selection {
         height: 40vh;
@@ -105,9 +106,58 @@
                 color: #ff9a39;
             }
         }
+        .list-element {
+            height: 4vh;
+            padding: 1.25vh;
+        }
+    }
+    .upper {
+        height: 16vh;
+    }
+    .lower {
+        height: 8vh;
     }
     .user-select {
-        height: 30vh;
+    	margin-bottom: 1vh;
+        h5 {
+            color: #a6a6a6;
+        }
+        h4 {
+            padding: 2vh;
+            text-align: left;
+        }
+        .chat-img-partnr {
+            height: 100%;
+            display: inline-block;
+            img {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 4vh;
+                height: 4vh;
+                margin-top: -2vh;
+                margin-left: -2vh;
+                border-radius: 50%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                cursor: pointer;
+            }
+        }
+        .chat-img-list-partnr {
+            display: inline-block;
+            img {
+                width: 3vh;
+                height: 3vh;
+                border-radius: 50%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+        }
+        .list-element {
+            height: 6vh;
+        }
     }
     .pn-chat-footer {
         position: absolute;
@@ -116,8 +166,8 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background-color:white;
-        z-index:2;
+        background-color: white;
+        z-index: 2;
         .chat-message-area {
             width: 80%;
             resize: none;

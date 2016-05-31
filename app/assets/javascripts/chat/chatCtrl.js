@@ -1,4 +1,4 @@
-angular.module('partnr.messaging').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope, $timeout) {
+angular.module('partnr.messaging').controller('ChatController', function($scope, $log, users, principal, conversations, $filter, $interval, $rootScope, $timeout, search) {
     $scope.openConversation = { 'messages': [] };
     $scope.messageLength = 1000;
     $scope.currentUserId = principal.getUser().id;
@@ -9,7 +9,9 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
     $scope.isChatWindowOpen = false;
     $scope.users = [];
     $scope.newMessage = "";
-    var selectedUserIds = [];
+    $scope.query = "";
+    $scope.userSelectMsg = "Search for others to start a chat";
+    $scope.selectedUsers = [];
     var pollAllConversationsPromise;
     var pollOpenConversationPromise;
 
@@ -47,7 +49,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
         var concatString = ", ";
         for (var i = 1; i < conversation.users.length; i++) {
             if (conversation.users[i].name.length + concatString.length + usernameString.length < 27) {
-                usernameString = conversation.users[i].name + concatString + usernameString;
+                usernameString = usernameString + concatString + conversation.users[i].name;
                 displayableUsers++;
             }
             searchableString = searchableString + " " + conversation.users[i].name;
@@ -60,7 +62,6 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
         conversation.non_displayable_name_amount = conversation.users.length - displayableUsers;
         conversation.allUsersInConversation = allUsersInConversation;
     }
-
 
     function pollOpenConversation(conversation) {
         conversations.get(conversation.id).then(function(result) {
@@ -93,6 +94,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
             $scope.openConversation = result.data;
             $scope.openConversation.namelist = conversation.namelist;
             $scope.openConversation.non_displayable_name_amount = conversation.non_displayable_name_amount;
+            $scope.openConversation.allUsersInConversation = conversation.allUsersInConversation;
             $scope.title = $scope.openConversation.namelist;
             $log.debug('[CHAT] open Conversation: ', $scope.openConversation);
             conversations.changeIsRead(conversation.id, true).then(function(result) {
@@ -109,13 +111,11 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
         $event.stopPropagation();
         $scope.step = $scope.step + 1;
         if ($scope.step === 2) {
-            selectedUserIds = [];
+            $scope.selectedUsers = [];
             $scope.lessThanOneSelected = true;
             $scope.title = "Select Chat Participants";
             $scope.newMessage = "";
-            users.getAllUsers().then(function(result) {
-                $scope.users = result.data;
-            });
+            $scope.users = [];
         }
         if ($scope.step === 3) {
             createConversation();
@@ -136,35 +136,71 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
             $scope.step = $scope.step - 1;
             if ($scope.step === 2) {
                 $scope.newMessage = "";
-                selectedUserIds = [];
+                $scope.selectedUsers = [];
                 $scope.users = [];
+                $scope.userSelectMsg = "Search for others to start a chat";
             }
         }
         $scope.title = "Your Conversations";
     };
 
     $scope.isSendDisabled = function isSendDisabled() {
-        if ($scope.step === 2 && ($scope.newMessage.length < 1 || selectedUserIds.length < 1)) {
+        if ($scope.step === 2 && ($scope.newMessage.length < 1 || $scope.selectedUsers.length < 1)) {
             return true;
         } else {
             return false;
         }
     };
 
-    $scope.selectUser = function selectUser(user) {
-        var index = selectedUserIds.indexOf(user.id);
-        user.selected ? user.selected = false : user.selected = true;
-        if (index > -1) {
-            selectedUserIds.splice(index, 1);
+    $scope.searchForUser = function searchForUser(queryString) {
+        search.query(queryString, ["User"]).then(function(result) {
+                $log.debug(result.data);
+                $scope.users = [];
+                $scope.users = result.data.users.filter(function(user) {
+                    return !$scope.selectedUsers.some(function(selectedUser) {
+                        return selectedUser.id === user.id;
+                    });
+                });
+                if ($scope.users.length < 1) {
+                    $scope.userSelectMsg = "Hmm... we can't find the person you are looking for";
+                }
+                $scope.query = "";
+            },
+            function(error) {
 
-        } else {
-            selectedUserIds.push(user.id);
+            });
+    };
+
+    $scope.selectUser = function selectUser(user) {
+        $scope.query = "";
+        var index = $scope.selectedUsers.indexOf(user);
+        if (index === -1) {
+            $scope.selectedUsers.push(user);
+            $scope.users.splice($scope.users.indexOf(user), 1);
         }
-        (selectedUserIds.length < 1) ? $scope.lessThanOneSelected = true: $scope.lessThanOneSelected = false;
-        $log.debug("[CHAT] selectedUserIds: ", selectedUserIds);
+        ($scope.selectedUsers.length < 1) ? $scope.lessThanOneSelected = true: $scope.lessThanOneSelected = false;
+    };
+
+    $scope.unselectUser = function unselectUser(user) {
+        var index = $scope.selectedUsers.indexOf(user);
+        $scope.users.push(user);
+        $scope.selectedUsers.splice(index, 1);
+    };
+
+    $scope.returnTooltipPlacement = function returnTooltipPlacement(index) {
+        if (index / 5 === 1) {
+            return "left";
+        } else if (index === 0 || index / 6 === 1) {
+            return "right";
+        } else return "bottom";
     };
 
     function createConversation() {
+        var selectedUserIds = [];
+        for (var i = 0; i < $scope.selectedUsers.length; i++) {
+            selectedUserIds.push($scope.selectedUsers[i].id);
+        }
+        $log.debug('[CHAT] selectUserIds', selectedUserIds);
         var newConversation = {
             users: selectedUserIds,
             message: $scope.newMessage
@@ -175,7 +211,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
             conversation.date = new Date(conversation.last_updated);
             $scope.newMessage = "";
             $log.debug('[CHAT] newly created conversation', conversation);
-            selectedUserIds = [];
+            $scope.selectedUsers = [];
             $scope.activateChat(conversation);
             $scope.step = 1;
         });
