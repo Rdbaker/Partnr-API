@@ -1,6 +1,5 @@
 angular.module('partnr.feed').controller('FeedController', function($scope, $state, $q, $log, principal, feeds) {
-  if(!principal.hasUser())
-    $state.go('home.landing');
+  if (!principal.hasUser()) $state.go('home.landing');
   $scope.activities = [];
   $scope.loadComplete = false;
   $scope.endOfFeed = false;
@@ -10,9 +9,9 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
     return attr.replace('_', ' ');
   };
 
-	var parse = function(activity) {
+  var parse = function(activity) {
     var re = /{\w+_\w+}/;
-		var result = activity.message;
+    var result = activity.message;
     var unparsed;
     while( ( unparsed = re.exec(result) ) !== null) {
       for (var i=0; i < unparsed.length; i++) {
@@ -27,16 +26,15 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
       }
     }
 
-		return result;
-	};
+    return result;
+  };
 
 
   $scope.getNextFeedPage = function() {
-    if($scope.endOfFeed)
-      return;
+    if ($scope.endOfFeed) return;
     $scope.loadComplete = false;
     feeds.list(++page).then(function(res) {
-      if(res.data.length === 0) {
+      if (res.data.length === 0) {
         angular.element('#feedScroll').remove();
         $scope.endOfFeed = true;
         $scope.loadComplete = true;
@@ -49,8 +47,7 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
         res.data[i].message = res.data[i].message.slice(res.data[i].message.indexOf('}')+2);
         res.data[i].parsedMessage = parse(res.data[i]);
         // if we couldn't parse a message, don't display the activity
-        if(res.data[i].parsedMessage === null)
-          res.data[i].doNotDisplay = true;
+        if (res.data[i].parsedMessage === null) res.data[i].doNotDisplay = true;
         res.data[i].displayDate = (new Date(res.data[i].sent_at)).toDateString().slice(4);
       }
       $log.debug(res);
