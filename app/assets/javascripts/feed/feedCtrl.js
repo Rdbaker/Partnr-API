@@ -18,7 +18,12 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
       for (var i=0; i < unparsed.length; i++) {
         var ent = unparsed[i];
         var arr = ent.slice(1,-1).split('_');
-        result = result.replace(ent, makeReadable(activity.subject[arr[0]][arr[1]]));
+        try {
+          result = result.replace(ent, makeReadable(activity.subject[arr[0]][arr[1]]));
+        } catch(e) {
+          // if we couldn't parse a message, return null
+          return null;
+        }
       }
     }
 
@@ -43,7 +48,10 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
         // get rid of "{user_name}" for now
         res.data[i].message = res.data[i].message.slice(res.data[i].message.indexOf('}')+2);
         res.data[i].parsedMessage = parse(res.data[i]);
-        res.data[i].displayDate = (new Date(res.data[i].sent_at)).toDateString();
+        // if we couldn't parse a message, don't display the activity
+        if(res.data[i].parsedMessage === null)
+          res.data[i].doNotDisplay = true;
+        res.data[i].displayDate = (new Date(res.data[i].sent_at)).toDateString().slice(4);
       }
       $log.debug(res);
       $scope.activities = $scope.activities.concat(res.data);

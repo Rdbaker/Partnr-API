@@ -1,7 +1,7 @@
 <div class="text-center activity-feed-header">
   <h1>Recent Activity</h1>
 </div>
-<div class="pn-activity-feed">
+<div class="pn-activity-feed" ng-show="loadComplete">
   <div ng-repeat="a in activities">
 		<feed-activity activity="a"></feed-activity>
   </div>

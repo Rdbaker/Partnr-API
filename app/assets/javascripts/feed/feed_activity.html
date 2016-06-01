@@ -1,4 +1,4 @@
-<div class="pn-activity-block">
+<div class="pn-activity-block" ng-if="doNotDisplay !== true">
   <div class="pn-activity-date">{{ activity.displayDate }}</div>
   <div class="pn-activity-user pn-img-partnr">
     <img ng-src="{{ activity.user.links.avatar }}" alt="{{ activitu.user.first_name }}">

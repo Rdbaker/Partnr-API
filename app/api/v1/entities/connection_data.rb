@@ -13,6 +13,9 @@ module V1::Entities
       expose :status, documentation: { type: "String", desc: "The connection status." }
     end
 
+    class AsNotification < AsSearch
+    end
+
     class AsFull < AsSearch
     end
   end
