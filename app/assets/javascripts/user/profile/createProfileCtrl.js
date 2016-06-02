@@ -14,8 +14,8 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 	};
 
 	$scope.addSchool = function() {
-		$scope.schools.push({ 
-			school_name: "", 
+		$scope.schools.push({
+			school_name: "",
 			grad_year: "",
 			field: ""
 		});
@@ -26,8 +26,8 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 	};
 
 	$scope.addPosition = function() {
-		$scope.positions.push({ 
-			title: "", 
+		$scope.positions.push({
+			title: "",
 			company: ""
 		});
 	};
@@ -37,7 +37,7 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 	};
 
 	$scope.addInterest = function() {
-		$scope.interests.push({ 
+		$scope.interests.push({
 			title: ""
 		});
 	};
@@ -80,7 +80,7 @@ angular.module('partnr.users.assets').controller('CreateProfileController', func
 		$q.all(requests).then(function(result) {
 			$log.debug(result);
 			toaster.success("Profile created!");
-			$state.go('home');
+			$state.go('home.feed');
 			$scope.loadComplete = true;
 		});
 	};

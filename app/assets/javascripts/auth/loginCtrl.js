@@ -4,7 +4,7 @@ angular.module('partnr.auth').controller('LoginController', function($rootScope,
 	$scope.loading = false;
 
 	if (principal.isAuthenticated()) {
-		$state.go('home');
+		$state.go('home.feed');
 	}
 
 	$scope.doLogin = function() {
@@ -15,7 +15,7 @@ angular.module('partnr.auth').controller('LoginController', function($rootScope,
 					var user = principal.getUser();
 					mixpanel.track($rootScope.env + ':login');
 					if (user.last_login != null || user.last_login != undefined) {
-						$state.go('home');
+						$state.go('home.feed');
 					} else {
 						$state.go('profile_create');
 					}

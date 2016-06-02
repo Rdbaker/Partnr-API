@@ -7,7 +7,7 @@ angular.module('partnr.users').controller('CreateUserController', function($root
 	};
 
 	if (principal.isAuthenticated()) {
-		$state.go('home');
+		$state.go('home.feed');
 	}
 
 

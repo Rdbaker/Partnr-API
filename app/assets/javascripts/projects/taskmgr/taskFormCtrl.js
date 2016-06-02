@@ -55,7 +55,7 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 
 	var redirect = function() {
 		if ($stateParams.mref) {
-			$state.go('project_milestone', { milestone_id: $stateParams.mref });	
+			$state.go('milestone', { milestone_id: $stateParams.mref });
 		} else {
 			$state.go('project_tasks');
 		}
@@ -166,7 +166,7 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 			tasks.create(task).then(function(result) {
 				$log.debug("[TASK] New task created:");
 				$log.debug(result.data);
-				
+
 				$scope.formLoading = false;
 
 				if (result.data.id) {

@@ -67,12 +67,12 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 	$scope.avatar = null;
 	$scope.location = "";
 	$scope.schools = new editableAttributeList("school", {
-		school_name: "", 
+		school_name: "",
 		grad_year: "",
 		field: ""
 	});
 	$scope.positions = new editableAttributeList("position", {
-		title: "", 
+		title: "",
 		company: ""
 	});
 	$scope.interests = new editableAttributeList("interest", {
@@ -127,7 +127,7 @@ angular.module('partnr.users.assets').controller('EditProfileController', functi
 			}
 			$log.debug(result);
 			toaster.success("Profile updated!");
-			$state.go('home');
+			$state.go('home.feed');
 			$scope.loadComplete = true;
 		});
 	};

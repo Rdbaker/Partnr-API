@@ -52,5 +52,6 @@ en:
     benchmark:
       completed: "{user_name} marked the milestone {milestone_title} as complete"
     project:
+      create: "created a new project: {project_title}"
       status_change: "{user_name} marked {project_title} as {project_status}"
       started: "{user_name} started a new project: {project_title}"
