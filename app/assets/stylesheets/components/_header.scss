@@ -73,6 +73,11 @@ nav .badge {
 // -------------------------------------------------
 
 .partnr-header-wrapper {
+
+  &.disconnected {
+    margin-top: 20px;
+  }
+
   .content-container {
     border-radius: 0 0 3px 3px;
     border-top: 0;
@@ -99,6 +104,28 @@ nav .badge {
   padding: 40px 15px 20px;
   background: #04859d;
   margin-bottom: 15px;
+
+  &.with-image {
+    background: #f9f9f9;
+    padding: 0;
+    margin-bottom: inherit;
+
+    h1 {
+      padding-top: 25px;
+      padding-bottom: 0;
+    }
+
+    h1, h2, h3 {
+      color: #002b33;
+    }
+  }
+
+  .partnr-header-image {
+    width: 100%;
+    height: 300px;
+    margin: 0 auto;
+    box-shadow: inset 0 -20px 46px -20px #333;
+  }
 
   &.light {
     background: #0ea1bc; /* Old browsers */
