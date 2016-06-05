@@ -11,11 +11,11 @@ class Bmark < Notifier
   attr_readonly :project, :user
 
   def has_put_permissions(user)
-    user.class == User && self.project.has_admin_permissions(user)
+    user.class == User && self.project.belongs_to_project(user)
   end
 
   def has_destroy_permissions(user)
-    user.class == User && self.project.has_admin_permissions(user)
+    user.class == User && self.project.belongs_to_project(user)
   end
 
   def followers
