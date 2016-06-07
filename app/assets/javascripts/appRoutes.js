@@ -1,29 +1,58 @@
 angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider) {
 
-	$stateProvider
-		.state('site', {
-			'abstract': true,
-			resolve: {
-				authorize: ['authorization', function(authorization) {
-					return authorization.authorize();
+  $stateProvider
+    .state('site', {
+      'abstract': true,
+      resolve: {
+        authorize: ['authorization', function(authorization) {
+          return authorization.authorize();
 				}]
-			}
-		})
+      }
+    })
 
-		.state('home', {
-			parent: 'site',
-			url: '/',
-			views: {
-				'content@': {
-					templateUrl: 'home/home.html',
-					controller: 'HomeController',
-				}
-			},
-			data: {
-				roles: [],
-				entities: []
-			}
-		})
+    .state('home', {
+      parent: 'site',
+      views: {
+        'content@': {
+          templateUrl: 'home/home.html',
+          controller: 'HomeController',
+        }
+      },
+      data: {
+        roles: [],
+        entities: []
+      }
+    })
+
+    .state('home.feed', {
+      parent: 'home',
+      url: '/',
+      views: {
+        'feed@home': {
+        templateUrl: 'feed/feed.html',
+        controller: 'FeedController'
+        }
+      },
+      data: {
+        roles: [],
+        entities: []
+      }
+    })
+
+    .state('home.landing', {
+      parent: 'home',
+      url: '/landing',
+      views: {
+        'landing@home': {
+        templateUrl: 'landing/landing.html',
+        controller: 'LandingController'
+        }
+      },
+      data: {
+        roles: [],
+        entities: []
+      }
+    })
 
 		.state('login', {
 			parent: 'site',
@@ -277,7 +306,11 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('project_tasks', {
+		// this was formerly project_tasks
+		// changing it to "task" until we have a state for
+		// a specific task. This is to allow the link
+		// resolve strategy to work.
+		.state('task', {
 			parent: 'project_wrapper',
 			url: '/tasks',
 			views: {
@@ -292,7 +325,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 			}
 		})
 
-		.state('project_milestone', {
+		.state('milestone', {
 			parent: 'project_wrapper',
 			url: '/milestones/{milestone_id:int}',
 			views: {

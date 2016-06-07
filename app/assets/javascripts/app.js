@@ -3,22 +3,31 @@ angular.module('partnr.users', []);
 angular.module('partnr.messaging', []);
 angular.module('partnr.notify', []);
 angular.module('partnr.search', []);
+angular.module('partnr.feed', []);
 angular.module('partnr.users.assets', []);
-angular.module('partnr.core', ['ui.router', 'ui.bootstrap', 'templates',
-    'wu.masonry', 'ngTagsInput', 'ngSanitize','partnr.auth', 'partnr.users',
-    'partnr.messaging', 'partnr.notify', 'partnr.search', 'partnr.users.assets'
+angular.module('partnr.core', ['ui.router', 'angular-inview',
+  'ui.bootstrap', 'templates', 'wu.masonry', 'ngTagsInput', 'ngSanitize',
+  'partnr.auth', 'partnr.users', 'partnr.messaging',
+  'partnr.notify', 'partnr.search', 'partnr.users.assets',
+  'partnr.feed'
   ]).run(function ($state, $rootScope, $log, $window, $location, principal, authorization, skills) {
 
    /**
-    * Set basic app-level variables and manage state changes 
+    * Set basic app-level variables and manage state changes
     */
-
    principal.fetchCsrf();
    $rootScope.$state = $state; // application state
    $rootScope.apiVersion = "v1";
    $rootScope.apiRoute  = '/api/' + $rootScope.apiVersion + '/';
    $rootScope.version   = '1.1.0';
    $rootScope.pollDuration = 10000;
+   if(window.location.host === "www.partnr.org" || window.location.host === "www.partnr-up.com") {
+    $rootScope.env = 'PRD';
+   } else if(window.location.host === "dev.partnr.org" || window.location.host === "dev.partnr-up.com") {
+    $rootScope.env = 'DEV';
+   } else {
+    $rootScope.env = 'LCL';
+   }
    var bypassAuthCheck = false;
 
    $rootScope.isLoggedIn = function() {

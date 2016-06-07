@@ -1,10 +1,10 @@
-angular.module('partnr.auth').controller('LoginController', function($scope, $log, $state, $q, principal, toaster) {
+angular.module('partnr.auth').controller('LoginController', function($rootScope, $scope, $log, $state, $q, principal, toaster) {
 	$scope.email = '';
 	$scope.password = '';
 	$scope.loading = false;
 
 	if (principal.isAuthenticated()) {
-		$state.go('home');
+		$state.go('home.feed');
 	}
 
 	$scope.doLogin = function() {
@@ -13,8 +13,9 @@ angular.module('partnr.auth').controller('LoginController', function($scope, $lo
 			principal.login($scope.email, $scope.password).then(function(loggedIn) {
 				if (loggedIn) {
 					var user = principal.getUser();
+					mixpanel.track($rootScope.env + ':login');
 					if (user.last_login != null || user.last_login != undefined) {
-						$state.go('home');
+						$state.go('home.feed');
 					} else {
 						$state.go('profile_create');
 					}

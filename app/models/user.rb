@@ -67,6 +67,8 @@ class User < ActiveRecord::Base
 
   def feed
     @feed ||= get_feed
+    clean_feed
+    @feed
   end
 
   def partners
@@ -115,6 +117,11 @@ private
 
   def get_feed
     PublicActivity::Activity.where(id: (owner_activity_query + subject_activity_query).map(&:id)).order("created_at")
+  end
+
+  def clean_feed
+    @feed ||= get_feed
+    @feed.collect { |f| f.delete if f.trackable.nil? }
   end
 
   def get_partners
