@@ -12,6 +12,12 @@
 	box-shadow: 0 0 4px #888;
 }
 
+.with-image {
+	.project-status span {
+		bottom: -10px;
+	}
+}
+
 .partnr-page-header.project-header {
 	margin-bottom: 22px;
 }
