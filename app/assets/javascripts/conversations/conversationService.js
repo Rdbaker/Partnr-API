@@ -43,7 +43,6 @@ angular.module('partnr.messaging').factory('conversations', function($rootScope,
 				data: conversation
 			});
 		},
-
 		addMessage : function(id, message) {
 			$log.debug('[CONVERSATION] Sending add message request');
 			$log.debug(message);
@@ -54,6 +53,19 @@ angular.module('partnr.messaging').factory('conversations', function($rootScope,
 				headers: principal.getHeaders(),
 				data: {
 					'message': message
+				}
+			});
+		},
+		changeIsRead : function(id, isRead) {
+			$log.debug('[CONVERSATION] Sending change read status request');
+			$log.debug(isRead);
+
+			return $http({
+				method: 'PUT',
+				url: $rootScope.apiRoute + 'conversations/' + id,
+				headers: principal.getHeaders(),
+				data: {
+					'is_read': isRead
 				}
 			});
 		}
