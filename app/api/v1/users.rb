@@ -18,7 +18,7 @@ module V1
     get do
       present User
         .page(params[:page])
-        .per(params[:per_page]), with: Entities::UserData::AsSearch
+        .per(params[:per_page]), with: Entities::UserData::AsSearch, current_user: current_user
     end
 
     desc "Retrieve info about the current user.", entity: Entities::UserData::AsPrivate
@@ -51,7 +51,7 @@ module V1
       if authenticated && current_user.id == params[:id]
         present user, with: Entities::UserData::AsPrivate
       else
-        present user, with: Entities::UserData::AsPublic
+        present user, with: Entities::UserData::AsPublic, current_user: current_user
       end
     end
 

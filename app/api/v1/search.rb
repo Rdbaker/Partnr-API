@@ -40,7 +40,7 @@ module V1
         search[:skills] = Skill.search(params[:query])
       end
 
-      present search, with: Entities::SearchData::AsFull
+      present search, with: Entities::SearchData::AsFull, current_user: current_user
     end
   end
 end

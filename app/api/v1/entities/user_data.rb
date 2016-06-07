@@ -23,6 +23,9 @@ module V1::Entities
                                                                       desc: "The profile of the user"}
       expose :skillscore, documentation: { type: "Object",
                                            desc: "The skillscore of the user."}
+      expose :connection_status do |instance, options|
+        instance.connection_status options[:current_user]
+      end
     end
 
     class AsPublic < AsSearch
