@@ -9,6 +9,7 @@ angular.module('partnr.messaging').directive('chatMessageList', function($timeou
     var todayDate = new Date();
     scope.isLoaded = false;
     var previousScrollHeight = 0;
+
     function scrollTo(scrollHeight,scrollableElt,speed) {
         scrollableElt.animate({scrollTop: scrollHeight}, speed, 'swing', 
             function() {
@@ -16,13 +17,13 @@ angular.module('partnr.messaging').directive('chatMessageList', function($timeou
             });
     }
     scope.adjustScroll = function () {
-        var elt = angular.element(element[0].querySelector('.chat-conversation'));
-        if (!scope.isLoaded) {
-            scrollTo(elt.prop('scrollHeight'), elt, 0);
-        } else if (elt.scrollTop() + elt.innerHeight() === previousScrollHeight) {
-            scrollTo(previousScrollHeight, elt, 400);
-        }
-        previousScrollHeight = elt.prop('scrollHeight');
+            var elt = angular.element(element[0].querySelector('.chat-conversation'));
+            if (!scope.isLoaded) {
+                scrollTo(elt.prop('scrollHeight'), elt, 0);
+            } else if (elt.scrollTop() + elt.innerHeight() === previousScrollHeight) {
+                scrollTo(previousScrollHeight, elt, 400);
+            }
+            previousScrollHeight = elt.prop('scrollHeight');
     };
 
     scope.returnDateFilter = function returnDateFilter (date){
@@ -36,3 +37,4 @@ angular.module('partnr.messaging').directive('chatMessageList', function($timeou
 }
 };
 });
+
