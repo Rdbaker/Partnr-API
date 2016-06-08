@@ -109,16 +109,16 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
 
     $scope.goStepForward = function goStepForward($event) {
         $event.stopPropagation();
-        $scope.step = $scope.step + 1;
-        if ($scope.step === 2) {
+        if ($scope.step+1 === 2) {
             $scope.selectedUsers = [];
             $scope.lessThanOneSelected = true;
             $scope.title = "Select Chat Participants";
             $scope.newMessage = "";
             $scope.query = "";
             $scope.users = [];
+            $scope.step = $scope.step + 1;
         }
-        if ($scope.step === 3) {
+        if ($scope.step+1 === 3 && !$scope.isSendDisabled()) {
             createConversation();
         }
     };
