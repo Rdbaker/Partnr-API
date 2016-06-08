@@ -17,13 +17,13 @@ angular.module('partnr.messaging').directive('chatMessageList', function($timeou
             });
     }
     scope.adjustScroll = function () {
-            var elt = angular.element(element[0].querySelector('.chat-conversation'));
-            if (!scope.isLoaded) {
-                scrollTo(elt.prop('scrollHeight'), elt, 0);
-            } else if (elt.scrollTop() + elt.innerHeight() === previousScrollHeight) {
-                scrollTo(previousScrollHeight, elt, 400);
-            }
-            previousScrollHeight = elt.prop('scrollHeight');
+        var elt = angular.element(element[0].querySelector('.chat-conversation'));
+        if (!scope.isLoaded) {
+            scrollTo(elt.prop('scrollHeight'), elt, 0);
+        } else if (elt.scrollTop() + elt.innerHeight() === previousScrollHeight) {
+            scrollTo(previousScrollHeight, elt, 400);
+        }
+        previousScrollHeight = elt.prop('scrollHeight');
     };
 
     scope.returnDateFilter = function returnDateFilter (date){
