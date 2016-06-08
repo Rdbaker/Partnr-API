@@ -52,15 +52,18 @@ module V1
     end
     post do
       authenticated_user
-      users = Set.new(User.where(id: params[:users]) + [current_user])
+      users = Set.new(User.where(id: params[:users]) + [current_user]).to_a
       if users.length <= 1
         error!("You can't start a conversation between less than 2 users!", 400)
       end
       convs = users.map { |user| user.conversations.to_a }
-      intersection = convs.reduce { |convs_intersection, user_convs| convs_intersection & user_convs }
-      if not intersection.empty?
-        c = intersection[0]
-      else
+      c = nil
+      convs.flatten.each do |conv|
+        if conv.users == users
+          c = conv
+        end
+      end
+      if c.nil?
         users = users.to_a
         c = Conversation.new(users: users)
         c.save!
