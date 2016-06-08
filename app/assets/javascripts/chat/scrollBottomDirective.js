@@ -37,4 +37,3 @@ angular.module('partnr.messaging').directive('chatMessageList', function($timeou
 }
 };
 });
-
