@@ -20,9 +20,9 @@ module V1::Entities
                                                                   desc: "The roles this user has on projects.",
                                                                   is_array: true }
       expose :profile, using: ProfileData::AsFull, documentation: { type: "ProfileData (nested)",
-                                                                      desc: "The profile of the user"}
-      expose :skillscore, documentation: { type: "Object",
-                                           desc: "The skillscore of the user."}
+                                                                    desc: "The profile of the user"}
+      expose :skillset, using: SkillscoreData, documentation: { type: "Object",
+                                                                desc: "The skillscore of the user."}, as: :skillscore
       expose :connection_status do |instance, options|
         instance.connection_status options[:current_user]
       end
