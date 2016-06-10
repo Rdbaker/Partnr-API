@@ -34,7 +34,7 @@ class Project < Notifier
   end
 
   def has_create_benchmark_permissions(user)
-    has_admin_permissions user
+    belongs_to_project user
   end
 
   def has_create_task_permissions(user)
