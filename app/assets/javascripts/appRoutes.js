@@ -131,6 +131,21 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 		url: '',
 		views: {
 			'profileinfo': {
+				templateUrl: 'user/profile/profile_activity.html',
+				controller: 'ProfileActivityController'
+			}
+		},
+		data: {
+			roles: [],
+			entities: []
+		}
+	})
+
+	.state('profile_projects', {
+		parent: 'profile_wrapper',
+		url: '',
+		views: {
+			'profileinfo': {
 				templateUrl: 'user/profile/profile_projects.html',
 				controller: 'ProfileProjectsController'
 			}

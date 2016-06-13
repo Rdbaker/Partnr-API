@@ -20,6 +20,7 @@ module V1
     mount Feeds         => '/feeds'
     mount Follows       => '/follows'
     mount Search        => '/search'
+    mount Walls         => '/walls'
 
     add_swagger_documentation(
       base_path: '/api/v1',

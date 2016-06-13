@@ -62,9 +62,18 @@
 </div>
 <div class="col-md-9">
   <ul class="content-container-tabs nav nav-tabs" ng-show="loadComplete" role="tablist">
-    <li role="presentation" ng-class="{'active': $state.current.name === 'profile'}"><a href ui-sref="profile({'id' : user.id})" role="tab">Projects</a></li>
-    <li role="presentation" ng-class="{'active': $state.current.name === 'profile_connections'}"><a href ui-sref="profile_connections({'id' : user.id})" role="tab">Connections</a></li>
-    <li ng-if="isOwner" role="presentation" ng-class="{'active': $state.current.name === 'profile_skills'}"><a href ui-sref="profile_skills({'id' : user.id})" role="tab">Skills</a></li>
+    <li role="presentation" ng-class="{'active': $state.current.name === 'profile'}">
+      <a href ui-sref="profile({'id' : user.id})" role="tab">Activity</a>
+    </li>
+    <li role="presentation" ng-class="{'active': $state.current.name === 'profile_projects'}">
+      <a href ui-sref="profile_projects({'id' : user.id})" role="tab">Projects</a>
+    </li>
+    <li role="presentation" ng-class="{'active': $state.current.name === 'profile_connections'}">
+      <a href ui-sref="profile_connections({'id' : user.id})" role="tab">Connections</a>
+    </li>
+    <li ng-if="isOwner" role="presentation" ng-class="{'active': $state.current.name === 'profile_skills'}">
+      <a href ui-sref="profile_skills({'id' : user.id})" role="tab">Skills</a>
+    </li>
   </ul>
   <div ui-view="profileinfo" ng-show="loadComplete"></div>
 </div>
