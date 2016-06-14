@@ -1,16 +1,22 @@
-angular.module('partnr.notify').directive('toasts', function($rootScope, toaster) {
+angular.module('partnr.notify').directive('toasts', function($rootScope, toaster, $timeout,$log) {
     return {
         restrict: 'AE',
         templateUrl: 'toaster/toasts.html',
         link: function($scope, elem, attr, ctrl) {
-            $scope.toasts = toaster.getToasts();
+            $scope.toasts = [];
 
             $scope.$on('toast', function(event, toast) {
-                $scope.toasts = toaster.getToasts();
+                console.log(toast);
+                $scope.toasts.push(toast);
+                $timeout(function(){
+                    $scope.closeAlert($scope.toasts.indexOf(toast))
+                }, $rootScope.toastDuration);
             });
 
             $scope.closeAlert = function(index) {
-                $scope.toasts.splice(index, 1);
+                if (index > -1) {
+                    $scope.toasts.splice(index, 1);
+                }
             }
         }
     };

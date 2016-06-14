@@ -21,6 +21,7 @@ angular.module('partnr.core', ['ui.router', 'angular-inview',
    $rootScope.apiRoute  = '/api/' + $rootScope.apiVersion + '/';
    $rootScope.version   = '1.1.0';
    $rootScope.pollDuration = 10000;
+   $rootScope.toastDuration = 15000;
    if(window.location.host === "www.partnr.org" || window.location.host === "www.partnr-up.com") {
     $rootScope.env = 'PRD';
    } else if(window.location.host === "dev.partnr.org" || window.location.host === "dev.partnr-up.com") {
