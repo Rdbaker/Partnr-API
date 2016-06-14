@@ -73,11 +73,11 @@
     <li role="presentation" ng-class="{'active': $state.current.name === 'profile_connections'}">
       <a href ui-sref="profile_connections({'id' : user.id})" role="tab">Connections</a>
     </li>
-    <li ng-if="isOwner" role="presentation" ng-class="{'active': $state.current.name === 'profile_skills'}">
+    <li role="presentation" ng-class="{'active': $state.current.name === 'profile_skills'}">
       <a href ui-sref="profile_skills({'id' : user.id})" role="tab">Skills</a>
     </li>
   </ul>
-  <div ui-view="profileinfo" ng-show="loadComplete"></div>
+  <div ui-view="profileinfo" class="clearfix" ng-show="loadComplete"></div>
 </div>
 <div ng-hide="loadComplete" class="content-container">
   <div class="text-center loading">

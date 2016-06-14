@@ -30,7 +30,7 @@ module V1
         return {} if proj.conversation.nil?
         present proj.conversation, with: Entities::ConversationData::AsDeep, is_read: find_is_read(proj.conversation.id)
       else
-        present current_user.conversations, with: Entities::ConversationData::AsSearch, user_convs: current_user.user_conversations
+        present current_user.conversations.order('updated_at desc'), with: Entities::ConversationData::AsSearch, user_convs: current_user.user_conversations
       end
     end
 
@@ -45,22 +45,25 @@ module V1
     end
 
 
-    desc "Sends a message in the conversation or posts a new one if a conversation doesn't exist", entity: Entities::MessageData::AsShallow
+    desc "Sends a message in the conversation or posts a new one if a conversation doesn't exist", entity: Entities::ConversationData::AsDeep
     params do
       requires :users, type: Array[Integer], allow_blank: false, desc: "The list of user IDs to send the message to.", documentation: { example: "42,87,17,6" }
       optional :message, type: String, length: 1000, allow_blank: false, desc: "The message to add to the conversation."
     end
     post do
       authenticated_user
-      users = Set.new(User.where(id: params[:users]) + [current_user])
+      users = Set.new(User.where(id: params[:users]) + [current_user]).to_a
       if users.length <= 1
         error!("You can't start a conversation between less than 2 users!", 400)
       end
       convs = users.map { |user| user.conversations.to_a }
-      intersection = convs.reduce { |convs_intersection, user_convs| convs_intersection & user_convs }
-      if not intersection.empty?
-        c = intersection[0]
-      else
+      c = nil
+      convs.flatten.each do |conv|
+        if conv.users == users
+          c = conv
+        end
+      end
+      if c.nil?
         users = users.to_a
         c = Conversation.new(users: users)
         c.save!
@@ -72,8 +75,14 @@ module V1
           conversation: c
         })
         m.save!
+        # manually set the updated_at param
+        c.updated_at = m.updated_at
+        c.save!
       end
-      present m, with: Entities::MessageData::AsNested
+      ucon = c.user_conversations.find_by(user_id: current_user.id)
+      ucon.is_read = true
+      ucon.save!
+      present c, with: Entities::ConversationData::AsDeep, is_read: ucon.is_read
     end
 
 
@@ -108,6 +117,8 @@ module V1
           end
           uconv.save!
         end
+        @conv.updated_at = m.updated_at
+        @conv.save!
       end
       present m, with: Entities::MessageData::AsNested
     end
