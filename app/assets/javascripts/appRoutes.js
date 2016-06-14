@@ -156,6 +156,21 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 		}
 	})
 
+	.state('profile_skills', {
+		parent: 'profile_wrapper',
+		url: '/skills',
+		views: {
+			'profileinfo': {
+				templateUrl: 'user/profile/profile_skills.html',
+				controller: 'ProfileSkillsController'
+			}
+		},
+		data: {
+			roles: [],
+			entities: []
+		}
+	})
+
 	.state('profile_create', {
 		parent: 'site',
 		url: '/profile/create',

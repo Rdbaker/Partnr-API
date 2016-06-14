@@ -53,3 +53,32 @@
 		margin: 0 1px;
 	}
 }
+
+.profile-sidebar {
+	margin-top: 15px;
+	box-shadow: none;
+}
+
+.profile-content-container {
+	box-shadow: none;
+}
+
+.profile-tidbit-icon {
+	float: left;
+}
+
+.profile-tidbit-info {
+	margin-left: 22px;
+
+	span {
+		display: block;
+	}
+}
+
+.profile-interest-tag {
+	padding: 2px 4px;
+	background: #f4f4f4;
+	border-radius: 2px;
+	border: 1px solid #e9e9e9;
+	margin-right: 4px;
+}

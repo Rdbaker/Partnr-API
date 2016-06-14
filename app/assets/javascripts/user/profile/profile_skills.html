@@ -1,0 +1,17 @@
+<div class="content-container with-tabs profile-content-container" ng-show="loadComplete">
+  <div class="text-center">
+  	<span>Total Score: <strong>{{ totalScore }}</strong></span>
+  </div>
+</div>
+<div ng-show="loadComplete">
+	<div class="profile-skill-card" ng-repeat="cat in user.resolvedCategories">
+		<div class="pn-cat-circle pn-cat-circle-inline pn-cat-circle-lg" style="background: {{ cat.color_hex }}"><i class="fa {{ cat.icon_class }}"></i></div>
+		<span>{{ cat.skillscore }} Points</span>
+		<span>{{ cat.title }}</span>
+	</div>
+</div>
+<div ng-hide="loadComplete" class="content-container with-tabs">
+  <div class="text-center loading">
+    <img src="/assets/ajax-loader.gif">
+  </div>
+</div>
