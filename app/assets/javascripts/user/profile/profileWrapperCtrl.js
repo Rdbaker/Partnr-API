@@ -6,20 +6,6 @@ angular.module('partnr.users.assets').controller('ProfileWrapperController', fun
 		var deferred = $q.defer();
 		users.get($stateParams.id).then(function(result) {
 			$scope.user = result.data;
-			$scope.user.resolvedCategories = [];
-
-			for (var cat in $scope.user.skillscore.categories) {
-				var category = $filter('filter')($rootScope.categories, { title: cat });
-
-				if (category) {
-					var userCategory = angular.copy(category[0]);
-					userCategory.skillscore = $scope.user.skillscore.categories[cat];
-					$scope.user.resolvedCategories.push(userCategory);
-				} else {
-					$log.error("Error: Category resolution returned null");
-				}
-			}
-
 			$scope.loadComplete = true;
 
 			$log.debug($scope.user);
