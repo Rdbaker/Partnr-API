@@ -111,5 +111,5 @@ categories = [
 ]
 
 categories.each do |c|
-  Category.create(c)
+  Category.find_or_create_by(c)
 end

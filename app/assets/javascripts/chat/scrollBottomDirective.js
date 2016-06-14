@@ -9,6 +9,7 @@ angular.module('partnr.messaging').directive('chatMessageList', function($timeou
     var todayDate = new Date();
     scope.isLoaded = false;
     var previousScrollHeight = 0;
+
     function scrollTo(scrollHeight,scrollableElt,speed) {
         scrollableElt.animate({scrollTop: scrollHeight}, speed, 'swing', 
             function() {
