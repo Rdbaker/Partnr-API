@@ -1,4 +1,4 @@
-angular.module('partnr.notify').directive('toasts', function($rootScope, toaster, $timeout,$log) {
+angular.module('partnr.notify').directive('toasts', function($rootScope, toaster, $timeout, $log) {
     return {
         restrict: 'AE',
         templateUrl: 'toaster/toasts.html',
@@ -8,8 +8,8 @@ angular.module('partnr.notify').directive('toasts', function($rootScope, toaster
             $scope.$on('toast', function(event, toast) {
                 console.log(toast);
                 $scope.toasts.push(toast);
-                $timeout(function(){
-                    $scope.closeAlert($scope.toasts.indexOf(toast))
+                $timeout(function() {
+                    $scope.closeAlert($scope.toasts.indexOf(toast));
                 }, $rootScope.toastDuration);
             });
 
@@ -17,7 +17,7 @@ angular.module('partnr.notify').directive('toasts', function($rootScope, toaster
                 if (index > -1) {
                     $scope.toasts.splice(index, 1);
                 }
-            }
+            };
         }
     };
 });
