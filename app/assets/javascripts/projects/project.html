@@ -1,33 +1,42 @@
 <div class="content-container with-tabs" ng-show="loadComplete">
-  <h3>Description</h3>
-  <p>{{project.description}}</p>
-  <h3>Roles</h3>
-  <div class="clearfix">
-    <div class="col-md-3" ng-repeat="role in project.roles">
-      <div class="internal-container no-margin">
-      	<span class="title">{{role.title}}</span>
-      	<a href class="subtitle" ng-show="role.user" ui-sref="profile({ id: role.user.id })">{{role.user.first_name}} {{role.user.last_name}}</a><span class="subtitle" ng-hide="role.user"><em>None</em></span>
-        <div class="buttons-right">
-        	<button type="button" class="btn btn-primary" ng-if="!role.user && canApply" ng-click="doApply(role.id)">Apply</button>
+    <h3>Description</h3>
+    <p ng-bind-html="project.description | linky">{{project.description}}</p>
+    <h3>Roles</h3>
+    <div class="clearfix">
+        <div class="col-md-3" ng-repeat="role in project.roles">
+            <div class="internal-container no-margin">
+                <span class="title">{{role.title}}</span>
+                <a href class="subtitle" ng-show="role.user" ui-sref="profile({ id: role.user.id })">{{role.user.first_name}}
+                    {{role.user.last_name}}</a><span class="subtitle" ng-hide="role.user"><em>None</em></span>
+                <div class="buttons-right">
+                    <button type="button" class="btn btn-primary" ng-if="!role.user && canApply"
+                            ng-click="doApply(role.id)">Apply
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <h3>Comments</h3>
-  <div>
-    <div class="internal-container comment" ng-repeat="comment in project.comments">
-      <span class="c-header"><strong ui-sref="profile({ id: comment.user.id })"><a href>{{ comment.user.name }}</a></strong> on {{ comment.created_at | date: 'mediumDate' }}:</span>
-      <p>{{ comment.content }}</p>
-      <button class="btn btn-danger" ng-if="isOwner || comment.user.id === user.id" ng-click="deleteComment(comment)">Delete</button>
+    <h3>Comments</h3>
+    <div>
+        <div class="internal-container comment" ng-repeat="comment in project.comments">
+            <span class="c-header"><strong ui-sref="profile({ id: comment.user.id })"><a
+                    href>{{ comment.user.name }}</a></strong> on {{ comment.created_at | date: 'mediumDate' }}:</span>
+            <p>{{ comment.content }}</p>
+            <button class="btn btn-danger" ng-if="isOwner || comment.user.id === user.id"
+                    ng-click="deleteComment(comment)">Delete
+            </button>
+        </div>
+        <div class="form-group clearfix">
+            <textarea name="new-comment" class="form-control" ng-model="newComment.content"
+                      ng-disabled="isCommentSubmitting"></textarea>
+            <button class="btn btn-primary pull-right button-group" ng-click="addComment()"
+                    ng-disabled="isCommentSubmitting || !canPost">Post
+            </button>
+        </div>
     </div>
-    <div class="form-group clearfix">
-      <textarea name="new-comment" class="form-control" ng-model="newComment.content" ng-disabled="isCommentSubmitting" /></textarea>
-      <button class="btn btn-primary pull-right button-group" ng-click="addComment()" ng-disabled="isCommentSubmitting || !canPost">Post</button>
-    </div>
-  </div>
 </div>
 <div ng-hide="loadComplete" class="content-container with-tabs">
-  <div class="text-center loading">
-    <img src="/assets/ajax-loader.gif">
-  </div>
+    <div class="text-center loading">
+        <img src="/assets/ajax-loader.gif">
+    </div>
 </div>
