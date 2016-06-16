@@ -158,7 +158,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 
 	.state('profile_skills', {
 		parent: 'profile_wrapper',
-		url: '/skills',
+		url: '',
 		views: {
 			'profileinfo': {
 				templateUrl: 'user/profile/profile_skills.html',
