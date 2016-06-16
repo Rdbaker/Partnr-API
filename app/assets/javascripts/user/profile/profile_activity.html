@@ -1,8 +1,8 @@
-<div class="content-container with-tabs" ng-show="loadComplete">
+<div class="content-container with-tabs">
   <div class="text-center activity-feed-header">
     <h1>Recent Activity</h1>
   </div>
-  <div class="pn-activity-feed text-center" ng-show="loadComplete">
+  <div class="pn-activity-feed text-center">
     <div ng-repeat="a in activities">
       <feed-activity activity="a"></feed-activity>
     </div>
@@ -17,10 +17,5 @@
     <div class="text-center loading-container">
       <img src="/assets/ajax-loader.gif">
     </div>
-  </div>
-</div>
-<div ng-hide="loadComplete" class="content-container">
-  <div class="text-center loading">
-    <img src="/assets/ajax-loader.gif">
   </div>
 </div>

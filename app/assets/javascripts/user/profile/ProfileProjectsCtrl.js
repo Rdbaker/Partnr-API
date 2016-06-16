@@ -1,13 +1,13 @@
-angular.module('partnr.users.assets').controller('ProfileProjectsController', function($scope, $rootScope, $state, $stateParams, $log, toaster, feeds) {
+angular.module('partnr.users.assets').controller('ProfileProjectsController', function($scope, $rootScope, $state, $stateParams, $log, toaster, projects) {
 	$scope.loadComplete = false;
 	$scope.user = null;
-	$scope.activities = [];
+	$scope.projects = [];
 
 	$scope.$parent.getProfileWrapperInfo().then(function(result) {
 		$scope.user = result;
-	    feeds.listUserActivity($scope.user.id).then(function(activity) {
-	      $scope.activities.push(activity);
-	      $scope.loadComplete = true;
-	    });
+		projects.listByUser($scope.user.id).then(function(projects) {
+      $scope.projects = projects;
+	    $scope.loadComplete = true;
+    });
 	});
 });

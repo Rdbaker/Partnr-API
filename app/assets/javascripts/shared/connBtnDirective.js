@@ -3,7 +3,8 @@ angular.module('partnr.users.assets').directive('pnConnBtn', function(connection
     restrict: 'AE',
     template: "<div ng-include='contentUrl'></div>",
     scope: {
-      connectionUser: '=user'
+      connectionUser: '=user',
+      btnSize: '=btnsize'
     },
     link: function($scope, elem) {
       if(!$scope.connectionUser || !$scope.connectionUser.connection_status) {

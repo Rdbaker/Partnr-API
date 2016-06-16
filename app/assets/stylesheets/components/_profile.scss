@@ -10,10 +10,16 @@
 		color: #ff9a39;
 
 		span {
-			font-size: 14px;	
+			font-size: 14px;
 			margin: 0 5px;
 		}
 	}
+
+  .profile-actions {
+    * {
+      display: inline;
+    }
+  }
 }
 
 .profile-image {

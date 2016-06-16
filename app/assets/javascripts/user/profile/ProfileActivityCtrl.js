@@ -8,7 +8,7 @@ angular.module('partnr.users.assets').controller('ProfileActivityController', fu
   $scope.$parent.getProfileWrapperInfo().then(function(result) {
     $log.debug(result);
     $scope.user = result;
-    $scope.loadComplete = true;
+    $scope.getNextFeedPage();
   });
 
 
@@ -36,7 +36,6 @@ angular.module('partnr.users.assets').controller('ProfileActivityController', fu
 
     return result;
   };
-
 
   $scope.getNextFeedPage = function() {
     if ($scope.endOfFeed) return;
