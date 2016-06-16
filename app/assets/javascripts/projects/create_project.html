@@ -15,7 +15,7 @@
 				</div>
 
 				<div class="button-group pull-right">
-					<button class="btn btn-primary" ng-click="stepUp()" >Next ></button>
+					<button class="btn btn-primary" ng-disabled="project.description.length < 1 || project.title.length < 1" ng-click="stepUp()" >Next ></button>
 				</div>
 			</div>
 		</div>
