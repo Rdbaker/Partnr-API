@@ -5,6 +5,7 @@ class Category < ActiveRecord::Base
   validates :title, :description, :color_hex, :icon_class, presence: true
 
   has_many :skills
+  has_and_belongs_to_many :tasks
 
   def self_link
     "/api/v1/categories/#{id}"
