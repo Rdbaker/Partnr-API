@@ -2,6 +2,7 @@ angular.module('partnr.users.assets').controller('ProfileWrapperController', fun
 	$scope.loadComplete = false;
 	$scope.user = null;
   $scope.currentUser = principal.getUser();
+  $scope.msgBtnEnabled = $rootScope.featureGate.profile.msgBtn;
 
 	$scope.initialize = function() {
 		var deferred = $q.defer();

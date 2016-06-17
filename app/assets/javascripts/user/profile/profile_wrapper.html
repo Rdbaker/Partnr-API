@@ -6,9 +6,9 @@
       <span  ng-if="!!user.profile.location.geo_string"><i class="fa fa-map-marker"></i> {{ user.profile.location.geo_string }}</span>
       <span ng-if="user.profile.positions.length > 0"><i class="fa fa-briefcase"></i> {{ user.profile.positions[user.profile.positions.length - 1].title }}</span>
     </div>
-    <div class="profile-actions text-center" ng-hide="!!currentUser && currentUser.id === user.id">
+    <div class="profile-actions text-center" ng-if="!!currentUser && currentUser.id !== user.id">
       <pn-conn-btn user="user" btnsize="'btn-sm'"></pn-conn-btn>
-      <button class="btn btn-sm btn-primary">message</button>
+      <button class="btn btn-sm btn-primary" ng-if="msgBtnEnabled">message</button>
     </div>
 
     <div ng-if="user.skillscore.scored.categories.length > 0" class="profile-header-skills text-center">
