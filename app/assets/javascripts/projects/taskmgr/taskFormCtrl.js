@@ -57,7 +57,7 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 		if ($stateParams.mref) {
 			$state.go('milestone', { milestone_id: $stateParams.mref });
 		} else {
-			$state.go('project_tasks');
+			$state.go('task');
 		}
 	};
 
@@ -72,8 +72,10 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 		$log.debug("[TASK] Preprocessing skills for task:");
 		$log.debug(task);
 
-		for (var i = 0; i < task.categories.length; i++) {
-			task.categories[i] = task.categories[i].id;
+		if (task.categories) {
+			for (var i = 0; i < task.categories.length; i++) {
+				task.categories[i] = task.categories[i].id;
+			}
 		}
 
 		var promises = [];
