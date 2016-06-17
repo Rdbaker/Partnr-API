@@ -22,9 +22,9 @@ angular.module('partnr.core', ['ui.router', 'angular-inview',
    $rootScope.version   = '1.2.0';
    $rootScope.pollDuration = 10000;
    $rootScope.toastDuration = 8000;
-   if(window.location.host === "www.partnr.org" || window.location.host === "www.partnr-up.com") {
+   if(window.location.host === "app.partnr-up.com") {
     $rootScope.env = 'PRD';
-   } else if(window.location.host === "dev.partnr.org" || window.location.host === "dev.partnr-up.com") {
+   } else if(window.location.host === "dev.partnr-up.com") {
     $rootScope.env = 'DEV';
    } else {
     $rootScope.env = 'LCL';
