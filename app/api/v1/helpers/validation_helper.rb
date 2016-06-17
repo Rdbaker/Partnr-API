@@ -19,4 +19,8 @@ module V1::Helpers::ValidationHelper
   def current_user
     warden.user || @user
   end
+
+  def dead_activity?(act)
+    act.trackable_type.constantize.find_by(id: act.trackable_id).nil?
+  end
 end

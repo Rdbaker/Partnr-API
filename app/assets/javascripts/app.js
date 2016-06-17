@@ -86,4 +86,14 @@ angular.module('partnr.core', ['ui.router', 'angular-inview',
         $log.debug(result.data);
       }
     });
+
+
+    /**
+     * Create the feature gate
+     */
+    $rootScope.featureGate = {
+      profile: {
+        msgBtn: false
+      }
+    };
 });
