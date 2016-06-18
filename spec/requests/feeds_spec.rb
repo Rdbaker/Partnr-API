@@ -46,8 +46,9 @@ RSpec.describe "Feeds", :type => :request do
       end
 
       it "should return objects sorted by latest created_at date" do
+        # highest ID should return the same thing, so let's sort by that
         sorted = @res.sort_by { |a| -a["id"] }
-        sorted.each_with_index { |v, idx| sorted[idx]["created_at"] == @res[idx]["created_at"] }
+        sorted.each_with_index { |v, idx| expect(sorted[idx]["sent_at"]).to(eq(@res[idx]["sent_at"])) }
       end
     end
   end
