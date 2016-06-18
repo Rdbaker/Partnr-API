@@ -134,7 +134,7 @@ protected
 private
 
   def get_feed
-    PublicActivity::Activity.where(id: (owner_activity_query + subject_activity_query).map(&:id)).order("created_at")
+    PublicActivity::Activity.where(id: (owner_activity_query + subject_activity_query).map(&:id)).order("created_at desc")
   end
 
   def clean_feed
