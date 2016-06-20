@@ -17,7 +17,7 @@ module V1
       end
       acts = current_user.feed.where(permitted_params params)
       acts.collect { |a| a.destroy if dead_activity?(a) }
-      present acts.order('created_at desc')
+      present acts
         .page(params[:page])
         .per(params[:per_page]), with: Entities::ActivityData::AsSearch
     end
