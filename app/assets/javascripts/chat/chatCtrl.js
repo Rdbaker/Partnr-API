@@ -233,6 +233,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
             conversations.addMessage($scope.openConversation.id, $scope.newMessage).then(function(result) {
                     $scope.newMessage = "";
                     $scope.openConversation.messages.push(result.data);
+                    mixpanel.track($rootScope.env + ':chat.message.send');
                 },
                 function(result) {
                     notify(result.data.error);

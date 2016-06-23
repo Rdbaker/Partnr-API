@@ -35,6 +35,7 @@ angular.module('partnr.users.assets').controller('MilestoneFormController', func
 			$scope.formLoading = false;
 
 			if (result.data.id) {
+        mixpanel.track($rootScope.env + ':project.taskmgr.milestone.create');
 				$state.go('project_milestones', { project_id: $stateParams.project_id });
 			}
 		}, creationFailCallback);
@@ -46,6 +47,7 @@ angular.module('partnr.users.assets').controller('MilestoneFormController', func
 			$scope.formLoading = false;
 
 			if (result.data.id) {
+        mixpanel.track($rootScope.env + ':project.taskmgr.milestone.update');
 				$state.go('project_milestones');
 			}
 		});
@@ -57,6 +59,7 @@ angular.module('partnr.users.assets').controller('MilestoneFormController', func
 				$scope.formLoading = true;
 				milestones.delete($scope.milestone.id).then(function() {
 					$scope.formLoading = false;
+          mixpanel.track($rootScope.env + ':project.taskmgr.milestone.delete');
 					$state.go('project_milestones');
 				});
 			}
