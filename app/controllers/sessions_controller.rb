@@ -17,7 +17,6 @@ class SessionsController < Devise::SessionsController
     check_post_params
 
     resource = User.find_for_database_authentication(:email => params[:user][:email])
-    last_sign_in = resource.last_sign_in_at
     return invalid_login_attempt unless resource
 
     if resource.valid_password?(params[:user][:password])
@@ -25,6 +24,7 @@ class SessionsController < Devise::SessionsController
         scope: :user
       })
       sign_in(:resource, resource)
+      last_sign_in = resource.last_sign_in_at
       render :json => {
         'user' => resource.serializable_hash,
         'last_sign_in_at' => last_sign_in
