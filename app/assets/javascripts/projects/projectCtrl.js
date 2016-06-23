@@ -33,6 +33,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 	$scope.doApply = function(role) {
 		applications.create({ role : role }).then(function(result) {
 			toaster.success('Request sent!');
+      mixpanel.track($rootScope.env + ':project.application.create');
 		});
 		$scope.canApply = false;
 	};
@@ -62,6 +63,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 				$scope.newComment.content = "";
 				$scope.project.comments.push(result.data);
 				$scope.isCommentSubmitting = false;
+        mixpanel.track($rootScope.env + ':project.comment.create');
 			});
 		} else {
 			$scope.isCommentSubmitting = false;
@@ -73,6 +75,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 			$log.debug(result);
 			var commentIndex = $scope.project.comments.indexOf(comment);
 			$scope.project.comments.splice(commentIndex, 1);
+      mixpanel.track($rootScope.env + ':project.comment.delete');
 		});
 	};
 
