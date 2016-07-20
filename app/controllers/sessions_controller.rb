@@ -29,7 +29,6 @@ class SessionsController < Devise::SessionsController
         'user' => resource.serializable_hash,
         'last_sign_in_at' => last_sign_in
       }
-      return
     else
       warden.custom_failure!
       render :json=> {:error => "That email/password does not match our records."}, :status => 401
