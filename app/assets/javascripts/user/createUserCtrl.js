@@ -23,7 +23,7 @@ angular.module('partnr.users').controller('CreateUserController', function($root
 		if ($scope.validate()) {
 			users.create($scope.acct).then(function(data, status, headers, config) {
 				$log.debug(data);
-				if (data.id) {
+				if (data.data.id) {
 					mixpanel.track($rootScope.env + ':signup');
 					$state.go('login');
 				} else {

@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('CreateProjectController', function($scope, $state, $log, $q, $timeout, projects, roles, principal, toaster) {
+angular.module('partnr.users.assets').controller('CreateProjectController', function($scope, $state, $log, $q, $timeout, $rootScope, projects, roles, principal, toaster) {
 	$scope.step = 1;
 	$scope.coverPhoto = null;
 	$scope.project = {
@@ -78,7 +78,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		fd.append('description', $scope.project.description);
 		if ($scope.coverPhoto !== null) {
 			fd.append('cover_photo', $scope.coverPhoto);
-		}		
+		}
 		if ($scope.validateProject()) {
 			projects.create(fd).then(function(result) {
 				$log.debug(result.data);
@@ -138,7 +138,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 			if ($scope.validateRole(curRole)) {
 				curRole.project = $scope.project.id;
 				cleanedRoles.push(curRole);
-			}	
+			}
 		}
 
 		for (var i = 0; i < cleanedRoles.length; i++) {
@@ -148,7 +148,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 				if (rolesProcessed === cleanedRoles.length) {
 					deferred.resolve();
 					$timeout(function() {
-						$state.go('project_list');
+            $state.go('project', { project_id: $scope.project.id });
 						toaster.success('Project created!');
 					}, 1000);
 				}
@@ -158,7 +158,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 		if (cleanedRoles.length === 0) {
 			deferred.resolve();
 			$timeout(function() {
-				$state.go('project_list');
+        $state.go('project', { project_id: $scope.project.id });
 				toaster.success('Project created!');
 			}, 1000);
 		}
