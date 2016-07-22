@@ -48,7 +48,7 @@ en:
     connection:
       accepted: "{user_name} connected with {connection_name}"
     task:
-      completed: "{user_name} completed the task {task_title}"
+      completed: "{user_name} completed the task {task_title} on {project_title}"
     benchmark:
       completed: "{user_name} marked the milestone {milestone_title} as complete"
     project:

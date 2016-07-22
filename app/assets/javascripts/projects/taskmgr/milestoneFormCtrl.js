@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('MilestoneFormController', function($scope, $state, $stateParams, $log, $q, $timeout, milestones, principal, modals, toaster) {
+angular.module('partnr.users.assets').controller('MilestoneFormController', function($scope, $state, $rootScope, $stateParams, $log, $q, $timeout, milestones, principal, modals, toaster) {
 	$scope.milestone = {
 		title: '',
 		due_date: '',

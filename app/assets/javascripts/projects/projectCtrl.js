@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('ProjectController', function($scope, $state, $stateParams, $log, $q, projects,
+angular.module('partnr.users.assets').controller('ProjectController', function($scope, $rootScope, $state, $stateParams, $log, $q, projects,
 	applications, comments, principal, toaster) {
 	$scope.project = {};
 	$scope.newComment = {
