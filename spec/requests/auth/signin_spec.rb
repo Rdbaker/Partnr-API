@@ -4,7 +4,7 @@ RSpec.describe "Signing In", :type => :request do
   before(:each) do
     @user = build(:user)
     @user.confirmed_at = Time.zone.now
-    @user.save
+    @user.save!
   end
 
   describe "POST /api/users/sign_in" do
@@ -19,11 +19,15 @@ RSpec.describe "Signing In", :type => :request do
     end
 
     it "returns a 200" do
-      expect(response.ok?)
+      expect(response.status).to eq(200)
     end
 
-    it "this should fail" do
-      expect(@res).to match_json_schema(:signin_res)
+    it "should have a last_sign_in_at property" do
+      expect(@res.has_key? 'last_sign_in_at').to be true
+    end
+
+    it "should include an auth token" do
+      expect(@res['user']['authentication_token']).not_to be_nil
     end
   end
 end
