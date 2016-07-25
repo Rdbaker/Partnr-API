@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('TaskFormController', function($scope, $state, $stateParams, $log, $q, $timeout, tasks, milestones, skills, principal, modals, toaster) {
+angular.module('partnr.users.assets').controller('TaskFormController', function($scope, $rootScope, $state, $stateParams, $log, $q, $timeout, tasks, milestones, skills, principal, modals, toaster) {
 	$scope.task = {
 		title: '',
 		description: '',

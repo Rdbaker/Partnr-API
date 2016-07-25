@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('CreateProjectController', function($scope, $state, $log, $q, $timeout, projects, roles, principal, toaster) {
+angular.module('partnr.users.assets').controller('CreateProjectController', function($scope, $rootScope, $state, $log, $q, $timeout, projects, roles, principal, toaster) {
 	$scope.step = 1;
 	$scope.coverPhoto = null;
 	$scope.project = {

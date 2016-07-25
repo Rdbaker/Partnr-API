@@ -1,4 +1,4 @@
-angular.module('partnr.search').controller('SearchController', function($scope, $state, $stateParams, $q, $log,
+angular.module('partnr.search').controller('SearchController', function($scope, $rootScope, $state, $stateParams, $q, $log,
   principal, search, toaster, applications) {
   $scope.user = principal.getUser();
   $scope.projects = [];
