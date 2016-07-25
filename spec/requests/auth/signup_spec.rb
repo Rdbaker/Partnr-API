@@ -20,12 +20,16 @@ RSpec.describe "Signing Up", :type => :request do
       }
     end
 
-    it "returns a 200" do
-      expect(response.ok?)
+    it "returns a 201" do
+      expect(response.status).to eq(201)
     end
 
-    it "matches the expected schema" do
-      expect(response.body).to match_json_schema(:signup_res)
+    it "creates a new user" do
+      expect(User.find_by(email: @email)).not_to be_nil
+    end
+
+    it "contains an auth token" do
+      expect(!!response.body["authentication_token"])
     end
   end
 end

@@ -1,4 +1,4 @@
-angular.module('partnr.users.assets').controller('ListApplicationsController', function($scope, $state, $stateParams, $log, $q, projects, applications, principal, toaster) {
+angular.module('partnr.users.assets').controller('ListApplicationsController', function($scope, $rootScope, $state, $stateParams, $log, $q, projects, applications, principal, toaster) {
 	$scope.project = {};
 	$scope.applications = [];
 	$scope.isOwner = false;
