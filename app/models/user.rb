@@ -26,7 +26,12 @@ class User < ActiveRecord::Base
   # override devise's default behavior to queue up an email instead
   # of sending it immediately
   def send_devise_notification(notification, *args)
-    devise_mailer.send(notification, self, *args).deliver_later
+    begin
+      devise_mailer.send(notification, self, *args).deliver_later
+    rescue ActiveJob::DeserializationError
+      logger.warn "Could not send email to user:"
+      logger.warn args
+    end
   end
 
   def self_link

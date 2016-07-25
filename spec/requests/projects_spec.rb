@@ -127,6 +127,10 @@ RSpec.describe "Projects", :type => :request do
       login_as(@user, :scope => :user)
     end
 
+    after(:each) do
+      logout(@user)
+    end
+
     describe "POST /api/v1/projects" do
       before(:each) do
         @title = "a brand new project"
@@ -171,7 +175,7 @@ RSpec.describe "Projects", :type => :request do
       context "user has proper permissions" do
         before(:each) do
           @project.owner = @user.id
-          @project.save
+          @project.save!
           @title = "the brand new title for this project"
           put "/api/v1/projects/#{@project.id}", {
             "title" => @title
@@ -191,7 +195,7 @@ RSpec.describe "Projects", :type => :request do
       context "user has proper permissions changing the status" do
         before(:each) do
           @project.owner = @user.id
-          @project.save
+          @project.save!
           @status = "complete"
           put "/api/v1/projects/#{@project.id}", {
             "status" => @status
