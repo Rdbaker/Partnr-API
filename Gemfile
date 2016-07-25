@@ -32,8 +32,6 @@ group :test, :development do
   gem 'factory_girl_rails', "~> 4.0"
   gem 'simplecov'
   gem 'capybara'
-  gem 'teaspoon'
-  gem 'teaspoon-mocha'
   gem 'json-schema-rspec'
   gem 'byebug'
 end
