@@ -21,7 +21,7 @@ angular.module('partnr.core').controller('SharedController', function($rootScope
 
     $scope.doLogout = function() {
         principal.logout().then(function() {
-            mixpanel.track($rootScope.env + ':logout');
+            mixpanel.track($scope.$root.env + ':logout');
             $state.go('login');
         });
     };

@@ -15,7 +15,7 @@ angular.module('partnr.search').controller('SearchController', function($scope, 
   }
 
   $scope.doSearch = function() {
-    mixpanel.track($rootScope.env + ':search');
+    mixpanel.track($scope.$root.env + ':search');
     $state.go('search', { q: $scope.query, entities: $scope.entities });
   };
 

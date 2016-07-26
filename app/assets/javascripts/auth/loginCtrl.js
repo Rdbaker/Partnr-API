@@ -14,7 +14,7 @@ angular.module('partnr.auth').controller('LoginController', function($rootScope,
                 principal.login($scope.email, $scope.password).then(function(loggedIn) {
                     if (loggedIn) {
                         var user = principal.getUser();
-                        mixpanel.track($rootScope.env + ':login');
+                        mixpanel.track($scope.$root.env + ':login');
                         if (user.last_login != null || user.last_login != undefined) {
                             $state.go('home.feed');
                         } else {

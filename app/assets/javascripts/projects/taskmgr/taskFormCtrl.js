@@ -168,7 +168,7 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 			tasks.create(task).then(function(result) {
 				$log.debug("[TASK] New task created:");
 				$log.debug(result.data);
-        mixpanel.track($rootScope.env + ':project.taskmgr.task.create');
+        mixpanel.track($scope.$root.env + ':project.taskmgr.task.create');
 
 				$scope.formLoading = false;
 
@@ -186,7 +186,7 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 		preProcessSkills(taskToSave).then(function(task) {
 			tasks.update(task).then(function(result) {
 				$scope.formLoading = false;
-        mixpanel.track($rootScope.env + ':project.taskmgr.task.update');
+        mixpanel.track($scope.$root.env + ':project.taskmgr.task.update');
 
 				if (result.data.id) {
 					redirect();
@@ -201,7 +201,7 @@ angular.module('partnr.users.assets').controller('TaskFormController', function(
 				$scope.formLoading = true;
 				tasks.delete($scope.task.id).then(function() {
 					$scope.formLoading = false;
-          mixpanel.track($rootScope.env + ':project.taskmgr.task.delete');
+          mixpanel.track($scope.$root.env + ':project.taskmgr.task.delete');
 					redirect();
 				});
 			}

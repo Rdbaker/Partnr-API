@@ -28,7 +28,7 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 	$scope.doApply = function(role) {
 		applications.create({ role : role }).then(function(result) {
 			toaster.success('Request sent!');
-      mixpanel.track($rootScope.env + ':project.application.create');
+      mixpanel.track($scope.$root.env + ':project.application.create');
 		});
 		$scope.canApply = false;
 	};
