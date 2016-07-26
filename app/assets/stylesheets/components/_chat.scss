@@ -1,26 +1,27 @@
 .open-chat-window {
-    height: 50vh;
+    height: 500px;
 }
 
 .minimized-chat-window {
+    font-family: "Bitter", serif;
     background-color: #0ea1bc;
-    height: 2.5vh;
+    height: 30px;
     cursor: pointer;
     span {
         color: white;
-        font-size: 1.3vh;
-        padding-top: 0.3vh;
+        font-size: 15px;
+        padding-top: 5px;
     }
 }
 
 .pn-chat-window {
-    font-family: "Bitter", serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 500;
     line-height: 1.1;
     position: fixed;
     bottom: 0;
     width: 24em;
-    left: 70vw;
+    right: 50px;
     padding: 0;
     .minimized-chat {
         width: 100%;
@@ -30,7 +31,7 @@
         overflow-y: auto;
     }
     .pn-chat-header {
-        height: 5vh;
+        height: 50px;
         width: 100%;
         cursor: pointer;
         box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.22);
@@ -48,17 +49,18 @@
         }
     }
     .chat-title {
+        font-family: "Bitter", serif;
         span {
             color: white;
             margin: 0;
         }
         .small-title {
-            font-size: 1.3vh;
-            padding-top: 1.5vh;
+            font-size: 14px;
+            padding-top: 15px;
         }
         .large-title {
-            font-size: 1.7vh;
-            padding-top: 1vh;
+            font-size: 16px;
+            padding-top: 15px;
         }
         div {
             display: inline-block;
@@ -95,7 +97,7 @@
         display: inline-block;
     }
     .chat-selection {
-        height: 40vh;
+        height: 400px;
         span {
             display: inline;
             font-size: 1.5vh;
@@ -111,15 +113,15 @@
             }
         }
         .list-element {
-            height: 4vh;
+            height: 40px;
             padding: 1.25vh;
         }
     }
     .upper {
-        height: 16vh;
+        height: 160px;
     }
     .lower {
-        height: 8vh;
+        height: 80px;
     }
     .user-select {
         margin-bottom: 1vh;
@@ -137,10 +139,10 @@
                 position: absolute;
                 left: 50%;
                 top: 50%;
-                width: 4vh;
-                height: 4vh;
-                margin-top: -2vh;
-                margin-left: -2vh;
+                width: 40px;
+                height: 40px;
+                margin-top: -20px;
+                margin-left: -20px;
                 border-radius: 50%;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -152,7 +154,7 @@
             display: inline-block;
             img {
                 width: 3vh;
-                height: 3vh;
+                height: 30px;
                 border-radius: 50%;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -160,7 +162,7 @@
             }
         }
         .list-element {
-            height: 6vh;
+            height: 60px;
         }
     }
     .pn-chat-footer {
@@ -175,13 +177,16 @@
         .chat-message-area {
             width: 80%;
             resize: none;
-            height: 7vh;
+            height: 70px;
             margin: 0 auto;
         }
     }
     .chat-conversation {
+        .title {
+            font-family: "Bitter", serif;
+        }
         overflow-y: auto;
-        height: 33vh;
+        height: 330px;
         .chat-message {
             text-align: left;
             margin: 1vh;
@@ -193,9 +198,10 @@
             }
             div {
                 margin-top: 1vh;
-                text-indent: 1vw;
+                padding-left: 1vw;
                 font-size: 1.2vh;
             }
+
         }
     }
     .loading-screen {
@@ -203,7 +209,7 @@
         background-color: white;
         left: 0;
         top: 0;
-        height: 33vh;
+        height: 330px;
         width: 100%;
     }
 }
