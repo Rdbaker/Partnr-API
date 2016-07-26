@@ -14,26 +14,68 @@ class Skillset < ActiveRecord::Base
   end
 
   def skills
+    # this also removes duplicates
     @skills ||= tasks.collect { |t| t.skills }.flatten
   end
 
+  def skills_duplicated
+    @skills_duplicated ||= get_skills_with_duplicates
+  end
+
   def categories
+    # this also removes duplicates
     @categories ||= tasks.collect { |t| t.categories }.flatten
   end
 
+  def categories_duplicated
+    @categories_duplicated ||= get_categories_with_duplicates
+  end
+
   def scored_skills
-    @scored_skills ||= primitive_score(completed_tasks.collect { |t| t.skills}.flatten, :skill)
+    @scored_skills ||= primitive_skill_score
   end
 
   def scored_categories
-    @scored_categories ||= primitive_score(completed_tasks.collect { |t| t.categories }.flatten, :category)
+    @scored_categories ||= primitive_category_score
   end
 
   private
 
+  def get_skills
+    tasks.collect { |t| t.skills }.flatten
+  end
+
+  def get_categories
+    tasks.collect { |t| t.categories }.flatten
+  end
+
+  def get_skills_with_duplicates
+    duplicates_list = []
+    tasks.each do |t|
+      t.skills.collect { |skill| duplicates_list.push skill }
+    end
+    duplicates_list
+  end
+
+  def get_categories_with_duplicates
+    duplicates_list = []
+    tasks.each do |t|
+      t.skills.collect { |s| duplicates_list.push s.category }
+    end
+    duplicates_list
+  end
+
+  def primitive_category_score
+    primitive_score get_categories_with_duplicates, :category
+  end
+
+  def primitive_skill_score
+    primitive_score get_skills_with_duplicates, :skill
+  end
+
   def primitive_score(collection, symbol)
-    # count the entities
     counted_hash = Hash.new(0)
+    # count the entities
     collection.each do |entity|
       counted_hash[entity] += 1
     end
@@ -47,8 +89,8 @@ class Skillset < ActiveRecord::Base
   end
 
   def calculate_score
-    skillcount = skills.each_with_object(Hash.new(0)) { |skill,counts| counts[skill.title] += 1 }
-    catcount = categories.each_with_object(Hash.new(0)) { |cat,counts| counts[cat.title] += 1 }
+    skillcount = skills_duplicated.each_with_object(Hash.new(0)) { |skill,counts| counts[skill.title] += 1 }
+    catcount = categories_duplicated.each_with_object(Hash.new(0)) { |cat,counts| counts[cat.title] += 1 }
     {
       :skills => skillcount,
       :categories => catcount
