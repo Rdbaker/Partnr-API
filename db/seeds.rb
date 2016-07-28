@@ -108,6 +108,24 @@ categories = [
     :color_hex => "#ff2200",
     :icon_class => "fa-line-chart"
   },
+  {
+    :title => "Marketing",
+    :description => "Any form of marketing, including digital marketing, product marketing, lead generation, and branding",
+    :color_hex => "#db008e",
+    :icon_class => "fa-bullhorn"
+  },
+  {
+    :title => "Public Speaking",
+    :description => "Any form of presentation skills including speeches, presentations, and demonstrations",
+    :color_hex => "#05a4c2",
+    :icon_class => "fa-microphone"
+  },
+  {
+    :title => "Management",
+    :description => "Anhy work that involves managing projects, teams, or individuals",
+    :color_hex => "#c40000",
+    :icon_class => "fa-briefcase"
+  }
 ]
 
 categories.each do |c|
