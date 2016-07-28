@@ -85,7 +85,7 @@ angular.module('partnr.users.assets').controller('CreateProjectController', func
 				if (result.data.id) {
 					$scope.project = result.data;
 					deferred.resolve();
-          mixpanel.track($rootScope.env + ':project.create');
+          mixpanel.track($scope.$root.env + ':project.create');
 				} else {
 					$log.debug("[PROJECT] Create error");
 					if (result.data.error) { $log.debug(result.data.error); }
