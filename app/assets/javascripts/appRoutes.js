@@ -126,7 +126,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 		}
 	})
 
-	.state('profile', {
+	.state('user', {
 		parent: 'profile_wrapper',
 		url: '',
 		views: {
@@ -137,7 +137,7 @@ angular.module('partnr.core').config(function($stateProvider, $urlRouterProvider
 		},
 		data: {
 			roles: [],
-			entities: []
+			entities: ['user']
 		}
 	})
 

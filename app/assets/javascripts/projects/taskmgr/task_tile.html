@@ -11,7 +11,7 @@
 	</div>
 	<div class="supporting-text small pn-task-info clearfix">
 		<div class="col-md-2">
-			<a ng-if="task.user" ui-sref="profile({ id: task.user.id })"><i class="fa fa-user"></i>{{ task.user.name }}</a>
+			<a ng-if="task.user" ui-sref="user({ id: task.user.id })"><i class="fa fa-user"></i>{{ task.user.name }}</a>
 			<span ng-if="!task.user"><i class="fa fa-user"></i><em>None</em></span>
 		</div>
 		<div class="col-md-2">

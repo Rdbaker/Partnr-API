@@ -4,7 +4,7 @@
 </div>
 <div class="chat-conversation">
     <div class="chat-message" ng-repeat="message in messages" finish-render="adjustScroll()">
-        <a href ui-sref="profile({ id: message.user.id })">
+        <a href ui-sref="user({ id: message.user.id })">
             {{ message.user.name }}
         </a>
         <span>

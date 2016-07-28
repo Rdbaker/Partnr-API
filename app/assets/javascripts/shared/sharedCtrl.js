@@ -27,7 +27,7 @@ angular.module('partnr.core').controller('SharedController', function($rootScope
     };
 
     $scope.doViewProfile = function() {
-        $state.go('profile', { id : principal.getUser().id });
+        $state.go('user', { id : principal.getUser().id });
     };
 
     $scope.resolveLink = function(n) {

@@ -101,7 +101,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 
 							// grab the parameter value from the object. if it doesn't
 							// exist in the object, this will fail
-							var attrValue = result.data[dependencyAttr];
+							var attrValue = result.data[dependencyName][dependencyAttr];
 							route.params[key] = attrValue;
 						} else {
 							$log.debug("[ROUTE UTILS] Error parsing key: " + key);
