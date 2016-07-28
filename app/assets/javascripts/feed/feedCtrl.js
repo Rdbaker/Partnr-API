@@ -18,7 +18,15 @@ angular.module('partnr.feed').controller('FeedController', function($scope, $sta
         var ent = unparsed[i];
         var arr = ent.slice(1,-1).split('_');
         try {
-          result = result.replace(ent, makeReadable(activity.subject[arr[0]][arr[1]]));
+          if (activity.subject_type === "Connection") {
+            if (activity.user.name === activity.subject.connection.name) {
+              result = result.replace(ent, makeReadable(activity.subject.user.name));
+            } else {
+              result = result.replace(ent, makeReadable(activity.subject.connection.name));
+            }
+          } else {
+            result = result.replace(ent, makeReadable(activity.subject[arr[0]][arr[1]]));
+          }
         } catch(e) {
           // if we couldn't parse a message, return null
           return null;

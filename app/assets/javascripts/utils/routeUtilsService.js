@@ -216,7 +216,7 @@ angular.module('partnr.core').factory('routeUtils', function($rootScope, $http, 
 			route.params = {};
 
 			while(chosenState.parent !== undefined) {
-				route.params = $.merge(extractParams(chosenState.url), route.params);
+        Object.assign(route.params, extractParams(chosenState.url));
 				chosenState = $state.get(chosenState.parent);
 			}
 
