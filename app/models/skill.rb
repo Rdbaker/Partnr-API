@@ -3,7 +3,7 @@ class Skill < ActiveRecord::Base
 
   validates :title, :category, presence: true
 
-  has_many :tasks
+  has_and_belongs_to_many :tasks
 
   def self_link
     "/api/v1/skills/#{id}"

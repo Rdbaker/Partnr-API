@@ -1,7 +1,9 @@
 FactoryGirl.define do
   factory :skill do
-    title "MyString"
-profile nil
+    title "Shearing"
   end
 
+  factory :skill2, class: Skill do
+    title "Sewing"
+  end
 end
