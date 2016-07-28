@@ -25,14 +25,14 @@ en:
       created: "applied to the role {role} on the project {project}"
       updated: "updated the application for the role {role} on the project {project}"
     Bmark:
-      created: "created the milestone {benchmark} for the project {project}"
-      updated: "updated the milestone {benchmark} for the project {project}"
+      created: "created the milestone {milestone} for the project {project}"
+      updated: "updated the milestone {milestone} for the project {project}"
     Comment:
       created: "commented on the project {project}"
       updated: "edited their comment on the project {project}"
     Post:
-      created: "posted {post} to the benchmark {benchmark}"
-      updated: "edited their post {post} on the benchmark {benchmark}"
+      created: "posted {post} to the benchmark {milestone}"
+      updated: "edited their post {post} on the benchmark {milestone}"
     Project:
       created: "created the project {project}"
       updated: "edited their project {project}"

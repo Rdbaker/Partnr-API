@@ -6,7 +6,7 @@
         <div class="col-md-3" ng-repeat="role in project.roles">
             <div class="internal-container no-margin">
                 <span class="title">{{role.title}}</span>
-                <a href class="subtitle" ng-show="role.user" ui-sref="profile({ id: role.user.id })">{{role.user.first_name}}
+                <a href class="subtitle" ng-show="role.user" ui-sref="user({ id: role.user.id })">{{role.user.first_name}}
                     {{role.user.last_name}}</a><span class="subtitle" ng-hide="role.user"><em>None</em></span>
                 <div class="buttons-right">
                     <button type="button" class="btn btn-primary" ng-if="!role.user && canApply"

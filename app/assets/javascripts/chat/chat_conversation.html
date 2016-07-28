@@ -4,7 +4,7 @@
 <div class="chat-conversation">
     <div class="chat-message" ng-repeat="message in messages" finish-render="adjustScroll()">
         <div class="title">
-            <a href ui-sref="profile({ id: message.user.id })">{{ message.user.name }}</a>
+            <a href ui-sref="user({ id: message.user.id })">{{ message.user.name }}</a>
             <span>at {{ message.sent_at | date: returnDateFilter(message.sent_at) }}:</span>
         </div>
         <div ng-bind-html="message.body | linky">

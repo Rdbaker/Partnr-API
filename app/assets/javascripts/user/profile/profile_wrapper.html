@@ -67,7 +67,7 @@
 <div ng-class="!!user.profile ? 'col-md-9' : 'col-md-12'" ng-show="loadComplete">
   <ul class="content-container-tabs nav nav-tabs" role="tablist">
     <li role="presentation" ng-class="{'active': $state.current.name === 'profile'}">
-      <a href ui-sref="profile({'id' : user.id})" role="tab">Activity</a>
+      <a href ui-sref="user({'id' : user.id})" role="tab">Activity</a>
     </li>
     <li role="presentation" ng-class="{'active': $state.current.name === 'profile_projects'}">
       <a href ui-sref="profile_projects({'id' : user.id})" role="tab">Projects</a>
