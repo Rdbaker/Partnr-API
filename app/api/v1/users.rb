@@ -68,6 +68,20 @@ module V1
         .per(params[:per_page]), with: Entities::FollowData::AsSearch
     end
 
+    desc "Update the first name, last name, or email", entity: Entities::UserData::AsPrivate
+    params do
+      optional :first_name, type: String, length: 100, allow_blank: false, desc: "The new first name for the user."
+      optional :last_name, type: String, length: 100, allow_blank: false, desc: "The new last name for the user."
+    end
+    put do
+      authenticated_user
+      current_user.update!({
+        first_name: params[:first_name] || current_user.first_name,
+        last_name: params[:last_name] || current_user.last_name
+      })
+      present current_user, with: Entities::UserData::AsPrivate
+    end
+
     namespace :passwords do
       desc "Update the password for a user", entity: Entities::UserData::AsPrivate
       params do
@@ -76,15 +90,14 @@ module V1
         requires :confirm_password, type: String, allow_blank: false, desc: "Confirm the new password for the user."
       end
       put do
-        error!("401 Unauthorized", 401) unless authenticated
-        @user = User.find(current_user.id)
-        error!("Old password is incorrect", 400) unless @user.valid_password? params[:old_password]
-        @user.password = params[:password]
-        @user.password_confirmation = params[:confirm_password]
-        if @user.save
-          present @user, with: Entities::UserData::AsPrivate
+        authenticated_user
+        error!("Old password is incorrect", 400) unless current_user.valid_password? params[:old_password]
+        current_user.password = params[:password]
+        current_user.password_confirmation = params[:confirm_password]
+        if current_user.save
+          present current_user, with: Entities::UserData::AsPrivate
         else
-          error!(@user.errors.messages.to_json, 400)
+          error!(current_user.errors.messages.to_json, 400)
         end
       end
 
