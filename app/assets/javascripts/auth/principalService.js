@@ -194,6 +194,11 @@ angular.module('partnr.auth').factory('principal', function($rootScope, $http, $
 		getUser : function() {
 			return user;
 		},
+		updateUserName : function(firstName, lastName) {
+			console.log("Updatin userzz", firstName, lastName);
+			user.first_name = firstName;
+			user.last_name = lastName;
+		},
 
 		hasRole : function(role) {
 			/* checks to see if a user has a specified role */
