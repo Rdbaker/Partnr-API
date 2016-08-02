@@ -19,7 +19,7 @@ angular.module('partnr.core', ['ui.router', 'angular-inview',
    $rootScope.$state = $state; // application state
    $rootScope.apiVersion = "v1";
    $rootScope.apiRoute  = '/api/' + $rootScope.apiVersion + '/';
-   $rootScope.version   = '1.2.0';
+   $rootScope.version   = '1.2.1';
    $rootScope.pollDuration = 10000;
    $rootScope.toastDuration = 8000;
    if(window.location.host === "app.partnr-up.com") {
