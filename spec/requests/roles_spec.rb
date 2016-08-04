@@ -13,7 +13,8 @@ RSpec.describe "Roles", :type => :request do
     @user.save!
     @user2.save!
     @user3.save!
-    @project = create(:good_project)
+    @project = build(:good_project)
+    @project.user_notifier = @user3
     @project.owner = @user3.id
     @project.creator = @user3.id
     @project.save!
@@ -22,6 +23,8 @@ RSpec.describe "Roles", :type => :request do
     @role2.project = @project
     @role.user = @user
     @role2.user = nil
+    @role.user_notifier = @user3
+    @role2.user_notifier = @user3
 
     @role.save!
     @role2.save!
@@ -226,8 +229,6 @@ RSpec.describe "Roles", :type => :request do
         before(:each) do
           @project.owner = @user2
           @project.save
-          @role.user = @user
-          @role.save
           put "/api/v1/roles/#{@role.id}", {
             "user" => @user2.id
           }
@@ -285,11 +286,8 @@ RSpec.describe "Roles", :type => :request do
     describe "DELETE /api/v1/roles/:id" do
       context "user does not have permissions" do
         before(:each) do
-          @role2.user = @user2
-          @role2.project = @project
           @project.owner = @user2
 
-          @role2.save
           @project.save
           delete "/api/v1/roles/#{@role2.id}"
         end
@@ -320,4 +318,56 @@ RSpec.describe "Roles", :type => :request do
     end
   end
 
+  describe "removing a user from a role" do
+    context "as the project owner" do
+      before(:each) do
+        login_as(@user3, :scope => :user)
+        put "/api/v1/roles/#{@role.id}", {
+          "user" => nil
+        }
+      end
+
+      it "returns a 200" do
+        expect(response.status).to eq(200)
+      end
+
+      it "makes the role empty" do
+        expect @role.user.nil?
+      end
+    end
+
+    context "as the user in the role" do
+      before(:each) do
+        login_as(@user, :scope => :user)
+        put "/api/v1/roles/#{@role.id}", {
+          "user" => nil
+        }
+      end
+
+      it "returns a 200" do
+        expect(response.status).to eq(200)
+      end
+
+      it "makes the role empty" do
+        expect @role.user.nil?
+      end
+    end
+
+    context "as anybody else" do
+      before(:each) do
+        login_as(@user2, :scope => :user)
+        put "/api/v1/roles/#{@role.id}", {
+          "user" => nil
+        }
+      end
+
+      it "returns a 401" do
+        expect(response.status).to eq(401)
+      end
+
+      it "does not make the role empty" do
+        expect !@role.user.nil?
+      end
+    end
+  end
 end

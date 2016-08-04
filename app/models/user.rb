@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   has_many :conversations, through: :user_conversations
   has_many :user_conversations, :dependent => :destroy
   has_one :profile, :dependent => :destroy
+  has_one :skillset, :dependent => :destroy
   has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/img/user.png"
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 

@@ -11,10 +11,14 @@ module V1
         error!("401 Unauthorized", 401) unless @role.has_put_permissions current_user
       end
 
-      def role_assign_permissions(id)
+      def role_assign_permissions(id, new_user_id)
         authenticated_user
         @role ||= get_record(Role, id)
-        error!("401 Unauthorized", 401) unless @role.project.has_admin_permissions current_user
+        # only allow the user in the role to change who is in the role if it means that the user
+        # is removing him/herself from the role
+        error!("401 Unauthorized", 401) unless @role.project.has_admin_permissions(current_user) || (
+          @role.has_put_permissions(current_user) && new_user_id.nil?
+        )
       end
 
       def role_destroy_permissions(id)
@@ -89,24 +93,26 @@ module V1
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The role ID."
       optional :title, type: String, length: 1000, allow_blank: false, desc: "The role title."
-      optional :user, type: Integer, allow_blank: false, desc: "The user ID assigned to the role."
+      optional :user, type: Integer, allow_blank: true, desc: "The user ID assigned to the role."
       at_least_one_of :title, :user
     end
     put ":id" do
-      role_assign_permissions(params[:id]) if !!params[:user]
-      role_put_permissions(params[:id]) if !!params[:title]
+      role_assign_permissions(params[:id], params[:user]) if params.has_key? :user
+      role_put_permissions(params[:id]) if params.has_key? :title
 
-      if !!params[:user] && current_user.id == params[:user]
-        role_assign_permissions params[:id]
-        if current_user.id == params[:user] && @role.user.nil?
-          @role.user = get_record(User, params[:user])
-        else
-          return error!("401 Unauthorized", 401)
+      if params.has_key? :user && !@role.user.nil?
+        # can't just replace a role with somebody else
+        error!("That role already has a user in it", 400)
+      elsif params.has_key? :user
+        if params[:user].nil?
+          # remove user from role
+          @role.user = nil
+        elsif params[:user] == current_user.id
+          @role.user = current_user
         end
       end
 
-      if !!params[:title]
-        role_put_permissions params[:id]
+      if params.has_key? :title
         @role.title = params[:title]
       end
 
