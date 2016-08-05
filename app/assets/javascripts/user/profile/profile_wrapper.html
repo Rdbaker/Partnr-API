@@ -22,7 +22,7 @@
 </div>
 <toasts></toasts>
 <div class="col-md-3 content-container profile-sidebar" ng-show="loadComplete && !!user.profile">
-    <div class="user-achievements">
+    <div ng-if="user.totalSkillScore > 0" class="user-achievements">
         <div class="col-md-3 logo">
             <i class="fa fa-trophy" aria-hidden="true"></i>
         </div>
@@ -31,7 +31,7 @@
             <div class="subtitle">skill score</div>
         </div>
     </div>
-    <div class="user-achievements">
+    <div ng-if="user.projects.length > 0" class="user-achievements">
         <div class="col-md-3 logo">
             <i class="fa fa-flag" aria-hidden="true"></i>
         </div>
