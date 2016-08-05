@@ -84,6 +84,19 @@ angular.module('partnr.users').factory('users', function($rootScope, $http, $log
 				headers: {'Content-Type': undefined},
 				data: avatar
 			});
+		},
+
+		updateName : function(firstName, lastName){
+			$log.debug("[USER] Sending name change request");
+			return $http({
+				method: 'PUT',
+				url: $rootScope.apiRoute + 'users',
+				headers: principal.getHeadersWithCsrf(),
+				data: {
+					"first_name": firstName,
+					"last_name":lastName
+				}
+			});
 		}
 	};
 });
