@@ -4,7 +4,7 @@ class Role < Notifier
   has_many :applications, :dependent => :destroy
   belongs_to :project
   belongs_to :user
-
+  belongs_to :category
   validates :title, :project, presence: true
 
   attr_readonly :project
