@@ -51,7 +51,7 @@ class Skillset < ActiveRecord::Base
 
   def get_skills_with_duplicates
     duplicates_list = []
-    tasks.each do |t|
+    completed_tasks.each do |t|
       t.skills.collect { |skill| duplicates_list.push skill }
     end
     duplicates_list
@@ -59,7 +59,7 @@ class Skillset < ActiveRecord::Base
 
   def get_categories_with_duplicates
     duplicates_list = []
-    tasks.each do |t|
+    completed_tasks.each do |t|
       t.skills.collect { |s| duplicates_list.push s.category }
     end
     duplicates_list

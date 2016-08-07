@@ -80,7 +80,7 @@
 </div>
 <div ng-class="!!user.profile ? 'col-md-9' : 'col-md-12'" ng-show="loadComplete">
     <ul class="content-container-tabs nav nav-tabs" role="tablist">
-        <li role="presentation" ng-class="{'active': $state.current.name === 'profile'}">
+        <li role="presentation" ng-class="{'active': $state.current.name === 'user'}">
             <a href ui-sref="user({'id' : user.id})" role="tab">Activity</a>
         </li>
         <li role="presentation" ng-class="{'active': $state.current.name === 'profile_projects'}">
