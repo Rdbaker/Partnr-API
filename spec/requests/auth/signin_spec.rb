@@ -4,7 +4,7 @@ RSpec.describe "Signing In", :type => :request do
   before(:each) do
     @user = build(:user)
     @user.confirmed_at = Time.zone.now
-    @user.save!
+    @user.save
   end
 
   describe "POST /api/users/sign_in" do

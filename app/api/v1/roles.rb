@@ -14,11 +14,9 @@ module V1
       def role_assign_permissions(id, new_user_id)
         authenticated_user
         @role ||= get_record(Role, id)
-        # only allow the user in the role to change who is in the role if it means that the user
-        # is removing him/herself from the role
-        error!("401 Unauthorized", 401) unless @role.project.has_admin_permissions(current_user) || (
-          @role.has_put_permissions(current_user) && new_user_id.nil?
-        )
+        # only allow assigning a role.user if we're removing a user from a role
+        # or adding a user to an empty role
+        error!("401 Unauthorized", 401) unless @role.has_put_permissions(current_user) && (new_user_id.nil? || @role.user.nil?)
       end
 
       def role_destroy_permissions(id)
