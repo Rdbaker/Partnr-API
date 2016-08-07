@@ -4,6 +4,8 @@ RSpec.describe "Roles", :type => :request do
   before(:each) do
     @role = build(:role)
     @role2 = build(:role2)
+    @categorized_role = build(:role2)
+    @categroy = build(:category)
     @user = build(:user)
     @user2 = build(:user2)
     @user3 = build(:user3)
@@ -22,9 +24,12 @@ RSpec.describe "Roles", :type => :request do
     @role2.project = @project
     @role.user = @user
     @role2.user = nil
+    @categorized_role.category = @category
 
+    @categorized_role.save!
     @role.save!
     @role2.save!
+
   end
 
   describe "GET /api/v1/roles" do
