@@ -15,7 +15,7 @@
     <div class="pn-cat-details">
   		<h3 class="pn-scard-title">{{ cat.category.title }}</h3>
       <div class="pn-skills-container">
-        <span ng-repeat="skill in categorySkillMap[cat.category.title]" class="pn-skill-tag" style="background: {{ cat.category.color_hex }}; color: white;">
+        <span ng-repeat="skill in categorySkillMap[cat.category.title]" class="pn-skill-tag" ng-class="'pn-cat-' + skill.category.title.toLowerCase().replace(' ','-')">
           {{ skill.title }}
         </span>
     </div>
