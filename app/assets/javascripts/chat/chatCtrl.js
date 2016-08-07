@@ -38,7 +38,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
         });
     }
     pollAllConversations();
-    pollAllConversationsPromise = $interval(pollAllConversations, $rootScope.pollDuration);
+    //pollAllConversationsPromise = $interval(pollAllConversations, $rootScope.pollDuration);
 
     function processUserNames(conversation) {
         var displayableUsers = 1;
@@ -102,7 +102,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
             });
         });
         $interval.cancel(pollAllConversationsPromise);
-        pollOpenConversationPromise = $interval(pollOpenConversation, $rootScope.pollDuration, 0, true, conversation);
+        //pollOpenConversationPromise = $interval(pollOpenConversation, $rootScope.pollDuration, 0, true, conversation);
     };
 
     //New Chat
@@ -130,7 +130,7 @@ angular.module('partnr.messaging').controller('ChatController', function($scope,
             $scope.openConversation = {};
             $interval.cancel(pollOpenConversationPromise);
             pollAllConversations();
-            pollAllConversationsPromise = $interval(pollAllConversations, $rootScope.pollDuration);
+            //pollAllConversationsPromise = $interval(pollAllConversations, $rootScope.pollDuration);
         } else if ($scope.step === 1) {
             $scope.isChatWindowOpen = false;
         } else {

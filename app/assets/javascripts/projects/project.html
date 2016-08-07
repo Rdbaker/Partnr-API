@@ -12,6 +12,9 @@
                     <button type="button" class="btn btn-primary" ng-if="!role.user && canApply"
                             ng-click="doApply(role.id)">Apply
                     </button>
+                    <button type="button" class="pn-btn-danger" ng-if="role.canRemoveUser" ng-click="doRemoveUser(role)">
+                      <i class="fa fa-sign-out"></i>
+                    </button>
                 </div>
             </div>
         </div>
