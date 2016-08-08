@@ -11,7 +11,7 @@
             <button class="btn btn-sm btn-primary" ng-if="msgBtnEnabled">message</button>
         </div>
         <div ng-if="user.skillscore.scored.categories.length > 0" class="profile-header-skills text-center">
-            <div ng-repeat="cat in user.skillscore.scored.categories | orderBy: cat.score | limitTo: 3" tooltip-placement="top" uib-tooltip="{{ cat.category.title }}" style="background: {{ cat.category.color_hex }}" class="pn-cat-circle pn-cat-circle-inline">
+            <div ng-repeat="cat in user.skillscore.scored.categories | orderBy: '-score' | limitTo: 3" tooltip-placement="top" uib-tooltip="{{ cat.category.title }}" style="background: {{ cat.category.color_hex }}" class="pn-cat-circle pn-cat-circle-inline">
                 <i class="fa {{ cat.category.icon_class }}"></i>
             </div>
             <div ng-if="user.skillscore.scored.categories.length > 3" style="background: #333" class="more-skills pn-cat-circle pn-cat-circle-inline">
@@ -21,7 +21,7 @@
     </div>
 </div>
 <toasts></toasts>
-<div class="col-md-3 content-container profile-sidebar" ng-show="loadComplete && !!user.profile">
+<div class="col-md-3 content-container profile-sidebar" ng-show="loadComplete && profileHasSidebarInfo">
     <div ng-if="user.totalSkillScore > 0" class="user-achievements">
         <div class="col-md-3 logo">
             <i class="fa fa-trophy" aria-hidden="true"></i>
@@ -78,7 +78,7 @@
         </div>
     </div>
 </div>
-<div ng-class="!!user.profile ? 'col-md-9' : 'col-md-12'" ng-show="loadComplete">
+<div ng-class="profileHasSidebarInfo ? 'col-md-9' : 'col-md-12'" ng-show="loadComplete">
     <ul class="content-container-tabs nav nav-tabs" role="tablist">
         <li role="presentation" ng-class="{'active': $state.current.name === 'user'}">
             <a href ui-sref="user({'id' : user.id})" role="tab">Activity</a>
