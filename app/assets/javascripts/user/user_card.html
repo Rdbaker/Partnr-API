@@ -21,8 +21,45 @@
       {{ user.projects.length }} Projects
     </div>
   </div>
-  <div class="pn-user-card-bottom-row" ng-show="{{ !!user.skillset }}">
+  <div class="pn-user-card-bottom-row" ng-if="user.skillscore.scored.categories.length > 0">
+    <span class="pn-user-card-category-secondary" ng-if="user.skillscore.scored.categories.length > 2">
+      <div data-toggle="tooltip"
+       data-placement="top"
+       uib-tooltip="{{ user.skillscore.scored.categories[2].category.title }}"
+       class="pn-cat-circle-sm"
+       ng-class="user.skillscore.scored.categories[2].divClass"
+       data-original-title="{{ user.skillscore.scored.categories[2].category.title }}">
+        <i class="fa {{ user.skillscore.scored.categories[2].category.icon_class }} "></i>
+      </div>
+    </span>
+    <span class="pn-user-card-category-primary">
+      <div data-toggle="tooltip"
+       data-placement="top"
+       uib-tooltip="{{ user.skillscore.scored.categories[0].category.title }}"
+       class="pn-cat-circle"
+       ng-class="user.skillscore.scored.categories[0].divClass"
+       data-original-title="{{ user.skillscore.scored.categories[0].category.title }}">
+        <i class="fa {{ user.skillscore.scored.categories[0].category.icon_class }} "></i>
+      </div>
+    </span>
+    <span class="pn-user-card-category-secondary" ng-if="user.skillscore.scored.categories.length > 1">
+      <div data-toggle="tooltip"
+       data-placement="top"
+       uib-tooltip="{{ user.skillscore.scored.categories[1].category.title }}"
+       class="pn-cat-circle-sm"
+       ng-class="user.skillscore.scored.categories[1].divClass"
+       data-original-title="{{ user.skillscore.scored.categories[1].category.title }}">
+        <i class="fa {{ user.skillscore.scored.categories[1].category.icon_class }} "></i>
+      </div>
+    </span>
   </div>
-  <div class="pn-user-card-footer pn-skills-container" ng-show="{{ !!user.skillset }}">
+  <div class="pn-user-card-footer pn-skills-container" ng-if="user.skillscore.scored.skills.length > 0">
+    <div class="pn-skill-tag" ng-class="user.skillscore.scored.skills[0].divClass">{{ user.skillscore.scored.skills[0].skill.title }}</div>
+    <div class="pn-skill-tag"
+      ng-class="user.skillscore.scored.skills[1].divClass"
+      ng-if="user.skillscore.scored.skills.length > 1">{{ user.skillscore.scored.skills[1].skill.title }}</div>
+    <div class="pn-skill-tag"
+      ng-class="user.skillscore.scored.skills[2].divClass"
+      ng-if="user.skillscore.scored.skills.length > 2">{{ user.skillscore.scored.skills[2].skill.title }}</div>
   </div>
 </div>
