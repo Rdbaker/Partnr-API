@@ -12,7 +12,7 @@
                     <button type="button" class="btn btn-primary" ng-if="!role.user && canApply"
                             ng-click="doApply(role.id)">Apply
                     </button>
-                    <button type="button" class="pn-btn-danger" ng-if="role.canRemoveUser" ng-click="doRemoveUser(role)">
+                    <button type="button" class="pn-btn-danger" ng-if="role.canRemoveUser" ng-click="doRemoveUser(role)" uib-tooltip="Remove user from role.">
                       <i class="fa fa-sign-out"></i>
                     </button>
                 </div>

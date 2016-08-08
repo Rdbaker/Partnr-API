@@ -122,7 +122,7 @@ categories = [
   },
   {
     :title => "Management",
-    :description => "Anhy work that involves managing projects, teams, or individuals",
+    :description => "Any work that involves managing projects, teams, or individuals",
     :color_hex => "#c40000",
     :icon_class => "fa-briefcase"
   }
