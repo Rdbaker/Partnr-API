@@ -1,5 +1,5 @@
 angular.module('partnr.users.assets').controller('ProjectController', function($scope, $rootScope, $state, $stateParams, $log, $q, projects,
-	applications, principal, toaster) {
+	applications, principal, toaster, modals, roles) {
 	$scope.project = {};
 	$scope.canApply = false;
 	$scope.isOwner = false;
@@ -33,6 +33,18 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		$scope.canApply = false;
 	};
 
+  $scope.doRemoveUser = function(role) {
+    modals.confirm("Are you sure you want to remove the user from this role? It cannot be undone.", function(result) {
+      if (result) {
+        roles.update({id: role.id, user: null}).then(function(res) {
+          toaster.success('Removed user from role.');
+          role.user = null;
+        });
+      }
+    });
+    role.canRemoveUser = false;
+  }
+
 	$scope.getStatus = function() {
 		var result = 'Not Started';
 		switch($scope.project.status) {
@@ -56,10 +68,14 @@ angular.module('partnr.users.assets').controller('ProjectController', function($
 		$scope.isMember = result.isMember;
 		$scope.canPost = ($scope.user ? true : false);
 
+    $scope.project.roles.forEach(function(role) {
+      role.canRemoveUser = !!role.user && !!$scope.user && ($scope.isOwner || role.user.id === $scope.user.id);
+    });
+
 		if ($scope.user) {
 			$log.debug('got user');
 			applications.list({'project' : $stateParams.project_id, 'user' : $scope.user.id}).then(function(result) {
-				if (result.data.length > 0 || hasRole($scope.project, $scope.user.id)) {
+				if (result.data.length > 0 || hasRole($scope.project, $scope.user.id) || $scope.isMember || $scope.isOwner) {
 					$scope.canApply = false;
 				} else {
 					$scope.canApply = true;
