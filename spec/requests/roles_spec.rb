@@ -339,10 +339,11 @@ RSpec.describe "Roles", :type => :request do
   describe "removing a user from a role" do
     context "as the project owner" do
       before(:each) do
-        login_as(@user, :scope => :user)
+        login_as(@user3, :scope => :user)
         put "/api/v1/roles/#{@role.id}", {
           "user" => nil
         }
+        puts JSON.parse(response.body)
       end
 
       it "returns a 200" do
