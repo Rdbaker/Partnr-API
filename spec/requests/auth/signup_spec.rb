@@ -4,7 +4,7 @@ RSpec.describe "Signing Up", :type => :request do
   before(:each) do
     @first_name = "Bob"
     @last_name = "Smith"
-    @email = "ryan.da.baker@gmail.com"
+    @email = "unused.email.for.testing@gmail.com"
     @password = "password"
   end
 
