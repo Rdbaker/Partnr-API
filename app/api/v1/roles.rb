@@ -74,7 +74,7 @@ module V1
     params do
       requires :title, type: String, length: 1000, allow_blank: false, desc: "The role title."
       requires :project, type: Integer, allow_blank: false, desc: "The project to which the role will belong."
-      optional :category, type: Integer, allow_blank: false, desc: "The category to which the role will belong"
+      optional :category, type: Integer, allow_blank: true, desc: "The category to which the role will belong"
     end
     post do
       authenticated_user
@@ -94,8 +94,8 @@ module V1
     params do
       requires :id, type: Integer, allow_blank: false, desc: "The role ID."
       optional :title, type: String, length: 1000, allow_blank: false, desc: "The role title."
-      optional :user, type: Integer, allow_blank: false, desc: "The user ID assigned to the role."
-      optional :category, type: Integer, allow_blank: false, desc: "The category to which the role will belong"
+      optional :user, type: Integer, allow_blank: true, desc: "The user ID assigned to the role."
+      optional :category, type: Integer, allow_blank: true, desc: "The category to which the role will belong"
       at_least_one_of :title, :user
     end
     put ":id" do
