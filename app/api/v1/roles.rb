@@ -76,6 +76,7 @@ module V1
     post do
       authenticated_user
       proj = get_record(Project, params[:project])
+      error!(403, "You can't create a role on this project!") unless proj.has_admin_permissions current_user
       r = Role.new
       r.user_notifier = current_user
       r.update!({
