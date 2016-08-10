@@ -74,7 +74,7 @@ module V1
     end
 
 
-    namespace :location do
+    namespace :locations do
       desc "Creates a new location for a profile.", entity: Entities::Profile::LocationData::AsNested
       params do
         requires :geo_string, type: String, length: 1000, allow_blank: false, desc: "The location string for a location."
@@ -115,7 +115,7 @@ module V1
     end
 
 
-    namespace :position do
+    namespace :positions do
       desc "Creates a new position for a profile.", entity: Entities::Profile::PositionData::AsNested
       params do
         requires :title, type: String, length: 1000, allow_blank: false, desc: "The title of a new position."
@@ -157,7 +157,7 @@ module V1
     end
 
 
-    namespace :school do
+    namespace :schools do
       desc "Creates a new school info for a profile.", entity: Entities::Profile::SchoolInfoData::AsNested
       params do
         requires :school_name, type: String, length: 1000, allow_blank: false, desc: "The school name of a new school info."
