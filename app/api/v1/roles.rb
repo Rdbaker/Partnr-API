@@ -101,7 +101,6 @@ module V1
     put ":id" do
       role_assign_permissions(params[:id], params[:user]) if params.has_key? :user
       role_put_permissions(params[:id]) if params.has_key? :title
-      puts "params: #{params[:user]} - role: #{!@role.user.nil?}"
       if params.has_key? :user && !params[:user].nil? && !@role.user.nil?
         # can't just replace a role with somebody else
         error!("That role already has a user in it", 400)
