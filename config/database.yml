@@ -8,6 +8,9 @@ default: &default
 development:
   <<: *default
   database: partnr_dev
+  username: partnr_dev_db
+  password: e03ee45331e9f6e0e4cd524d8af4c5611e866d03c1636dd2b9de162d249a33fd
+  host: dev-partnr-db.partnr-up.com
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -21,4 +24,4 @@ production:
   database: partnr_production
   username: partnr_db_user
   password: 303527a42cc2bd89f4918bb57920a411fff3019e3255d444a06e7193211aadce
-  host: prd-partnr-db.partnr.org
+  host: prd-partnr-db.partnr-up.com
