@@ -52,6 +52,10 @@ RSpec.describe "Roles", :type => :request do
       it "returns one roles" do
         expect(@res.length).to eq(1)
       end
+
+      it "has the right category" do 
+        expect(@res.first["category"]["id"]).to eq(@category.id)
+      end
     end
 
     context "without a supplied project id" do
@@ -343,7 +347,6 @@ RSpec.describe "Roles", :type => :request do
         put "/api/v1/roles/#{@role.id}", {
           "user" => nil
         }
-        puts JSON.parse(response.body)
       end
 
       it "returns a 200" do
