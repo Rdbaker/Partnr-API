@@ -15,7 +15,7 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 
 			return $http({
 				method: 'POST',
-				url: $rootScope.apiRoute + 'profiles/location',
+				url: $rootScope.apiRoute + 'profiles/locations',
 				headers: principal.getHeaders(),
 				data: { "geo_string" : location }
 			});
@@ -25,11 +25,7 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 			$log.debug("[PROFILE] Sending " + entityName + " create request");
 			$log.debug(item);
 
-			var entity = entityName;
-
-			if (entityName === "interest") {
-				entity = "interests";
-			}
+			var entity = entityName + 's';
 
 			return $http({
 				method: 'POST',
@@ -43,11 +39,7 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 			$log.debug("[PROFILE] Sending " + entityName + " update request");
 			$log.debug(item);
 
-			var entity = entityName;
-
-			if (entityName === "interest") {
-				entity = "interests";
-			}
+			var entity = entityName + 's';
 
 			return $http({
 				method: 'PUT',
@@ -60,11 +52,7 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 		deleteItem : function(id, entityName) {
 			$log.debug("[PROFILE] Sending " + entityName + " delete request");
 
-			var entity = entityName;
-
-			if (entityName === "interest") {
-				entity = "interests"
-			}
+			var entity = entityName + 's';
 
 			return $http({
 				method: 'DELETE',
@@ -79,7 +67,7 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 
 			return $http({
 				method: 'POST',
-				url: $rootScope.apiRoute + 'profiles/school',
+				url: $rootScope.apiRoute + 'profiles/schools',
 				headers: principal.getHeaders(),
 				data: school
 			});
@@ -91,7 +79,7 @@ angular.module('partnr.users.assets').factory('profiles', function($rootScope, $
 
 			return $http({
 				method: 'POST',
-				url: $rootScope.apiRoute + 'profiles/position',
+				url: $rootScope.apiRoute + 'profiles/positions',
 				headers: principal.getHeaders(),
 				data: position
 			});
