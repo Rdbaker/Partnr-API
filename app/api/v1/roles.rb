@@ -28,11 +28,13 @@ module V1
 
     desc "Retrieve all roles.", entity: Entities::RoleData::AsSearch
     params do
-      optional :user, type: Integer, allow_blank: false, desc: "The User ID for the roles to retrieve."
+      optional :user, type: Integer, allow_blank: true, desc: "The User ID for the roles to retrieve."
+      optional :project, type: Integer, allow_blank: false, desc: "The Project ID for the roles to retrieve."
       optional :empty, type: Boolean, desc: "Search for empty roles."
       optional :title, type: String, desc: "The title of the role to retrieve."
       optional :per_page, type: Integer, default: 25, valid_per_page: [1, 100], allow_blank: false, desc: "The number of roles per page."
       optional :page, type: Integer, default: 1, allow_blank: false, desc: "The page number of the roles."
+      optional :category, type: Integer, allow_blank: true, desc: "The category to which the role will belong"
       mutually_exclusive :user, :empty
     end
     get do
@@ -72,6 +74,7 @@ module V1
     params do
       requires :title, type: String, length: 1000, allow_blank: false, desc: "The role title."
       requires :project, type: Integer, allow_blank: false, desc: "The project to which the role will belong."
+      optional :category, type: Integer, allow_blank: true, desc: "The category to which the role will belong"
     end
     post do
       authenticated_user
@@ -93,13 +96,13 @@ module V1
       requires :id, type: Integer, allow_blank: false, desc: "The role ID."
       optional :title, type: String, length: 1000, allow_blank: false, desc: "The role title."
       optional :user, type: Integer, allow_blank: true, desc: "The user ID assigned to the role."
+      optional :category, type: Integer, allow_blank: true, desc: "The category to which the role will belong"
       at_least_one_of :title, :user
     end
     put ":id" do
       role_assign_permissions(params[:id], params[:user]) if params.has_key? :user
       role_put_permissions(params[:id]) if params.has_key? :title
-
-      if params.has_key? :user && !@role.user.nil?
+      if params.has_key? :user && !params[:user].nil? && !@role.user.nil?
         # can't just replace a role with somebody else
         error!("That role already has a user in it", 400)
       elsif params.has_key? :user

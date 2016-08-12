@@ -4,6 +4,8 @@ RSpec.describe "Roles", :type => :request do
   before(:each) do
     @role = build(:role)
     @role2 = build(:role2)
+    @categorized_role = build(:role2)
+    @category = build(:category)
     @user = build(:user)
     @user2 = build(:user2)
     @user3 = build(:user3)
@@ -23,11 +25,16 @@ RSpec.describe "Roles", :type => :request do
     @role2.project = @project
     @role.user = @user
     @role2.user = nil
+    @categorized_role.category = @category
+    @categorized_role.project = @project
+    @categorized_role.user_notifier = @user3 
     @role.user_notifier = @user3
     @role2.user_notifier = @user3
 
+    @categorized_role.save!
     @role.save!
     @role2.save!
+
   end
 
   describe "GET /api/v1/roles" do
@@ -36,14 +43,29 @@ RSpec.describe "Roles", :type => :request do
       expect(response.status).to eq(200)
     end
 
-    context "without a supplied user id" do
+    context "with a supplied category id" do 
       before(:each) do
-        get "/api/v1/roles"
+        get "/api/v1/roles?category=#{@category.id}"
+        @res = JSON.parse(response.body)
+      end
+
+      it "returns one roles" do
+        expect(@res.length).to eq(1)
+      end
+
+      it "has the right category" do 
+        expect(@res.first["category"]["id"]).to eq(@category.id)
+      end
+    end
+
+    context "without a supplied project id" do
+      before(:each) do
+        get "/api/v1/roles?project=#{@project.id}"
         @res = JSON.parse(response.body)
       end
 
       it "returns two roles" do
-        expect(@res.length).to eq(2)
+        expect(@res.length).to eq(3)
       end
 
       it "matches the JSON schema" do
