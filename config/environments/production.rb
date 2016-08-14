@@ -1,4 +1,11 @@
 Rails.application.configure do
+  config.middleware.use Rack::Cors do
+    allow do
+      origins 'app.partnr-up.com'
+      resource '/api/*', :headers => :any, :methods => [:get, :post, :options, :put, :patch]
+    end
+  end
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

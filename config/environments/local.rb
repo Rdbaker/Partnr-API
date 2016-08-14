@@ -34,13 +34,6 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
-  # setup for teaspoon and mocha headless js testing
-  Rails.application.config.assets.precompile += [
-    "teaspoon.css",
-    "teaspoon-mocha.js",
-    "mocha/1.17.1.js"
-  ]
-
   # set things up for local email forwarding
   config.action_mailer.delivery_method = :smtp
   if ENV['local'] == 'true'
@@ -80,3 +73,4 @@ Rails.application.configure do
     }
   }
 end
+
