@@ -5,6 +5,10 @@ default: &default
   port: 5432
   encoding: unicode
 
+local:
+  <<: *default
+  database: partnr_dev
+
 development:
   <<: *default
   database: partnr_dev
