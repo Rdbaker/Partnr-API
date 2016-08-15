@@ -44,7 +44,7 @@ Rails.application.configure do
   # set things up for local email forwarding
   config.action_mailer.delivery_method = :smtp
   Rails.application.config.host = 'http://dev-api.partnr-up.com'
-  config.action_mailer.default_url_options = { :host => 'dev.partnr-up.com' }
+  config.action_mailer.default_url_options = { :host => 'dev-api.partnr-up.com' }
   config.action_mailer.smtp_settings = {
     :user_name => 'partnremailer',
     :password => 'P4rtnrS3nds3m4ilsN0w',
