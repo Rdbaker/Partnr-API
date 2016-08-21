@@ -96,8 +96,12 @@ class User < ActiveRecord::Base
     @tasks ||= Task.where user_id: self.id
   end
 
+  def accepted_connections
+    Connection.where("user_id = ? OR connection_id = ? AND status = ?", id, id, 1)
+  end
+
   def connections
-    Connection.where("user_id = ? OR connection_id = ?", id, id)
+    Connection.where("user_id = ?  OR connection_id = ?", id, id)
   end
 
   def connection_status(user)
@@ -156,7 +160,7 @@ private
   end
 
   def get_connected_users
-    connections.map { |conn| conn.other_user self }
+    accepted_connections.map { |conn| conn.other_user self }
   end
 
   def get_following
