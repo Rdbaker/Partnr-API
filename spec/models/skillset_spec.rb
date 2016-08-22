@@ -38,8 +38,8 @@ RSpec.describe Skillset, type: :model do
     @skill2.save!
 
     # 2 = "complete"
-    @task.update!({ skills: [@skill, @skill2], status: 2 })
-    @task2.update!({ skills: [@skill2], status: 2 })
+    @task.update!({ categories: [@category],skills: [@skill, @skill2], status: 2 })
+    @task2.update!({ categories: [@category], skills: [@skill2], status: 2 })
   end
 
   describe "the user's skillscore" do
@@ -49,7 +49,7 @@ RSpec.describe Skillset, type: :model do
     end
 
     it "has 2 points for the category" do
-      expect(@skillscore[:categories][@category.title]).to eq(3)
+      expect(@skillscore[:categories][@category.title]).to eq(2)
     end
 
     it "has 2 points for a skill and 1 point for the other" do
