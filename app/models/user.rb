@@ -99,7 +99,6 @@ class User < ActiveRecord::Base
   def connections_with_status(status=1)
     all_connections = Connection.where("user_id = ? OR connection_id = ? ", id, id)
     all_connections.where("status = ?", status)
-    
   end
 
   def connections
