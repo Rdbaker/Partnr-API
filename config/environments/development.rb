@@ -8,6 +8,9 @@ Rails.application.configure do
 
   config.cache_classes = false
 
+  # specify middleware order so CORS is before warden (devise)
+  config.middleware.insert_before Warden::Manager, Rack::Cors
+
   # Do not eager load code on boot.
   config.eager_load = false
 
