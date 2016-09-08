@@ -77,6 +77,9 @@ Devise.setup do |config|
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 
+  config.http_authenticatable_on_xhr = false
+  config.navigational_formats = ["*/*", :html, :json]
+
   # warden configuration
   config.warden do |manager|
     manager.failure_app = AuthFailureRedirector

@@ -1,5 +1,6 @@
 Rails.application.configure do
-  config.middleware.use Rack::Cors do
+  # specify middleware order so CORS is before warden (devise)
+  config.middleware.insert_before 0, Rack::Cors do
     allow do
       origins '*.partnr-up.com'
       resource '/api/*', :headers => :any, :methods => [:get, :post, :options, :put, :patch]
@@ -7,9 +8,6 @@ Rails.application.configure do
   end
 
   config.cache_classes = false
-
-  # specify middleware order so CORS is before warden (devise)
-  config.middleware.insert_before Warden::Manager, Rack::Cors
 
   # Do not eager load code on boot.
   config.eager_load = false
