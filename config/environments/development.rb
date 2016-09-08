@@ -1,6 +1,6 @@
 Rails.application.configure do
   # specify middleware order so CORS is before warden (devise)
-  config.middleware.insert_before 0, Rack::Cors do
+  config.middleware.insert_before Warden::Manager, Rack::Cors do
     allow do
       origins '*.partnr-up.com'
       resource '/api/*', :headers => :any, :methods => [:get, :post, :options, :put, :patch]
