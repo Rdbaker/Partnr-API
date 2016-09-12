@@ -48,7 +48,7 @@ module Partnr
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins 'partnr-up.com'
-        resource '/api/', :headers => :any, :methods => [:get, :post, :options, :put, :patch], :credentials => true, :max_age => 600
+        resource '/api/v1', :headers => :any, :methods => [:get, :post, :options, :put, :patch], :credentials => true, :max_age => 600
       end
     end
   end
