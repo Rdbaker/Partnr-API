@@ -1,11 +1,4 @@
 Rails.application.configure do
-  config.middleware.use Rack::Cors do
-    allow do
-      origins 'partnr-up.com'
-      resource '/api/', :headers => :any, :methods => [:get, :post, :options, :put, :patch], :credentials => true, :max_age => 600
-    end
-  end
-
   config.cache_classes = false
 
   # Do not eager load code on boot.
