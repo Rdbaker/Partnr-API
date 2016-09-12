@@ -3,11 +3,7 @@ Rails.application.configure do
   config.middleware.insert_before Warden::Manager, Rack::Cors do
     allow do
       origins '*.partnr-up.com'
-      resource '/api/*',
-        :headers => :any,
-        :methods => [:get, :post, :options, :put, :patch],
-        :credentials => true,
-        :expose => 'set-cookie'
+      resource '/api/*', :headers => :any, :methods => [:get, :post, :options, :put, :patch], :credentials => true
     end
   end
 
