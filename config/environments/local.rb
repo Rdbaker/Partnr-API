@@ -1,8 +1,8 @@
 Rails.application.configure do
   config.middleware.use Rack::Cors do
     allow do
-      origins '*'
-      resource '/api/*', :headers => :any, :methods => [:get, :post, :options, :put, :patch]
+      origins 'partnr-up.com'
+      resource '/api/', :headers => :any, :methods => [:get, :post, :options, :put, :patch], :credentials => true, :max_age => 600
     end
   end
 
