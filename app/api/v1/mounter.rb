@@ -21,5 +21,11 @@ module V1
     mount Follows       => '/follows'
     mount Search        => '/search'
     mount Walls         => '/walls'
+
+    add_swagger_documentation(
+      base_path: '/api/v1',
+      api_version: Rails.application.version,
+      hide_documentation_path: true
+    )
   end
 end

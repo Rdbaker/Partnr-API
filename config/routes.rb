@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
 
   mount Base => '/api'
+  mount GrapeSwaggerRails::Engine => '/docs'
 
   root to: 'application#angular'
 end
