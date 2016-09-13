@@ -83,6 +83,6 @@ gem 'aws-sdk'
 gem 'newrelic_rpm'
 
 # we want to allow CORS
-gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-cors', '~> 0.3.1', :require => 'rack/cors'
 
 ruby '2.3.0'
