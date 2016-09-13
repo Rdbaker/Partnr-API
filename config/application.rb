@@ -47,7 +47,7 @@ module Partnr
     # specify middleware order so CORS is before warden (devise)
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
-        origins 'partnr-up.com'
+        origins 'dev.partnr-up.com'
         resource 'api/*', :headers => :any, :methods => [:get, :post, :options, :put, :patch], :credentials => true, :max_age => 600
       end
     end
