@@ -73,13 +73,6 @@ class SessionsController < Devise::SessionsController
 
   private
 
-  def set_headers
-    headers['Access-Control-Allow-Origin'] = 'partnr-up.com'
-    headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS, HEAD'
-    headers['Access-Control-Allow-Headers'] = 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-CSRF-Token'
-    headers['Access-Control-Allow-Credentials'] = true
-  end
-
   def check_csrf_token
     render json: {
       error: 'Missing required header: X-CSRF-Token',
