@@ -1,7 +1,7 @@
 class RegistrationsController < Devise::RegistrationsController
   alias :super_create :create
   respond_to :json
-  before_action :set_default_response_format, :set_headers
+  before_action :set_default_response_format
 
   def new
     render :json => {

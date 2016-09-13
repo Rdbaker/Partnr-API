@@ -2,8 +2,6 @@ class SessionsController < Devise::SessionsController
   alias :super_destroy :destroy
   rescue_from ActionController::InvalidAuthenticityToken, :with => :check_csrf_token
 
-  before_action :set_headers
-
   respond_to :json
   prepend_before_filter :set_default_response_format
   prepend_before_filter :check_post_params, only: :create
