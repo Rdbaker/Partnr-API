@@ -9,9 +9,4 @@ class Base < Grape::API
   end
 
   mount V1::Mounter => '/v1'
-
-  add_swagger_documentation(
-    base_path: '/api',
-    hide_documentation_path: true
-  )
 end
